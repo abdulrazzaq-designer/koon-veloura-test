@@ -1,86 +1,504 @@
-{#
-| Variable         | Type    | Description                     |
-|------------------|---------|---------------------------------|
-| cart             | object  |                                 |
-| cart.items_count | int     |                                 |
-| cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
-#}
-{% set important_links = theme.settings.get('important_links') %}
-<header data-testid="store-header" class="store-header">
-  {# Bullet Delivery tag — mobile: own full-width row above the top nav
-     (Figma "Mobile version"). Desktop keeps the inline pill below, next to
-     scopes. Both instances self-gate on the same backend flag; `lg:hidden`
-     matches the mobile/desktop split already used for the menu toggle below. #}
-  <div class="lg:hidden">
-    <salla-bullet-delivery-tag></salla-bullet-delivery-tag>
-  </div>
+{% set top_enabled = true %}
 
-  {# Top Nav #}
-  <div class="top-navbar">
-    <div class="container flex justify-between">
-      <div class="flex-1 flex items-center gap-2">
-          {# Footer Menu #}
-          {% if important_links %}
-            <salla-menu data-testid="store-header-topnav" source="footer" topnav></salla-menu>
-          {% endif %}
+{# Veloura V4: robust boolean reading. Do not overwrite a scalar value with a selected array. #}
+{% set top_floating_setting = theme.settings.get('veloura_top_floating_v4_2026', true) %}
+{% set top_floating_raw = top_floating_setting %}
+{% if top_floating_setting.value is defined %}
+  {% set top_floating_raw = top_floating_setting.value %}
+{% elseif top_floating_setting.selected is defined %}
+  {% if top_floating_setting.selected.value is defined %}
+    {% set top_floating_raw = top_floating_setting.selected.value %}
+  {% elseif top_floating_setting.selected is iterable and top_floating_setting.selected[0] is defined and top_floating_setting.selected[0].value is defined %}
+    {% set top_floating_raw = top_floating_setting.selected[0].value %}
+  {% else %}
+    {% set top_floating_raw = top_floating_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set top_floating = top_floating_raw == true or top_floating_raw == 'true' or top_floating_raw == 1 or top_floating_raw == '1' or top_floating_raw == 'on' %}
 
-          {# Language & Currency Component #}
-          <div class="header-buttons">
-              {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
-                  <salla-localization-modal data-testid="store-header-localization" show-trigger></salla-localization-modal>
-              {% endif %}
-          </div>
+{% set top_compact_setting = theme.settings.get('veloura_top_compact_on_scroll_v4_2026', true) %}
+{% set top_compact_raw = top_compact_setting %}
+{% if top_compact_setting.value is defined %}
+  {% set top_compact_raw = top_compact_setting.value %}
+{% elseif top_compact_setting.selected is defined %}
+  {% if top_compact_setting.selected.value is defined %}
+    {% set top_compact_raw = top_compact_setting.selected.value %}
+  {% elseif top_compact_setting.selected is iterable and top_compact_setting.selected[0] is defined and top_compact_setting.selected[0].value is defined %}
+    {% set top_compact_raw = top_compact_setting.selected[0].value %}
+  {% else %}
+    {% set top_compact_raw = top_compact_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set top_compact_on_scroll = top_compact_raw == true or top_compact_raw == 'true' or top_compact_raw == 1 or top_compact_raw == '1' or top_compact_raw == 'on' %}
 
-          {# Bullet Delivery tag — desktop only; mobile instance is above the top nav #}
-          <div class="hidden lg:block">
-            <salla-bullet-delivery-tag></salla-bullet-delivery-tag>
-          </div>
+{% set top_blur_setting = theme.settings.get('veloura_top_blur_v4_2026', true) %}
+{% set top_blur_raw = top_blur_setting %}
+{% if top_blur_setting.value is defined %}
+  {% set top_blur_raw = top_blur_setting.value %}
+{% elseif top_blur_setting.selected is defined %}
+  {% if top_blur_setting.selected.value is defined %}
+    {% set top_blur_raw = top_blur_setting.selected.value %}
+  {% elseif top_blur_setting.selected is iterable and top_blur_setting.selected[0] is defined and top_blur_setting.selected[0].value is defined %}
+    {% set top_blur_raw = top_blur_setting.selected[0].value %}
+  {% else %}
+    {% set top_blur_raw = top_blur_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
 
-          {# Scopes | Branches #}
-          {% if store.scope %}
-              <button class="btn--rounded-gray"
-                      onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
-                  <i class="sicon-location rtl:ml-1 ltr:mr-1"></i> {{ store.scope.name }}
+{% set top_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v6_2026', false) %}
+{% set top_hide_on_scroll_raw = top_hide_setting %}
+{% if top_hide_setting.selected is defined %}
+  {% if top_hide_setting.selected.value is defined %}
+    {% set top_hide_on_scroll_raw = top_hide_setting.selected.value %}
+  {% elseif top_hide_setting.selected is iterable and top_hide_setting.selected[0] is defined and top_hide_setting.selected[0].value is defined %}
+    {% set top_hide_on_scroll_raw = top_hide_setting.selected[0].value %}
+  {% else %}
+    {% set top_hide_on_scroll_raw = top_hide_setting.selected %}
+  {% endif %}
+{% elseif top_hide_setting.value is defined %}
+  {% set top_hide_on_scroll_raw = top_hide_setting.value %}
+{% endif %}
+{% set top_hide_on_scroll = top_hide_on_scroll_raw == true or top_hide_on_scroll_raw == 'true' or top_hide_on_scroll_raw == 1 or top_hide_on_scroll_raw == '1' or top_hide_on_scroll_raw == 'on' %}
+
+{# Logo #}
+{% set light_logo_url = theme.settings.get('veloura_light_logo_url_2026') %}
+{% set light_logo_image = theme.settings.get('veloura_light_logo_2026') %}
+{% set veloura_light_logo = light_logo_url ?: light_logo_image %}
+
+{% set top_logo_url = theme.settings.get('veloura_top_logo_url_2026') %}
+{% set top_logo_image = theme.settings.get('veloura_top_logo_image_2026') %}
+{% set top_logo = top_logo_url ?: top_logo_image ?: veloura_light_logo ?: store.logo|cdn(175) %}
+
+{% set top_logo_lower = top_logo|lower %}
+{% set top_logo_is_video = top_logo_lower ends with '.webm' or top_logo_lower ends with '.mp4' %}
+
+{# General Settings #}
+{% set top_logo_center_setting = theme.settings.get('veloura_top_logo_center_2026', true) %}
+{% set top_logo_center_raw = top_logo_center_setting %}
+{% if top_logo_center_setting.selected is defined %}
+  {% if top_logo_center_setting.selected.value is defined %}
+    {% set top_logo_center_raw = top_logo_center_setting.selected.value %}
+  {% elseif top_logo_center_setting.selected is iterable and top_logo_center_setting.selected[0] is defined and top_logo_center_setting.selected[0].value is defined %}
+    {% set top_logo_center_raw = top_logo_center_setting.selected[0].value %}
+  {% else %}
+    {% set top_logo_center_raw = top_logo_center_setting.selected %}
+  {% endif %}
+{% elseif top_logo_center_setting.value is defined %}
+  {% set top_logo_center_raw = top_logo_center_setting.value %}
+{% endif %}
+{% set top_logo_center = top_logo_center_raw == true or top_logo_center_raw == 'true' or top_logo_center_raw == 1 or top_logo_center_raw == '1' or top_logo_center_raw == 'on' %}
+
+{% set top_logo_no_center_laptop_setting = theme.settings.get('veloura_top_logo_no_center_laptop_2026', false) %}
+{% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting %}
+{% if top_logo_no_center_laptop_setting.selected is defined %}
+  {% if top_logo_no_center_laptop_setting.selected.value is defined %}
+    {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.selected.value %}
+  {% elseif top_logo_no_center_laptop_setting.selected is iterable and top_logo_no_center_laptop_setting.selected[0] is defined and top_logo_no_center_laptop_setting.selected[0].value is defined %}
+    {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.selected[0].value %}
+  {% else %}
+    {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.selected %}
+  {% endif %}
+{% elseif top_logo_no_center_laptop_setting.value is defined %}
+  {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.value %}
+{% endif %}
+{% set top_logo_no_center_laptop = top_logo_no_center_laptop_raw == true or top_logo_no_center_laptop_raw == 'true' or top_logo_no_center_laptop_raw == 1 or top_logo_no_center_laptop_raw == '1' or top_logo_no_center_laptop_raw == 'on' %}
+
+{% set top_logo_size_value = theme.settings.get('veloura_top_logo_size_2026', 5) %}
+{% if top_logo_size_value.value is defined %}{% set top_logo_size_value = top_logo_size_value.value %}{% endif %}
+{% set top_logo_size_px = 32 + (top_logo_size_value * 3) %}
+
+{% set top_bg = theme.settings.get('veloura_top_bg_color_2026', '#ffffff') %}
+{% if top_bg.value is defined %}{% set top_bg = top_bg.value %}{% endif %}
+
+{% set top_text = theme.settings.get('veloura_top_text_color_2026', '#004d65') %}
+{% if top_text.value is defined %}{% set top_text = top_text.value %}{% endif %}
+
+{% set top_cart_bg = theme.settings.get('veloura_top_cart_bg_2026', '#f87171') %}
+{% if top_cart_bg.value is defined %}{% set top_cart_bg = top_cart_bg.value %}{% endif %}
+
+{% set top_border = theme.settings.get('veloura_top_border_style_2026', 'sharp') %}
+{% if top_border.selected is defined %}
+  {% if top_border.selected.value is defined %}
+    {% set top_border = top_border.selected.value %}
+  {% elseif top_border.selected is iterable and top_border.selected[0] is defined and top_border.selected[0].value is defined %}
+    {% set top_border = top_border.selected[0].value %}
+  {% else %}
+    {% set top_border = top_border.selected %}
+  {% endif %}
+{% elseif top_border.value is defined %}
+  {% set top_border = top_border.value %}
+{% elseif top_border is iterable and top_border[0] is defined and top_border[0].value is defined %}
+  {% set top_border = top_border[0].value %}
+{% endif %}
+
+{% set icons_size = theme.settings.get('veloura_top_icons_size_2026', 'small') %}
+{% if icons_size.selected is defined %}
+  {% if icons_size.selected.value is defined %}
+    {% set icons_size = icons_size.selected.value %}
+  {% elseif icons_size.selected is iterable and icons_size.selected[0] is defined and icons_size.selected[0].value is defined %}
+    {% set icons_size = icons_size.selected[0].value %}
+  {% else %}
+    {% set icons_size = icons_size.selected %}
+  {% endif %}
+{% elseif icons_size.value is defined %}
+  {% set icons_size = icons_size.value %}
+{% elseif icons_size is iterable and icons_size[0] is defined and icons_size[0].value is defined %}
+  {% set icons_size = icons_size[0].value %}
+{% endif %}
+
+{% set mobile_search = theme.settings.get('veloura_top_mobile_search_display_2026', 'icon_right') %}
+{% if mobile_search.selected is defined %}
+  {% if mobile_search.selected.value is defined %}
+    {% set mobile_search = mobile_search.selected.value %}
+  {% elseif mobile_search.selected is iterable and mobile_search.selected[0] is defined and mobile_search.selected[0].value is defined %}
+    {% set mobile_search = mobile_search.selected[0].value %}
+  {% else %}
+    {% set mobile_search = mobile_search.selected %}
+  {% endif %}
+{% elseif mobile_search.value is defined %}
+  {% set mobile_search = mobile_search.value %}
+{% elseif mobile_search is iterable and mobile_search[0] is defined and mobile_search[0].value is defined %}
+  {% set mobile_search = mobile_search[0].value %}
+{% endif %}
+
+{% set desktop_search = theme.settings.get('veloura_top_desktop_search_display_2026', 'bar_sticky_icon') %}
+{% if desktop_search.selected is defined %}
+  {% if desktop_search.selected.value is defined %}
+    {% set desktop_search = desktop_search.selected.value %}
+  {% elseif desktop_search.selected is iterable and desktop_search.selected[0] is defined and desktop_search.selected[0].value is defined %}
+    {% set desktop_search = desktop_search.selected[0].value %}
+  {% else %}
+    {% set desktop_search = desktop_search.selected %}
+  {% endif %}
+{% elseif desktop_search.value is defined %}
+  {% set desktop_search = desktop_search.value %}
+{% elseif desktop_search is iterable and desktop_search[0] is defined and desktop_search[0].value is defined %}
+  {% set desktop_search = desktop_search[0].value %}
+{% endif %}
+
+{% set desktop_menu_mode = theme.settings.get('veloura_top_desktop_menu_mode_2026', 'links') %}
+{% if desktop_menu_mode.selected is defined %}
+  {% if desktop_menu_mode.selected.value is defined %}
+    {% set desktop_menu_mode = desktop_menu_mode.selected.value %}
+  {% elseif desktop_menu_mode.selected is iterable and desktop_menu_mode.selected[0] is defined and desktop_menu_mode.selected[0].value is defined %}
+    {% set desktop_menu_mode = desktop_menu_mode.selected[0].value %}
+  {% else %}
+    {% set desktop_menu_mode = desktop_menu_mode.selected %}
+  {% endif %}
+{% elseif desktop_menu_mode.value is defined %}
+  {% set desktop_menu_mode = desktop_menu_mode.value %}
+{% elseif desktop_menu_mode is iterable and desktop_menu_mode[0] is defined and desktop_menu_mode[0].value is defined %}
+  {% set desktop_menu_mode = desktop_menu_mode[0].value %}
+{% endif %}
+
+{% set show_mobile_lang_setting = theme.settings.get('veloura_top_mobile_currency_lang_icon_2026', true) %}
+{% set show_mobile_lang_raw = show_mobile_lang_setting %}
+{% if show_mobile_lang_setting.selected is defined %}
+  {% if show_mobile_lang_setting.selected.value is defined %}
+    {% set show_mobile_lang_raw = show_mobile_lang_setting.selected.value %}
+  {% elseif show_mobile_lang_setting.selected is iterable and show_mobile_lang_setting.selected[0] is defined and show_mobile_lang_setting.selected[0].value is defined %}
+    {% set show_mobile_lang_raw = show_mobile_lang_setting.selected[0].value %}
+  {% else %}
+    {% set show_mobile_lang_raw = show_mobile_lang_setting.selected %}
+  {% endif %}
+{% elseif show_mobile_lang_setting.value is defined %}
+  {% set show_mobile_lang_raw = show_mobile_lang_setting.value %}
+{% endif %}
+{% set show_mobile_lang = show_mobile_lang_raw == true or show_mobile_lang_raw == 'true' or show_mobile_lang_raw == 1 or show_mobile_lang_raw == '1' or show_mobile_lang_raw == 'on' %}
+
+{% set hide_lang_desktop_setting = theme.settings.get('veloura_top_hide_currency_lang_desktop_2026', false) %}
+{% set hide_lang_desktop_raw = hide_lang_desktop_setting %}
+{% if hide_lang_desktop_setting.selected is defined %}
+  {% if hide_lang_desktop_setting.selected.value is defined %}
+    {% set hide_lang_desktop_raw = hide_lang_desktop_setting.selected.value %}
+  {% elseif hide_lang_desktop_setting.selected is iterable and hide_lang_desktop_setting.selected[0] is defined and hide_lang_desktop_setting.selected[0].value is defined %}
+    {% set hide_lang_desktop_raw = hide_lang_desktop_setting.selected[0].value %}
+  {% else %}
+    {% set hide_lang_desktop_raw = hide_lang_desktop_setting.selected %}
+  {% endif %}
+{% elseif hide_lang_desktop_setting.value is defined %}
+  {% set hide_lang_desktop_raw = hide_lang_desktop_setting.value %}
+{% endif %}
+{% set hide_lang_desktop = hide_lang_desktop_raw == true or hide_lang_desktop_raw == 'true' or hide_lang_desktop_raw == 1 or hide_lang_desktop_raw == '1' or hide_lang_desktop_raw == 'on' %}
+
+{% set hide_cart_total_mobile_setting = theme.settings.get('veloura_top_hide_cart_total_mobile_2026', true) %}
+{% set hide_cart_total_mobile_raw = hide_cart_total_mobile_setting %}
+{% if hide_cart_total_mobile_setting.selected is defined %}
+  {% if hide_cart_total_mobile_setting.selected.value is defined %}
+    {% set hide_cart_total_mobile_raw = hide_cart_total_mobile_setting.selected.value %}
+  {% elseif hide_cart_total_mobile_setting.selected is iterable and hide_cart_total_mobile_setting.selected[0] is defined and hide_cart_total_mobile_setting.selected[0].value is defined %}
+    {% set hide_cart_total_mobile_raw = hide_cart_total_mobile_setting.selected[0].value %}
+  {% else %}
+    {% set hide_cart_total_mobile_raw = hide_cart_total_mobile_setting.selected %}
+  {% endif %}
+{% elseif hide_cart_total_mobile_setting.value is defined %}
+  {% set hide_cart_total_mobile_raw = hide_cart_total_mobile_setting.value %}
+{% endif %}
+{% set hide_cart_total_mobile = hide_cart_total_mobile_raw == true or hide_cart_total_mobile_raw == 'true' or hide_cart_total_mobile_raw == 1 or hide_cart_total_mobile_raw == '1' or hide_cart_total_mobile_raw == 'on' %}
+
+{# false = الهيدر يحترم كونتينر اللابتوب افتراضياً، وإذا فعّلت خيار العرض الكامل من الإعدادات يصير Full Width #}
+{% set full_width_desktop = theme.settings.get('veloura_top_full_width_desktop_2026', false) %}
+{% if full_width_desktop.selected is defined %}
+  {% if full_width_desktop.selected.value is defined %}
+    {% set full_width_desktop = full_width_desktop.selected.value %}
+  {% elseif full_width_desktop.selected is iterable and full_width_desktop.selected[0] is defined and full_width_desktop.selected[0].value is defined %}
+    {% set full_width_desktop = full_width_desktop.selected[0].value %}
+  {% else %}
+    {% set full_width_desktop = full_width_desktop.selected %}
+  {% endif %}
+{% elseif full_width_desktop.value is defined %}
+  {% set full_width_desktop = full_width_desktop.value %}
+{% endif %}
+{% set full_width_desktop = full_width_desktop == true or full_width_desktop == 'true' or full_width_desktop == 1 or full_width_desktop == '1' or full_width_desktop == 'on' %}
+
+{% set search_detached_setting = theme.settings.get('veloura_top_search_detached_2026', false) %}
+{% set search_detached_raw = search_detached_setting %}
+{% if search_detached_setting.selected is defined %}
+  {% if search_detached_setting.selected.value is defined %}
+    {% set search_detached_raw = search_detached_setting.selected.value %}
+  {% elseif search_detached_setting.selected is iterable and search_detached_setting.selected[0] is defined and search_detached_setting.selected[0].value is defined %}
+    {% set search_detached_raw = search_detached_setting.selected[0].value %}
+  {% else %}
+    {% set search_detached_raw = search_detached_setting.selected %}
+  {% endif %}
+{% elseif search_detached_setting.value is defined %}
+  {% set search_detached_raw = search_detached_setting.value %}
+{% endif %}
+{% set search_detached = search_detached_raw == true or search_detached_raw == 'true' or search_detached_raw == 1 or search_detached_raw == '1' or search_detached_raw == 'on' %}
+
+{% set show_wishlist = theme.settings.get('veloura_top_show_wishlist_2026', false) %}
+{% if show_wishlist.value is defined %}{% set show_wishlist = show_wishlist.value %}{% endif %}
+
+{% set dark_pos = theme.settings.get('veloura_dark_toggle_position_2026', 'left') %}
+{% if dark_pos.selected is defined %}
+  {% if dark_pos.selected.value is defined %}
+    {% set dark_pos = dark_pos.selected.value %}
+  {% elseif dark_pos.selected is iterable and dark_pos.selected[0] is defined and dark_pos.selected[0].value is defined %}
+    {% set dark_pos = dark_pos.selected[0].value %}
+  {% else %}
+    {% set dark_pos = dark_pos.selected %}
+  {% endif %}
+{% elseif dark_pos.value is defined %}
+  {% set dark_pos = dark_pos.value %}
+{% elseif dark_pos is iterable and dark_pos[0] is defined and dark_pos[0].value is defined %}
+  {% set dark_pos = dark_pos[0].value %}
+{% endif %}
+
+{% set dark_enabled_setting = theme.settings.get('veloura_dark_enabled_2026', false) %}
+{% set dark_enabled = dark_enabled_setting %}
+{% if dark_enabled_setting.selected is defined %}
+  {% if dark_enabled_setting.selected.value is defined %}
+    {% set dark_enabled = dark_enabled_setting.selected.value %}
+  {% elseif dark_enabled_setting.selected is iterable and dark_enabled_setting.selected[0] is defined and dark_enabled_setting.selected[0].value is defined %}
+    {% set dark_enabled = dark_enabled_setting.selected[0].value %}
+  {% else %}
+    {% set dark_enabled = dark_enabled_setting.selected %}
+  {% endif %}
+{% elseif dark_enabled_setting.value is defined %}
+  {% set dark_enabled = dark_enabled_setting.value %}
+{% endif %}
+{% set dark_enabled = dark_enabled == true or dark_enabled == 'true' or dark_enabled == 1 or dark_enabled == '1' or dark_enabled == 'on' %}
+
+{% set dark_toggle_setting = theme.settings.get('veloura_dark_toggle_enabled_2026', true) %}
+{% set dark_toggle_enabled = dark_toggle_setting %}
+{% if dark_toggle_setting.selected is defined %}
+  {% if dark_toggle_setting.selected.value is defined %}
+    {% set dark_toggle_enabled = dark_toggle_setting.selected.value %}
+  {% elseif dark_toggle_setting.selected is iterable and dark_toggle_setting.selected[0] is defined and dark_toggle_setting.selected[0].value is defined %}
+    {% set dark_toggle_enabled = dark_toggle_setting.selected[0].value %}
+  {% else %}
+    {% set dark_toggle_enabled = dark_toggle_setting.selected %}
+  {% endif %}
+{% elseif dark_toggle_setting.value is defined %}
+  {% set dark_toggle_enabled = dark_toggle_setting.value %}
+{% endif %}
+{% set dark_toggle_enabled = dark_toggle_enabled == true or dark_toggle_enabled == 'true' or dark_toggle_enabled == 1 or dark_toggle_enabled == '1' or dark_toggle_enabled == 'on' %}
+
+
+{% set top_login_icon = theme.settings.get('veloura_top_login_icon_2026', 'sicon-user-circle') %}
+{% if top_login_icon.selected is defined %}
+  {% if top_login_icon.selected.value is defined %}
+    {% set top_login_icon = top_login_icon.selected.value %}
+  {% elseif top_login_icon.selected is iterable and top_login_icon.selected[0] is defined and top_login_icon.selected[0].value is defined %}
+    {% set top_login_icon = top_login_icon.selected[0].value %}
+  {% else %}
+    {% set top_login_icon = top_login_icon.selected %}
+  {% endif %}
+{% elseif top_login_icon.value is defined %}
+  {% set top_login_icon = top_login_icon.value %}
+{% elseif top_login_icon is iterable and top_login_icon[0].value is defined %}
+  {% set top_login_icon = top_login_icon[0].value %}
+{% endif %}
+{% if not top_login_icon %}{% set top_login_icon = 'sicon-user-circle' %}{% endif %}
+
+{% set top_cart_icon = theme.settings.get('veloura_top_cart_icon_2026', 'sicon-shopping-bag') %}
+{% if top_cart_icon.selected is defined %}
+  {% if top_cart_icon.selected.value is defined %}
+    {% set top_cart_icon = top_cart_icon.selected.value %}
+  {% elseif top_cart_icon.selected is iterable and top_cart_icon.selected[0] is defined and top_cart_icon.selected[0].value is defined %}
+    {% set top_cart_icon = top_cart_icon.selected[0].value %}
+  {% else %}
+    {% set top_cart_icon = top_cart_icon.selected %}
+  {% endif %}
+{% elseif top_cart_icon.value is defined %}
+  {% set top_cart_icon = top_cart_icon.value %}
+{% elseif top_cart_icon is iterable and top_cart_icon[0].value is defined %}
+  {% set top_cart_icon = top_cart_icon[0].value %}
+{% endif %}
+{% if not top_cart_icon %}{% set top_cart_icon = 'sicon-shopping-bag' %}{% endif %}
+
+{% set top_menu_icon = theme.settings.get('veloura_top_menu_icon_2026', 'sicon-menu') %}
+{% if top_menu_icon.selected is defined %}
+  {% if top_menu_icon.selected.value is defined %}
+    {% set top_menu_icon = top_menu_icon.selected.value %}
+  {% elseif top_menu_icon.selected is iterable and top_menu_icon.selected[0] is defined and top_menu_icon.selected[0].value is defined %}
+    {% set top_menu_icon = top_menu_icon.selected[0].value %}
+  {% else %}
+    {% set top_menu_icon = top_menu_icon.selected %}
+  {% endif %}
+{% elseif top_menu_icon.value is defined %}
+  {% set top_menu_icon = top_menu_icon.value %}
+{% elseif top_menu_icon is iterable and top_menu_icon[0].value is defined %}
+  {% set top_menu_icon = top_menu_icon[0].value %}
+{% endif %}
+{% if not top_menu_icon %}{% set top_menu_icon = 'sicon-menu' %}{% endif %}
+
+{% set localization_available = store.settings.is_multilingual or store.settings.currencies_enabled %}
+
+<header
+  class="store-header
+  veloura-top-enabled
+  {{ top_floating ? 'veloura-top-floating' : '' }}
+  {{ top_compact_on_scroll ? 'veloura-top-compact-on-scroll' : '' }}
+  {{ top_blur ? 'veloura-top-blur' : '' }}
+  {{ top_logo_center ? 'veloura-top-logo-centered' : '' }}
+  {{ top_logo_no_center_laptop ? 'veloura-top-logo-no-center-laptop' : '' }}
+  {{ full_width_desktop ? 'veloura-top-full-width-desktop' : '' }}
+  {{ search_detached ? 'veloura-top-search-detached' : '' }}
+  {{ (not search_detached and desktop_search in ['bar', 'bar_sticky_icon']) ? 'veloura-header-balanced-search' : '' }}
+  {{ hide_lang_desktop ? 'veloura-top-hide-lang-desktop' : '' }}
+  {{ top_hide_on_scroll ? 'veloura-hide-top-on-scroll' : '' }}
+
+  veloura-top-border-{{ top_border }}
+  veloura-top-icons-{{ icons_size }}
+
+  veloura-mobile-search-{{ mobile_search }}
+  veloura-desktop-search-{{ desktop_search }}
+  veloura-desktop-menu-{{ desktop_menu_mode }}
+  "
+  data-veloura-header="true"
+  data-veloura-floating="{{ top_floating ? 'true' : 'false' }}"
+  data-veloura-compact="{{ top_compact_on_scroll ? 'true' : 'false' }}"
+  data-veloura-blur="{{ top_blur ? 'true' : 'false' }}"
+  data-veloura-hide-scroll="{{ top_hide_on_scroll ? 'true' : 'false' }}"
+  data-veloura-search-detached="{{ search_detached ? 'true' : 'false' }}"
+  style="
+    --veloura-top-bg: {{ top_bg }};
+    --veloura-header-solid-bg: {{ top_bg }};
+    --veloura-top-text: {{ top_text }};
+    --veloura-top-cart-bg: {{ top_cart_bg }};
+    --veloura-top-logo-size: {{ top_logo_size_px }}px;
+  "
+>
+  <div id="mainnav" class="main-nav-container">
+    <div class="inner w-full">
+      <div class="veloura-header-container">
+        <div class="veloura-header-grid">
+
+          <div class="veloura-header__tools">
+            <div class="veloura-header__actions">
+            {# Desktop RTL visual order: account → cart → language/currency. #}
+            <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
+              <i class="{{ top_login_icon }}"></i>
+            </button>
+
+            <salla-cart-summary class="veloura-header__cart veloura-cart-summary {{ hide_cart_total_mobile ? 'veloura-cart-hide-total veloura-cart-icon-only-mobile' : 'veloura-cart-total-visible' }}">
+              <span slot="icon" class="veloura-cart-custom-icon">
+                <i class="{{ top_cart_icon }}"></i>
+              </span>
+            </salla-cart-summary>
+
+            {% if localization_available and not hide_lang_desktop %}
+              <button type="button" class="veloura-header-icon veloura-lang-desktop veloura-localization-pill" data-veloura-localization-trigger aria-label="اللغة والعملة">
+                <span class="veloura-localization-pill__language" data-veloura-language-label>{{ language.code == 'ar' ? 'العربية' : 'English' }}</span>
+                <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
+                <span class="veloura-localization-pill__currency" data-veloura-currency-label></span>
               </button>
+            {% endif %}
+
+            {% if show_wishlist %}
+              <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">
+                <i class="sicon-heart"></i>
+              </a>
+            {% endif %}
+
+            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
+              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                <i class="sicon-moon veloura-dark-toggle__icon"></i>
+              </button>
+            {% endif %}
+
+            {% if desktop_search not in ['bar', 'bar_sticky_icon'] %}
+              <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                <i class="sicon-search"></i>
+              </button>
+            {% endif %}
+
+            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'right' %}
+              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                <i class="sicon-moon veloura-dark-toggle__icon"></i>
+              </button>
+            {% endif %}
+
+            {% if show_mobile_lang and localization_available %}
+              <button type="button" class="veloura-header-icon veloura-lang-mobile" data-veloura-localization-trigger aria-label="اللغة والعملة">
+                <i class="sicon-earth"></i>
+              </button>
+            {% endif %}
+            </div>
+
+            <div class="veloura-header__menu">
+              <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
+                <i class="{{ top_menu_icon }}"></i>
+              </a>
+            </div>
+          </div>
+
+          <a class="navbar-brand veloura-header-logo" href="{{ store.url }}">
+            {% if top_logo_is_video %}
+              <video class="veloura-store-logo veloura-store-logo-video" src="{{ top_logo }}" autoplay muted loop playsinline data-light-logo="{{ top_logo }}" data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}" aria-label="{{ store.name }} logo"></video>
+            {% else %}
+              <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ top_logo }}" data-light-logo="{{ top_logo }}" data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}" class="veloura-store-logo" alt="{{ store.name }} logo">
+            {% endif %}
+
+            {% if is_page('index') %}
+              <h1 class="sr-only">{{ store.name }}</h1>
+            {% else %}
+              <h2 class="sr-only">{{ store.name }}</h2>
+            {% endif %}
+          </a>
+
+          <div class="veloura-menu-links-wrap" data-veloura-desktop-menu-links>
+            <custom-main-menu></custom-main-menu>
+          </div>
+
+          {% if not search_detached %}
+            <div class="veloura-mobile-search-bar veloura-search-surface">
+              <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
+            </div>
+
+            <div class="veloura-desktop-search-bar veloura-search-surface">
+              <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
+            </div>
           {% endif %}
 
-          {# Search bar #}
-          <div class="header-search flex-1">
-            <salla-search data-testid="store-header-search" inline oval height="36"></salla-search>
-          </div>
+        </div>
       </div>
-
-      <salla-contacts data-testid="store-header-contacts" is-header></salla-contacts>
     </div>
   </div>
 
-  {# Main Nav #}
-  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center">
-      <div class="inner bg-inherit w-full">
-          <div class="container">
-              <div class="flex items-stretch justify-between relative">
-                  <div class="flex items-center">
-                      <a data-testid="store-header-mobile-toggle" class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
-                        <i class="sicon-menu text-primary text-2xl"></i>
-                      </a>
-                      <a data-testid="store-header-logo" class="navbar-brand" href="{{ store.url }}">
-                          <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
-                          {% if is_page('index') %}
-                            <h1 class="sr-only">{{ store.name }}</h1>
-                          {% else %}
-                            <h2 class="sr-only">{{ store.name }}</h2>
-                          {% endif %}
-                      </a>
-                      <custom-main-menu></custom-main-menu>
-                  </div>
-                  <div class="flex items-center justify-end my-2.5">
-                      <salla-user-menu data-testid="store-header-user-menu" avatar-only show-header show-trigger></salla-user-menu>
-                      <salla-cart-summary data-testid="store-header-cart" class="ml-4 rtl:ml-[unset] rtl:mr-4">
-                        <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
-                      </salla-cart-summary>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+  {% if localization_available %}
+    <salla-localization-modal class="veloura-localization-modal-host"></salla-localization-modal>
+  {% endif %}
 </header>

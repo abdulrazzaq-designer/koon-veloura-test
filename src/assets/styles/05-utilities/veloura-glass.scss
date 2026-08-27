@@ -1,0 +1,103 @@
+/* ========================================================================
+   Veloura unified secondary-color glass
+
+   Shared glass tokens only. Component-specific geometry belongs to each
+   component owner. The mobile floating menu consumes these variables from
+   app.scss and is intentionally not styled in this file.
+   ======================================================================== */
+
+:root {
+  --veloura-glass-source: var(
+    --veloura-site-second-bg,
+    var(--color-secondary, #f4f5f7)
+  );
+  --veloura-glass-surface: color-mix(
+    in srgb,
+    var(--veloura-glass-source) 72%,
+    transparent
+  );
+  --veloura-glass-edge-top: rgba(148, 163, 184, .22);
+  --veloura-glass-edge-bottom: rgba(148, 163, 184, .08);
+  --veloura-glass-shadow: rgba(15, 23, 42, .07);
+  --veloura-glass-filter: blur(20px) saturate(124%) brightness(101%);
+
+  --veloura-glass-base: var(--veloura-glass-surface);
+  --veloura-glass-layer: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, .025),
+    rgba(255, 255, 255, .004)
+  );
+  --veloura-glass-border: transparent;
+  --veloura-glass-ring: transparent;
+  --veloura-glass-highlight: var(--veloura-glass-edge-top);
+  --veloura-glass-fallback: var(--veloura-glass-surface);
+  --veloura-border: transparent;
+  --veloura-filter: var(--veloura-glass-filter);
+}
+
+html.dark,
+html.dark body,
+html body.dark {
+  --veloura-glass-source: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-glass-surface: color-mix(
+    in srgb,
+    var(--veloura-glass-source) 72%,
+    transparent
+  );
+  --veloura-glass-edge-top: rgba(255, 255, 255, .12);
+  --veloura-glass-edge-bottom: rgba(255, 255, 255, .04);
+  --veloura-glass-shadow: rgba(0, 0, 0, .22);
+  --veloura-glass-dark-fallback: var(--veloura-glass-surface);
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .main-nav-container,
+.store-header.veloura-top-enabled.veloura-top-blur #mainnav {
+  background: transparent !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner,
+.veloura-home-tabs.veloura-home-tabs--header-blur,
+.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
+  box-sizing: border-box !important;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--veloura-glass-edge-top) 0,
+      var(--veloura-glass-edge-top) 1px,
+      transparent 1px,
+      transparent calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) 100%
+    ),
+    var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  backdrop-filter: var(--veloura-glass-filter) !important;
+  box-shadow:
+    inset 0 1px 0 var(--veloura-glass-edge-top),
+    inset 0 -1px 0 var(--veloura-glass-edge-bottom),
+    0 8px 26px var(--veloura-glass-shadow) !important;
+  filter: none !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :root {
+    --veloura-glass-surface: var(
+      --veloura-site-second-bg,
+      var(--color-secondary, #f4f5f7)
+    );
+  }
+
+  html.dark,
+  html.dark body,
+  html body.dark {
+    --veloura-glass-surface: var(--veloura-dark-secondary-bg, #010612);
+  }
+}

@@ -1,0 +1,201 @@
+/* ========================================================================
+   Veloura V79 — unified overlay glass
+
+   The visible popup/modal panel uses the shared secondary-color material.
+   Full-screen backdrops only dim the page and never receive blur.
+   ======================================================================== */
+
+body.veloura-glass-effect {
+  --veloura-global-glass-bg: var(--veloura-glass-surface);
+  --veloura-global-glass-layer: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, .025),
+    rgba(255, 255, 255, .004)
+  );
+  --veloura-global-glass-border: transparent;
+  --veloura-global-glass-ring: transparent;
+  --veloura-global-glass-filter: var(--veloura-glass-filter);
+  --veloura-global-glass-overlay: rgba(15, 23, 42, .16);
+  --veloura-global-glass-control: color-mix(
+    in srgb,
+    var(--veloura-glass-source) 82%,
+    transparent
+  );
+}
+
+html.dark body.veloura-glass-effect,
+html body.dark.veloura-glass-effect {
+  --veloura-global-glass-overlay: rgba(0, 0, 0, .28);
+}
+
+html body.veloura-glass-effect .veloura-glass-surface,
+html body.veloura-glass-effect .veloura-popup .veloura-popup__box,
+html body.veloura-glass-effect .swal2-container .swal2-popup:not(.swal2-toast),
+html body.veloura-glass-effect .s-modal .s-salla-modal-body,
+html body.veloura-glass-effect .s-modal .s-modal-body,
+html body.veloura-glass-effect .s-modal .s-modal-content,
+html body.veloura-glass-effect .s-salla-modal-body,
+html body.veloura-glass-effect .s-modal-body,
+html body.veloura-glass-effect .s-modal-content,
+html body.veloura-glass-effect .s-login-modal .s-salla-modal-body,
+html body.veloura-glass-effect .s-login-modal .s-modal-body,
+html body.veloura-glass-effect .s-login-modal .s-modal-content,
+html body.veloura-glass-effect .s-auth-modal .s-salla-modal-body,
+html body.veloura-glass-effect .s-auth-modal .s-modal-content,
+html body.veloura-glass-effect .login-modal .modal-content,
+html body.veloura-glass-effect .auth-modal .modal-content {
+  box-sizing: border-box !important;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--veloura-glass-edge-top) 0,
+      var(--veloura-glass-edge-top) 1px,
+      transparent 1px,
+      transparent calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) 100%
+    ),
+    var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  backdrop-filter: var(--veloura-glass-filter) !important;
+  filter: none !important;
+  box-shadow:
+    inset 0 1px 0 var(--veloura-glass-edge-top),
+    inset 0 -1px 0 var(--veloura-glass-edge-bottom),
+    0 10px 32px var(--veloura-glass-shadow) !important;
+}
+
+html body.veloura-glass-effect .veloura-popup__box :is(
+  .veloura-popup__content,
+  .veloura-popup__image
+),
+html body.veloura-glass-effect .s-modal-content > *,
+html body.veloura-glass-effect .s-salla-modal-body > * {
+  background-color: transparent !important;
+}
+
+html body.veloura-glass-effect salla-login-modal,
+html body.veloura-glass-effect salla-modal,
+html body.veloura-glass-effect salla-search,
+html body.veloura-glass-effect .s-login-modal,
+html body.veloura-glass-effect .s-auth-modal,
+html body.veloura-glass-effect .login-modal,
+html body.veloura-glass-effect .auth-modal,
+html body.veloura-glass-effect .s-modal-wrapper {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+html body.veloura-glass-effect :is(
+  .s-salla-modal-overlay,
+  .s-modal-overlay,
+  .s-modal-backdrop,
+  .modal-backdrop,
+  .veloura-qv-full__overlay,
+  .veloura-quick-view-modal__overlay,
+  .veloura-popup__overlay,
+  .swal2-container.swal2-backdrop-show
+) {
+  background: var(--veloura-global-glass-overlay) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+html body.veloura-glass-effect salla-login-modal,
+html body.veloura-glass-effect salla-modal,
+html body.veloura-glass-effect salla-search {
+  --s-modal-bg: var(--veloura-glass-surface);
+  --modal-bg: var(--veloura-glass-surface);
+  --s-modal-overlay-bg: var(--veloura-global-glass-overlay);
+}
+
+html body.veloura-glass-effect salla-login-modal::part(body),
+html body.veloura-glass-effect salla-login-modal::part(content),
+html body.veloura-glass-effect salla-login-modal::part(panel),
+html body.veloura-glass-effect salla-modal::part(body),
+html body.veloura-glass-effect salla-modal::part(content),
+html body.veloura-glass-effect salla-modal::part(panel) {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--veloura-glass-edge-top) 0,
+      var(--veloura-glass-edge-top) 1px,
+      transparent 1px,
+      transparent calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) 100%
+    ),
+    var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-inline: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  backdrop-filter: var(--veloura-glass-filter) !important;
+  box-shadow:
+    inset 0 1px 0 var(--veloura-glass-edge-top),
+    inset 0 -1px 0 var(--veloura-glass-edge-bottom),
+    0 10px 32px var(--veloura-glass-shadow) !important;
+}
+
+html body.veloura-glass-effect salla-login-modal::part(overlay),
+html body.veloura-glass-effect salla-login-modal::part(backdrop),
+html body.veloura-glass-effect salla-modal::part(overlay),
+html body.veloura-glass-effect salla-modal::part(backdrop) {
+  background: var(--veloura-global-glass-overlay) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body.veloura-glass-effect :is(
+  .veloura-popup__box,
+  .s-modal-body,
+  .s-modal-content
+) :is(input, select, textarea, .form-input, .s-form-control) {
+  background: var(--veloura-global-glass-control) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--veloura-glass-edge-top) 60%,
+    transparent
+  ) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body.veloura-glass-effect .veloura-popup__close {
+  background: var(--veloura-global-glass-control) !important;
+  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-inline: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  html body.veloura-glass-effect.is-sticky-product-bar
+    .veloura-product-page
+    .sticky-product-bar.veloura-product-sticky-bar,
+  html body.veloura-glass-effect.veloura-product-sticky-active
+    .veloura-product-page
+    .sticky-product-bar.veloura-product-sticky-bar,
+  html body.veloura-glass-effect
+    .veloura-product-page.veloura-product-mobile-sticky-enabled
+    .sticky-product-bar.veloura-product-sticky-bar {
+    background: var(--veloura-glass-surface) !important;
+    background-color: var(--veloura-glass-surface) !important;
+    border-top: 1px solid var(--veloura-glass-edge-top) !important;
+    border-bottom: 0 !important;
+    border-inline: 0 !important;
+    -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+    backdrop-filter: var(--veloura-glass-filter) !important;
+    box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top) !important;
+  }
+}

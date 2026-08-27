@@ -1,0 +1,158 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_testimonials_hide %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '999px'
+  } %}
+
+  {% set testimonial_radius = radius_map[component.veloura_testimonials_radius|default('medium')]|default('16px') %}
+
+  {% set section_classes = [
+    's-block',
+    'veloura-testimonials',
+    component.veloura_testimonials_two_rows ? 'veloura-testimonials--two-rows' : '',
+    component.veloura_testimonials_infinite ? 'veloura-testimonials--infinite' : '',
+    component.veloura_testimonials_show_scrollbar ? 'veloura-testimonials--scrollbar' : '',
+    component.veloura_testimonials_mobile_only ? 'veloura-testimonials--mobile-only' : '',
+    component.veloura_testimonials_desktop_only ? 'veloura-testimonials--desktop-only' : '',
+    component.veloura_testimonials_hide_arrows_desktop ? 'veloura-testimonials--hide-arrows-desktop' : '',
+    component.veloura_testimonials_custom_spacing ? 'has-spacing' : '',
+    component.veloura_testimonials_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    class="{{ section_classes }}"
+    style="
+      --veloura-testimonials-radius: {{ testimonial_radius }};
+      --veloura-testimonials-spacing: {{ component.veloura_testimonials_custom_spacing ? component.veloura_testimonials_spacing|default(0) : 0 }}px;
+      --veloura-testimonials-title-color: {{ component.veloura_testimonials_title_color|default('#383838') }};
+      --veloura-testimonials-bg: {{ component.veloura_testimonials_bg_color|default('#eeeeee') }};
+      --veloura-testimonials-text: {{ component.veloura_testimonials_text_color|default('#323232') }};
+    "
+  >
+
+    {% if component.veloura_testimonials_custom_spacing %}
+      <div class="veloura-testimonials__container">
+    {% else %}
+      <div class="container veloura-testimonials__container">
+    {% endif %}
+
+      {% if component.veloura_testimonials_title or component.veloura_testimonials_subtitle %}
+        <div class="veloura-testimonials__heading veloura-component-title" data-veloura-section-heading>
+          {% if component.veloura_testimonials_title %}
+            <h2>{{ component.veloura_testimonials_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_testimonials_subtitle %}
+            <p>{{ component.veloura_testimonials_subtitle }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if component.veloura_testimonials_items|length %}
+        <salla-slider
+          id="veloura-testimonials-{{ position }}"
+          class="veloura-testimonials__slider"
+          type="carousel"
+          {% if component.veloura_testimonials_show_scrollbar %}scrollbar{% else %}pagination{% endif %}
+          show-controls="{{ component.veloura_testimonials_hide_arrows ? 'false' : 'true' }}"
+          {% if component.veloura_testimonials_autoplay %}auto-play{% endif %}
+          slider-config='{
+            "slidesPerView": 1.05,
+            "spaceBetween": 16,
+            "speed": 700,
+            "loop": {{ component.veloura_testimonials_infinite ? "true" : "false" }},
+            "watchOverflow": false,
+            "allowTouchMove": true,
+            {% if component.veloura_testimonials_autoplay %}
+            "autoplay": {
+              "delay": 2500,
+              "disableOnInteraction": false,
+              "pauseOnMouseEnter": true
+            },
+            {% else %}
+            "autoplay": false,
+            {% endif %}
+            "breakpoints": {
+              "768": {
+                "slidesPerView": 2,
+                "spaceBetween": 20
+              },
+              "1024": {
+                "slidesPerView": 2,
+                "spaceBetween": 24
+              }
+            }
+          }'
+        >
+
+          <div slot="items">
+
+            {% for item in component.veloura_testimonials_items %}
+
+              {% set stars_value = item.stars|default(5) %}
+              {% if item.stars is iterable and item.stars[0].value is defined %}
+                {% set stars_value = item.stars[0].value %}
+              {% endif %}
+
+              {% set customer_image = item.image.url|default(item.image) %}
+
+              <div class="swiper-slide">
+                <article class="veloura-testimonials__card">
+
+                  <div class="veloura-testimonials__content">
+
+                    {% if item.text %}
+                      <p class="veloura-testimonials__text">{{ item.text }}</p>
+                    {% endif %}
+
+                    <div class="veloura-testimonials__bottom">
+
+                      <div class="veloura-testimonials__stars">
+                        {% for i in 1..5 %}
+                          <i class="{{ i <= stars_value ? 'sicon-star2' : 'sicon-star' }}"></i>
+                        {% endfor %}
+                      </div>
+
+                      <div class="veloura-testimonials__info">
+                        {% if item.name %}
+                          <h3>{{ item.name }}</h3>
+                        {% endif %}
+
+                        {% if item.city %}
+                          <span>{{ item.city }}</span>
+                        {% endif %}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {% if not item.hide_image and customer_image %}
+                    <div class="veloura-testimonials__avatar">
+                      <img src="{{ customer_image }}" alt="{{ item.name|default('customer') }}" loading="lazy">
+                    </div>
+                  {% endif %}
+
+                </article>
+              </div>
+
+            {% endfor %}
+
+          </div>
+        </salla-slider>
+      {% endif %}
+
+    </div>
+  </section>
+
+{% endif %}

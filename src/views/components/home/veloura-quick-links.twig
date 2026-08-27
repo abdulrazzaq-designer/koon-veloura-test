@@ -1,0 +1,99 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% set radius_map = {
+  'sharp': '0px',
+  'soft': '8px',
+  'medium': '16px',
+  'large': '28px',
+  'round': '999px'
+} %}
+
+{% set quick_mobile_cols = component.veloura_quick_mobile_cols|default(3, true) %}
+{% set quick_desktop_cols = component.veloura_quick_desktop_cols|default(5, true) %}
+
+{% if not component.veloura_quick_hide_section %}
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="
+    s-block
+    veloura-quick-links
+    is-slider
+    {{ component.veloura_quick_custom_spacing ? 'has-spacing has-custom-spacing' : '' }}
+    {{ component.veloura_quick_merge_previous ? 'is-merged' : '' }}
+    {{ component.veloura_quick_mobile_only ? 'veloura-mobile-only' : '' }}
+    {{ component.veloura_quick_desktop_only ? 'veloura-desktop-only' : '' }}
+    {{ component.veloura_quick_custom_classes }}
+  "
+  style="
+    --quick-spacing: {{ component.veloura_quick_custom_spacing ? component.veloura_quick_spacing_amount|default(16) : 0 }}px;
+    --quick-radius: {{ radius_map[component.veloura_quick_radius|default('medium')]|default('16px') }};
+  "
+>
+  {% if component.veloura_quick_custom_spacing %}
+  <div class="veloura-quick-links__container">
+{% else %}
+  <div class="container veloura-quick-links__container">
+{% endif %}
+
+    {% if not component.veloura_quick_merge_previous and (component.veloura_quick_title or component.veloura_quick_subtitle) %}
+  <div class="veloura-quick-links__heading veloura-component-title" data-veloura-section-heading>
+    {% if component.veloura_quick_title %}
+      <h2>{{ component.veloura_quick_title }}</h2>
+    {% endif %}
+
+    {% if component.veloura_quick_subtitle %}
+      <p>{{ component.veloura_quick_subtitle }}</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+  <salla-slider
+  id="veloura-quick-links-{{ position }}"
+  type="carousel"
+  controls-outer
+  {% if component.veloura_quick_autoplay %}auto-play{% endif %}
+  show-controls="{{ component.veloura_quick_hide_arrows ? 'false' : 'true' }}"
+  static-when-single
+  slider-config='{
+  "slidesPerView": {{ quick_mobile_cols }},
+  "spaceBetween": 14,
+  "autoplay": {{ component.veloura_quick_autoplay ? "{\"delay\": 2500, \"disableOnInteraction\": false}" : "false" }},
+  "observer": true,
+  "observeParents": true,
+  "breakpoints": {
+    "768": {
+      "slidesPerView": {{ quick_desktop_cols }},
+      "spaceBetween": 20
+    }
+  }
+}'
+>
+
+      <div slot="items">
+        {% for link in component.veloura_quick_links %}
+          {% set image_src = link.image_url ?: link.image.url ?: link.image %}
+          {% set icon_class = link.icon.value ?: link.icon ?: 'sicon-box' %}
+
+          <div class="swiper-slide">
+            <a href="{{ link.url ?: '#' }}" class="veloura-quick-links__card">
+              {% if image_src %}
+                <img src="{{ image_src }}" alt="{{ link.title ?: 'quick-link' }}" loading="lazy">
+              {% else %}
+                <i class="{{ icon_class }} veloura-quick-links__icon"></i>
+              {% endif %}
+
+              {% if link.title %}
+                <h2>{{ link.title }}</h2>
+              {% endif %}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </salla-slider>
+
+  </div>
+</section>
+{% endif %}

@@ -1,0 +1,42 @@
+{# Veloura Cart Banners V2.3 #}
+{% set vcb_enabled = theme.settings.get('veloura_cart_banners_enabled_2026', false) %}
+{% set vcb_title = theme.settings.get('veloura_cart_banners_title_2026', 'عروض قد تهمك') %}
+{% set vcb_min_total = theme.settings.get('veloura_cart_banners_min_total_2026', 0) %}
+{% set vcb_position = theme.settings.get('veloura_cart_banners_position_2026', 'after_products') %}
+{% set vcb_radius_key = theme.settings.get('veloura_cart_banners_radius_2026', 'medium') %}
+{% set vcb_gap = theme.settings.get('veloura_cart_banners_gap_2026', 14) %}
+{% set vcb_items = theme.settings.get('veloura_cart_banners_items_2026', []) %}
+
+{% set vcb_radius_map = {
+  'sharp': '0px',
+  'soft': '8px',
+  'medium': '14px',
+  'large': '22px',
+  'round': '32px'
+} %}
+{% set vcb_radius = vcb_radius_map[vcb_radius_key]|default('14px') %}
+
+{% if vcb_enabled and veloura_cart_banners_target == vcb_position and cart.total >= vcb_min_total and vcb_items|length %}
+  <section class="veloura-cart-banners" style="--veloura-cart-banner-gap: {{ vcb_gap }}px; --veloura-cart-banner-radius: {{ vcb_radius }};">
+    {% if vcb_title %}
+      <h2 class="veloura-cart-banners__title">{{ vcb_title }}</h2>
+    {% endif %}
+
+    <div class="veloura-cart-banners__grid">
+      {% for banner in vcb_items %}
+        {% set banner_image = banner.image.url is defined ? banner.image.url : banner.image %}
+        {% if banner_image %}
+          {% if banner.url %}
+            <a class="veloura-cart-banners__item" href="{{ banner.url }}"{% if banner.new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+              <img src="{{ banner_image }}" alt="{{ vcb_title|default('') }}" loading="lazy">
+            </a>
+          {% else %}
+            <div class="veloura-cart-banners__item">
+              <img src="{{ banner_image }}" alt="{{ vcb_title|default('') }}" loading="lazy">
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

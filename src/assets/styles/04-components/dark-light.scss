@@ -1,0 +1,712 @@
+/* ========================================================================
+   Veloura V86 — exact dark secondary + light glass +3%
+
+   Architecture:
+   1) The root html/body .dark class is the only light-DOM theme switch.
+   2) Light selectors are mirrored by html.dark body / html body.dark selectors.
+   3) Each glass component has one visible paint owner; nested wrappers are clear.
+   4) Product-card badges and solid action buttons keep their own configured colors.
+   5) Salla Shadow DOM components are handled by the V86 bridge, using the same
+      root state and the same material tokens.
+   ======================================================================== */
+
+:root,
+html body {
+  /* Canonical header glass material. */
+  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-solid: #e6e8eb;
+  --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
+  --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);
+  --veloura-header-glass-shadow: rgba(15, 23, 42, .055);
+  --veloura-header-glass-filter: blur(20px) saturate(200%);
+
+  /* Compatibility aliases for older theme sections. */
+  --veloura-glass-surface: var(--veloura-header-glass-background);
+  --veloura-glass-solid: var(--veloura-header-glass-solid);
+  --veloura-edge-top: var(--veloura-header-glass-edge-top);
+  --veloura-edge-bottom: var(--veloura-header-glass-edge-bottom);
+  --veloura-shadow: var(--veloura-header-glass-shadow);
+  --veloura-overlay: rgba(15, 23, 42, .16);
+  --veloura-control: rgba(255, 255, 255, .48);
+  --veloura-primary-text: var(--color-text, #111827);
+  --veloura-secondary-text: var(--color-grey, #64748b);
+  --veloura-filter: var(--veloura-header-glass-filter);
+
+  /* Redirect every older glass consumer to the same V86 contract. */
+  --veloura-glass-source: #e6e8eb;
+  --veloura-glass-surface: var(--veloura-glass-surface);
+  --veloura-glass-edge-top: var(--veloura-edge-top);
+  --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-glass-shadow: var(--veloura-shadow);
+  --veloura-glass-filter: var(--veloura-filter);
+  --veloura-global-glass-bg: var(--veloura-glass-surface);
+  --veloura-global-glass-layer: none;
+  --veloura-global-glass-edge-top: var(--veloura-edge-top);
+  --veloura-global-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-global-glass-shadow: var(--veloura-shadow);
+  --veloura-global-glass-filter: var(--veloura-filter);
+  --veloura-global-glass-overlay: var(--veloura-overlay);
+  --veloura-global-glass-control: var(--veloura-control);
+}
+
+html.dark,
+html.dark body,
+html body.dark {
+  /* The configured dark secondary color is the exact opaque material — no whitening from transparency. */
+  --veloura-dark-source: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-header-glass-background: var(--veloura-dark-source);
+  --veloura-header-glass-solid: var(--veloura-dark-source);
+  --veloura-glass-surface: var(--veloura-header-glass-background);
+  --veloura-glass-solid: var(--veloura-header-glass-solid);
+  --veloura-edge-top: rgba(255, 255, 255, .055);
+  --veloura-edge-bottom: rgba(255, 255, 255, .022);
+  --veloura-shadow: rgba(0, 0, 0, .18);
+  --veloura-overlay: rgba(0, 0, 0, .30);
+  --veloura-control: color-mix(
+    in srgb,
+    var(--veloura-dark-source) 82%,
+    transparent
+  );
+  --veloura-primary-text: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-secondary-text: var(--veloura-dark-secondary-text, #cccccc);
+
+  --veloura-glass-source: var(--veloura-dark-source);
+  --veloura-glass-surface: var(--veloura-glass-surface);
+  --veloura-glass-edge-top: var(--veloura-edge-top);
+  --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-glass-shadow: var(--veloura-shadow);
+  --veloura-global-glass-bg: var(--veloura-glass-surface);
+  --veloura-global-glass-edge-top: var(--veloura-edge-top);
+  --veloura-global-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-global-glass-shadow: var(--veloura-shadow);
+  --veloura-global-glass-overlay: var(--veloura-overlay);
+  --veloura-global-glass-control: var(--veloura-control);
+}
+
+/* ------------------------------------------------------------------------
+   One shared material. These selectors point only at the visible surface.
+   No gradient edge, no duplicate inset border, no full-screen blur.
+   ------------------------------------------------------------------------ */
+html body :is(
+  .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+  .veloura-search-surface,
+  .veloura-glass,
+  .veloura-glass-surface,
+  .veloura-popup .veloura-popup__box,
+  .swal2-container .swal2-popup:not(.swal2-toast),
+  .s-modal .s-salla-modal-body,
+  .s-modal .s-modal-body,
+  .s-modal .s-modal-content,
+  .s-salla-modal-body,
+  .s-modal-body,
+  .s-modal-content
+),
+html.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
+html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  box-sizing: border-box !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: none !important;
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+  filter: none !important;
+  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
+}
+
+
+
+/* Quick-view rules use the exact parent chain to beat the late inline V27 style. */
+html body.veloura-quick-view-overlay-blur
+  .veloura-qv-full
+  .veloura-qv-full__dialog,
+html body.veloura-quick-view-overlay-blur
+  .veloura-quick-view-modal
+  .veloura-quick-view-modal__dialog {
+  box-sizing: border-box !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: none !important;
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+  filter: none !important;
+  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
+}
+
+/* Product-page sticky bar receives glass only while its sticky mode is active. */
+@media (max-width: 767px) {
+  html body.veloura-glass-effect.is-sticky-product-bar
+    .veloura-product-page
+    .sticky-product-bar.veloura-product-sticky-bar,
+  html body.veloura-glass-effect.veloura-product-sticky-active
+    .veloura-product-page
+    .sticky-product-bar.veloura-product-sticky-bar,
+  html body.veloura-glass-effect
+    .veloura-product-page.veloura-product-mobile-sticky-enabled
+    .sticky-product-bar.veloura-product-sticky-bar {
+    background: var(--veloura-glass-surface) !important;
+    background-color: var(--veloura-glass-surface) !important;
+    background-image: none !important;
+    border-top: 1px solid var(--veloura-edge-top) !important;
+    border-bottom: 1px solid var(--veloura-edge-bottom) !important;
+    border-inline: 0 !important;
+    -webkit-backdrop-filter: var(--veloura-filter) !important;
+    backdrop-filter: var(--veloura-filter) !important;
+    box-shadow: 0 -8px 24px var(--veloura-shadow) !important;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Header: the stack surface owns the material. Every nested Theme Raed / 
+   Veloura layer is transparent, so an old gray background cannot cover it.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(
+  .store-header,
+  #mainnav.main-nav-container,
+  #mainnav.main-nav-container > .inner,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid,
+  .veloura-home-tabs,
+  .veloura-home-tabs__inner
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* Header/search decorative pseudo layers must not paint a second material. */
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::before,
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::after,
+html body .veloura-search-surface::before,
+html body .veloura-search-surface::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Search: outer .veloura-search-surface is the only painted input surface.
+   The web-component host and exposed parts remain transparent.
+   ------------------------------------------------------------------------ */
+html body .veloura-search-surface {
+  color: var(--veloura-primary-text) !important;
+  overflow: hidden;
+  --color-text: var(--veloura-primary-text) !important;
+  --color-muted: var(--veloura-secondary-text) !important;
+  --s-search-bg: transparent !important;
+  --s-search-input-bg: transparent !important;
+  --s-search-input-background: transparent !important;
+  --search-input-bg: transparent !important;
+  --search-background: transparent !important;
+}
+
+html body .veloura-search-surface > salla-search,
+html body .veloura-search-surface salla-search.veloura-header-search-component {
+  display: block !important;
+  width: 100% !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .veloura-search-surface salla-search::part(form),
+html body .veloura-search-surface salla-search::part(container),
+html body .veloura-search-surface salla-search::part(wrapper),
+html body .veloura-search-surface salla-search::part(input) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.dark body .veloura-search-surface,
+html body.dark .veloura-search-surface {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  --color-text: var(--veloura-dark-primary-text, #ffffff) !important;
+  --color-muted: var(--veloura-dark-secondary-text, #cccccc) !important;
+}
+
+html.dark body .veloura-search-surface :is(input, textarea),
+html body.dark .veloura-search-surface :is(input, textarea) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark body .veloura-search-surface :is(input, textarea)::placeholder,
+html body.dark .veloura-search-surface :is(input, textarea)::placeholder {
+  color: var(--veloura-dark-secondary-text, #cccccc) !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: .78 !important;
+}
+
+/* ------------------------------------------------------------------------
+   Side menu — dark material contract.
+   Glass ON: use the exact dark-secondary source and the same Telegram-like
+   material as the header. The dedicated side-menu dark background is used
+   only when glass is OFF.
+   ------------------------------------------------------------------------ */
+html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
+html.dark body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+html body.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  --veloura-side-dark-glass-source: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-side-dark-glass-tint: color-mix(
+    in srgb,
+    var(--veloura-side-dark-glass-source) 94%,
+    white 6%
+  );
+  --veloura-side-dark-glass-surface: color-mix(
+    in srgb,
+    var(--veloura-side-dark-glass-tint) 60%,
+    transparent
+  );
+
+  background: var(--veloura-side-dark-glass-surface) !important;
+  background-color: var(--veloura-side-dark-glass-surface) !important;
+  background-image: none !important;
+  border-top: 1px solid rgba(255, 255, 255, .040) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .085) !important;
+  border-inline: 0 !important;
+  -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+  backdrop-filter: blur(24px) saturate(200%) !important;
+  filter: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .27),
+    inset 0 1px 0 rgba(255, 255, 255, .018) !important;
+  color: var(--veloura-dark-side-menu-text, #ffffff) !important;
+}
+
+html.dark:not(.veloura-side-cats-glass) body .mm-ocd.mm-ocd--open .mm-ocd__content,
+html.dark body:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content,
+html body.dark:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content {
+  background: var(
+    --veloura-dark-side-menu-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  background-color: var(
+    --veloura-dark-side-menu-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: var(--veloura-dark-side-menu-text, #ffffff) !important;
+}
+
+html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content :is(
+  a,
+  button,
+  span,
+  i,
+  svg,
+  .mm-spn--open,
+  .mm-spn--navbar
+),
+html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is(
+  a,
+  button,
+  span,
+  i,
+  svg,
+  .mm-spn--open,
+  .mm-spn--navbar
+) {
+  color: var(--veloura-dark-side-menu-text, #ffffff) !important;
+  fill: currentColor !important;
+}
+
+/* ------------------------------------------------------------------------
+   Dialog text roles. Scope is limited to real dialog panels; no global recolor.
+   ------------------------------------------------------------------------ */
+html.dark body :is(
+  .veloura-popup__box,
+  .swal2-popup,
+  .s-salla-modal-body,
+  .s-modal-body,
+  .s-modal-content,
+  .veloura-qv-full__dialog,
+  .veloura-quick-view-modal__dialog
+) :is(
+  h1, h2, h3, h4, h5, h6,
+  .s-modal-title,
+  .veloura-qv-full__title,
+  .veloura-quick-view-modal__title
+):not(.s-product-card-promotion-title),
+html body.dark :is(
+  .veloura-popup__box,
+  .swal2-popup,
+  .s-salla-modal-body,
+  .s-modal-body,
+  .s-modal-content,
+  .veloura-qv-full__dialog,
+  .veloura-quick-view-modal__dialog
+) :is(
+  h1, h2, h3, h4, h5, h6,
+  .s-modal-title,
+  .veloura-qv-full__title,
+  .veloura-quick-view-modal__title
+):not(.s-product-card-promotion-title) {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark body :is(
+  .veloura-popup__box,
+  .swal2-popup,
+  .s-salla-modal-body,
+  .s-modal-body,
+  .s-modal-content,
+  .veloura-qv-full__dialog,
+  .veloura-quick-view-modal__dialog
+) :is(
+  p, small, label,
+  .description,
+  .text-muted,
+  .veloura-qv-full__description,
+  .veloura-quick-view-modal__description,
+  .veloura-quick-view-modal__loading
+),
+html body.dark :is(
+  .veloura-popup__box,
+  .swal2-popup,
+  .s-salla-modal-body,
+  .s-modal-body,
+  .s-modal-content,
+  .veloura-qv-full__dialog,
+  .veloura-quick-view-modal__dialog
+) :is(
+  p, small, label,
+  .description,
+  .text-muted,
+  .veloura-qv-full__description,
+  .veloura-quick-view-modal__description,
+  .veloura-quick-view-modal__loading
+) {
+  color: var(--veloura-dark-secondary-text, #cccccc) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* Backdrops dim only. They never blur the whole page. */
+html body.veloura-glass-effect :is(
+  .s-salla-modal-overlay,
+  .s-modal-overlay,
+  .s-modal-backdrop,
+  .modal-backdrop,
+  .veloura-qv-full__overlay,
+  .veloura-quick-view-modal__overlay,
+  .veloura-popup__overlay,
+  .swal2-container.swal2-backdrop-show
+) {
+  background: var(--veloura-overlay) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Product-card exclusion boundary: dark mode may style the card body/text,
+   but it must never replace promotional or solid action colors.
+   ------------------------------------------------------------------------ */
+html.dark body .s-product-card-entry :is(
+  .s-product-card-promotion-title,
+  .s-product-card-quantity,
+  .s-product-card-out-badge,
+  .veloura-pc-native-promo
+),
+html body.dark .s-product-card-entry :is(
+  .s-product-card-promotion-title,
+  .s-product-card-quantity,
+  .s-product-card-out-badge,
+  .veloura-pc-native-promo
+) {
+  background: var(--veloura-pc-promo-bg, var(--color-primary, #004d65)) !important;
+  background-color: var(--veloura-pc-promo-bg, var(--color-primary, #004d65)) !important;
+  background-image: none !important;
+  color: var(--veloura-pc-promo-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark body .s-product-card-entry :is(
+  .s-product-card-promotion-title,
+  .s-product-card-quantity,
+  .s-product-card-out-badge,
+  .veloura-pc-native-promo
+) *,
+html body.dark .s-product-card-entry :is(
+  .s-product-card-promotion-title,
+  .s-product-card-quantity,
+  .s-product-card-out-badge,
+  .veloura-pc-native-promo
+) * {
+  color: inherit !important;
+  fill: currentColor !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark body .s-product-card-entry salla-add-product-button.veloura-card-add-button,
+html body.dark .s-product-card-entry salla-add-product-button.veloura-card-add-button {
+  --color-primary: var(--veloura-product-button-bg, #004d65) !important;
+  --color-primary-reverse: var(--veloura-product-button-text, #ffffff) !important;
+  --button-background-color: var(--veloura-product-button-bg, #004d65) !important;
+  --button-border-color: var(--veloura-product-button-bg, #004d65) !important;
+  --button-text-color: var(--veloura-product-button-text, #ffffff) !important;
+  background: var(--veloura-product-button-bg, #004d65) !important;
+  background-color: var(--veloura-product-button-bg, #004d65) !important;
+  border-color: var(--veloura-product-button-bg, #004d65) !important;
+  color: var(--veloura-product-button-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark body .s-product-card-entry .veloura-quick-view-btn,
+html body.dark .s-product-card-entry .veloura-quick-view-btn {
+  background: var(--veloura-quick-view-button-bg, #004d65) !important;
+  background-color: var(--veloura-quick-view-button-bg, #004d65) !important;
+  border-color: var(--veloura-quick-view-button-bg, #004d65) !important;
+  color: var(--veloura-quick-view-button-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark body .s-product-card-entry .veloura-quick-view-btn *,
+html body.dark .s-product-card-entry .veloura-quick-view-btn * {
+  color: inherit !important;
+  fill: currentColor !important;
+}
+
+/* Salla parts exposed to light DOM use the same exact material. */
+html body.veloura-glass-effect :is(
+  salla-login-modal,
+  salla-localization-modal,
+  salla-user-menu,
+  salla-scopes,
+  salla-offer-modal,
+  salla-modal,
+  salla-sheet
+)::part(body),
+html body.veloura-glass-effect :is(
+  salla-login-modal,
+  salla-localization-modal,
+  salla-user-menu,
+  salla-scopes,
+  salla-offer-modal,
+  salla-modal,
+  salla-sheet
+)::part(content),
+html body.veloura-glass-effect :is(
+  salla-login-modal,
+  salla-localization-modal,
+  salla-user-menu,
+  salla-scopes,
+  salla-offer-modal,
+  salla-modal,
+  salla-sheet
+)::part(panel),
+html body.veloura-glass-effect :is(
+  salla-login-modal,
+  salla-localization-modal,
+  salla-user-menu,
+  salla-scopes,
+  salla-offer-modal,
+  salla-modal,
+  salla-sheet
+)::part(surface) {
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: none !important;
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
+  border-inline: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
+}
+
+html body.veloura-glass-effect :is(
+  salla-login-modal,
+  salla-localization-modal,
+  salla-user-menu,
+  salla-scopes,
+  salla-offer-modal,
+  salla-modal,
+  salla-sheet
+)::part(overlay),
+html body.veloura-glass-effect :is(
+  salla-login-modal,
+  salla-localization-modal,
+  salla-user-menu,
+  salla-scopes,
+  salla-offer-modal,
+  salla-modal,
+  salla-sheet
+)::part(backdrop) {
+  background: var(--veloura-overlay) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :root,
+  html body {
+    --veloura-glass-surface: var(--veloura-glass-solid);
+  }
+}
+
+/* ==========================================================================
+   Header glass + desktop submenu — same material, nested-backdrop safe.
+   No stronger dropdown blur: both header and submenu use the exact V86 tokens.
+   ========================================================================== */
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+  position: relative !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::before,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+  filter: none !important;
+}
+
+html body .veloura-header-tabs-stack--blur
+  .veloura-header-tabs-stack__surface > :is(.store-header, .veloura-home-tabs),
+html body.veloura-glass-effect
+  .veloura-header-tabs-stack
+  .veloura-header-tabs-stack__surface > :is(.store-header, .veloura-home-tabs) {
+  position: relative !important;
+}
+
+/* Store header must outrank tabs so its submenu is painted over the tab bar. */
+html body .veloura-header-tabs-stack--blur
+  .veloura-header-tabs-stack__surface > .store-header,
+html body.veloura-glass-effect
+  .veloura-header-tabs-stack
+  .veloura-header-tabs-stack__surface > .store-header {
+  z-index: 3 !important;
+}
+
+html body .veloura-header-tabs-stack--blur
+  .veloura-header-tabs-stack__surface > .veloura-home-tabs,
+html body.veloura-glass-effect
+  .veloura-header-tabs-stack
+  .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+  z-index: 1 !important;
+}
+
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu) {
+    box-sizing: border-box !important;
+    z-index: 4200 !important;
+
+    /* EXACTLY the same color and filter tokens as the visible header glass. */
+    background: var(--veloura-glass-surface) !important;
+    background-color: var(--veloura-glass-surface) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--veloura-filter) !important;
+    backdrop-filter: var(--veloura-filter) !important;
+    filter: none !important;
+
+    border-top: 1px solid var(--veloura-edge-top) !important;
+    border-bottom: 1px solid var(--veloura-edge-bottom) !important;
+    border-inline: 0 !important;
+    box-shadow: 0 8px 24px var(--veloura-shadow) !important;
+  }
+
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu)
+    :is(ul, li, a),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu)
+    :is(ul, li, a) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+}
+
+/* ==========================================================================
+   Desktop category dropdown = exact same glass material as the header.
+   One visible paint layer only; no denser dropdown background or extra gradient.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu) {
+    background: var(--veloura-header-glass-background) !important;
+    background-color: var(--veloura-header-glass-background) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+    backdrop-filter: var(--veloura-header-glass-filter) !important;
+    filter: none !important;
+    border-color: var(--veloura-header-glass-edge-top) !important;
+    box-shadow: none !important;
+    z-index: 5000 !important;
+  }
+
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu)
+    :is(ul, li, a),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu)
+    :is(ul, li, a) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}

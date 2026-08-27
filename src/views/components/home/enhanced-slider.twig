@@ -1,3 +1,9 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
 {#
 | Variable                       | Type     | Description                                                                  |
 |--------------------------------|----------|------------------------------------------------------------------------------|
@@ -8,7 +14,7 @@
 | component.slides               | object[] | list of slides                                                               |
 | position                       | int      | Sorting number start from zero                                               |
 #}
-<section component-id="{{ componentId }}" data-testid="store-home-slider" class="s-block s-block--hero-slider s-block--full-bg wide-placeholder"> 
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" class="s-block s-block--hero-slider s-block--full-bg wide-placeholder"> 
     <salla-slider 
       id="main-slider-{{ position }}"
       auto-play

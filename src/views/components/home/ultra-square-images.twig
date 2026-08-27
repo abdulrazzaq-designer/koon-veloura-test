@@ -1,0 +1,214 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% set radius_map = {
+  'sharp': '0px',
+  'soft': '8px',
+  'medium': '16px',
+  'large': '28px',
+  'round': '999px'
+} %}
+
+{% set title_size_map = {
+  'xs': '12px',
+  'sm': '14px',
+  'md': '18px',
+  'lg': '22px',
+  'xl': '28px',
+  'xxl': '36px'
+} %}
+
+{% set subtitle_size_map = {
+  'xs': '11px',
+  'sm': '13px',
+  'md': '15px',
+  'lg': '18px',
+  'xl': '22px'
+} %}
+
+{% set radius_key = component.ultra_image_radius|default('medium') %}
+{% if radius_key is iterable and radius_key[0].value is defined %}
+  {% set radius_key = radius_key[0].value %}
+{% elseif radius_key.value is defined %}
+  {% set radius_key = radius_key.value %}
+{% endif %}
+
+{% set section_classes = [
+  's-block',
+  'ultra-square-images',
+  component.ultra_display_grid ? 'is-grid' : 'is-slider',
+  component.ultra_masonry_layout and component.ultra_display_grid ? 'is-masonry' : '',
+  component.ultra_custom_horizontal_spacing ? 'has-spacing' : '',
+  component.ultra_show_mobile_only ? 'ultra-mobile-only' : '',
+  component.ultra_show_desktop_only ? 'ultra-desktop-only' : '',
+  component.ultra_custom_classes ?: ''
+]|join(' ') %}
+
+{% if not component.ultra_hide_section %}
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="{{ section_classes }}"
+  style="
+    --ultra-gap: {{ component.ultra_images_gap|default(16) }}px;
+    --ultra-radius: {{ radius_map[radius_key]|default('16px') }};
+    --ultra-mobile-columns: {{ component.ultra_mobile_columns|default(2) }};
+    --ultra-desktop-columns: {{ component.ultra_desktop_columns|default(4) }};
+    --ultra-horizontal-spacing: {{ component.ultra_custom_horizontal_spacing ? component.ultra_horizontal_spacing|default(0) : 0 }}px;
+  "
+>
+  {% if component.ultra_custom_horizontal_spacing %}
+    <div class="ultra-square-images__container">
+  {% else %}
+    <div class="container ultra-square-images__container">
+  {% endif %}
+
+    {% if component.ultra_section_title or component.ultra_section_subtitle %}
+      <div class="ultra-square-images__heading veloura-component-title" data-veloura-section-heading>
+        {% if component.ultra_section_title %}
+          <h2 style="color: {{ component.ultra_section_text_color|default('#222222') }};">
+            {{ component.ultra_section_title }}
+          </h2>
+        {% endif %}
+
+        {% if component.ultra_section_subtitle %}
+          <p style="color: {{ component.ultra_section_text_color|default('#222222') }};">
+            {{ component.ultra_section_subtitle }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if component.ultra_display_grid %}
+      <div
+        class="ultra-square-images__grid"
+        style="justify-content: {{ component.ultra_rows_center ? 'center' : 'flex-start' }};"
+      >
+        {% for banner in component.ultra_banners %}
+          {% set image_src = banner.image %}
+          {% if banner.use_image_url and banner.image_url %}
+            {% set image_src = banner.image_url %}
+          {% endif %}
+
+          {% set sizes = ['tall', 'short', 'normal', 'tall', 'large', 'normal', 'wide', 'short'] %}
+{% set card_size = sizes[loop.index0 % sizes|length] %}
+
+          {% if image_src %}
+            <div class="ultra-square-images__item ultra-square-images__item--{{ card_size }}">
+              <a href="{{ banner.url ?: '#' }}" class="ultra-square-images__card">
+                <img src="{{ image_src }}" alt="{{ banner.title ?: 'image' }}" loading="lazy">
+
+                {% if component.ultra_text_on_image and (banner.title or banner.description) %}
+                  <div class="ultra-square-images__content is-on-image {{ component.ultra_title_overlay ? 'has-overlay' : '' }} {{ component.ultra_center_text ? 'is-centered' : 'is-start' }}">
+                    {% if banner.title %}
+                      <h3 dir="auto" style="font-size: {{ title_size_map[component.ultra_title_size|default('md')]|default('18px') }};">
+                        {{ banner.title|raw }}
+                      </h3>
+                    {% endif %}
+
+                    {% if banner.description %}
+                      <p dir="auto" style="font-size: {{ subtitle_size_map[component.ultra_subtitle_size|default('sm')]|default('13px') }};">
+                        {{ banner.description|raw }}
+                      </p>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </a>
+
+              {% if not component.ultra_text_on_image and (banner.title or banner.description) %}
+                <div class="ultra-square-images__content is-below-image {{ component.ultra_center_text ? 'is-centered' : 'is-start' }}">
+                  {% if banner.title %}
+                    <h3 dir="auto" style="font-size: {{ title_size_map[component.ultra_title_size|default('md')]|default('18px') }};">
+                      {{ banner.title|raw }}
+                    </h3>
+                  {% endif %}
+
+                  {% if banner.description %}
+                    <p dir="auto" style="font-size: {{ subtitle_size_map[component.ultra_subtitle_size|default('sm')]|default('13px') }};">
+                      {{ banner.description|raw }}
+                    </p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <salla-slider
+        id="ultra-square-images-{{ position }}"
+        pagination
+        {% if component.ultra_slider_autoplay %}auto-play{% endif %}
+        {% if component.ultra_slider_loop %}loop{% endif %}
+        {{ component.ultra_slider_hide_arrows ? 'show-controls="false"' : '' }}
+        static-when-single
+        slider-config='{
+          "slidesPerView": {{ component.ultra_slider_show_partial ? 1.35 : component.ultra_mobile_columns|default(2) }},
+          "spaceBetween": {{ component.ultra_images_gap|default(16) }},
+          "freeMode": {{ component.ultra_slider_free_mode ? "true" : "false" }},
+          "autoplay": {{ component.ultra_slider_autoplay ? "{\"delay\": 1200, \"disableOnInteraction\": false}" : "false" }},
+          "breakpoints": {
+            "768": {
+              "slidesPerView": {{ component.ultra_slider_show_partial ? component.ultra_desktop_columns|default(4) + 0.35 : component.ultra_desktop_columns|default(4) }},
+              "spaceBetween": {{ component.ultra_images_gap|default(16) }}
+            }
+          }
+        }'
+      >
+        <div slot="items">
+          {% for banner in component.ultra_banners %}
+            {% set image_src = banner.image %}
+            {% if banner.use_image_url and banner.image_url %}
+              {% set image_src = banner.image_url %}
+            {% endif %}
+
+            {% if image_src %}
+              <div class="swiper-slide">
+                <div class="ultra-square-images__item">
+                  <a href="{{ banner.url ?: '#' }}" class="ultra-square-images__card">
+                    <img src="{{ image_src }}" alt="{{ banner.title ?: 'image' }}" loading="lazy">
+
+                    {% if component.ultra_text_on_image and (banner.title or banner.description) %}
+                      <div class="ultra-square-images__content is-on-image {{ component.ultra_title_overlay ? 'has-overlay' : '' }} {{ component.ultra_center_text ? 'is-centered' : 'is-start' }}">
+                        {% if banner.title %}
+                          <h3 dir="auto" style="font-size: {{ title_size_map[component.ultra_title_size|default('md')]|default('18px') }};">
+                            {{ banner.title|raw }}
+                          </h3>
+                        {% endif %}
+
+                        {% if banner.description %}
+                          <p dir="auto" style="font-size: {{ subtitle_size_map[component.ultra_subtitle_size|default('sm')]|default('13px') }};">
+                            {{ banner.description|raw }}
+                          </p>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </a>
+
+                  {% if not component.ultra_text_on_image and (banner.title or banner.description) %}
+                    <div class="ultra-square-images__content is-below-image {{ component.ultra_center_text ? 'is-centered' : 'is-start' }}">
+                      {% if banner.title %}
+                        <h3 dir="auto" style="font-size: {{ title_size_map[component.ultra_title_size|default('md')]|default('18px') }};">
+                          {{ banner.title|raw }}
+                        </h3>
+                      {% endif %}
+
+                      {% if banner.description %}
+                        <p dir="auto" style="font-size: {{ subtitle_size_map[component.ultra_subtitle_size|default('sm')]|default('13px') }};">
+                          {{ banner.description|raw }}
+                        </p>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </salla-slider>
+    {% endif %}
+
+  </div>
+</section>
+{% endif %}

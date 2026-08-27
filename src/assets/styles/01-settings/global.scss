@@ -1,4 +1,3 @@
-
 // Colors
 $main-color: var(--color-primary);
 $infinte-color: var(--infinte-color);
@@ -27,3 +26,6 @@ $main-text-color: var(--main-text-color);
   /* plugins */
   --mm-ocd-width: calc(100% - 51px);
 }
+
+/* أُزيلت قاعدة تجريبية كانت تفرض:  html, body { background: yellow !important; }
+   كانت تُبقي خلفية الـ <html> صفراء وتمنع خلفية الموقع من الانتشار على الكانفس. */

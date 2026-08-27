@@ -1,0 +1,108 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_hide_section %}
+
+{% set section_classes = [
+  's-block',
+  'veloura-store-features',
+  component.veloura_enable_custom_spacing ? 'has-spacing' : '',
+  component.veloura_custom_classes ?: ''
+] %}
+
+{% if component.veloura_show_mobile_only %}
+  {% set section_classes = section_classes|merge(['veloura-show-mobile-only']) %}
+{% endif %}
+
+{% if component.veloura_show_desktop_only %}
+  {% set section_classes = section_classes|merge(['veloura-show-desktop-only']) %}
+{% endif %}
+
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="{{ section_classes|join(' ') }}"
+  style="
+    --veloura-gap: {{ component.veloura_gap_between_features|default(16) }}px;
+    --veloura-mobile-cols: {{ component.veloura_mobile_columns|default(2) }};
+    --veloura-desktop-cols: {{ component.veloura_desktop_columns|default(3) }};
+    --veloura-title-color: {{ component.veloura_title_color|default('#111111') }};
+    --veloura-heading-align: {{ component.veloura_alignment_desktop|default('center') }};
+    --veloura-icon-width: {{ component.veloura_feature_image_width|default(70) }}px;
+    --veloura-icon-height: {{ component.veloura_feature_image_height and component.veloura_feature_image_height > 0 ? component.veloura_feature_image_height : 70 }}px;
+    --veloura-custom-spacing: {{ component.veloura_enable_custom_spacing ? component.veloura_custom_spacing|default(0) : 0 }}px;
+    --veloura-radius: {{ component.veloura_image_radius == 'sharp' ? '0px' : component.veloura_image_radius == 'soft' ? '8px' : component.veloura_image_radius == 'medium' ? '16px' : component.veloura_image_radius == 'large' ? '28px' : component.veloura_image_radius == 'round' ? '999px' : '18px' }};
+  "
+>
+
+{% if component.veloura_enable_custom_spacing %}
+  <div class="veloura-store-features__container">
+{% else %}
+  <div class="container veloura-store-features__container">
+{% endif %}
+
+  {% if component.veloura_section_title or component.veloura_section_subtitle %}
+    <div class="veloura-store-features__heading veloura-component-title" data-veloura-section-heading>
+      {% if component.veloura_section_title %}
+        <h2>{{ component.veloura_section_title }}</h2>
+      {% endif %}
+
+      {% if component.veloura_section_subtitle %}
+        <p>{{ component.veloura_section_subtitle }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if component.veloura_features_collection %}
+    <div class="veloura-store-features__grid">
+
+      {% for item in component.veloura_features_collection %}
+
+        <div
+          class="veloura-store-features__item {{ component.veloura_floating_icon ? 'has-floating-icon' : '' }} {{ component.veloura_center_features ? 'is-centered' : '' }}"
+          style="
+            background: {{ item.veloura_feature_background_transparent ? 'transparent' : item.veloura_feature_background|default('#004956') }};
+            color: {{ item.veloura_feature_text_color|default('#ffffff') }};
+          "
+        >
+
+          <div
+            class="veloura-store-features__icon"
+            style="
+              background: {{ item.veloura_feature_icon_background_transparent ? 'transparent' : item.veloura_feature_icon_background|default('#2b2b2b') }};
+              color: {{ item.veloura_feature_icon_color|default('#ffffff') }};
+            "
+          >
+            {% if item.veloura_feature_image %}
+              <img src="{{ item.veloura_feature_image }}" alt="{{ item.veloura_feature_title|default('feature') }}" loading="lazy">
+            {% elseif item.veloura_feature_icon %}
+              <span class="{{ item.veloura_feature_icon }}"></span>
+            {% endif %}
+          </div>
+
+          <div class="veloura-store-features__content">
+            {% if item.veloura_feature_title %}
+        <h3
+  class="{{ component.veloura_enable_counter ? 'veloura-counter' : '' }}"
+  data-start-on-view="{{ component.veloura_counter_on_view ? 'true' : 'false' }}"
+>
+  {{ item.veloura_feature_title }}
+</h3>
+    {% endif %}
+
+    {% if item.veloura_feature_subtitle %}
+        <p>{{ item.veloura_feature_subtitle }}</p>
+    {% endif %}
+          </div>
+
+        </div>
+
+      {% endfor %}
+
+    </div>
+  {% endif %}
+</div>
+</section>
+
+{% endif %}

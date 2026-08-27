@@ -1,0 +1,201 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_before_after_hide %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '40px'
+  } %}
+
+  {% set before_after_radius = radius_map[component.veloura_before_after_radius|default('medium')]|default('16px') %}
+
+  {% set section_classes = [
+    's-block',
+  'veloura-before-after',
+  component.veloura_before_after_shadow ? 'veloura-before-after--shadow' : '',
+  component.veloura_before_after_mobile_only ? 'veloura-before-after--mobile-only' : '',
+  component.veloura_before_after_desktop_only ? 'veloura-before-after--desktop-only' : '',
+  component.veloura_before_after_custom_spacing ? 'has-spacing' : '',
+  component.veloura_before_after_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    class="{{ section_classes }}"
+    style="
+      --veloura-before-after-radius: {{ before_after_radius }};
+      --veloura-before-after-spacing: {{ component.veloura_before_after_custom_spacing ? component.veloura_before_after_spacing|default(0) : 0 }}px;
+    "
+  >
+  {% if component.veloura_before_after_custom_spacing %}
+  <div class="veloura-before-after__container">
+{% else %}
+  <div class="container veloura-before-after__container">
+{% endif %}
+
+      {% if component.veloura_before_after_title or component.veloura_before_after_subtitle %}
+        <div class="veloura-before-after__heading veloura-component-title" data-veloura-section-heading>
+          {% if component.veloura_before_after_title %}
+            <h2>{{ component.veloura_before_after_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_before_after_subtitle %}
+            <p>{{ component.veloura_before_after_subtitle }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if component.veloura_before_after_before_image and component.veloura_before_after_after_image %}
+        <div
+          class="veloura-before-after__compare"
+          data-auto-play="{{ component.veloura_before_after_auto_play ? 'true' : 'false' }}"
+        >
+          <img
+            class="veloura-before-after__img veloura-before-after__img--before"
+            src="{{ component.veloura_before_after_before_image }}"
+            alt="{{ component.veloura_before_after_before_label|default('قبل') }}"
+            loading="lazy"
+          >
+
+          <div class="veloura-before-after__after-wrap">
+            <img
+              class="veloura-before-after__img veloura-before-after__img--after"
+              src="{{ component.veloura_before_after_after_image }}"
+              alt="{{ component.veloura_before_after_after_label|default('بعد') }}"
+              loading="lazy"
+            >
+          </div>
+
+          <input
+            class="veloura-before-after__range"
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            aria-label="Before after slider"
+          >
+
+          <div class="veloura-before-after__line"></div>
+
+          <button class="veloura-before-after__handle" type="button" aria-label="Before after handle">
+            <i class="sicon-keyboard_arrow_left"></i>
+            <i class="sicon-keyboard_arrow_right"></i>
+          </button>
+
+          <span class="veloura-before-after__label veloura-before-after__label--before">
+            {{ component.veloura_before_after_before_label|default('قبل') }}
+          </span>
+
+          <span class="veloura-before-after__label veloura-before-after__label--after">
+            {{ component.veloura_before_after_after_label|default('بعد') }}
+          </span>
+        </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.veloura-before-after__compare').forEach(function (compare) {
+        const range = compare.querySelector('.veloura-before-after__range');
+        const afterWrap = compare.querySelector('.veloura-before-after__after-wrap');
+        const afterImg = compare.querySelector('.veloura-before-after__img--after');
+        const line = compare.querySelector('.veloura-before-after__line');
+        const handle = compare.querySelector('.veloura-before-after__handle');
+
+        if (!range || !afterWrap || !afterImg || !line || !handle) return;
+
+        function syncHeight() {
+          const beforeImg = compare.querySelector('.veloura-before-after__img--before');
+          if (!beforeImg) return;
+
+          const height = beforeImg.offsetHeight;
+          if (height > 0) {
+            compare.style.height = height + 'px';
+            afterImg.style.height = height + 'px';
+          }
+        }
+
+        function setPosition(value) {
+          afterWrap.style.clipPath = 'inset(0 ' + (100 - value) + '% 0 0)';
+          line.style.left = value + '%';
+          handle.style.left = value + '%';
+          range.value = value;
+        }
+
+        syncHeight();
+        setPosition(50);
+
+        window.addEventListener('resize', syncHeight);
+
+        compare.querySelectorAll('img').forEach(function (img) {
+          img.addEventListener('load', syncHeight);
+        });
+
+        range.addEventListener('input', function () {
+          setPosition(range.value);
+        });
+
+        if (compare.getAttribute('data-auto-play') === 'true') {
+          let played = false;
+
+          const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting && !played) {
+                played = true;
+
+                let value = 50;
+let direction = -1;
+let phase = 1; // 1=يمين→يسار | 2=يسار→يمين | 3=رجوع للمنتصف
+
+const interval = setInterval(function () {
+
+  if (phase === 1) {
+    value -= 1.2;
+
+    if (value <= 0) {
+      value = 0;
+      phase = 2;
+    }
+  }
+
+  else if (phase === 2) {
+    value += 1.2;
+
+    if (value >= 100) {
+      value = 100;
+      phase = 3;
+    }
+  }
+
+  else if (phase === 3) {
+    value -= 1.2;
+
+    if (value <= 50) {
+      value = 50;
+      clearInterval(interval);
+    }
+  }
+
+  setPosition(value);
+
+}, 16);
+                observer.disconnect();
+              }
+            });
+          }, { threshold: 0.35 });
+
+          observer.observe(compare);
+        }
+      });
+    });
+  </script>
+
+{% endif %}

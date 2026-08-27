@@ -1,0 +1,159 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% set radius_map = {
+  'sharp': '0px',
+  'soft': '8px',
+  'medium': '16px',
+  'large': '28px',
+  'round': '999px'
+} %}
+
+{% set h_spacing = component.h_spacing|default(0) %}
+{% set h_spacing = h_spacing + 0 %}
+{% if h_spacing < 0 %}{% set h_spacing = 0 %}{% endif %}
+{% if h_spacing > 100 %}{% set h_spacing = 100 %}{% endif %}
+
+{% set effect = component.animated_transition_type|default('slide') %}
+{% set safe_effect = effect == 'cards' ? 'slide' : effect %}
+{% set animated_radius = radius_map[component.animated_image_radius|default('sharp')]|default('0px') %}
+{% set is_full = component.animated_full_width ? true : false %}
+{% set has_mobile_spacing = component.use_h_spacing and not is_full ? true : false %}
+
+{% if component.animated_banners|length > 0 %}
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="
+    s-block
+    animated-banners
+    {{ is_full ? 'full-banner is-full-width-desktop' : '' }}
+    {{ has_mobile_spacing ? 'has-mobile-spacing' : '' }}
+    {{ component.animated_transition_type in ['cube', 'flip'] ? 'has-3d-effect' : '' }}
+  "
+  style="
+    --banner-margin: {{ has_mobile_spacing ? h_spacing : 0 }}px;
+    --animated-radius: {{ animated_radius }};
+  "
+>
+  <div class="{{ is_full ? 'animated-banners__container is-full-width' : 'container animated-banners__container' }}">
+    <salla-slider
+      class="animated-banners__slider {{ is_full ? 'fullwidth-slider' : '' }}"
+      type="{{ is_full ? 'fullwidth' : 'slider' }}"
+      id="animated-banners-{{ position }}"
+      {% if component.animated_hide_arrows_desktop %}show-controls="false"{% endif %}
+      {% if not component.animated_hide_dots %}pagination{% endif %}
+      {% if component.animated_autoplay %}auto-play{% endif %}
+      static-when-single
+      slider-config='{
+        "effect": "{{ effect }}",
+        "loop": {{ effect == "cards" ? "false" : (component.animated_loop ? "true" : "false") }},
+        "speed": 800,
+        "autoplay": {{ component.animated_autoplay ? "{\"delay\":2500,\"disableOnInteraction\":false}" : "false" }},
+        "cardsEffect": {
+          "slideShadows": true,
+          "perSlideOffset": 12,
+          "perSlideRotate": 3
+        }
+      }'
+    >
+      <div slot="items">
+        {% for banner in component.animated_banners %}
+          {% set image_src = banner.banner_image %}
+          {% if banner.use_image_url and banner.image_url %}
+            {% set image_src = banner.image_url %}
+          {% endif %}
+
+          {% set mobile_image = banner.banner_image_mobile ?: image_src %}
+          {% if banner.use_mobile_image_url and banner.mobile_image_url %}
+            {% set mobile_image = banner.mobile_image_url %}
+          {% endif %}
+
+          {% set banner_link = banner.url ?: '#' %}
+
+          {% if image_src %}
+            <div class="swiper-slide animated-banners__slide">
+              <a href="{{ banner_link }}" class="animated-banners__card">
+                <picture>
+                  <source media="(max-width: 767px)" srcset="{{ mobile_image }}">
+                  <img src="{{ image_src }}" alt="{{ banner.banner_title ?: 'banner' }}" loading="lazy">
+                </picture>
+
+                <div class="animated-banners__content {{ banner.text_center ? 'is-center' : 'is-right' }}">
+                  {% if banner.banner_title %}
+                    <h2 style="color: {{ banner.banner_title_color|default('#ffffff') }};">
+                      {{ banner.banner_title|raw }}
+                    </h2>
+                  {% endif %}
+
+                  {% if banner.banner_subtitle %}
+                    <p style="color: {{ banner.banner_subtitle_color|default('#ffffff') }};">
+                      {{ banner.banner_subtitle|raw }}
+                    </p>
+                  {% endif %}
+
+                  {% if banner.discount_enable and banner.discount_end_date %}
+                    <div class="animated-banners__countdown" data-countdown="{{ banner.discount_end_date }}">
+                      <div><strong data-days>0</strong><span>يوم</span></div>
+                      <div><strong data-hours>0</strong><span>ساعة</span></div>
+                      <div><strong data-minutes>0</strong><span>دقيقة</span></div>
+                      <div><strong data-seconds>0</strong><span>ثانية</span></div>
+                    </div>
+                  {% endif %}
+
+                  {% if banner.button_text %}
+                    <span class="animated-banners__button {{ banner.button_no_bg ? 'is-outline' : '' }} {{ banner.button_rounded ? 'is-rounded' : '' }} {{ banner.button_icon_reverse ? 'is-reverse' : '' }}">
+                      {% if not banner.button_hide_icon %}
+                        <i class="{{ banner.button_icon|default('sicon-arrow-left') }}"></i>
+                      {% endif %}
+                      {{ banner.button_text }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                {% if banner.discount.enable and banner.discount.end_date %}
+                  <div class="animated-banners__discount">
+                    {{ banner.discount.end_date }}
+                  </div>
+                {% endif %}
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </salla-slider>
+  </div>
+</section>
+{% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-countdown]').forEach(function(timer) {
+      let dateString = timer.getAttribute('data-countdown').replaceAll('"', '').trim();
+      let parts = dateString.split('-');
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1;
+      let year = parseInt(parts[2], 10);
+      let endDate = new Date(year, month, day, 23, 59, 59).getTime();
+
+      function updateTimer() {
+        let now = new Date().getTime();
+        let distance = endDate - now;
+
+        if (distance <= 0 || isNaN(distance)) {
+          timer.style.display = 'none';
+          return;
+        }
+
+        timer.querySelector('[data-days]').textContent = Math.floor(distance / (1000 * 60 * 60 * 24));
+        timer.querySelector('[data-hours]').textContent = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        timer.querySelector('[data-minutes]').textContent = Math.floor((distance / (1000 * 60)) % 60);
+        timer.querySelector('[data-seconds]').textContent = Math.floor((distance / 1000) % 60);
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    });
+  });
+</script>

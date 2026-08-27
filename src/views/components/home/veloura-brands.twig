@@ -1,0 +1,122 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_brands_hide %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '999px'
+  } %}
+
+  {% set brand_radius = radius_map[component.veloura_brands_radius|default('medium')]|default('16px') %}
+  {% set image_fit = component.veloura_brands_fit|default('cover') %}
+  {% set brands_gap = component.veloura_brands_gap|default(6) %}
+
+  {% set section_classes = [
+    's-block',
+  'veloura-brands',
+  component.veloura_brands_mobile_only ? 'veloura-brands--mobile-only' : '',
+  component.veloura_brands_desktop_only ? 'veloura-brands--desktop-only' : '',
+  component.veloura_brands_continuous ? 'veloura-brands--continuous' : '',
+  component.veloura_brands_custom_spacing ? 'has-spacing' : '',
+  component.veloura_brands_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    class="{{ section_classes }}"
+    style="
+      --veloura-brands-radius: {{ brand_radius }};
+      --veloura-brands-gap: {{ brands_gap }}px;
+      --veloura-brands-fit: {{ image_fit }};
+      --veloura-brands-spacing: {{ component.veloura_brands_custom_spacing ? component.veloura_brands_spacing|default(0) : 0 }}px;
+      --veloura-brands-title-color: {{ component.veloura_brands_title_color|default('#111111') }};
+    "
+  >
+    {% if component.veloura_brands_custom_spacing %}
+  <div class="veloura-brands__container">
+{% else %}
+  <div class="container veloura-brands__container">
+{% endif %}
+
+      {% if component.veloura_brands_title or component.veloura_brands_subtitle %}
+        <div class="veloura-brands__heading veloura-component-title" data-veloura-section-heading>
+          {% if component.veloura_brands_title %}
+            <h2>{{ component.veloura_brands_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_brands_subtitle %}
+            <p>{{ component.veloura_brands_subtitle }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if component.veloura_brands_items|length %}
+        <salla-slider
+          id="veloura-brands-{{ position }}"
+          class="veloura-brands__slider"
+          type="carousel"
+          pagination
+          show-controls="false"
+          {% if component.veloura_brands_autoplay %}auto-play{% endif %}
+          slider-config='{
+            "slidesPerView": 2.2,
+            "spaceBetween": {{ brands_gap }},
+            "speed": {{ component.veloura_brands_continuous ? 4500 : 700 }},
+            "loop": true,
+            "watchOverflow": false,
+            "allowTouchMove": true,
+            "autoplay": {
+              "delay": {{ component.veloura_brands_continuous ? 0 : 2200 }},
+              "disableOnInteraction": false,
+              "pauseOnMouseEnter": false
+            },
+            "breakpoints": {
+              "640": {
+                "slidesPerView": 3,
+                "spaceBetween": {{ brands_gap }}
+              },
+              "768": {
+                "slidesPerView": 4,
+                "spaceBetween": {{ brands_gap }}
+              },
+              "1024": {
+                "slidesPerView": 5,
+                "spaceBetween": {{ brands_gap }}
+              }
+            }
+          }'
+        >
+          <div slot="items">
+            {% for brand in component.veloura_brands_items %}
+              {% set brand_name = brand.name|default(brand.title|default('brand')) %}
+              {% set brand_url = brand.url|default(link('brands')) %}
+              {% set brand_logo = brand.logo|default(brand.image|default(brand.avatar|default(null))) %}
+
+              <div class="swiper-slide">
+                <a href="{{ brand_url }}" class="veloura-brands__item" aria-label="{{ brand_name }}">
+                  {% if brand_logo %}
+                    <img
+                      src="{{ brand_logo }}"
+                      alt="{{ brand_name }}"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <span>{{ brand_name }}</span>
+                  {% endif %}
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </salla-slider>
+      {% endif %}
+
+    </div>
+  </section>
+
+{% endif %}

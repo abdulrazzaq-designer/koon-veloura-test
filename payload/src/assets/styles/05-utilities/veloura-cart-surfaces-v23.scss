@@ -1,0 +1,97 @@
+/* ========================================================================
+   Veloura Cart Surfaces + Cart Banners V2.3
+   ======================================================================== */
+
+.veloura-cart-surfaces-enabled {
+  .cart-item,
+  .cart-options,
+  .sticky.top-24 > .bg-white {
+    background-color: var(--veloura-cart-surface-bg, #f3f4f6) !important;
+    background-image: none !important;
+    border-radius: var(--veloura-cart-surface-radius, 16px) !important;
+    border: 0 solid transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* The product-options component adds its own white panel. Keep only the
+     merchant-selected cart surface behind it, while preserving white inputs. */
+  .cart-item salla-product-options,
+  .cart-item .s-product-options-wrapper,
+  .cart-item .s-product-options-option,
+  .cart-item .s-product-options-option-content,
+  .cart-item .s-product-options-option-values,
+  .cart-item .s-product-options-multiple-options-wrapper,
+  .cart-options salla-product-options,
+  .cart-options .s-product-options-wrapper,
+  .cart-options .s-product-options-option,
+  .cart-options .s-product-options-option-content,
+  .cart-options .s-product-options-option-values,
+  .cart-options .s-product-options-multiple-options-wrapper,
+  .cart-item > section.bg-white {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .cart-item .s-product-options-wrapper,
+  .cart-options .s-product-options-wrapper {
+    padding-inline: 0 !important;
+    border: 0 !important;
+  }
+
+  &.veloura-cart-border-enabled {
+    .cart-item,
+    .cart-options,
+    .sticky.top-24 > .bg-white {
+      border-width: 1px !important;
+      border-style: solid !important;
+      border-color: var(--veloura-cart-surface-border-color, #e5e7eb) !important;
+    }
+  }
+
+  &.veloura-cart-shadow-enabled {
+    .cart-item,
+    .cart-options,
+    .sticky.top-24 > .bg-white {
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.09) !important;
+    }
+  }
+}
+
+.veloura-cart-banners {
+  width: 100%;
+  margin: 0 0 20px;
+}
+
+.veloura-cart-banners__title {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-text, #111827);
+}
+
+.veloura-cart-banners__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--veloura-cart-banner-gap, 14px);
+}
+
+.veloura-cart-banners__item {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--veloura-cart-banner-radius, 14px);
+  background: #fff;
+}
+
+.veloura-cart-banners__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media (max-width: 639px) {
+  .veloura-cart-banners__grid {
+    grid-template-columns: 1fr;
+  }
+}

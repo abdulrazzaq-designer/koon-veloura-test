@@ -6,6 +6,11 @@ class Cart extends BasePage {
         salla.event.cart.onUpdated(data => this.updateCartPageInfo(data));
 
         app.watchElements({
+            subTotal: '#sub-total',
+            orderOptionsTotal: '#cart-options-total',
+            totalDiscount: '#total-discount',
+            taxAmount: '#tax-amount',
+            shippingCost: '#shipping-cost',
             freeShipping: '#free-shipping',
             freeShippingBar: '#free-shipping-bar',
             freeShippingMsg: '#free-shipping-msg',
@@ -16,6 +21,223 @@ class Cart extends BasePage {
 
         this.initSubmitCart();
         validateProductOptions();
+        this.initVelouraCartVisualContract();
+    }
+
+    initVelouraCartVisualContract() {
+        const page = document.querySelector('.veloura-cart-page.veloura-cart-surfaces-enabled');
+
+        if (!page) {
+            return;
+        }
+
+        const STYLE_ID = 'veloura-cart-shadow-v115';
+
+        const shadowCss = {
+            'SALLA-PRODUCT-OPTIONS': `
+                :host {
+                    display: block !important;
+                    width: 100% !important;
+                    color: var(--veloura-cart-text, #111827) !important;
+                }
+
+                .s-product-options-wrapper {
+                    width: 100% !important;
+                    margin: 0 !important;
+
+                    background:
+                        var(--veloura-cart-primary-bg, #ffffff) !important;
+
+                    background-color:
+                        var(--veloura-cart-primary-bg, #ffffff) !important;
+
+                    color:
+                        var(--veloura-cart-text, #111827) !important;
+
+                    border: 0 !important;
+
+                    border-radius:
+                        var(--veloura-cart-real-radius, 0px) !important;
+
+                    box-shadow: none !important;
+                }
+
+                .s-product-options-option-label,
+                .s-form-label {
+                    color:
+                        var(--veloura-cart-text, #111827) !important;
+                }
+
+                select,
+                input:not([type="hidden"]),
+                textarea,
+                .s-form-control,
+                .s-input {
+                    background:
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
+
+                    background-color:
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
+
+                    color:
+                        var(--veloura-cart-text, #111827) !important;
+
+                    border-radius:
+                        var(--veloura-cart-real-radius, 0px) !important;
+
+                    box-shadow: none !important;
+                }
+            `,
+
+            'SALLA-QUANTITY-INPUT': `
+                :host {
+                    border-radius:
+                        var(--veloura-cart-real-radius, 0px) !important;
+                }
+
+                .s-quantity-input-container {
+                    background:
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
+
+                    background-color:
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
+
+                    color:
+                        var(--veloura-cart-text, #111827) !important;
+
+                    border-radius:
+                        var(--veloura-cart-real-radius, 0px) !important;
+
+                    overflow: hidden !important;
+                    box-shadow: none !important;
+                }
+
+                .s-quantity-input-button,
+                .s-quantity-input-input {
+                    background:
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
+
+                    background-color:
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
+
+                    color:
+                        var(--veloura-cart-text, #111827) !important;
+
+                    border-radius: 0 !important;
+                }
+
+                .s-quantity-input-button {
+                    fill:
+                        var(--veloura-cart-text, #111827) !important;
+                }
+            `,
+
+            'SALLA-BUTTON': `
+                button,
+                .s-button-btn,
+                .s-button-element {
+                    border-radius:
+                        var(--veloura-cart-real-radius, 0px) !important;
+                }
+            `,
+
+            'SALLA-CART-COUPONS': `
+                button,
+                input,
+                select,
+                textarea,
+                .s-button-btn,
+                .s-button-element,
+                .s-form-control,
+                .s-input {
+                    border-radius:
+                        var(--veloura-cart-real-radius, 0px) !important;
+                }
+            `,
+        };
+
+        const injectShadowStyle = async (element) => {
+            if (!element) {
+                return;
+            }
+
+            try {
+                if (typeof element.componentOnReady === 'function') {
+                    await element.componentOnReady();
+                }
+            } catch (_) {
+                // Light-DOM rules still apply.
+            }
+
+            const root = element.shadowRoot;
+
+            if (!root || root.getElementById(STYLE_ID)) {
+                return;
+            }
+
+            const css = shadowCss[element.tagName];
+
+            if (!css) {
+                return;
+            }
+
+            const style = document.createElement('style');
+            style.id = STYLE_ID;
+            style.textContent = css;
+            root.appendChild(style);
+        };
+
+        const sync = (scope = page) => {
+            const selector = [
+                'salla-product-options',
+                'salla-quantity-input',
+                'salla-button',
+                'salla-cart-coupons',
+            ].join(',');
+
+            if (scope.matches?.(selector)) {
+                injectShadowStyle(scope);
+            }
+
+            scope.querySelectorAll?.(selector).forEach((element) => {
+                injectShadowStyle(element);
+            });
+        };
+
+        sync();
+
+        if (!page.__velouraCartVisualObserver && window.MutationObserver) {
+            let scheduled = false;
+            const addedRoots = new Set();
+
+            page.__velouraCartVisualObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node instanceof Element) {
+                            addedRoots.add(node);
+                        }
+                    });
+                });
+
+                if (!addedRoots.size || scheduled) {
+                    return;
+                }
+
+                scheduled = true;
+
+                requestAnimationFrame(() => {
+                    scheduled = false;
+
+                    addedRoots.forEach((node) => sync(node));
+                    addedRoots.clear();
+                });
+            });
+
+            page.__velouraCartVisualObserver.observe(page, {
+                childList: true,
+                subtree: true,
+            });
+        }
     }
 
     initSubmitCart() {
@@ -40,24 +262,15 @@ class Cart extends BasePage {
             if (isValid) {
                 /** @type HTMLSallaButtonElement */
                 let btn = event.currentTarget;
-
-                // Keep loading state (also disables the button) until the page redirects.
-                const keepLoading = new MutationObserver(() => {
-                    if (!btn.hasAttribute('loading')) {
-                        btn.setAttribute('loading', '');
-                    }
-                });
-                // Release it if we won't redirect (guest gets a login modal, or submit fails),
-                // so the spinner never gets stuck.
-                const stopLoading = () => {
-                    keepLoading.disconnect();
-                    btn.stop();
-                };
-                salla.event.once('login::open', stopLoading);
-                salla.event.once('cart::submit.failed', stopLoading);
-
-                btn.load();
-                keepLoading.observe(btn, { attributes: true, attributeFilter: ['loading'] });
+                if (salla.config.get('user.type') !== 'guest') {
+                    btn.load();
+                    // Keep loading state until page redirects
+                    new MutationObserver(() => {
+                        if (!btn.hasAttribute('loading')) {
+                            btn.setAttribute('loading', '');
+                        }
+                    }).observe(btn, { attributes: true, attributeFilter: ['loading'] });
+                }
                 salla.cart.submit();
             }
         });
@@ -96,9 +309,17 @@ class Cart extends BasePage {
         // update each item data
         cartData.items?.forEach(item => this.updateItemInfo(item));
 
-        // Summary totals (subtotal, discount, shipping, tax, options) are owned by
-        // <salla-cart-summary-card> now; the theme only manages the free-shipping bar.
-        app.toggleElementClassIf(app.freeShipping, 'has_free', 'hidden', () => !!cartData.free_shipping_bar);
+        app.subTotal.innerHTML = salla.money(cartData.sub_total);
+        if(app.taxAmount) 
+          app.taxAmount.innerHTML = salla.money(cartData.tax_amount);
+        if (app.orderOptionsTotal) app.orderOptionsTotal.innerHTML = salla.money(cartData.options_total);
+        
+        app.toggleElementClassIf(app.totalDiscount, 'discounted', 'hidden', () => !!cartData.total_discount)
+            .toggleElementClassIf(app.shippingCost, 'has_shipping', 'hidden', () => !!cartData.real_shipping_cost && !cartData.free_shipping_bar?.has_free_shipping) 
+            .toggleElementClassIf(app.freeShipping, 'has_free', 'hidden', () => !!cartData.free_shipping_bar);
+
+        app.totalDiscount.querySelector('b').innerHTML = '- ' + salla.money(cartData.total_discount);
+        app.shippingCost.querySelector('b').innerHTML = salla.money(cartData.real_shipping_cost);
 
         if (!cartData.free_shipping_bar) {
             return;

@@ -1,0 +1,120 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_steps_hide %}
+
+  {% set radius_key = component.veloura_steps_radius|default('medium') %}
+  {% if radius_key is iterable and radius_key[0].value is defined %}
+    {% set radius_key = radius_key[0].value %}
+  {% elseif radius_key.value is defined %}
+    {% set radius_key = radius_key.value %}
+  {% endif %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '999px'
+  } %}
+
+  {% set steps_radius = radius_map[radius_key]|default('16px') %}
+
+  {% set section_classes = [
+    's-block',
+    'veloura-purchase-steps',
+    component.veloura_steps_show_connectors ? 'has-connectors' : '',
+    component.veloura_steps_center_text ? 'is-centered' : '',
+    component.veloura_steps_custom_spacing ? 'has-spacing' : '',
+    component.veloura_steps_mobile_only ? 'veloura-purchase-steps--mobile-only' : '',
+    component.veloura_steps_desktop_only ? 'veloura-purchase-steps--desktop-only' : '',
+    component.veloura_steps_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    class="{{ section_classes }}"
+    style="
+      --veloura-steps-radius: {{ steps_radius }};
+      --veloura-steps-title-color: {{ component.veloura_steps_title_color|default('#222222') }};
+      --veloura-steps-text-color: {{ component.veloura_steps_text_color|default('#333333') }};
+      --veloura-steps-accent: {{ component.veloura_steps_accent_color|default('#004956') }};
+      --veloura-steps-card-bg: {{ component.veloura_steps_card_bg|default('#ffffff') }};
+      --veloura-steps-desktop-cols: {{ component.veloura_steps_desktop_columns|default(4) }};
+      --veloura-steps-mobile-cols: {{ component.veloura_steps_mobile_columns|default(2) }};
+      --veloura-steps-spacing: {{ component.veloura_steps_custom_spacing ? component.veloura_steps_spacing|default(0) : 0 }}px;
+    "
+  >
+
+    {% if component.veloura_steps_custom_spacing %}
+      <div class="veloura-purchase-steps__container">
+    {% else %}
+      <div class="container veloura-purchase-steps__container">
+    {% endif %}
+
+      {% if component.veloura_steps_title or component.veloura_steps_subtitle %}
+        <div class="veloura-purchase-steps__heading veloura-component-title" data-veloura-section-heading>
+          {% if component.veloura_steps_title %}
+            <h2>{{ component.veloura_steps_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_steps_subtitle %}
+            <p>{{ component.veloura_steps_subtitle }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if component.veloura_steps_collection %}
+        <div class="veloura-purchase-steps__grid">
+
+          {% for step in component.veloura_steps_collection %}
+
+            {% set step_image = step.step_image.url|default(step.step_image) %}
+            {% set step_color = step.step_color|default(component.veloura_steps_accent_color|default('#004956')) %}
+
+            <div
+              class="veloura-purchase-steps__item"
+              style="--step-color: {{ step_color }};"
+            >
+
+              <div class="veloura-purchase-steps__number">
+                {{ loop.index }}
+              </div>
+
+              <div class="veloura-purchase-steps__icon">
+                {% if step_image %}
+                  <img src="{{ step_image }}" alt="{{ step.step_title|default('step') }}" loading="lazy">
+                {% elseif step.step_icon %}
+                  <i class="{{ step.step_icon }}"></i>
+                {% endif %}
+              </div>
+
+              <div class="veloura-purchase-steps__content">
+  {% if step.step_title %}
+    <h3>{{ step.step_title }}</h3>
+  {% endif %}
+
+  {% if step.step_description %}
+    <p>{{ step.step_description }}</p>
+  {% endif %}
+</div>
+
+{% if component.veloura_steps_show_connectors and not loop.last %}
+  <span class="veloura-purchase-steps__arrow">
+    <i class="sicon-keyboard_arrow_left"></i>
+  </span>
+{% endif %}
+
+            </div>
+
+          {% endfor %}
+
+        </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+{% endif %}

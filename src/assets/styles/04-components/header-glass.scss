@@ -1,0 +1,56 @@
+:root {
+  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-filter: blur(20px) saturate(200%);
+  --veloura-header-glass-border: rgba(255, 255, 255, .42);
+  --veloura-header-glass-background-dark: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-header-glass-border-dark: rgba(255, 255, 255, .14);
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  background: var(--veloura-header-glass-background);
+  border: 1px solid var(--veloura-header-glass-border);
+  -webkit-backdrop-filter: var(--veloura-header-glass-filter);
+  backdrop-filter: var(--veloura-header-glass-filter);
+  pointer-events: none;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur #mainnav,
+.store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner,
+.store-header.veloura-top-enabled.veloura-top-blur .veloura-header-container,
+.store-header.veloura-top-enabled.veloura-top-blur .veloura-header-grid {
+  background: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .sub-menu {
+  background: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+  backdrop-filter: var(--veloura-header-glass-filter) !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .sub-menu > li,
+.store-header.veloura-top-enabled.veloura-top-blur .sub-menu > li > a {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+html.dark .store-header.veloura-top-enabled.veloura-top-blur::before,
+body.dark .store-header.veloura-top-enabled.veloura-top-blur::before,
+html.dark .store-header.veloura-top-enabled.veloura-top-blur .sub-menu,
+body.dark .store-header.veloura-top-enabled.veloura-top-blur .sub-menu {
+  background: var(--veloura-header-glass-background-dark) !important;
+  border-color: var(--veloura-header-glass-border-dark) !important;
+}

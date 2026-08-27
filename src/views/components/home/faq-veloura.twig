@@ -1,0 +1,164 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% set radius_map = {
+  'sharp': '0px',
+  'soft': '8px',
+  'medium': '14px',
+  'large': '22px',
+  'round': '999px'
+} %}
+
+{% if not component.veloura_faq_hide_section %}
+
+{% set faq_classes = [
+  's-block',
+  'veloura-faq',
+  component.veloura_faq_enable_custom_spacing ? 'has-spacing' : '',
+  component.veloura_faq_custom_classes ?: ''
+] %}
+
+{% if component.veloura_faq_show_mobile_only %}
+  {% set faq_classes = faq_classes|merge(['veloura-faq-mobile-only']) %}
+{% endif %}
+
+{% if component.veloura_faq_show_desktop_only %}
+  {% set faq_classes = faq_classes|merge(['veloura-faq-desktop-only']) %}
+{% endif %}
+
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="{{ faq_classes|join(' ') }}"
+  
+  style="
+    --faq-title-color: {{ component.veloura_faq_title_color|default('#383838') }};
+    --faq-bg: {{ component.veloura_faq_background_color|default('#eeeeee') }};
+    --faq-text: {{ component.veloura_faq_text_color|default('#323232') }};
+    --faq-border: {{ component.veloura_faq_hide_border ? 'transparent' : component.veloura_faq_border_color|default('#323232') }};
+    --faq-radius: {{ radius_map[component.veloura_faq_radius|default('large')]|default('22px') }};
+    --faq-spacing: {{ component.veloura_faq_enable_custom_spacing ? component.veloura_faq_custom_spacing|default(0) : 0 }}px;
+  "
+>
+
+{% if component.veloura_faq_enable_custom_spacing %}
+  <div class="veloura-faq__container">
+{% else %}
+  <div class="container veloura-faq__container">
+{% endif %}
+  <div class="veloura-faq__inner">
+
+    {% if component.veloura_faq_title or component.veloura_faq_subtitle %}
+      <div class="veloura-faq__heading veloura-component-title" data-veloura-section-heading>
+        {% if component.veloura_faq_title %}
+          <h2>{{ component.veloura_faq_title }}</h2>
+        {% endif %}
+
+        {% if component.veloura_faq_subtitle %}
+          <p>{{ component.veloura_faq_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% for item in component.veloura_faq_items %}
+      <div class="veloura-faq__item">
+        <button type="button" class="veloura-faq__question">
+          {{ item.veloura_faq_question }}
+        </button>
+
+        <div class="veloura-faq__answer">
+          <div class="veloura-faq__answer-inner">
+            {{ item.veloura_faq_answer }}
+
+            {% if item.veloura_faq_button_text %}
+              <a href="{{ item.veloura_faq_url ?: '#' }}" class="veloura-faq__button">
+                {{ item.veloura_faq_button_text }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+  </div>
+</section>
+
+{% endif %}
+<script>
+/* VELOURA_FAQ_INLINE_FIX */
+(function () {
+  if (window.__velouraFaqInlineFix) return;
+  window.__velouraFaqInlineFix = true;
+
+  function prepareFaq() {
+    document.querySelectorAll('.veloura-faq__item').forEach(function (item) {
+      var button = item.querySelector('.veloura-faq__question');
+      var answer = item.querySelector('.veloura-faq__answer');
+
+      if (!button || !answer) return;
+
+      var opened = item.classList.contains('is-open');
+
+      button.setAttribute(
+        'aria-expanded',
+        opened ? 'true' : 'false'
+      );
+
+      if (!opened) {
+        answer.style.height = '0px';
+      }
+    });
+  }
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('.veloura-faq__question');
+
+    if (!button) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    var item = button.closest('.veloura-faq__item');
+
+    if (!item) return;
+
+    var answer = item.querySelector('.veloura-faq__answer');
+
+    if (!answer) return;
+
+    var opened = item.classList.contains('is-open');
+
+    if (opened) {
+      answer.style.height = answer.scrollHeight + 'px';
+
+      requestAnimationFrame(function () {
+        item.classList.remove('is-open');
+        button.setAttribute('aria-expanded', 'false');
+        answer.style.height = '0px';
+      });
+
+      return;
+    }
+
+    item.classList.add('is-open');
+    button.setAttribute('aria-expanded', 'true');
+    answer.style.height = answer.scrollHeight + 'px';
+
+    answer.addEventListener('transitionend', function done() {
+      if (item.classList.contains('is-open')) {
+        answer.style.height = 'auto';
+      }
+
+      answer.removeEventListener('transitionend', done);
+    });
+  }, true);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', prepareFaq);
+  } else {
+    prepareFaq();
+  }
+})();
+</script>

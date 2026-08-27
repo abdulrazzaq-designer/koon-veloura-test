@@ -1,0 +1,131 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_popup_hide %}
+
+  {% set popup_image = component.veloura_popup_image.url|default(component.veloura_popup_image) %}
+
+  {% set radius_key = component.veloura_popup_radius|default('large') %}
+  {% if radius_key is iterable and radius_key[0].value is defined %}
+    {% set radius_key = radius_key[0].value %}
+  {% elseif radius_key.value is defined %}
+    {% set radius_key = radius_key.value %}
+  {% endif %}
+
+  {% set position_key = component.veloura_popup_position|default('center') %}
+  {% if position_key is iterable and position_key[0].value is defined %}
+    {% set position_key = position_key[0].value %}
+  {% elseif position_key.value is defined %}
+    {% set position_key = position_key.value %}
+  {% endif %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '40px'
+  } %}
+
+  {% set popup_radius = radius_map[radius_key]|default('28px') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    id="veloura-popup-{{ position }}"
+    class="
+      veloura-popup
+      veloura-popup--{{ position_key }}
+      {{ component.veloura_popup_mobile_only ? 'veloura-popup--mobile-only' : '' }}
+      {{ component.veloura_popup_desktop_only ? 'veloura-popup--desktop-only' : '' }}
+      {{ component.veloura_popup_custom_classes ?: '' }}
+    "
+    data-delay="{{ component.veloura_popup_delay|default(1) }}"
+    data-once="{{ component.veloura_popup_once ? 'true' : 'false' }}"
+    style="
+      --veloura-popup-radius: {{ popup_radius }};
+      --veloura-popup-bg: {{ component.veloura_popup_bg_color|default('#ffffff') }};
+      --veloura-popup-text: {{ component.veloura_popup_text_color|default('#222222') }};
+      --veloura-popup-accent: {{ component.veloura_popup_accent_color|default('#004956') }};
+      --veloura-popup-overlay: {{ component.veloura_popup_overlay_color|default('#000000') }};
+    "
+  >
+
+    <div class="veloura-popup__overlay" data-popup-close></div>
+
+    <div class="veloura-popup__container">
+      <div class="veloura-popup__box veloura-glass-surface veloura-glass-popup-surface">
+
+        {% if component.veloura_popup_show_close %}
+          <button class="veloura-popup__close" type="button" data-popup-close aria-label="close">
+            ×
+          </button>
+        {% endif %}
+
+        {% if popup_image %}
+          <div class="veloura-popup__image">
+            <img src="{{ popup_image }}" alt="{{ component.veloura_popup_title|default(store.name) }}" loading="lazy">
+          </div>
+        {% endif %}
+
+        <div class="veloura-popup__content">
+          {% if component.veloura_popup_title %}
+            <h2>{{ component.veloura_popup_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_popup_subtitle %}
+            <p>{{ component.veloura_popup_subtitle|raw }}</p>
+          {% endif %}
+
+          {% if component.veloura_popup_show_button and component.veloura_popup_button_text %}
+            <a href="#" class="veloura-popup__button">
+              {{ component.veloura_popup_button_text }}
+            </a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const popup = document.getElementById('veloura-popup-{{ position }}');
+      if (!popup) return;
+
+      const once = popup.dataset.once === 'true';
+      const key = 'veloura_popup_closed_{{ position }}';
+      const delay = parseInt(popup.dataset.delay || '1', 10) * 1000;
+
+      if (once && localStorage.getItem(key) === 'true') {
+        popup.remove();
+        return;
+      }
+
+      setTimeout(function () {
+        popup.classList.add('is-active');
+        document.documentElement.classList.add('veloura-popup-open');
+      }, delay);
+
+      function closePopup() {
+        popup.classList.remove('is-active');
+        document.documentElement.classList.remove('veloura-popup-open');
+
+        if (once) {
+          localStorage.setItem(key, 'true');
+        }
+
+        setTimeout(function () {
+          popup.remove();
+        }, 300);
+      }
+
+      popup.querySelectorAll('[data-popup-close]').forEach(function (el) {
+        el.addEventListener('click', closePopup);
+      });
+    });
+  </script>
+
+{% endif %}

@@ -1,0 +1,273 @@
+/* ========================================================================
+   Veloura V59 — neutral silver glass, truly frosted desktop submenus and
+   integrated desktop search when the detached-search option is disabled.
+
+   This file is loaded after V58 and is intentionally limited to the header,
+   its connected/detached search surfaces, and desktop category dropdowns.
+   ======================================================================== */
+
+:root {
+  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-background-dark: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-header-glass-border: rgba(255, 255, 255, .42);
+  --veloura-header-glass-border-dark: rgba(255, 255, 255, .14);
+  --veloura-header-glass-filter: blur(20px) saturate(200%);
+  --veloura-header-search-height: 36px;
+}
+
+/* ------------------------------------------------------------------------
+   One neutral glass contract for the header and search.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack--blur,
+html body.veloura-glass-effect .veloura-header-tabs-stack {
+  --veloura-glass-bg: var(--veloura-header-glass-background);
+  --veloura-glass-bg-dark: var(--veloura-header-glass-background-dark);
+  --veloura-glass-border: var(--veloura-header-glass-border);
+  --veloura-glass-border-dark: var(--veloura-header-glass-border-dark);
+  --veloura-glass-filter: var(--veloura-header-glass-filter);
+  --veloura-glass-fallback: var(--veloura-header-glass-background);
+  --veloura-glass-dark-fallback: var(--veloura-header-glass-background-dark);
+  --veloura-border: var(--veloura-header-glass-border);
+  --veloura-filter: var(--veloura-header-glass-filter);
+}
+
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
+html body .veloura-header-tabs-stack--blur .veloura-search-surface,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
+  background: var(--veloura-header-glass-background) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+  border-color: var(--veloura-header-glass-border) !important;
+  -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+  backdrop-filter: var(--veloura-header-glass-filter) !important;
+}
+
+html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.dark .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html.dark body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
+html body.dark.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
+html.dark body .veloura-header-tabs-stack--blur .veloura-search-surface,
+html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface,
+html.dark body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface,
+html body.dark.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
+  background: var(--veloura-header-glass-background-dark) !important;
+  background-color: var(--veloura-header-glass-background-dark) !important;
+  border-color: var(--veloura-header-glass-border-dark) !important;
+}
+
+/* The hydrated Salla layers stay transparent so the search cannot introduce
+   a second shade on top of the exact header glass color. */
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component,
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component input,
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(input),
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(form),
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(container),
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component input,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(input),
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(form),
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-search-surface,
+html body .veloura-search-surface salla-search.veloura-header-search-component,
+html body .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
+html body .veloura-search-surface salla-search.veloura-header-search-component input,
+html body .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
+html body .veloura-search-surface salla-search.veloura-header-search-component::part(input),
+html body .veloura-search-surface salla-search.veloura-header-search-component::part(form),
+html body .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
+  min-height: var(--veloura-header-search-height) !important;
+  height: var(--veloura-header-search-height) !important;
+  max-height: var(--veloura-header-search-height) !important;
+}
+
+/* ------------------------------------------------------------------------
+   Desktop connected mode.
+
+   Physical order from left to right is:
+   left-side icons | flexible search | logo | right-side icons.
+   In RTL reading order this gives the requested right-icons, logo, search,
+   then remaining icons. Categories remain on the compact second row.
+   ------------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid,
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid {
+    grid-template-columns: max-content minmax(190px, 1fr) max-content max-content !important;
+    grid-template-areas:
+      'left search logo right'
+      'menu menu menu menu' !important;
+    grid-auto-rows: auto !important;
+    column-gap: clamp(10px, 1vw, 18px) !important;
+    row-gap: 3px !important;
+    padding-top: clamp(9px, .8vw, 13px) !important;
+    padding-bottom: 4px !important;
+  }
+
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-desktop-search-bar,
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-desktop-search-bar {
+    grid-area: search !important;
+    grid-column: auto !important;
+    grid-row: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+  }
+
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-logo,
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-logo {
+    grid-area: logo !important;
+    align-self: center !important;
+    justify-self: end !important;
+    margin: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-menu-links
+    .veloura-menu-links-wrap {
+    grid-area: menu !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Remove the former large space below the categories without reducing the
+     pointer target below a comfortable desktop size. */
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .main-menu {
+    padding-top: 0 !important;
+    padding-bottom: 3px !important;
+    min-height: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop > li.root-level > a,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .main-menu > li.root-level > a {
+    min-height: 28px !important;
+    padding-block: 4px !important;
+  }
+
+  /* ----------------------------------------------------------------------
+     True frosted dropdowns. Every submenu depth gets a visible neutral glass
+     fill, not only the root UL. This also defeats inherited transparent
+     backgrounds from menu components after hydration.
+     ---------------------------------------------------------------------- */
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop .sub-menu,
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop .sub-menu,
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .main-menu .sub-menu,
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .main-menu .sub-menu {
+    background: var(--veloura-header-glass-background) !important;
+    background-color: var(--veloura-header-glass-background) !important;
+    border: 1px solid var(--veloura-header-glass-border) !important;
+    border-radius: var(--veloura-radius, 24px) !important;
+    -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+    backdrop-filter: var(--veloura-header-glass-filter) !important;
+    box-shadow:
+      0 18px 42px rgba(15, 23, 42, .13),
+      inset 0 1px 0 rgba(255, 255, 255, .30) !important;
+  }
+
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > li,
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > li > a,
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > li,
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > li > a {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  html.dark body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop .sub-menu,
+  html body.dark .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop .sub-menu,
+  html.dark body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop .sub-menu,
+  html body.dark.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-main-menu-desktop .sub-menu {
+    background: var(--veloura-header-glass-background-dark) !important;
+    background-color: var(--veloura-header-glass-background-dark) !important;
+    border-color: var(--veloura-header-glass-border-dark) !important;
+  }
+
+  /* Keep root dropdowns close to their category after compacting the menu
+     row, while preserving the transparent hover bridge from V57. */
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop > li.root-level > .sub-menu {
+    top: calc(100% + 6px) !important;
+  }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+  html body .veloura-header-tabs-stack--blur .veloura-search-surface {
+    background: rgba(232, 233, 235, .94) !important;
+    background-color: rgba(232, 233, 235, .94) !important;
+  }
+
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu {
+    background: rgba(238, 239, 241, .97) !important;
+    background-color: rgba(238, 239, 241, .97) !important;
+  }
+}
+
+
+/* =========================================================
+   Search separation from header background
+   ========================================================= */
+
+html body .veloura-header-search-component,
+html body salla-search.veloura-header-search-component,
+html body .veloura-desktop-search-bar {
+
+  border-top: 1px solid rgba(180, 190, 205, .45) !important;
+  border-bottom: 1px solid rgba(180, 190, 205, .45) !important;
+
+  box-shadow:
+    0 1px 5px rgba(0,0,0,.04) !important;
+
+}

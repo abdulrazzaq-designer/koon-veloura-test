@@ -1,0 +1,129 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_articles_hide %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '999px'
+  } %}
+
+  {% set article_radius = radius_map[component.veloura_articles_radius|default('medium')]|default('16px') %}
+
+  {% set section_classes = [
+    's-block',
+  'veloura-animated-articles',
+  component.veloura_articles_mobile_only ? 'veloura-animated-articles--mobile-only' : '',
+  component.veloura_articles_desktop_only ? 'veloura-animated-articles--desktop-only' : '',
+  component.veloura_articles_custom_spacing ? 'has-spacing' : '',
+  component.veloura_articles_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    class="{{ section_classes }}"
+    style="
+      --article-radius: {{ article_radius }};
+      --veloura-articles-spacing: {{ component.veloura_articles_custom_spacing ? component.veloura_articles_spacing|default(0) : 0 }}px;
+    "
+  >
+    {% if component.veloura_articles_custom_spacing %}
+  <div class="veloura-animated-articles__container">
+{% else %}
+  <div class="container veloura-animated-articles__container">
+{% endif %}
+
+      {% if component.veloura_articles_title or component.veloura_articles_subtitle %}
+        <div class="veloura-animated-articles__heading veloura-component-title" data-veloura-section-heading>
+          {% if component.veloura_articles_title %}
+            <h2>{{ component.veloura_articles_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_articles_subtitle %}
+            <p>{{ component.veloura_articles_subtitle }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if component.veloura_articles_collection|length %}
+        <salla-slider
+          id="veloura-animated-articles-{{ position }}"
+          class="veloura-animated-articles__slider"
+          type="carousel"
+          pagination
+          {% if component.veloura_articles_autoplay %}auto-play{% endif %}
+          {% if component.veloura_articles_hide_arrows %}show-controls="false"{% endif %}
+          slider-config='{
+            "slidesPerView": 1.12,
+            "spaceBetween": 16,
+            "speed": 700,
+            "loop": false,
+            "watchOverflow": false,
+            "allowTouchMove": true,
+            "autoplay": {
+              "delay": 2600,
+              "disableOnInteraction": false
+            },
+            "breakpoints": {
+              "768": {
+                "slidesPerView": 2,
+                "spaceBetween": 20
+              },
+              "1024": {
+                "slidesPerView": 3,
+                "spaceBetween": 24
+              }
+            }
+          }'
+        >
+          <div slot="items">
+            {% for article in component.veloura_articles_collection %}
+              {% set article_url = article.url.url|default('#') %}
+
+              <div class="swiper-slide">
+                <article class="veloura-animated-articles__card">
+                  <a href="{{ article_url }}" class="veloura-animated-articles__image">
+                    {% if article.image %}
+                      <img
+                        src="{{ article.image.url|default(article.image) }}"
+                        alt="{{ article.title|default(store.name) }}"
+                        loading="lazy"
+                      >
+                    {% endif %}
+                  </a>
+
+                  <div class="veloura-animated-articles__content">
+                    {% if article.title %}
+                      <h3>
+                        <a href="{{ article_url }}">
+                          {{ article.title }}
+                        </a>
+                      </h3>
+                    {% endif %}
+
+                    {% if article.excerpt %}
+                      <p>{{ article.excerpt }}</p>
+                    {% endif %}
+
+                    {% if article.button_text %}
+                      <a href="{{ article_url }}" class="veloura-animated-articles__more">
+                        {{ article.button_text }}
+                      </a>
+                    {% endif %}
+                  </div>
+                </article>
+              </div>
+            {% endfor %}
+          </div>
+        </salla-slider>
+      {% endif %}
+
+    </div>
+  </section>
+
+{% endif %}

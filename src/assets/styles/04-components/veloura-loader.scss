@@ -1,0 +1,150 @@
+/* ================================
+   Veloura Loader Screen
+   path: src/assets/styles/04-components/veloura-loader.scss
+================================ */
+
+.veloura-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--vl-text-color, #111827);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--vl-fade-time, 450ms) ease, visibility var(--vl-fade-time, 450ms) ease;
+
+  &.is-hiding {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  &.veloura-loader-bg-solid &__bg {
+    background: var(--vl-bg-color, #fff);
+  }
+
+  &.veloura-loader-bg-gradient &__bg {
+    background: linear-gradient(135deg, var(--vl-grad-1, #020617), var(--vl-grad-2, #0ea5e9));
+  }
+
+  &.veloura-loader-bg-image &__bg {
+    background-image: var(--vl-bg-img);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .28);
+    }
+  }
+
+  &.veloura-loader-bg-glass &__bg {
+    background: rgba(255, 255, 255, .34);
+    backdrop-filter: blur(var(--vl-bg-blur, 16px)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--vl-bg-blur, 16px)) saturate(180%);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+    padding: 28px;
+    max-width: min(420px, calc(100vw - 32px));
+    animation: velouraLoaderEnter .55s ease both;
+  }
+
+  &__logo-wrap {
+    width: var(--vl-logo-width, 120px);
+    height: var(--vl-logo-width, 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  &__logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 24px;
+    display: block;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.5;
+    color: var(--vl-text-color, #111827);
+  }
+
+  &__subtitle {
+    margin: 4px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.8;
+    color: var(--vl-text-color, #111827);
+    opacity: .78;
+  }
+
+  &__bar {
+    width: 170px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, .28);
+    overflow: hidden;
+    margin-top: 2px;
+
+    span {
+      display: block;
+      width: 42%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--vl-bar-color, #0ea5e9);
+      animation: velouraLoaderBar 1.15s ease-in-out infinite;
+    }
+  }
+
+  &.veloura-loader-hide-circle {
+    clip-path: circle(150% at 50% 50%);
+    transition:
+      clip-path var(--vl-fade-time, 450ms) ease,
+      opacity var(--vl-fade-time, 450ms) ease,
+      visibility var(--vl-fade-time, 450ms) ease;
+  }
+
+  &.veloura-loader-hide-circle.is-hiding {
+    clip-path: circle(0% at 50% 50%);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes velouraLoaderEnter {
+  from { opacity: 0; transform: translateY(14px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes velouraLoaderBar {
+  0% { transform: translateX(145%); }
+  50% { transform: translateX(0); }
+  100% { transform: translateX(-145%); }
+}

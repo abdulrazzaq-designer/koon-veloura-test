@@ -1,0 +1,93 @@
+{
+  "settings": [
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_cart_surfaces_enabled_2026",
+      "label": "تفعيل تخصيص خلفية وحواف عناصر السلة",
+      "description": "عند التفعيل يمكنك اختيار لون خلفية وحواف بطاقات المنتجات وملخص الطلب داخل صفحة السلة. عند التعطيل يبقى تصميم السلة الأساسي كما هو.",
+      "icon": "sicon-paint-brush",
+      "wide": true,
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "id": "veloura_cart_surfaces_bg_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون خلفية عناصر السلة",
+      "description": "يطبق اللون على بطاقة المنتج وخياراته وصناديق الشحن والهدايا وملخص الطلب.",
+      "icon": "sicon-palette",
+      "value": "#f3f4f6",
+      "required": false,
+      "conditions": [
+        {"id": "veloura_cart_surfaces_enabled_2026", "operation": "=", "value": true}
+      ]
+    },
+    {
+      "id": "veloura_cart_surfaces_radius_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "حواف عناصر السلة",
+      "description": "اختر درجة تدوير حواف بطاقات المنتجات وملخص الطلب.",
+      "icon": "sicon-border-radius",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {"label": "ناعمة", "value": "medium", "key": "veloura-cart-surfaces-radius-medium-2026"}
+      ],
+      "options": [
+        {"label": "حادة", "value": "sharp", "key": "veloura-cart-surfaces-radius-sharp-2026"},
+        {"label": "خفيفة", "value": "soft", "key": "veloura-cart-surfaces-radius-soft-2026"},
+        {"label": "ناعمة", "value": "medium", "key": "veloura-cart-surfaces-radius-medium-2026"},
+        {"label": "ناعمة جدًا", "value": "large", "key": "veloura-cart-surfaces-radius-large-2026"},
+        {"label": "دائرية", "value": "round", "key": "veloura-cart-surfaces-radius-round-2026"}
+      ],
+      "conditions": [
+        {"id": "veloura_cart_surfaces_enabled_2026", "operation": "=", "value": true}
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_cart_surfaces_border_enabled_2026",
+      "label": "إظهار إطار خفيف حول العناصر",
+      "description": "يفيد عندما يكون لون العناصر قريبًا من لون خلفية المتجر.",
+      "icon": "sicon-border-all",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {"id": "veloura_cart_surfaces_enabled_2026", "operation": "=", "value": true}
+      ]
+    },
+    {
+      "id": "veloura_cart_surfaces_border_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون إطار عناصر السلة",
+      "icon": "sicon-palette",
+      "value": "#e5e7eb",
+      "required": false,
+      "conditions": [
+        {"id": "veloura_cart_surfaces_enabled_2026", "operation": "=", "value": true},
+        {"id": "veloura_cart_surfaces_border_enabled_2026", "operation": "=", "value": true}
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_cart_surfaces_shadow_enabled_2026",
+      "label": "إظهار ظل خفيف حول العناصر",
+      "description": "يضيف ظلًا محايدًا وخفيفًا دون تغيير لون العناصر.",
+      "icon": "sicon-magic",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {"id": "veloura_cart_surfaces_enabled_2026", "operation": "=", "value": true}
+      ]
+    }
+  ]
+}

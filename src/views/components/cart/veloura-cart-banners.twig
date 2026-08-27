@@ -1,0 +1,28 @@
+{% set vb_enabled = theme.settings.get('veloura_cart_banners_enabled_2026') %}
+{% set vb_items = theme.settings.get('veloura_cart_banners_items_2026') %}
+{% if vb_enabled and vb_items|length %}
+  {% set vb_title = theme.settings.get('veloura_cart_banners_title_2026') %}
+  {% set vb_position = theme.settings.get('veloura_cart_banners_position_2026')|default('after_products') %}
+  {% set vb_radius = theme.settings.get('veloura_cart_banners_radius_2026')|default('medium') %}
+  {% set vb_gap = theme.settings.get('veloura_cart_banners_gap_2026')|default(14) %}
+  {% set vb_columns = theme.settings.get('veloura_cart_banners_columns_2026')|default(2) %}
+  {% set vb_min = theme.settings.get('veloura_cart_banners_min_total_2026')|default(0) %}
+  <section
+    class="veloura-cart-banners"
+    data-veloura-cart-banners
+    data-position="{{ vb_position }}"
+    data-min-total="{{ vb_min }}"
+    style="--veloura-cart-banner-gap:{{ vb_gap }}px;--veloura-cart-banner-columns:{{ vb_columns }}"
+  >
+    {% if vb_title %}<h2 class="veloura-cart-banners__title">{{ vb_title }}</h2>{% endif %}
+    <div class="veloura-cart-banners__grid veloura-cart-banners__grid--{{ vb_radius }}">
+      {% for banner in vb_items %}
+        {% if banner.image %}
+          {% if banner.url %}<a class="veloura-cart-banners__item" href="{{ banner.url }}"{% if banner.new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>{% else %}<div class="veloura-cart-banners__item">{% endif %}
+            <img src="{{ banner.image }}" alt="{{ vb_title|default('') }}" loading="lazy">
+          {% if banner.url %}</a>{% else %}</div>{% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

@@ -1,9 +1,6 @@
-packages:
-  - '.'
-
 allowBuilds:
   '@parcel/watcher': true
-  bufferutil: true
-  es5-ext: true
-  swiper: true
-  utf-8-validate: true
+  bufferutil: false
+  es5-ext: false
+  swiper: set this to true or false
+  utf-8-validate: false

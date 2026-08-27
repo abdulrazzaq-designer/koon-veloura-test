@@ -1,0 +1,316 @@
+/* ========================================================================
+   Veloura Cart Surfaces V115
+   ======================================================================== */
+
+.veloura-cart-page.veloura-cart-surfaces-enabled {
+  --veloura-cart-primary-bg:
+    var(--veloura-site-bg, #ffffff);
+
+  --veloura-cart-secondary-bg:
+    var(--veloura-site-second-bg, #f8fafc);
+
+  --veloura-cart-text:
+    var(--color-text, #111827);
+
+  --veloura-cart-border-width: 0px;
+
+  --salla-button-border-radius:
+    var(--veloura-cart-real-radius, 0px);
+
+  --salla-input-border-radius:
+    var(--veloura-cart-real-radius, 0px);
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled {
+  --veloura-cart-border-width: 1px;
+}
+
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled,
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled {
+  --veloura-cart-primary-bg:
+    var(--veloura-dark-body-bg, #010202);
+
+  --veloura-cart-secondary-bg:
+    var(--veloura-dark-secondary-bg, #010612);
+
+  --veloura-cart-text:
+    var(--veloura-dark-primary-text, #ffffff);
+}
+
+/* ------------------------------------------------------------------------
+   OUTER surfaces only:
+   this is the ONLY place the configurable cart border color is used.
+   ------------------------------------------------------------------------ */
+.veloura-cart-page.veloura-cart-surfaces-enabled
+:is(
+  .cart-item,
+  #free-shipping,
+  #cart-gifting,
+  .veloura-cart-summary-surface
+) {
+  background:
+    var(--veloura-cart-secondary-bg) !important;
+
+  background-color:
+    var(--veloura-cart-secondary-bg) !important;
+
+  border:
+    var(--veloura-cart-border-width)
+    solid
+    var(--veloura-cart-surface-border-color, #e5e7eb) !important;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Product image:
+   radius follows the general setting, but the custom cart frame does NOT.
+   The original neutral image border remains owned by the theme/Salla.
+   ------------------------------------------------------------------------ */
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-image-link,
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-image {
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-image-link {
+  overflow: hidden !important;
+}
+
+/* ------------------------------------------------------------------------
+   Options hierarchy:
+   card = secondary
+   outer options box = primary
+   actual dropdown/input = secondary
+
+   No configurable cart frame on these internal elements.
+   ------------------------------------------------------------------------ */
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-options-shell {
+  display: block !important;
+  width: 100% !important;
+
+  margin: 0 0 1.25rem !important;
+  padding: 0 !important;
+
+  background:
+    var(--veloura-cart-primary-bg) !important;
+
+  background-color:
+    var(--veloura-cart-primary-bg) !important;
+
+  border: 0 !important;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-options-host {
+  display: block !important;
+  width: 100% !important;
+
+  background:
+    var(--veloura-cart-primary-bg) !important;
+
+  color:
+    var(--veloura-cart-text) !important;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  overflow: hidden !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-options-shell
+.s-product-options-wrapper {
+  width: 100% !important;
+  margin: 0 !important;
+
+  background:
+    var(--veloura-cart-primary-bg) !important;
+
+  background-color:
+    var(--veloura-cart-primary-bg) !important;
+
+  color:
+    var(--veloura-cart-text) !important;
+
+  border: 0 !important;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+/*
+ * Only the real field receives the secondary background.
+ * Do not paint .s-product-options-option-content.
+ */
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-options-shell
+:is(
+  select,
+  input:not([type="hidden"]),
+  textarea,
+  .s-form-control,
+  .s-input
+) {
+  background:
+    var(--veloura-cart-secondary-bg) !important;
+
+  background-color:
+    var(--veloura-cart-secondary-bg) !important;
+
+  color:
+    var(--veloura-cart-text) !important;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-product-options-shell
+:is(
+  .s-product-options-option-label,
+  .s-form-label
+) {
+  color:
+    var(--veloura-cart-text) !important;
+}
+
+/* ------------------------------------------------------------------------
+   Quantity:
+   global radius on the outer segmented control only.
+   No configurable cart frame.
+   ------------------------------------------------------------------------ */
+.veloura-cart-page.veloura-cart-surfaces-enabled
+salla-quantity-input.veloura-cart-quantity {
+  display: inline-block;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.s-quantity-input-container {
+  background:
+    var(--veloura-cart-secondary-bg) !important;
+
+  background-color:
+    var(--veloura-cart-secondary-bg) !important;
+
+  color:
+    var(--veloura-cart-text) !important;
+
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+:is(
+  .s-quantity-input-button,
+  .s-quantity-input-input
+) {
+  background:
+    var(--veloura-cart-secondary-bg) !important;
+
+  background-color:
+    var(--veloura-cart-secondary-bg) !important;
+
+  color:
+    var(--veloura-cart-text) !important;
+
+  border-radius: 0 !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.s-quantity-input-button {
+  fill:
+    var(--veloura-cart-text) !important;
+}
+
+/* ------------------------------------------------------------------------
+   General cart controls:
+   radius = general radius.
+   Their native/neutral borders are NOT replaced with the cart frame color.
+   ------------------------------------------------------------------------ */
+.veloura-cart-page.veloura-cart-surfaces-enabled
+:is(
+  button,
+  .btn,
+  .s-button-element,
+  .s-form-control,
+  select,
+  input:not([type="hidden"]),
+  textarea
+) {
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+salla-button,
+.veloura-cart-page.veloura-cart-surfaces-enabled
+salla-cart-coupons {
+  --salla-button-border-radius:
+    var(--veloura-cart-real-radius, 0px);
+
+  --salla-input-border-radius:
+    var(--veloura-cart-real-radius, 0px);
+}
+
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.cart-submit-wrap,
+.veloura-cart-page.veloura-cart-surfaces-enabled
+.veloura-cart-submit {
+  border-radius:
+    var(--veloura-cart-real-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Dark text
+   ------------------------------------------------------------------------ */
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled
+:is(
+  .cart-item h1,
+  .cart-item h2,
+  .cart-item h3,
+  .cart-item a,
+  .veloura-cart-summary-surface h1,
+  .veloura-cart-summary-surface h2,
+  .veloura-cart-summary-surface h3,
+  .veloura-cart-product-options-shell
+),
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled
+:is(
+  .cart-item h1,
+  .cart-item h2,
+  .cart-item h3,
+  .cart-item a,
+  .veloura-cart-summary-surface h1,
+  .veloura-cart-summary-surface h2,
+  .veloura-cart-summary-surface h3,
+  .veloura-cart-product-options-shell
+) {
+  color:
+    var(--veloura-cart-text) !important;
+}

@@ -1,0 +1,1946 @@
+/* ========================================================================
+   Veloura V79 — clean dark color roles
+   ======================================================================== */
+
+html.dark body,
+html body.dark {
+  background-color: var(--veloura-dark-body-bg, #010202) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+html.dark body :is(.app-inner, main),
+html body.dark :is(.app-inner, main) {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+/* Generic sections use the dark secondary background.
+   Product cards are deliberately excluded. */
+html.dark body :is(
+  .veloura-testimonials__card,
+  .veloura-store-features__item,
+  .veloura-animated-articles__card,
+  .veloura-before-after__card,
+  .veloura-quick-links__card,
+  .veloura-about__box,
+  .veloura-about__feature,
+  .veloura-about__stat,
+  .veloura-purchase-steps__item,
+  .veloura-faq__item,
+  .veloura-branches__tab,
+  .veloura-brands__item,
+  .article-card,
+  .blog-card,
+  .s-blog-card
+),
+html body.dark :is(
+  .veloura-testimonials__card,
+  .veloura-store-features__item,
+  .veloura-animated-articles__card,
+  .veloura-before-after__card,
+  .veloura-quick-links__card,
+  .veloura-about__box,
+  .veloura-about__feature,
+  .veloura-about__stat,
+  .veloura-purchase-steps__item,
+  .veloura-faq__item,
+  .veloura-branches__tab,
+  .veloura-brands__item,
+  .article-card,
+  .blog-card,
+  .s-blog-card
+) {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-image: none !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  outline: 0 !important;
+}
+
+/* Primary and secondary text roles; avoid global span/[class*=text] rules. */
+html.dark body :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b,
+  .title,
+  .section-title,
+  .s-block__title
+),
+html body.dark :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b,
+  .title,
+  .section-title,
+  .s-block__title
+) {
+  color: var(--veloura-dark-primary-text, #ffffff);
+}
+
+html.dark body :is(
+  .subtitle,
+  .description,
+  .section-subtitle,
+  .s-block__description
+),
+html body.dark :is(
+  .subtitle,
+  .description,
+  .section-subtitle,
+  .s-block__description
+) {
+  color: var(--veloura-dark-secondary-text, #d7e0e8);
+}
+
+/* Product cards: one dedicated background across all sections. */
+html.dark body :is(
+  .s-product-card-entry,
+  product-card,
+  .product-entry
+),
+html body.dark :is(
+  .s-product-card-entry,
+  product-card,
+  .product-entry
+) {
+  background: var(--veloura-dark-product-card-bg, #111111) !important;
+  background-color: var(--veloura-dark-product-card-bg, #111111) !important;
+  color: var(--veloura-dark-product-card-text, #ffffff) !important;
+  border-color: var(--veloura-dark-product-card-border, #242424) !important;
+}
+
+html.dark body .s-product-card-entry :is(
+  .s-product-card-image,
+  .s-product-card-image > a,
+  .s-product-card-image-cover,
+  .s-product-card-content,
+  .s-product-card-content-main,
+  .s-product-card-content-sub,
+  .s-product-card-content-footer,
+  .veloura-card-bottom
+),
+html body.dark .s-product-card-entry :is(
+  .s-product-card-image,
+  .s-product-card-image > a,
+  .s-product-card-image-cover,
+  .s-product-card-content,
+  .s-product-card-content-main,
+  .s-product-card-content-sub,
+  .s-product-card-content-footer,
+  .veloura-card-bottom
+) {
+  background: var(--veloura-dark-product-card-bg, #111111) !important;
+  background-color: var(--veloura-dark-product-card-bg, #111111) !important;
+  background-image: none !important;
+}
+
+html.dark body .s-product-card-entry
+  :is(.s-product-card-content-title, .s-product-card-content-title a),
+html body.dark .s-product-card-entry
+  :is(.s-product-card-content-title, .s-product-card-content-title a) {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  opacity: 1 !important;
+}
+
+html.dark body .s-product-card-entry .s-product-card-content-subtitle,
+html body.dark .s-product-card-entry .s-product-card-content-subtitle {
+  color: var(--veloura-dark-secondary-text, #d7e0e8) !important;
+  opacity: 1 !important;
+}
+
+html.dark body .s-product-card-entry :is(
+  .s-product-card-price,
+  .s-product-card-sale-price,
+  .s-product-card-regular-price,
+  [class*='price'],
+  [class*='Price']
+),
+html body.dark .s-product-card-entry :is(
+  .s-product-card-price,
+  .s-product-card-sale-price,
+  .s-product-card-regular-price,
+  [class*='price'],
+  [class*='Price']
+) {
+  color: var(--veloura-dark-product-card-text, #ffffff) !important;
+}
+
+/* Header text/icons use the dark primary text setting only. */
+html.dark body .store-header.veloura-top-enabled,
+html body.dark .store-header.veloura-top-enabled {
+  --veloura-top-text: var(--veloura-dark-primary-text, #ffffff) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+html.dark body .store-header.veloura-top-enabled :where(
+  .veloura-header-icon,
+  .veloura-header__actions a,
+  .veloura-header__actions button,
+  .veloura-menu-links-wrap a,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-dark-toggle,
+  .veloura-search-toggle,
+  .veloura-menu-trigger-mobile,
+  salla-cart-summary
+),
+html body.dark .store-header.veloura-top-enabled :where(
+  .veloura-header-icon,
+  .veloura-header__actions a,
+  .veloura-header__actions button,
+  .veloura-menu-links-wrap a,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-dark-toggle,
+  .veloura-search-toggle,
+  .veloura-menu-trigger-mobile,
+  salla-cart-summary
+) {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+/* Solid side menu; its glass mode is owned by veloura-glass.scss. */
+html.dark body .mm-ocd .mm-ocd__content,
+html body.dark .mm-ocd .mm-ocd__content {
+  background: var(
+    --veloura-dark-side-menu-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  color: var(--veloura-dark-side-menu-text, #ffffff) !important;
+}
+
+html.dark.veloura-side-cats-glass body .mm-ocd .mm-ocd__content,
+html body.dark.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--veloura-glass-edge-top) 0,
+      var(--veloura-glass-edge-top) 1px,
+      transparent 1px,
+      transparent calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) calc(100% - 1px),
+      var(--veloura-glass-edge-bottom) 100%
+    ),
+    var(--veloura-glass-surface) !important;
+}
+
+/* Footer is one visual piece and preserves its existing radius variable. */
+html.dark body .store-footer.veloura-footer-enabled,
+html body.dark .store-footer.veloura-footer-enabled {
+  background: transparent !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  overflow: visible !important;
+}
+
+html.dark body .store-footer.veloura-footer-enabled
+  :is(.store-footer__inner, .veloura-footer-main),
+html body.dark .store-footer.veloura-footer-enabled
+  :is(.store-footer__inner, .veloura-footer-main) {
+  --veloura-footer-bg: var(
+    --veloura-dark-footer-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  );
+  --veloura-footer-title: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-footer-text: var(--veloura-dark-secondary-text, #d7e0e8);
+  --veloura-footer-link: var(--veloura-dark-secondary-text, #d7e0e8);
+
+  background: var(--veloura-footer-bg) !important;
+  background-color: var(--veloura-footer-bg) !important;
+  border-radius:
+    var(--veloura-footer-real-radius)
+    var(--veloura-footer-real-radius)
+    0
+    0 !important;
+}
+
+html.dark body .store-footer.veloura-footer-enabled .veloura-footer-bottom,
+html body.dark .store-footer.veloura-footer-enabled .veloura-footer-bottom {
+  background: var(
+    --veloura-dark-footer-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  background-color: var(
+    --veloura-dark-footer-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  color: var(--veloura-dark-secondary-text, #d7e0e8) !important;
+  border-top-color: transparent !important;
+  border-radius:
+    0
+    0
+    var(--veloura-footer-real-radius)
+    var(--veloura-footer-real-radius) !important;
+}
+
+/* Forms */
+html.dark body :is(
+  input:not([type='color']),
+  textarea,
+  select,
+  .s-form-control
+),
+html body.dark :is(
+  input:not([type='color']),
+  textarea,
+  select,
+  .s-form-control
+) {
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  border-color: rgba(255, 255, 255, .10) !important;
+}
+
+html.dark body .veloura-search-surface :is(input, textarea),
+html body.dark .veloura-search-surface :is(input, textarea) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* Dark toggle */
+.veloura-dark-toggle--right {
+  right: 16px;
+}
+
+.veloura-dark-toggle--left {
+  left: 16px;
+}
+
+.veloura-dark-toggle__icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+body.dark .veloura-dark-toggle__icon--moon {
+  display: none;
+}
+
+body:not(.dark) .veloura-dark-toggle__icon--sun {
+  display: none;
+}
+
+
+/* ================================
+   Veloura Category Cards - Clean Fixed
+   switches + free drag + slides 4.35
+================================ */
+
+.veloura-category-page {
+  --veloura-category-primary: var(--color-primary, #004956);
+  --veloura-category-gap: 12px;
+  --veloura-category-image-bg: #f5f7f8;
+}
+
+.veloura-category-sticky-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Wrapper */
+.veloura-category-cards {
+  gap: var(--veloura-category-gap, 12px) !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Grid */
+.veloura-category-cards.is-grid {
+  display: grid !important;
+  grid-template-columns: repeat(var(--veloura-category-desktop-cols), minmax(0, 1fr)) !important;
+  align-items: start !important;
+  overflow: visible !important;
+}
+
+/* Slider */
+.veloura-category-cards.is-slider {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+
+  padding: 4px 0 10px !important;
+  margin: 0 !important;
+
+  scroll-snap-type: none !important;
+  scroll-behavior: auto !important;
+  scroll-padding: 0 !important;
+
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+
+  cursor: grab !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: pan-x !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.veloura-category-cards.is-slider::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* مثل slidesPerView: 4.35 */
+.veloura-category-cards.is-slider .veloura-category-card {
+  flex: 0 0 calc(
+    (100% - (var(--veloura-category-gap, 12px) * (var(--veloura-category-desktop-slides) - 1)))
+    / var(--veloura-category-desktop-slides)
+  ) !important;
+}
+
+/* Card base */
+.veloura-category-card {
+  position: relative !important;
+  min-width: 0 !important;
+  width: auto !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+
+  padding: 8px !important;
+  margin: 0 !important;
+
+  background: var(--veloura-category-image-bg, #f5f7f8) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important;
+
+  overflow: hidden !important;
+  text-decoration: none !important;
+  color: inherit !important;
+
+  scroll-snap-align: unset !important;
+  scroll-snap-stop: normal !important;
+
+  cursor: grab !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
+/* Transparent background switch */
+.veloura-category-images-transparent .veloura-category-card {
+  background: transparent !important;
+}
+
+.veloura-category-card *,
+.veloura-category-cards.is-slider a,
+.veloura-category-cards.is-slider img {
+  -webkit-user-drag: none !important;
+}
+
+.veloura-category-cards.is-slider .veloura-category-card,
+.veloura-category-cards.is-slider .veloura-category-card *,
+.veloura-category-cards.is-slider a,
+.veloura-category-cards.is-slider img {
+  cursor: grab !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.veloura-category-cards.is-slider.is-dragging,
+.veloura-category-cards.is-slider.is-dragging *,
+body.veloura-category-is-dragging,
+body.veloura-category-is-dragging * {
+  cursor: grabbing !important;
+}
+
+.veloura-category-cards.is-slider.is-dragging a {
+  pointer-events: none !important;
+}
+
+/* ================================
+   Position: Top
+================================ */
+
+.veloura-category-image-position-top .veloura-category-card {
+  flex-direction: column !important;
+  text-align: center !important;
+}
+
+.veloura-category-image-position-top .veloura-category-card__image {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* ================================
+   Position: Right
+================================ */
+
+.veloura-category-image-position-right .veloura-category-card {
+  flex-direction: row !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.veloura-category-image-position-right .veloura-category-card__title {
+  width: auto !important;
+  text-align: right !important;
+  white-space: normal !important;
+}
+
+/* ================================
+   Image base
+================================ */
+
+.veloura-category-card__image {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  overflow: hidden !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.veloura-category-card__img,
+.veloura-category-card__image img {
+  display: block !important;
+}
+
+/* ================================
+   Top shapes
+================================ */
+
+.veloura-category-image-position-top.veloura-category-shape-auto .veloura-category-card__image {
+  aspect-ratio: auto !important;
+  height: auto !important;
+}
+
+.veloura-category-image-position-top.veloura-category-shape-auto .veloura-category-card__img,
+.veloura-category-image-position-top.veloura-category-shape-auto .veloura-category-card__image img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+.veloura-category-image-position-top.veloura-category-shape-square .veloura-category-card__image {
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+}
+
+.veloura-category-image-position-top.veloura-category-shape-landscape .veloura-category-card__image {
+  aspect-ratio: 4 / 3 !important;
+  height: auto !important;
+}
+
+.veloura-category-image-position-top.veloura-category-shape-wide .veloura-category-card__image {
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+}
+
+.veloura-category-image-position-top.veloura-category-shape-square .veloura-category-card__img,
+.veloura-category-image-position-top.veloura-category-shape-square .veloura-category-card__image img,
+.veloura-category-image-position-top.veloura-category-shape-landscape .veloura-category-card__img,
+.veloura-category-image-position-top.veloura-category-shape-landscape .veloura-category-card__image img,
+.veloura-category-image-position-top.veloura-category-shape-wide .veloura-category-card__img,
+.veloura-category-image-position-top.veloura-category-shape-wide .veloura-category-card__image img {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ================================
+   Fit
+================================ */
+
+.veloura-category-fit-cover .veloura-category-card__image img {
+  object-fit: cover !important;
+  padding: 0 !important;
+}
+
+.veloura-category-fit-contain .veloura-category-card__image img {
+  object-fit: contain !important;
+  padding: 6px !important;
+}
+
+/* ================================
+   Right image base
+================================ */
+
+.veloura-category-image-position-right .veloura-category-card__image {
+  flex: 0 0 auto !important;
+  height: 54px !important;
+  width: auto !important;
+  max-width: 130px !important;
+  aspect-ratio: auto !important;
+}
+
+/* Right + Auto */
+.veloura-category-image-position-right.veloura-category-shape-auto .veloura-category-card__image {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 130px !important;
+  height: 54px !important;
+  aspect-ratio: auto !important;
+}
+
+.veloura-category-image-position-right.veloura-category-shape-auto .veloura-category-card__img,
+.veloura-category-image-position-right.veloura-category-shape-auto .veloura-category-card__image img {
+  width: auto !important;
+  max-width: 130px !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  padding: 0 !important;
+}
+
+/* Right + Square */
+.veloura-category-image-position-right.veloura-category-shape-square .veloura-category-card__image {
+  flex: 0 0 54px !important;
+  width: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  height: 54px !important;
+  min-height: 54px !important;
+  max-height: 54px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.veloura-category-image-position-right.veloura-category-shape-square.veloura-category-fit-contain .veloura-category-card__img,
+.veloura-category-image-position-right.veloura-category-shape-square.veloura-category-fit-contain .veloura-category-card__image img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  padding: 4px !important;
+}
+
+.veloura-category-image-position-right.veloura-category-shape-square.veloura-category-fit-cover .veloura-category-card__img,
+.veloura-category-image-position-right.veloura-category-shape-square.veloura-category-fit-cover .veloura-category-card__image img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  padding: 0 !important;
+}
+
+/* ================================
+   All icon / الكل
+================================ */
+
+.veloura-category-card__image--all {
+  background: transparent !important;
+}
+
+.veloura-category-card__image--all i {
+  color: var(--veloura-category-primary) !important;
+  font-size: 28px !important;
+}
+
+.veloura-category-image-position-right .veloura-category-card__image--all i {
+  font-size: 26px !important;
+}
+
+.veloura-category-image-position-right.veloura-category-shape-auto .veloura-category-card--all .veloura-category-card__image {
+  width: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  height: 54px !important;
+}
+
+.veloura-category-image-position-right.veloura-category-shape-square .veloura-category-card--all .veloura-category-card__image {
+  width: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  height: 54px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* ================================
+   Title
+================================ */
+
+.veloura-category-card__title {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 4px 2px !important;
+
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1.5 !important;
+
+  color: #222 !important;
+  transition: color .2s ease !important;
+}
+
+.veloura-category-image-position-top .veloura-category-card__title {
+  text-align: center !important;
+}
+
+.veloura-category-image-position-right .veloura-category-card__title {
+  width: auto !important;
+  text-align: right !important;
+  padding: 0 !important;
+}
+
+/* ================================
+   Active / Hover
+================================ */
+
+.veloura-category-card.is-active,
+.veloura-category-card:hover {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important;
+}
+
+.veloura-category-card.is-active::after,
+.veloura-category-card:hover::after {
+  display: none !important;
+  content: none !important;
+}
+
+.veloura-category-card.is-active .veloura-category-card__title,
+.veloura-category-card:hover .veloura-category-card__title {
+  color: var(--color-primary, #004956) !important;
+}
+
+/* ================================
+   Images visibility
+================================ */
+
+/* الصورة تظهر طالما خيار إظهار الصور مفعّل */
+.veloura-category-show-images .veloura-category-card__image {
+  display: flex !important;
+}
+
+/* إذا الصورة مفقودة، لا نخفي البلوك حتى تظهر placeholder أو الصورة المخصصة */
+.veloura-category-show-images .veloura-category-card.has-placeholder .veloura-category-card__image {
+  display: flex !important;
+}
+
+/* إخفاء الصور فقط عند إيقاف خيار إظهار صور التصنيفات */
+.veloura-category-hide-images .veloura-category-card__image {
+  display: none !important;
+}
+
+/* إذا الصورة نفسها hidden فقط */
+.veloura-category-card__img[hidden] {
+  display: none !important;
+}
+
+/* ================================
+   Hide images switch
+   ملاحظة: الإخفاء الحقيقي من Twig
+================================ */
+
+.veloura-category-hide-images .veloura-category-card {
+  min-height: auto !important;
+  padding: 12px 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.veloura-category-hide-images .veloura-category-card__title {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+/* ================================
+   Products hide switch fallback
+================================ */
+
+.veloura-category-products-hidden .veloura-category-products-wrap {
+  display: none !important;
+}
+
+/* ================================
+   Radius on card + image
+================================ */
+
+.veloura-category-radius-sharp .veloura-category-card,
+.veloura-category-radius-sharp .veloura-category-card__image {
+  border-radius: 0 !important;
+}
+
+.veloura-category-radius-soft .veloura-category-card {
+  border-radius: 10px !important;
+}
+
+.veloura-category-radius-soft .veloura-category-card__image {
+  border-radius: 8px !important;
+}
+
+.veloura-category-radius-medium .veloura-category-card {
+  border-radius: 18px !important;
+}
+
+.veloura-category-radius-medium .veloura-category-card__image {
+  border-radius: 14px !important;
+}
+
+.veloura-category-radius-large .veloura-category-card {
+  border-radius: 28px !important;
+}
+
+.veloura-category-radius-large .veloura-category-card__image {
+  border-radius: 22px !important;
+}
+
+.veloura-category-radius-round .veloura-category-card,
+.veloura-category-radius-round .veloura-category-card__image {
+  border-radius: 999px !important;
+}
+
+/* ================================
+   Title size
+================================ */
+
+.veloura-category-title-xs .veloura-category-card__title {
+  font-size: 11px !important;
+}
+
+.veloura-category-title-small .veloura-category-card__title {
+  font-size: 12px !important;
+}
+
+.veloura-category-title-medium .veloura-category-card__title {
+  font-size: 14px !important;
+}
+
+.veloura-category-title-large .veloura-category-card__title {
+  font-size: 16px !important;
+}
+
+.veloura-category-title-xl .veloura-category-card__title {
+  font-size: 18px !important;
+}
+
+.veloura-category-title-xxl .veloura-category-card__title {
+  font-size: 22px !important;
+}
+
+/* ================================
+   Products wrapper
+================================ */
+
+.veloura-category-products-wrap {
+  width: 100%;
+}
+
+.veloura-category-products-wrap.is-loading {
+  opacity: .45;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+/* ================================
+   Mobile
+================================ */
+
+@media (max-width: 767px) {
+  .veloura-category-cards.is-grid {
+    grid-template-columns: repeat(var(--veloura-category-mobile-cols), minmax(0, 1fr)) !important;
+  }
+
+  .veloura-category-cards.is-slider .veloura-category-card {
+    flex-basis: calc(
+      (100% - (var(--veloura-category-gap, 12px) * (var(--veloura-category-mobile-slides) - 1)))
+      / var(--veloura-category-mobile-slides)
+    ) !important;
+  }
+
+  .veloura-category-card__title {
+    font-size: 12px !important;
+  }
+
+  .veloura-category-image-position-right .veloura-category-card__image {
+    height: 44px !important;
+    max-width: 90px !important;
+  }
+
+  .veloura-category-image-position-right.veloura-category-shape-auto .veloura-category-card__img,
+  .veloura-category-image-position-right.veloura-category-shape-auto .veloura-category-card__image img {
+    max-width: 90px !important;
+    height: 100% !important;
+  }
+
+  .veloura-category-image-position-right.veloura-category-shape-square .veloura-category-card__image,
+  .veloura-category-image-position-right.veloura-category-card--all .veloura-category-card__image {
+    flex-basis: 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+  }
+
+  .veloura-category-image-position-right .veloura-category-card__image--all i {
+    font-size: 24px !important;
+  }
+}
+
+/* ================================
+   Dark mode support
+================================ */
+
+body.dark .veloura-category-children {
+  background: var(--veloura-dark-body-bg, #111827) !important;
+}
+
+body.dark .veloura-category-card {
+  background: var(--veloura-dark-secondary-bg, #1f2937) !important;
+  color: var(--veloura-dark-primary-text, #fff) !important;
+}
+
+body.dark .veloura-category-images-transparent .veloura-category-card {
+  background: transparent !important;
+}
+
+body.dark .veloura-category-card__title {
+  color: var(--veloura-dark-primary-text, #fff) !important;
+}
+
+
+
+
+/* ================================
+   FIX: custom images visibility
+================================ */
+
+.veloura-category-show-images .veloura-category-card__image {
+  display: flex !important;
+}
+
+.veloura-category-show-images .veloura-category-card.has-placeholder .veloura-category-card__image {
+  display: flex !important;
+}
+
+.veloura-category-hide-images .veloura-category-card__image {
+  display: none !important;
+}
+
+.veloura-category-card.has-custom-image .veloura-category-card__image {
+  display: flex !important;
+}
+
+.veloura-category-card.has-custom-image .veloura-category-card__img {
+  display: block !important;
+}
+
+/* لا تخفي placeholder لأن الصورة المخصصة ستستبدله */
+.veloura-category-card.has-placeholder .veloura-category-card__image {
+  display: flex !important;
+}
+
+/* ================================
+   FIX: radius for top image mode
+================================ */
+
+.veloura-category-card,
+.veloura-category-card__image,
+.veloura-category-card__img,
+.veloura-category-card__image img {
+  overflow: hidden !important;
+}
+
+.veloura-category-radius-sharp .veloura-category-card,
+.veloura-category-radius-sharp .veloura-category-card__image,
+.veloura-category-radius-sharp .veloura-category-card__img,
+.veloura-category-radius-sharp .veloura-category-card__image img {
+  border-radius: 0 !important;
+}
+
+.veloura-category-radius-soft .veloura-category-card {
+  border-radius: 10px !important;
+}
+
+.veloura-category-radius-soft .veloura-category-card__image,
+.veloura-category-radius-soft .veloura-category-card__img,
+.veloura-category-radius-soft .veloura-category-card__image img {
+  border-radius: 8px !important;
+}
+
+.veloura-category-radius-medium .veloura-category-card {
+  border-radius: 18px !important;
+}
+
+.veloura-category-radius-medium .veloura-category-card__image,
+.veloura-category-radius-medium .veloura-category-card__img,
+.veloura-category-radius-medium .veloura-category-card__image img {
+  border-radius: 14px !important;
+}
+
+.veloura-category-radius-large .veloura-category-card {
+  border-radius: 28px !important;
+}
+
+.veloura-category-radius-large .veloura-category-card__image,
+.veloura-category-radius-large .veloura-category-card__img,
+.veloura-category-radius-large .veloura-category-card__image img {
+  border-radius: 22px !important;
+}
+
+.veloura-category-radius-round .veloura-category-card,
+.veloura-category-radius-round .veloura-category-card__image,
+.veloura-category-radius-round .veloura-category-card__img,
+.veloura-category-radius-round .veloura-category-card__image img {
+  border-radius: 999px !important;
+}
+
+/* خصوصًا وضع الصورة فوق العنوان */
+.veloura-category-image-position-top .veloura-category-card__image {
+  overflow: hidden !important;
+}
+
+.veloura-category-image-position-top .veloura-category-card__img,
+.veloura-category-image-position-top .veloura-category-card__image img {
+  border-radius: inherit !important;
+}
+
+
+
+
+
+.veloura-category-card,
+.veloura-category-card__image,
+.veloura-category-card__img,
+.veloura-category-card__image img {
+  overflow: hidden !important;
+}
+
+.veloura-category-radius-sharp .veloura-category-card,
+.veloura-category-radius-sharp .veloura-category-card__image,
+.veloura-category-radius-sharp .veloura-category-card__img,
+.veloura-category-radius-sharp .veloura-category-card__image img {
+  border-radius: 0 !important;
+}
+
+.veloura-category-radius-soft .veloura-category-card {
+  border-radius: 10px !important;
+}
+
+.veloura-category-radius-soft .veloura-category-card__image,
+.veloura-category-radius-soft .veloura-category-card__img,
+.veloura-category-radius-soft .veloura-category-card__image img {
+  border-radius: 8px !important;
+}
+
+.veloura-category-radius-medium .veloura-category-card {
+  border-radius: 18px !important;
+}
+
+.veloura-category-radius-medium .veloura-category-card__image,
+.veloura-category-radius-medium .veloura-category-card__img,
+.veloura-category-radius-medium .veloura-category-card__image img {
+  border-radius: 14px !important;
+}
+
+.veloura-category-radius-large .veloura-category-card {
+  border-radius: 28px !important;
+}
+
+.veloura-category-radius-large .veloura-category-card__image,
+.veloura-category-radius-large .veloura-category-card__img,
+.veloura-category-radius-large .veloura-category-card__image img {
+  border-radius: 22px !important;
+}
+
+.veloura-category-radius-round .veloura-category-card,
+.veloura-category-radius-round .veloura-category-card__image,
+.veloura-category-radius-round .veloura-category-card__img,
+.veloura-category-radius-round .veloura-category-card__image img {
+  border-radius: 999px !important;
+}
+
+.veloura-category-show-images .veloura-category-card__image,
+.veloura-category-show-images .veloura-category-card.has-placeholder .veloura-category-card__image,
+.veloura-category-show-images .veloura-category-card.has-custom-image .veloura-category-card__image {
+  display: flex !important;
+}
+
+.veloura-category-hide-images .veloura-category-card__image {
+  display: none !important;
+}
+
+.veloura-category-card.has-custom-image .veloura-category-card__img,
+.veloura-category-card.has-custom-image .veloura-category-card__image img {
+  display: block !important;
+}
+
+
+/* ========================================================================
+   Veloura Category Page V126
+   banner -> subcategories -> title/filter -> products
+   ======================================================================== */
+
+.veloura-category-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  --vcat-secondary-bg:
+    var(--veloura-site-second-bg, #f8fafc);
+
+  --vcat-primary-bg:
+    var(--veloura-site-bg, #ffffff);
+
+  --vcat-primary-text:
+    var(--color-text, #111827);
+
+  --vcat-sticky-top: 0px;
+  --vcat-sticky-height: 0px;
+}
+
+html.dark .veloura-category-page,
+body.dark .veloura-category-page {
+  --vcat-secondary-bg:
+    var(--veloura-dark-secondary-bg, #010612);
+
+  --vcat-primary-bg:
+    var(--veloura-dark-body-bg, #010202);
+
+  --vcat-primary-text:
+    var(--veloura-dark-primary-text, #ffffff);
+}
+
+.veloura-category-page--no-breadcrumb {
+  padding-top: 14px;
+}
+
+/* ------------------------------------------------------------
+   Subcategories
+   ------------------------------------------------------------ */
+.veloura-category-children {
+  position: relative !important;
+  top: auto !important;
+  z-index: 1;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 0 24px;
+  padding: 8px 8px 10px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+  background:
+    var(--vcat-primary-bg);
+  background-clip: padding-box;
+  border-radius:
+    var(--veloura-global-radius, 0px);
+}
+
+.veloura-category-children--sticky {
+  position: sticky !important;
+
+  top:
+    var(--vcat-sticky-top, 0px) !important;
+
+  z-index: 28;
+
+  background:
+    var(--vcat-primary-bg);
+
+  border-radius:
+    var(--veloura-global-radius, 0px);
+
+  isolation: isolate;
+}
+
+.veloura-category-children--sticky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    var(--vcat-primary-bg);
+
+  border-radius:
+    inherit;
+}
+
+.veloura-category-children.is-loading {
+  opacity: .72;
+  pointer-events: none;
+}
+
+.veloura-category-children__grid {
+  display: grid;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  grid-template-columns:
+    repeat(var(--vcat-mobile-cols, 4), minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .veloura-category-children__grid {
+    grid-template-columns:
+      repeat(var(--vcat-desktop-cols, 8), minmax(0, 1fr));
+
+    gap: 16px;
+  }
+}
+
+.veloura-category-children__slider {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.veloura-category-children__slider .swiper-slide {
+  height: auto;
+}
+
+.veloura-category-child {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  gap: 10px;
+
+  color:
+    var(--vcat-primary-text) !important;
+
+  text-decoration: none !important;
+
+  transition:
+    opacity .18s ease,
+    transform .18s ease,
+    color .18s ease;
+}
+
+.veloura-category-child.is-active {
+  color:
+    var(--color-primary, #004956) !important;
+}
+
+.veloura-category-child.is-active
+.veloura-category-child__media {
+  box-shadow:
+    0 0 0 2px var(--color-primary, #004956) inset;
+}
+
+.veloura-category-child.is-active
+.veloura-category-child__title {
+  font-weight: 900;
+}
+
+.veloura-category-child__media--all {
+  display: grid !important;
+  place-items: center;
+
+  color:
+    var(--color-primary, #004956);
+
+  font-size: clamp(20px, 4vw, 30px);
+}
+
+/* Second level shown after selecting a top subcategory. It remains inside
+   the same sticky rail, so both rows move as one header-aware surface. */
+.veloura-category-descendants[hidden] {
+  display: none !important;
+}
+
+.veloura-category-descendants {
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.veloura-category-descendants__track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 1px 3px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.veloura-category-descendants__track::-webkit-scrollbar {
+  display: none;
+}
+
+.veloura-category-descendant {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  max-width: min(72vw, 260px);
+  padding: 8px 13px;
+  scroll-snap-align: start;
+
+  background: var(--vcat-secondary-bg);
+  color: var(--vcat-primary-text) !important;
+  border: 1px solid transparent;
+  border-radius: var(--veloura-global-radius, 14px);
+  text-decoration: none !important;
+  white-space: nowrap;
+
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+
+  transition:
+    background-color .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    transform .18s ease;
+}
+
+.veloura-category-descendant span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.veloura-category-descendant:hover,
+.veloura-category-descendant:focus-visible {
+  border-color: color-mix(in srgb, var(--color-primary, #004956) 30%, transparent);
+}
+
+.veloura-category-descendant.is-active {
+  background: var(--color-primary, #004956);
+  color: var(--color-primary-reverse, #ffffff) !important;
+  border-color: var(--color-primary, #004956);
+  font-weight: 900;
+}
+
+.veloura-category-descendant:focus-visible {
+  outline: 2px solid var(--color-primary, #004956);
+  outline-offset: 2px;
+}
+
+.veloura-category-child__media--all i {
+  font-size: inherit;
+}
+
+.veloura-category-children--position-top
+.veloura-category-child {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.rtl
+.veloura-category-children--position-right
+.veloura-category-child {
+  flex-direction: row;
+  align-items: center;
+  text-align: right;
+}
+
+.ltr
+.veloura-category-children--position-right
+.veloura-category-child {
+  flex-direction: row-reverse;
+  align-items: center;
+  text-align: left;
+}
+
+.veloura-category-child__media {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  overflow: hidden;
+
+  background:
+    var(--vcat-secondary-bg);
+
+  border-radius:
+    var(--vcat-image-radius, 16px);
+}
+
+.veloura-category-children--shape-square
+.veloura-category-child__media {
+  aspect-ratio: 1 / 1;
+}
+
+.veloura-category-children--shape-auto
+.veloura-category-child__media {
+  min-height: 70px;
+}
+
+.veloura-category-children--position-right
+.veloura-category-child__media {
+  width: clamp(58px, 18vw, 84px);
+}
+
+.veloura-category-children--position-right.veloura-category-children--shape-square
+.veloura-category-child__media {
+  aspect-ratio: 1 / 1;
+}
+
+.veloura-category-children--transparent
+.veloura-category-child__media {
+  background: transparent !important;
+}
+
+.veloura-category-child__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    var(--vcat-image-fit, cover);
+
+  object-position: center;
+
+  border-radius:
+    inherit;
+}
+
+.veloura-category-children--shape-auto
+.veloura-category-child__media img {
+  height: auto;
+  min-height: 70px;
+}
+
+.veloura-category-child__title {
+  display: block;
+  min-width: 0;
+
+  font-size:
+    var(--vcat-title-size, 16px);
+
+  font-weight: 700;
+  line-height: 1.45;
+
+  color:
+    inherit;
+}
+
+.veloura-category-children--position-top
+.veloura-category-child__title {
+  padding-inline: 4px;
+}
+
+.veloura-category-children--position-right
+.veloura-category-child__title {
+  flex: 1 1 auto;
+}
+
+.veloura-category-children--names-only
+.veloura-category-child {
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+
+  background:
+    var(--vcat-secondary-bg);
+
+  border-radius:
+    var(--veloura-global-radius, 14px);
+}
+
+.veloura-category-children--names-only
+.veloura-category-child.is-active {
+  background:
+    var(--color-primary, #004956);
+
+  color:
+    var(--color-primary-reverse, #ffffff) !important;
+}
+
+/* ------------------------------------------------------------------------
+   V126 — compact sticky navigation
+   The merchant's rich Grid/Slider layout stays untouched at the top of the
+   page. Only while the rail is actually stuck do we switch to small
+   horizontal chips with the category image/icon on the inline-start side.
+   ------------------------------------------------------------------------ */
+.veloura-category-compact {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.veloura-category-compact__track {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 2px 3px;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.veloura-category-compact__track::-webkit-scrollbar {
+  display: none;
+}
+
+.veloura-category-compact__item {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  height: 42px;
+  min-height: 42px;
+  max-width: min(70vw, 210px);
+  box-sizing: border-box;
+
+  /* V126: exact optical inset. With a 30px media + 1px border, 5px on every
+     side gives 42px total height, so the media has the same space on its
+     inline-start edge (right in RTL) as it has above and below. */
+  padding: 5px 5px 5px 10px;
+
+  background: var(--vcat-secondary-bg);
+  color: var(--vcat-primary-text) !important;
+  border: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+  border-radius: var(--veloura-global-radius, 14px);
+  text-decoration: none !important;
+  white-space: nowrap;
+  scroll-snap-align: center;
+
+  transition:
+    background-color .16s ease,
+    color .16s ease,
+    border-color .16s ease,
+    transform .16s ease;
+}
+
+.veloura-category-compact__item:active {
+  transform: scale(.98);
+}
+
+.veloura-category-compact__media {
+  display: grid;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  overflow: hidden;
+
+  background: color-mix(in srgb, var(--vcat-secondary-bg) 82%, transparent);
+  /* Compact mode is an interface control, so all of its visible edges follow
+     the General > global element radius, not the old forced circular shape. */
+  border-radius: var(--veloura-global-radius, 14px);
+}
+
+.veloura-category-compact__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--vcat-image-fit, cover);
+  object-position: center;
+}
+
+.veloura-category-compact__media i {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.veloura-category-compact__title {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.veloura-category-compact__item.is-active {
+  background: var(--color-primary, #004956);
+  color: var(--color-primary-reverse, #ffffff) !important;
+  border-color: var(--color-primary, #004956);
+}
+
+.veloura-category-compact__item.is-active
+.veloura-category-compact__media {
+  box-shadow: 0 0 0 1px color-mix(in srgb, currentColor 38%, transparent) inset;
+}
+
+.veloura-category-children--sticky.is-stuck {
+  margin-bottom:
+    calc(24px + var(--vcat-flow-compensation, 0px));
+  padding: 6px 7px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  /* Sticky mode must respect the exact same global radius selected by the
+     merchant. Do not clamp it to a custom compact-only radius. */
+  border-radius: var(--veloura-global-radius, 0px) !important;
+  box-shadow: 0 7px 22px rgba(15, 23, 42, .055);
+}
+
+.veloura-category-children--sticky.is-stuck
+> .veloura-category-children__slider,
+.veloura-category-children--sticky.is-stuck
+> .veloura-category-children__grid {
+  display: none !important;
+}
+
+.veloura-category-children--sticky.is-stuck
+> .veloura-category-compact {
+  display: block;
+}
+
+.veloura-category-children--sticky.is-stuck::before {
+  border-radius: inherit;
+}
+
+/* The second level is also a compact rail. Its optional image becomes a
+   small avatar instead of re-introducing large category cards. */
+.veloura-category-descendants {
+  margin-top: 7px;
+  padding-top: 7px;
+}
+
+.veloura-category-descendants__track {
+  gap: 7px;
+  padding: 1px 2px 3px;
+  scroll-padding-inline: 8px;
+}
+
+.veloura-category-descendant {
+  justify-content: flex-start;
+  gap: 7px;
+  height: 40px;
+  min-height: 40px;
+  max-width: min(70vw, 220px);
+  box-sizing: border-box;
+  padding: 5px;
+  border-radius: var(--veloura-global-radius, 14px);
+  font-size: 12.5px;
+}
+
+.veloura-category-descendant__media {
+  display: grid !important;
+  flex: 0 0 28px;
+  width: 28px;
+  min-width: 28px !important;
+  height: 28px;
+  place-items: center;
+  overflow: hidden !important;
+  border-radius: var(--veloura-global-radius, 14px);
+  background: color-mix(in srgb, var(--vcat-secondary-bg) 82%, transparent);
+}
+
+.veloura-category-descendant__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--vcat-image-fit, cover);
+  object-position: center;
+}
+
+.veloura-category-descendant__title {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.veloura-category-children--sticky.is-stuck
+.veloura-category-descendants {
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+/* ------------------------------------------------------------------------
+   V124 — category glass follows the FINAL rendered header material.
+   We intentionally use one physical top/bottom edge only. V123 rebuilt the
+   header gradient + border + inset edges, which made the small category rail
+   look heavier even though the same glass variables were used.
+   ------------------------------------------------------------------------ */
+html body.veloura-glass-effect
+.veloura-category-children[data-veloura-header-material-synced='true'] {
+  background:
+    var(--vcat-header-surface, var(--veloura-glass-surface)) !important;
+  background-color:
+    var(--vcat-header-surface, var(--veloura-glass-surface)) !important;
+  background-image: none !important;
+
+  border-top-width:
+    var(--vcat-header-border-top-width, 1px) !important;
+  border-top-style:
+    var(--vcat-header-border-top-style, solid) !important;
+  border-top-color:
+    var(--vcat-header-border-top-color, var(--veloura-glass-edge-top)) !important;
+
+  border-bottom-width:
+    var(--vcat-header-border-bottom-width, 1px) !important;
+  border-bottom-style:
+    var(--vcat-header-border-bottom-style, solid) !important;
+  border-bottom-color:
+    var(--vcat-header-border-bottom-color, var(--veloura-glass-edge-bottom)) !important;
+
+  border-inline: 0 !important;
+
+  -webkit-backdrop-filter:
+    var(--vcat-header-backdrop-filter, var(--veloura-glass-filter)) !important;
+  backdrop-filter:
+    var(--vcat-header-backdrop-filter, var(--veloura-glass-filter)) !important;
+
+  /* Keep the same global shadow color but avoid an additional inset edge. */
+  box-shadow:
+    0 8px 26px var(--veloura-glass-shadow) !important;
+}
+
+/* Fallback before JS has copied the final computed header paint. */
+html body.veloura-glass-effect
+.veloura-category-children:not([data-veloura-header-material-synced='true']) {
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: none !important;
+  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-inline: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  backdrop-filter: var(--veloura-glass-filter) !important;
+  box-shadow: 0 8px 26px var(--veloura-glass-shadow) !important;
+}
+
+html body.veloura-glass-effect .veloura-category-children::before {
+  display: none !important;
+}
+
+html body.veloura-glass-effect .veloura-category-compact__item,
+html body.veloura-glass-effect .veloura-category-descendant {
+  background: var(--veloura-global-glass-control) !important;
+}
+
+html body.veloura-glass-effect .veloura-category-compact__item.is-active,
+html body.veloura-glass-effect .veloura-category-descendant.is-active {
+  background: var(--color-primary, #004956) !important;
+}
+
+/* ------------------------------------------------------------------------
+   V124 — category-page search contract.
+   On category/product-listing pages an existing search BAR behaves like the
+   theme's bar_sticky_icon option automatically: full bar at the top, header
+   search icon after the first scroll. Detached vs connected stays unchanged.
+   Native icon_left/icon_right modes are never overridden.
+   ------------------------------------------------------------------------ */
+@media (max-width: 1023px) {
+  html body.veloura-vcat-search-collapsed
+  .veloura-detached-search-shell:is(
+    .veloura-detached-mobile-bar,
+    .veloura-detached-mobile-bar_sticky_icon
+  ) {
+    display: none !important;
+  }
+
+  html body
+  .store-header.veloura-vcat-search-collapsed:is(
+    .veloura-mobile-search-bar,
+    .veloura-mobile-search-bar_sticky_icon
+  ) {
+    .veloura-header-grid {
+      grid-template-areas: 'left logo right' !important;
+    }
+
+    .veloura-mobile-search-bar {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  html body.veloura-vcat-search-collapsed
+  .veloura-detached-search-shell:is(
+    .veloura-detached-desktop-bar,
+    .veloura-detached-desktop-bar_sticky_icon
+  ) {
+    display: none !important;
+  }
+
+  html body
+  .store-header.veloura-vcat-search-collapsed:is(
+    .veloura-desktop-search-bar,
+    .veloura-desktop-search-bar_sticky_icon
+  ) {
+    .veloura-header-grid {
+      grid-template-areas: 'left logo right' !important;
+    }
+
+    .veloura-desktop-search-bar {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+}
+
+/* Desktop filters stay below header + sticky subcategory rail. */
+@media (min-width: 1024px) {
+  .veloura-category-page
+  #filters-menu {
+    top:
+      calc(
+        var(--vcat-sticky-top, 0px)
+        + var(--vcat-sticky-height, 0px)
+        + 14px
+      ) !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Category banners
+   ------------------------------------------------------------ */
+.veloura-category-banners {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  width: 100%;
+  margin: 0 0 20px;
+}
+
+.veloura-category-banner {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: transparent;
+  text-decoration: none;
+}
+
+.veloura-category-banner__image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.veloura-category-banners--sharp
+:is(.veloura-category-banner, .veloura-category-banner__image) {
+  border-radius: 0 !important;
+}
+
+.veloura-category-banners--soft
+:is(.veloura-category-banner, .veloura-category-banner__image) {
+  border-radius: 10px !important;
+}
+
+.veloura-category-banners--medium
+:is(.veloura-category-banner, .veloura-category-banner__image) {
+  border-radius: 16px !important;
+}
+
+.veloura-category-banners--large
+:is(.veloura-category-banner, .veloura-category-banner__image) {
+  border-radius: 24px !important;
+}
+
+.veloura-category-banners--round
+:is(.veloura-category-banner, .veloura-category-banner__image) {
+  border-radius: 999px !important;
+}
+
+/* ------------------------------------------------------------
+   Sorting dropdown
+   ------------------------------------------------------------ */
+.veloura-category-page #product-filter {
+  background:
+    var(--veloura-site-second-bg, #f8fafc) !important;
+
+  background-color:
+    var(--veloura-site-second-bg, #f8fafc) !important;
+
+  color:
+    var(--color-text, #111827) !important;
+
+  border: 0 !important;
+
+  border-radius:
+    var(--veloura-global-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+html.dark .veloura-category-page #product-filter,
+body.dark .veloura-category-page #product-filter {
+  background:
+    var(--veloura-dark-secondary-bg, #010612) !important;
+
+  background-color:
+    var(--veloura-dark-secondary-bg, #010612) !important;
+
+  color:
+    var(--veloura-dark-primary-text, #ffffff) !important;
+
+  border: 0 !important;
+
+  border-radius:
+    var(--veloura-global-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+.veloura-category-page #product-filter:focus-visible {
+  outline:
+    2px solid currentColor !important;
+
+  outline-offset:
+    2px !important;
+}
+
+@media (max-width: 767px) {
+  .veloura-category-banners {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .veloura-category-children {
+    margin-bottom: 18px;
+  }
+}

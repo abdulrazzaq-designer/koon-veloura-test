@@ -1,0 +1,213 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% set title_size_map = {
+  'xs': '18px',
+  'sm': '22px',
+  'medium': '28px',
+  'lg': '34px',
+  'xl': '42px',
+  'xxl': '52px'
+} %}
+
+{% set subtitle_size_map = {
+  'xs': '12px',
+  'sm': '14px',
+  'medium': '18px',
+  'lg': '22px',
+  'xl': '28px',
+  'xxl': '34px'
+} %}
+
+{% set title_align_raw = component.veloura_title_align|default('center') %}
+{% if title_align_raw is iterable and title_align_raw[0].value is defined %}
+  {% set title_align = title_align_raw[0].value %}
+{% elseif title_align_raw.value is defined %}
+  {% set title_align = title_align_raw.value %}
+{% else %}
+  {% set title_align = title_align_raw %}
+{% endif %}
+
+{% set line_type_raw = component.veloura_title_line_type|default('both') %}
+{% if line_type_raw is iterable and line_type_raw[0].value is defined %}
+  {% set line_type = line_type_raw[0].value %}
+{% elseif line_type_raw.value is defined %}
+  {% set line_type = line_type_raw.value %}
+{% else %}
+  {% set line_type = line_type_raw %}
+{% endif %}
+
+{% if line_type not in ['none', 'right', 'left', 'both'] %}
+  {% set line_type = 'both' %}
+{% endif %}
+
+{# =========================
+   قراءة السويتش
+========================= #}
+{% set icon_enabled_raw = component.veloura_title_enable_icon|default(false) %}
+
+{% if icon_enabled_raw.value is defined %}
+  {% set icon_enabled_raw = icon_enabled_raw.value %}
+{% elseif icon_enabled_raw.selected is defined %}
+  {% set icon_enabled_raw = icon_enabled_raw.selected %}
+{% endif %}
+
+{% set icon_enabled =
+  icon_enabled_raw == true
+  or icon_enabled_raw == 'true'
+  or icon_enabled_raw == 1
+  or icon_enabled_raw == '1'
+  or icon_enabled_raw == 'on'
+%}
+
+{# =========================
+   قراءة الأيقونة بنفس فكرة المميزات
+========================= #}
+{% set title_icon_raw = component.veloura_title_icon|default('') %}
+{% set title_icon = '' %}
+
+{% if title_icon_raw is iterable and title_icon_raw[0].value is defined %}
+  {% set title_icon = title_icon_raw[0].value %}
+{% elseif title_icon_raw.value is defined %}
+  {% set title_icon = title_icon_raw.value %}
+{% elseif title_icon_raw.selected is defined and title_icon_raw.selected is iterable and title_icon_raw.selected[0].value is defined %}
+  {% set title_icon = title_icon_raw.selected[0].value %}
+{% elseif title_icon_raw.selected.value is defined %}
+  {% set title_icon = title_icon_raw.selected.value %}
+{% else %}
+  {% set title_icon = title_icon_raw %}
+{% endif %}
+
+{% set show_icon = icon_enabled and title_icon %}
+
+{% if not component.veloura_title_hide_section %}
+
+{% set title_classes = [
+  's-block',
+  'container',
+  'veloura-title',
+  'veloura-title--align-' ~ title_align,
+  'veloura-title--line-' ~ line_type,
+  show_icon ? 'has-icon' : '',
+  component.veloura_title_for_next_section ? 'is-title-next-section' : '',
+  component.veloura_title_custom_classes ?: ''
+] %}
+
+{% if component.veloura_title_show_mobile_only %}
+  {% set title_classes = title_classes|merge(['veloura-title-mobile-only']) %}
+{% endif %}
+
+{% if component.veloura_title_show_desktop_only %}
+  {% set title_classes = title_classes|merge(['veloura-title-desktop-only']) %}
+{% endif %}
+
+{% if component.veloura_title_text or component.veloura_title_subtitle or show_icon %}
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="{{ title_classes|join(' ') }}"
+  style="
+    --veloura-title-color: {{ component.veloura_title_color|default('#323232') }};
+    --veloura-title-line-color: {{ component.veloura_title_line_color|default('#111111') }};
+    --veloura-title-align: {{ title_align }};
+    --veloura-title-size: {{ title_size_map[component.veloura_title_size|default('medium')]|default('28px') }};
+    --veloura-subtitle-size: {{ subtitle_size_map[component.veloura_title_size|default('medium')]|default('18px') }};
+    --veloura-title-spacing: {{ component.veloura_title_enable_custom_spacing ? component.veloura_title_custom_spacing|default(0) : 0 }}px;
+  "
+  {% if component.veloura_title_for_next_section %}data-veloura-title-next="true"{% endif %}
+>
+  <div class="veloura-title__inner">
+
+    {% if component.veloura_title_text or show_icon %}
+      <h2 class="veloura-title__heading" data-veloura-title-heading>
+        {% if line_type == 'right' or line_type == 'both' %}
+          <span class="veloura-title__line veloura-title__line--right" aria-hidden="true"></span>
+        {% endif %}
+
+        <span class="veloura-title__content">
+          {% if show_icon %}
+            <span class="veloura-title__icon {{ title_icon }}" aria-hidden="true"></span>
+          {% endif %}
+
+          {% if component.veloura_title_text %}
+            <span class="veloura-title__text">{{ component.veloura_title_text }}</span>
+          {% endif %}
+        </span>
+
+        {% if line_type == 'left' or line_type == 'both' %}
+          <span class="veloura-title__line veloura-title__line--left" aria-hidden="true"></span>
+        {% endif %}
+      </h2>
+    {% endif %}
+
+    {% if component.veloura_title_subtitle %}
+      <p class="veloura-title__subtitle">
+        {{ component.veloura_title_subtitle }}
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+{% endif %}
+
+{% endif %}
+
+{% if component.veloura_title_for_next_section %}
+<script>
+  (function () {
+    function velouraApplyTitleToNextSection() {
+      document.querySelectorAll('.veloura-title.is-title-next-section').forEach(function (titleBlock) {
+        if (titleBlock.dataset.velouraTitleNextDone === '1') return;
+
+        let next = titleBlock.nextElementSibling;
+
+        while (next && (!next.classList || !next.classList.contains('s-block'))) {
+          next = next.nextElementSibling;
+        }
+
+        if (!next) return;
+
+        titleBlock.dataset.velouraTitleNextDone = '1';
+        next.classList.add('has-veloura-title-before');
+        next.style.setProperty('margin-top', '1rem', 'important');
+        next.style.setProperty('padding-top', '0', 'important');
+
+        const selectors = [
+          '[data-veloura-section-heading]',
+          '[data-veloura-section-heading-icon]',
+          '.veloura-component-title',
+          '.section-main-title',
+          '.s-block__title',
+          '.veloura-products__heading-content',
+          '.veloura-products__icon',
+          '.veloura-products__texts',
+          '.veloura-store-features__heading',
+          '.veloura-faq__heading',
+          '.ultra-square-images__heading',
+          '.veloura-animated-articles__heading',
+          '.veloura-before-after__heading',
+          '.veloura-branches__heading',
+          '.veloura-brands__heading',
+          '.veloura-purchase-steps__heading',
+          '.veloura-quick-links__heading',
+          '.veloura-testimonials__heading'
+        ];
+
+        next.querySelectorAll(selectors.join(',')).forEach(function (item) {
+          item.classList.add('veloura-hidden-by-title-block');
+          item.style.setProperty('display', 'none', 'important');
+          item.style.setProperty('margin', '0', 'important');
+          item.style.setProperty('padding', '0', 'important');
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', velouraApplyTitleToNextSection);
+    document.addEventListener('theme::ready', velouraApplyTitleToNextSection);
+    setTimeout(velouraApplyTitleToNextSection, 300);
+    setTimeout(velouraApplyTitleToNextSection, 900);
+    setTimeout(velouraApplyTitleToNextSection, 1800);
+  })();
+</script>
+{% endif %}

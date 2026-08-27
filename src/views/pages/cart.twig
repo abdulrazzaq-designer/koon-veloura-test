@@ -49,35 +49,110 @@
 
 {% extends "layouts.master" %}
 {% block content %}
-    <div class="container">
+    {# Veloura Cart Surfaces V114 — global colors + global radius #}
+    {% set vcart_enabled_raw = theme.settings.get('veloura_cart_surfaces_enabled_2026', false) %}
+    {% if vcart_enabled_raw.selected is defined %}
+        {% set vcart_enabled_raw = vcart_enabled_raw.selected %}
+    {% elseif vcart_enabled_raw.value is defined %}
+        {% set vcart_enabled_raw = vcart_enabled_raw.value %}
+    {% endif %}
+    {% set vcart_surfaces_enabled =
+        vcart_enabled_raw == true
+        or vcart_enabled_raw == 'true'
+        or vcart_enabled_raw == 1
+        or vcart_enabled_raw == '1'
+        or vcart_enabled_raw == 'on'
+    %}
+
+    {% set vcart_border_raw = theme.settings.get('veloura_cart_surfaces_border_enabled_2026', false) %}
+    {% if vcart_border_raw.selected is defined %}
+        {% set vcart_border_raw = vcart_border_raw.selected %}
+    {% elseif vcart_border_raw.value is defined %}
+        {% set vcart_border_raw = vcart_border_raw.value %}
+    {% endif %}
+    {% set vcart_surface_border_enabled =
+        vcart_border_raw == true
+        or vcart_border_raw == 'true'
+        or vcart_border_raw == 1
+        or vcart_border_raw == '1'
+        or vcart_border_raw == 'on'
+    %}
+
+    {% set vcart_surface_border_color = theme.settings.get('veloura_cart_surfaces_border_color_2026', '#e5e7eb') %}
+    {% if vcart_surface_border_color.value is defined %}
+        {% set vcart_surface_border_color = vcart_surface_border_color.value %}
+    {% endif %}
+
+    {# V115 — the cart reads the SAME general radius directly #}
+    {% set vcart_radius_raw = theme.settings.get('veloura_global_radius_2026', 'large') %}
+
+    {% if vcart_radius_raw.selected is defined %}
+        {% set vcart_radius_choice = vcart_radius_raw.selected %}
+    {% elseif vcart_radius_raw.value is defined %}
+        {% set vcart_radius_choice = vcart_radius_raw.value %}
+    {% else %}
+        {% set vcart_radius_choice = vcart_radius_raw %}
+    {% endif %}
+
+    {% if vcart_radius_choice.value is defined %}
+        {% set vcart_radius_key = vcart_radius_choice.value %}
+    {% elseif vcart_radius_choice is iterable and vcart_radius_choice[0] is defined and vcart_radius_choice[0].value is defined %}
+        {% set vcart_radius_key = vcart_radius_choice[0].value %}
+    {% elseif vcart_radius_choice is iterable and vcart_radius_choice[0] is defined %}
+        {% set vcart_radius_key = vcart_radius_choice[0] %}
+    {% else %}
+        {% set vcart_radius_key = vcart_radius_choice %}
+    {% endif %}
+
+    {% set vcart_radius_key = vcart_radius_key|trim %}
+
+    {% set vcart_radius_map = {
+        'sharp': '0px',
+        'soft': '10px',
+        'medium': '16px',
+        'large': '28px',
+        'xl': '36px'
+    } %}
+
+    {% set vcart_radius = vcart_radius_map[vcart_radius_key]|default('28px') %}
+
+    <div
+        class="container veloura-cart-page{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}"
+        data-veloura-cart-build="v115"
+        data-veloura-cart-radius-key="{{ vcart_radius_key }}"
+        style="
+            --veloura-cart-surface-border-color: {{ vcart_surface_border_color }};
+            --veloura-cart-real-radius: {{ vcart_radius }};
+        "
+    >
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
             <salla-breadcrumb></salla-breadcrumb>
         </nav>
         <h1 class="sr-only">{{ trans('blocks.header.cart') }}</h1>
-        <salla-conditional-offer data-testid="store-cart-conditional-offer"></salla-conditional-offer>
-        <div class="pt-5 flex flex-col items-start lg:flex-row pb-32 lg:pb-20">
+        <salla-conditional-offer></salla-conditional-offer>
+        <div class="pt-5 flex flex-col items-start lg:flex-row pb-6 lg:pb-20">
             <div class="main-content w-full lg:w-[calc(100%-384px)]">
                 {% hook 'cart:items.start' %}
 
                 {% for item in cart.items %}
                     <form onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ item.id }}">
-                        <section data-testid="store-cart-item-{{ item.id }}" class="cart-item bg-white p-5 xs:p-7 rounded-md mb-5 relative">
+                        <section class="cart-item veloura-cart-surface bg-white p-5 xs:p-7 rounded-md mb-5 relative">
                             <input type="hidden" name="id" value="{{ item.id }}">
                                 <!-- product -->
                                 <div class="md:flex rtl:space-x-reverse md:space-x-12 items-start justify-between mb-8 last:mb-0">
                                     <div class="flex flex-1 rtl:space-x-reverse space-x-4">
-                                        <a href="{{ item.url }}" class="relative overflow-hidden shrink-0">
+                                        <a href="{{ item.url }}" class="veloura-cart-product-image-link relative overflow-hidden shrink-0">
                                             {% if loop.first %}
 												<img src="{{ item.product_image }}"
 													alt="{{ item.product_name }}"
                                                     loading="eager"
-													class="flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
+													class="veloura-cart-product-image flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
 											{% else %}
 												<img src="{{ item.product_image }}"
 													alt="{{ item.product_name }}"
                                                     loading="lazy"
-													class="flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
+													class="veloura-cart-product-image flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
 											{% endif %}
 
                                             <!-- free product ribbon -->
@@ -94,7 +169,7 @@
 
                                             <span class="text-sm text-gray-500 line-through item-regular-price {{ item.offer ? '' : 'hidden' }}" >{{ item.product_price|money }}</span>
                                             <span class="inline-flex gap-1 leading-4 text-sm text-gray-500 line-through item-original-price {{ item.is_on_sale ? '' : 'hidden' }}" id="original_price">{{ item.original_price|money }}</span>
-                                            <span data-testid="store-cart-item-price" class="inline-flex gap-1 leading-4 item-price {{ item.has_discount ?  'text-red-800' : 'text-sm text-gray-500' }}" id="has_discount">{{ item.price|money }}</span>
+                                            <span class="inline-flex gap-1 leading-4 item-price {{ item.has_discount ?  'text-red-800' : 'text-sm text-gray-500' }}" id="has_discount">{{ item.price|money }}</span>
                                             
                                             <p class="text-sm text-gray-500 item-weight-row {{ item.weight_label ? '' : 'hidden' }}"> {{ trans('pages.products.weight') }}
                                              <span class="item-weight">{{ item.weight_label }}</span>
@@ -122,7 +197,7 @@
                                             <span class="w-10 text-center">{{ item.quantity }}</span>
                                         {% else %}
                                             <salla-quantity-input cart-item-id="{{ item.id }}"  max="{{ item.max_quantity }}"
-                                                class="transtion transition-color duration-300"
+                                                class="veloura-cart-quantity transtion transition-color duration-300"
 												aria-label="Quantity"
                                                 value="{{ item.quantity }}" name="quantity">
                                             </salla-quantity-input>
@@ -130,14 +205,14 @@
                                         {% set item_total = item.detailed_offers|length > 0 ? item.total_special_price|money : item.total|money%}
                                         <p class="text-primary flex-none font-bold text-sm rtl:md:pl-12 ltr:md:pr-12">
                                             <span>{{ trans('pages.cart.total') }}:</span>
-                                            <span data-testid="store-cart-item-total" class="inline-block item-total">{{ item.is_available?item_total: trans('pages.cart.out_of_stock') }}</span>
+                                            <span class="inline-block item-total">{{ item.is_available?item_total: trans('pages.cart.out_of_stock') }}</span>
                                         </p>
                                     </div>
                                 </div>
 
-                                {% include 'pages.partials.product.options' with {product:item} %}
+                                {% include 'pages.partials.product.options' with {product:item, veloura_cart_context:true} %}
                             <span class="absolute top-1.5 rtl:left-1.5 ltr:right-1.5 rtl:xs:left-5 ltr:xs:right-5 xs:top-5">
-                                <salla-button data-testid="store-cart-delete-item" type="button" shape="icon" size="small" color="danger" class="btn--delete" aria-label="Remove from the cart"
+                                <salla-button type="button" shape="icon" size="small" color="danger" class="btn--delete" aria-label="Remove from the cart"
                                         onclick="salla.cart.deleteItem('{{ item.id }}').then(() => document.querySelector('#item-{{ item.id }}').remove())">
                                     <i class="sicon-cancel"></i>
                                 </salla-button>
@@ -145,10 +220,10 @@
                         </section>
                     </form>
                 {% else %}
-                    <div data-testid="store-cart-empty" class="no-content-placeholder">
+                    <div class="no-content-placeholder">
                         <i class="sicon-shopping-bag icon"></i>
                         <p>{{ trans('pages.cart.empty_cart') }}</p>
-                        <a data-testid="store-cart-back-home" href="{{ link('/') }}"
+                        <a href="{{ link('/') }}"
                            class="btn btn--outline-primary btn--rounded-full">{{ trans('common.elements.back_home') }}</a>
                     </div>
                 {% endfor %}
@@ -159,13 +234,13 @@
                       <form class="first:pt-5 relative" onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ product_option.id }}">
                         <input type="hidden" name="id" value="{{ product_option.id }}">
                         <input type="hidden" name="quantity" value="{{ product_option.quantity }}">
-                        {% include 'pages.partials.product.options' with { product: product_option } %}
+                        {% include 'pages.partials.product.options' with { product: product_option, veloura_cart_context:true } %}
                       </form>                   
                     {% endfor %}
                   </div>
                 {% endif %}
                     
-                <salla-offer data-testid="store-cart-offer"></salla-offer>
+                <salla-offer></salla-offer>
                 
                 {% hook 'cart:items.end' %}
             </div>
@@ -175,7 +250,7 @@
             <!-- sidebar -->
             {% if cart.items|length %}
                 <div class="sticky top-24 w-full lg:w-96 rtl:lg:mr-8 ltr:lg:ml-8">
-                    <div class="shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative {{ cart.free_shipping_bar ? '' : 'hidden' }}" id="free-shipping">
+                    <div class="veloura-cart-surface shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative {{ cart.free_shipping_bar ? '' : 'hidden' }}" id="free-shipping">
                         <div class="flex rtl:space-x-reverse space-x-3 items-center">
                             <i class="bg-primary text-white rounded-icon sicon-shipping-fast {{ theme.is_rtl ? 'flip-x':'' }}"></i>
                             {% set is_free=cart.free_shipping_bar.has_free_shipping %}
@@ -190,7 +265,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="mt-8 bg-border-color bg-gray-100 rounded-full {{ is_free ? ' hidden' : '' }}" id="free-shipping-bar">
+                        <div class="mt-8 bg-border-color rounded-full {{ is_free ? ' hidden' : '' }}" id="free-shipping-bar">
                             <div class="progress-bg transition-all duration-500 h-2.5 bg-primary relative rounded-full flex justify-end"
                                  style="width:{{ cart.free_shipping_bar.percent }}%">
                                 <i class="inline-block sicon-shipping-fast absolute -top-5 rtl:left-0 ltr:right-0 {{ theme.is_rtl ? 'flip-x':'' }}"></i>
@@ -199,35 +274,77 @@
                     </div>
                     {% if loyalty %}
                         <salla-loyalty-panel
-                            data-testid="store-cart-loyalty"
                             prize-points='{{ loyalty.prize.points }}'
                             prize-title='{{ loyalty.prize.title }}'>
                         </salla-loyalty-panel>
                     {% endif %}
 
-                    <div id="cart-gifting" class="shadow-default bg-white xs:p-2 rounded-md mb-5 relative  {{gift.enabled ? '' : 'hidden' }}">
-                        <salla-gifting data-testid="store-cart-gifting" id="salla-gifting" class="mt-5" widget-title="{{ trans("pages.cart.gift_widget_title") }}"  widget-subtitle="{{ gift.text }}" class="mt-5" {{gift.type}}-products  vertical></salla-gifting>
+                    <div id="cart-gifting" class="veloura-cart-surface shadow-default bg-white xs:p-2 rounded-md mb-5 relative  {{gift.enabled ? '' : 'hidden' }}">
+                        <salla-gifting id="salla-gifting" class="mt-5" widget-title="{{ trans("pages.cart.gift_widget_title") }}"  widget-subtitle="{{ gift.text }}" class="mt-5" {{gift.type}}-products  vertical></salla-gifting>
                     </div>
 
-                    {% if store.settings.cart.apply_coupon_enabled %}
-                        <div class="shadow-default bg-white px-5 xs:px-7 rounded-md mt-5 lg:mt-0 mb-5 relative">
-                            {% hook 'cart:coupon.start' %}
-                            <salla-cart-coupons data-testid="store-cart-coupons"></salla-cart-coupons>
-                            {% hook 'cart:coupon.end' %}
-                        </div>
-                    {% endif %}
+                    <div class="veloura-cart-surface veloura-cart-summary-surface shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative transition-height duration-1000">
+                        <h2 class="font-bold text-sm mb-5">{{ trans('pages.cart.summary') }}</h2>
 
-                    {% hook 'cart:summary-card.start' %}
-                    <salla-cart-summary-card data-testid="store-cart-summary"></salla-cart-summary-card>
-                    {% hook 'cart:summary-card.end' %}
-                    {% hook 'cart:summary.end' %}
+                        <div class="flex justify-between text-sm mb-5">
+                            <span class="text-gray-500"> {{ trans(cart.tax_amount ? "pages.cart.items_total_without_tax" : "pages.cart.items_total") }} </span>
+                            <b id="sub-total">{{ cart.sub_total|money }}</b>
+                        </div>
+
+                        {% if cart.options|length %}
+                          <div class="flex justify-between text-sm mb-5">
+                            <span class="text-gray-500">{{ trans('pages.cart.order_options_total') }}</span>
+                            <b id="cart-options-total">{{ cart.options_total|money }}</b>
+                          </div>
+                        {% endif %}
+
+                        <div id="shipping-cost"
+                             class="flex justify-between text-sm mb-5 {{ cart.has_shipping ? '' : 'hidden' }}">
+                            <span class="text-gray-500">{{ trans('pages.cart.shipping_cost') }}</span>
+                            <b>{{ cart.real_shipping_cost|money }}</b>
+                        </div>
+
+                        {% if store.settings.cart.apply_coupon_enabled %}
+                            <div class="py-5 mb-5">
+                                <salla-cart-coupons></salla-cart-coupons>
+                            </div>
+                        {% endif %}
+
+                        <!-- coupon discount -->
+                        <div id="total-discount" class="flex justify-between text-sm {{ cart.total_discount ? '' : 'hidden' }}">
+                            <span class="text-gray-500 block  h-10">{{ trans('pages.cart.discount') }}</span>
+                            <b>- {{ cart.total_discount|money }}</b>
+                        </div>
+
+                        {% if cart.tax_amount %}
+                            <div class="flex justify-between text-sm mb-5">
+                                <span class="text-gray-500">{{ trans('pages.cart.VAT_tax_amount') }}</span>
+                                <b id="tax-amount">{{ cart.tax_amount|money }}</b>
+                            </div>
+                        {% endif %}
+
+                        <div class="flex justify-between text-lg mb-5">
+                            <span class="text-gray-500">{{ trans('pages.cart.final_total') }}</span>
+                            <b data-cart-total>{{ cart.total|money }}</b>
+                        </div>
+
+                        <div class="cart-submit-wrap">
+                            {% hook 'cart:submit.start' %}
+                            <salla-button id="cart-submit" class="veloura-cart-submit" loader-position="center" width="wide">
+                                {{ trans('pages.cart.complete_order') }}
+                            </salla-button>
+                            {% hook 'cart:submit.end' %}
+                        </div>
+                        {% hook 'cart:summary.end' %}
+                    </div>
 
                      <!-- Tiered Offer Component -->
-                    <salla-tiered-offer data-testid="store-cart-tiered-offer"></salla-tiered-offer>
+                    <salla-tiered-offer></salla-tiered-offer>
                 </div>
             {% endif %}
         </div>
     </div>
+    {% include 'components.cart.veloura-cart-banners' %}
 {% endblock %}
 
 {% block scripts %}

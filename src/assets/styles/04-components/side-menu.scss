@@ -1,0 +1,61 @@
+/* ========================================================================
+   Veloura V128 — isolated side-menu stability layer
+   Loaded AFTER mmenu-light and every previous Veloura utility.
+   ======================================================================== */
+@media (max-width: 1024px) {
+  /* Side categories own their own offcanvas layer. */
+  .mm-ocd.veloura-side-menu-drawer {
+    z-index: 2147483646 !important;
+  }
+
+  .mm-ocd.veloura-side-menu-drawer.mm-ocd--open {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mm-ocd.veloura-side-menu-drawer.mm-ocd--open > .mm-ocd__content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  .mm-ocd.veloura-side-menu-drawer.mm-ocd--open #mobile-menu {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mm-ocd.veloura-side-menu-drawer .mm-ocd__backdrop {
+    pointer-events: auto !important;
+  }
+
+  /* The bottom bar must be physically absent while the side drawer owns the
+     viewport. opacity alone leaves an enormous stacking/compositor owner. */
+  .veloura-bottom-nav.is-side-menu-suppressed,
+  body.menu-opened .veloura-bottom-nav,
+  body.veloura-bottom-nav-categories-open .veloura-bottom-nav {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* A stale Search/Login layer must never sit above Categories. */
+  body.menu-opened [id^='veloura-bottom-search-panel'],
+  body.menu-opened [id^='veloura-bottom-search-backdrop'] {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Filters are a separate mmenu-light instance. Keep their identity explicit
+     so future side-menu styling cannot accidentally target them. */
+  .mm-ocd.veloura-filters-drawer {
+    z-index: 2147483500 !important;
+  }
+}

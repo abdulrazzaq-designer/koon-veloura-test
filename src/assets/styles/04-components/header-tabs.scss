@@ -1,0 +1,607 @@
+/* ========================================================================
+   Veloura Header + Tabs V16 — structural restore + focused tabs/mobile/admin fixes
+
+   Guarantees:
+   1) Solid mode: header and tabs keep fully independent background colors.
+   2) Glass mode: one unified glass surface hides both solid backgrounds.
+   3) Floating mode: inset inside the exact theme container with full radius.
+   4) Normal mode: full viewport width, flush top/right/left, lower radius only.
+   5) Sticky header and tabs remain one visible stack unless their hide switches
+      are explicitly enabled.
+   ======================================================================== */
+
+:root {
+  --veloura-radius: 24px;
+  --veloura-top-gap: var(--veloura-global-spacing, 12px);
+  --veloura-border: rgba(255, 255, 255, .68);
+  --veloura-separator: rgba(15, 23, 42, .11);
+  --veloura-glass-fallback: rgba(248, 250, 252, .72);
+  --veloura-glass-dark-fallback: rgba(17, 24, 39, .76);
+  --veloura-filter: blur(22px) saturate(138%);
+}
+
+html body .veloura-header-tabs-stack--radius-sharp { --veloura-radius: 0px; }
+html body .veloura-header-tabs-stack--radius-soft { --veloura-radius: 14px; }
+html body .veloura-header-tabs-stack--radius-medium { --veloura-radius: 24px; }
+html body .veloura-header-tabs-stack--radius-large { --veloura-radius: 38px; }
+
+/* ------------------------------------------------------------------------
+   Stack geometry and sticky behavior
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack {
+  position: relative;
+  z-index: 140;
+  isolation: isolate;
+  width: 100%;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-header-tabs-stack--sticky {
+  position: sticky !important;
+  top: 0 !important;
+}
+
+/* Floating mode keeps the exact global container and a top gap. */
+html body .veloura-header-tabs-stack--floating {
+  padding-top: var(--veloura-top-gap) !important;
+}
+
+html body .veloura-header-tabs-stack--floating > .veloura-header-tabs-stack__container {
+  width: 100% !important;
+  max-width: var(--veloura-global-container, 1280px) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--veloura-global-spacing, 12px) !important;
+  box-sizing: border-box !important;
+}
+
+/* Normal/non-floating mode is the native full-width header. */
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) {
+  top: 0 !important;
+  padding-top: 0 !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) > .veloura-header-tabs-stack__container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-inline: 0 !important;
+}
+
+html body .veloura-header-tabs-stack__surface {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: none;
+  overflow: hidden;
+  border: 1px solid var(--veloura-border);
+  border-radius: var(--veloura-radius);
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) .veloura-header-tabs-stack__surface {
+  border-top: 0 !important;
+  border-inline: 0 !important;
+  border-radius: 0 0 var(--veloura-radius) var(--veloura-radius) !important;
+}
+
+/* ------------------------------------------------------------------------
+   Disable all legacy independent fixed-header transforms.
+   The entire stack is the only sticky unit.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack .store-header,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled,
+html body .veloura-header-tabs-stack .store-header.veloura-top-hidden {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+  z-index: auto !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack #mainnav,
+html body .veloura-header-tabs-stack #mainnav.fixed-pinned,
+html body .veloura-header-tabs-stack #mainnav.fixed-header,
+html body .veloura-header-tabs-stack #mainnav.veloura-force-sticky {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack #mainnav > .inner,
+html body .veloura-header-tabs-stack #mainnav.fixed-pinned > .inner,
+html body .veloura-header-tabs-stack #mainnav.fixed-header > .inner,
+html body .veloura-header-tabs-stack #mainnav.veloura-force-sticky > .inner {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Header/tabs connection and outer radius
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack--has-tabs .store-header,
+html body .veloura-header-tabs-stack--has-tabs .store-header #mainnav,
+html body .veloura-header-tabs-stack--has-tabs .store-header #mainnav > .inner {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+html body .veloura-header-tabs-stack .veloura-home-tabs {
+  position: relative !important;
+  inset: auto !important;
+  z-index: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  max-height: 90px;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack--has-tabs .veloura-home-tabs {
+  margin-top: 0 !important;
+  border-top: 1px solid var(--veloura-separator) !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+html body .veloura-header-tabs-stack .veloura-home-tabs > .container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ------------------------------------------------------------------------
+   Visibility: hidden only when the corresponding switch is explicitly true.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack[data-veloura-hide-header='true'].veloura-hide-header-now .store-header {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+html body .veloura-header-tabs-stack[data-veloura-hide-tabs='true'].veloura-hide-tabs-now .veloura-home-tabs {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  border-top-color: transparent !important;
+}
+
+html body .veloura-header-tabs-stack[data-veloura-hide-header='false'] .store-header,
+html body .veloura-header-tabs-stack[data-veloura-hide-header='false'].veloura-hide-header-now .store-header {
+  max-height: 520px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html body .veloura-header-tabs-stack[data-veloura-hide-tabs='false'] .veloura-home-tabs,
+html body .veloura-header-tabs-stack[data-veloura-hide-tabs='false'].veloura-hide-tabs-now .veloura-home-tabs {
+  max-height: 90px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  border-top-color: var(--veloura-separator) !important;
+}
+
+/* ------------------------------------------------------------------------
+   SOLID MODE: two completely independent colors.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur),
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) > .veloura-header-tabs-stack__container,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .store-header,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .store-header.veloura-top-enabled,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .store-header #mainnav,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .store-header #mainnav > .inner {
+  background: var(--veloura-header-solid-bg, var(--veloura-top-bg, #fff)) !important;
+  background-color: var(--veloura-header-solid-bg, var(--veloura-top-bg, #fff)) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .store-header .veloura-header-container,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .store-header .veloura-header-grid {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-home-tabs,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-home-tabs > .container,
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-home-tabs__track {
+  background: var(--veloura-tabs-solid-bg, var(--veloura-tabs-bar-bg, #fff)) !important;
+  background-color: var(--veloura-tabs-solid-bg, var(--veloura-tabs-bar-bg, #fff)) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   GLASS MODE: one shared surface and transparent internal backgrounds.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack--blur,
+html body .veloura-header-tabs-stack--blur > .veloura-header-tabs-stack__container {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+  background: var(--veloura-glass-fallback) !important;
+  background-color: var(--veloura-glass-fallback) !important;
+  background: var(--veloura-glass-fallback) !important;
+  border-color: var(--veloura-border) !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+  box-shadow: none !important;
+}
+
+html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.dark .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+  background: var(--veloura-glass-dark-fallback) !important;
+  background-color: var(--veloura-glass-dark-fallback) !important;
+  background: var(--veloura-glass-dark-fallback) !important;
+}
+
+html body .veloura-header-tabs-stack--blur .store-header,
+html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled,
+html body .veloura-header-tabs-stack--blur .store-header #mainnav,
+html body .veloura-header-tabs-stack--blur .store-header #mainnav > .inner,
+html body .veloura-header-tabs-stack--blur .store-header .veloura-header-container,
+html body .veloura-header-tabs-stack--blur .store-header .veloura-header-grid,
+html body .veloura-header-tabs-stack--blur .veloura-home-tabs,
+html body .veloura-header-tabs-stack--blur .veloura-home-tabs > .container,
+html body .veloura-header-tabs-stack--blur .veloura-home-tabs__track {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Compact state: immediate, stable, and layout-safe.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack .store-header .veloura-header-grid {
+  transition: min-height .14s ease-out !important;
+}
+
+html body .veloura-header-tabs-stack .store-header .veloura-header-logo {
+  min-width: 0 !important;
+  contain: layout paint;
+}
+
+html body .veloura-header-tabs-stack .store-header .veloura-store-logo,
+html body .veloura-header-tabs-stack .store-header .veloura-store-logo-video,
+html body .veloura-header-tabs-stack .store-header .navbar-brand img {
+  max-height: var(--veloura-top-logo-size) !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  transform-origin: center center !important;
+  backface-visibility: hidden !important;
+  will-change: transform;
+  transition: transform .14s ease-out !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-header-grid {
+  min-height: 58px !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-store-logo,
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .navbar-brand img,
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-store-logo-video {
+  transform: translate3d(0, 0, 0) scale(.78) !important;
+}
+
+html body .veloura-header-tabs-stack--compact-disabled .store-header .veloura-header-grid {
+  min-height: 78px !important;
+}
+
+@media (max-width: 1023px) {
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-header-grid {
+    min-height: 54px !important;
+  }
+
+  html body .veloura-header-tabs-stack--compact-disabled .store-header .veloura-header-grid {
+    min-height: 72px !important;
+  }
+}
+
+/* Prevent preview resize jank while switching laptop/mobile frames. */
+html.veloura-viewport-resizing .veloura-header-tabs-stack,
+html.veloura-viewport-resizing .veloura-header-tabs-stack *,
+html.veloura-viewport-resizing .veloura-home-tabs,
+html.veloura-viewport-resizing .veloura-home-tabs * {
+  transition: none !important;
+  animation: none !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+    background: rgba(207, 220, 233, .96) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .veloura-header-tabs-stack .store-header .veloura-header-grid,
+  html body .veloura-header-tabs-stack .store-header .veloura-store-logo,
+  html body .veloura-header-tabs-stack .store-header .veloura-store-logo-video,
+  html body .veloura-header-tabs-stack .store-header .navbar-brand img {
+    transition: none !important;
+  }
+}
+
+/* ========================================================================
+   Veloura Header Stack — container, detached search and full hide fixes
+   ======================================================================== */
+
+/* The desktop width switch is independent from floating/non-floating mode. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--container-desktop > .veloura-header-tabs-stack__container {
+    width: 100% !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
+    margin-inline: auto !important;
+    padding-inline: var(--veloura-global-spacing, 12px) !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .veloura-header-tabs-stack--full-width-desktop > .veloura-header-tabs-stack__container {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack--container-desktop .store-header .veloura-header-container {
+    width: 100% !important;
+    max-width: none !important;
+    padding-inline: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack--full-width-desktop .store-header .veloura-header-container {
+    width: 100% !important;
+    max-width: none !important;
+    padding-inline: 32px !important;
+  }
+}
+
+/* A detached rectangular search is a sibling of the header surface, so the
+   10px gap shows the actual page background rather than the header color. */
+html body .veloura-detached-search-shell {
+  display: block;
+  width: 100%;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-detached-search {
+  display: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+html body .veloura-detached-search salla-search {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  html body .veloura-detached-search-shell {
+    padding-inline: 14px !important;
+  }
+
+  html body .veloura-detached-search-shell.veloura-detached-mobile-bar .veloura-detached-search--mobile,
+  html body .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon .veloura-detached-search--mobile {
+    display: block !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+    .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon
+    .veloura-detached-search--mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body .veloura-detached-search--desktop {
+    width: min(620px, 100%);
+    max-width: 620px;
+  }
+
+  html body .veloura-detached-search-shell.veloura-detached-desktop-bar .veloura-detached-search--desktop,
+  html body .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon .veloura-detached-search--desktop {
+    display: block !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+    .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon
+    .veloura-detached-search--desktop {
+    display: none !important;
+  }
+}
+
+/* Header hidden on scroll: hide the detached field with it. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now .veloura-detached-search-shell {
+  display: none !important;
+}
+
+/* If there are no home tabs, collapse the complete sticky surface. This
+   removes the one-pixel border/glass remnant that used to stay on screen. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now:not(.veloura-header-tabs-stack--has-tabs) {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding-top: 0 !important;
+  border: 0 !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-hide-header-now:not(.veloura-header-tabs-stack--has-tabs)
+  > .veloura-header-tabs-stack__container {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-hide-header-now:not(.veloura-header-tabs-stack--has-tabs)
+  .veloura-header-tabs-stack__surface {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  overflow: hidden !important;
+}
+
+
+/* When home tabs remain visible while the header is hidden, remove the
+   separator that otherwise looks like a stray one-pixel white line. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs-stack--has-tabs
+  .veloura-home-tabs {
+  border-top: 0 !important;
+}
+
+/* ========================================================================
+   Veloura Header + Tabs V21 — always connected contract
+
+   Tabs are always rendered inside the header surface. The original separator
+   above remains untouched. Solid mode keeps the configured tabs background;
+   glass mode continues to share the header glass material.
+   ======================================================================== */
+
+/* ========================================================================
+   Veloura Header + Tabs V22 — restore the original 1px header/tabs separator
+
+   Draw the separator as its own layer so it cannot be swallowed by the
+   connected glass/solid surfaces. The color is intentionally the original
+   --veloura-separator value; no opacity or tone changes are introduced.
+   ======================================================================== */
+html body .veloura-header-tabs-stack--has-tabs:not(.veloura-hide-header-now)
+  .veloura-home-tabs::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-inline: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: var(--veloura-separator) !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+/* Avoid painting a stray divider when the header itself is hidden. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs-stack--has-tabs
+  .veloura-home-tabs::before {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Connected header shell — outer frame stays independent from site container.
+   The inner header content owns the storefront container alignment.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack
+    > .veloura-header-tabs-stack__container.container {
+    width: 100% !important;
+    max-width: 2280px !important;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Header/menu layer must stay above the tabs so desktop dropdowns open
+     over the tabs instead of being painted underneath them. */
+  html body .veloura-header-tabs-stack__surface > .store-header,
+  html body .veloura-header-tabs-stack__surface > .store-header.veloura-top-enabled {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+
+  html body .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu) {
+    z-index: 4200 !important;
+  }
+}
+
+/* Desktop dropdowns always paint above the connected tabs. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack__surface > .store-header {
+    position: relative !important;
+    z-index: 20 !important;
+  }
+
+  html body .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}

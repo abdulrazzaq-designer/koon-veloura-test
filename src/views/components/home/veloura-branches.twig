@@ -1,0 +1,108 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_branches_hide %}
+
+  {% set radius_map = {
+    'sharp': '0px',
+    'soft': '8px',
+    'medium': '16px',
+    'large': '28px',
+    'round': '40px'
+  } %}
+
+  {% set map_radius = radius_map[component.veloura_branches_radius|default('medium')]|default('16px') %}
+
+  {% set section_classes = [
+    's-block',
+  'veloura-branches',
+  component.veloura_branches_mobile_only ? 'veloura-branches--mobile-only' : '',
+  component.veloura_branches_desktop_only ? 'veloura-branches--desktop-only' : '',
+  component.veloura_branches_custom_spacing ? 'has-spacing' : '',
+  component.veloura_branches_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    class="{{ section_classes }}"
+    style="
+      --veloura-branches-radius: {{ map_radius }};
+      --veloura-branches-spacing: {{ component.veloura_branches_custom_spacing ? component.veloura_branches_spacing|default(0) : 0 }}px;
+    "
+  >
+    {% if component.veloura_branches_custom_spacing %}
+  <div class="veloura-branches__container">
+{% else %}
+  <div class="container veloura-branches__container">
+{% endif %}
+
+      {% if component.veloura_branches_title or component.veloura_branches_subtitle %}
+        <div class="veloura-branches__heading veloura-component-title" data-veloura-section-heading>
+          {% if component.veloura_branches_title %}
+            <h2>{{ component.veloura_branches_title }}</h2>
+          {% endif %}
+
+          {% if component.veloura_branches_subtitle %}
+            <p>{{ component.veloura_branches_subtitle }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if component.veloura_branches_items|length %}
+        <div class="veloura-branches__tabs">
+          {% for branch in component.veloura_branches_items %}
+            <button
+              type="button"
+              class="veloura-branches__tab {{ loop.first ? 'is-active' : '' }}"
+              data-map="{{ branch.map_url }}"
+            >
+              <i class="sicon-location"></i>
+              <span>{{ branch.name }}</span>
+            </button>
+          {% endfor %}
+        </div>
+
+        <div class="veloura-branches__map">
+          <iframe
+            src="{{ component.veloura_branches_items[0].map_url }}"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const sections = document.querySelectorAll('.veloura-branches');
+
+      sections.forEach(function (section) {
+        const tabs = section.querySelectorAll('.veloura-branches__tab');
+        const iframe = section.querySelector('.veloura-branches__map iframe');
+
+        if (!tabs.length || !iframe) return;
+
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            const mapUrl = tab.getAttribute('data-map');
+
+            if (!mapUrl) return;
+
+            tabs.forEach(function (item) {
+              item.classList.remove('is-active');
+            });
+
+            tab.classList.add('is-active');
+            iframe.setAttribute('src', mapUrl);
+          });
+        });
+      });
+    });
+  </script>
+
+{% endif %}

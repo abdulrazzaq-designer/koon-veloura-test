@@ -1,3 +1,9 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
 {#
 | Variable                           | Type     | Description                                                                  |
 |------------------------------------|----------|------------------------------------------------------------------------------|
@@ -10,7 +16,7 @@
 | component.links[].url              | string   |                                                                              |
 | position                           | int      | Sorting number start from zero                                               |
 #}
-<section component-id="{{ componentId }}" data-testid="store-home-main-links" class="s-block s-block--categories {{ component.merge_with_top_component and position ?'merge-with-top-component' : '' }} {{ not component.title and component.merge_with_top_component ? 'merged-has-no-title' : '' }}">
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" class="s-block s-block--categories {{ component.merge_with_top_component and position ?'merge-with-top-component' : '' }} {{ not component.title and component.merge_with_top_component ? 'merged-has-no-title' : '' }}">
     <div class="container">
       <salla-slider  
         type="carousel"

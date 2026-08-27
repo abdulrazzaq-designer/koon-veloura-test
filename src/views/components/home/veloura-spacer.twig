@@ -1,0 +1,14 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  class="s-block veloura-spacer {{ component.veloura_spacer_custom_classes }}"
+  style="
+    --veloura-spacer-mobile: {{ component.veloura_spacer_mobile|default(60) }}px;
+    --veloura-spacer-tablet: {{ component.veloura_spacer_enable_tablet ? component.veloura_spacer_tablet|default(60) : component.veloura_spacer_desktop|default(60) }}px;
+    --veloura-spacer-desktop: {{ component.veloura_spacer_desktop|default(60) }}px;
+  "
+></section>

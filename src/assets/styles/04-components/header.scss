@@ -293,3 +293,2191 @@ salla-menu[topnav]:not(.hydrated) {
     );
   }
 }
+
+
+/* ================================
+   Veloura Header 2026 - Clean Final
+================================ */
+
+.store-header.veloura-top-enabled {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  max-width: 2280px;
+  margin-inline: auto;
+  transition: transform .28s ease, box-shadow .28s ease;
+
+  .main-nav-container {
+    width: 100%;
+    max-width: none;
+    background: var(--veloura-top-bg) !important;
+    color: var(--veloura-top-text) !important;
+    overflow: visible !important;
+  }
+
+  .inner {
+    width: 100%;
+    max-width: none;
+    background: var(--veloura-top-bg) !important;
+    color: var(--veloura-top-text) !important;
+  }
+
+  .veloura-header-container {
+    width: 100%;
+    max-width: var(--veloura-home-container-width, var(--veloura-global-container, 1280px));
+    margin-inline: auto;
+    padding-inline: var(--veloura-home-container-padding, var(--veloura-global-spacing, 16px));
+    box-sizing: border-box;
+  }
+
+  &.veloura-top-full-width-desktop {
+    .veloura-header-container {
+      max-width: none;
+    }
+  }
+
+  .veloura-header-grid {
+    direction: ltr;
+    width: 100%;
+    min-height: 78px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas: "left logo right";
+    align-items: center;
+    gap: 16px;
+  }
+
+  .veloura-header__tools {
+    grid-area: right;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    direction: inherit;
+  }
+
+  .veloura-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    direction: inherit;
+  }
+
+  .veloura-header__menu {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .veloura-header-logo {
+    grid-area: logo;
+    justify-self: center;
+    margin: 0 !important;
+    z-index: 2;
+  }
+
+  .veloura-header__cart,
+  .veloura-cart-summary {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px;
+    flex: 0 0 auto;
+    width: max-content;
+    white-space: nowrap;
+  }
+
+  .veloura-header__cart .s-cart-summary-content,
+  .veloura-header__cart .s-cart-summary-wrapper,
+  .veloura-header__cart .s-cart-summary-total {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px;
+    width: max-content;
+    max-width: none;
+    position: static !important;
+    white-space: nowrap;
+  }
+
+  html[dir="rtl"] .veloura-header__tools,
+  html[dir="rtl"] .veloura-header__actions {
+    direction: rtl;
+  }
+
+  html[dir="ltr"] .veloura-header__tools,
+  html[dir="ltr"] .veloura-header__actions {
+    direction: ltr;
+  }
+
+  .veloura-menu-links-wrap,
+  .veloura-lang-desktop,
+  .veloura-lang-mobile {
+    direction: rtl;
+  }
+
+  .veloura-mobile-search-bar,
+  .veloura-desktop-search-bar {
+    direction: rtl;
+    display: none;
+  }
+
+  .veloura-search-icon,
+  .veloura-search-bar,
+  .veloura-search-popup {
+    display: none !important;
+  }
+
+  .veloura-store-logo,
+  .veloura-store-logo-video,
+  .navbar-brand img {
+    max-height: var(--veloura-top-logo-size) !important;
+    width: auto !important;
+    max-width: none !important;
+    object-fit: contain;
+    display: block;
+  }
+
+  .veloura-store-logo-video {
+    height: var(--veloura-top-logo-size) !important;
+  }
+
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary i[slot="icon"] {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: var(--veloura-top-text) !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1 !important;
+    cursor: pointer;
+  }
+
+  .veloura-search-toggle {
+    display: none !important;
+  }
+
+  .veloura-header-icon i,
+  .veloura-search-toggle i,
+  .veloura-cart-summary i[slot="icon"] {
+    color: inherit !important;
+    font-size: inherit !important;
+    line-height: 1 !important;
+    width: auto !important;
+    min-width: auto !important;
+    height: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .veloura-cart-summary {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    min-height: auto !important;
+  }
+
+  .s-cart-summary-count {
+    background: var(--veloura-top-cart-bg) !important;
+  }
+
+  .s-cart-summary-total,
+  .s-cart-summary-content,
+  .s-cart-summary-wrapper {
+    color: var(--veloura-top-text) !important;
+  }
+
+  .s-search-input {
+    border: 1px solid rgba(0, 0, 0, .08) !important;
+    background: rgba(255, 255, 255, .72) !important;
+    color: var(--veloura-top-text) !important;
+  }
+
+  .veloura-dark-toggle__sun {
+    display: none;
+  }
+}
+
+/* ================================
+   Veloura Header Border Radius Fix
+================================ */
+.store-header.veloura-top-enabled {
+  .main-nav-container,
+  .main-nav-container > .inner {
+    overflow: hidden !important;
+  }
+}
+
+/* حاد */
+.store-header.veloura-top-enabled.veloura-top-border-sharp {
+  .main-nav-container,
+  .main-nav-container > .inner {
+    border-radius: 0 !important;
+  }
+}
+
+/* ناعم قليلاً */
+.store-header.veloura-top-enabled.veloura-top-border-soft {
+  .main-nav-container,
+  .main-nav-container > .inner {
+    border-radius: 0 0 12px 12px !important;
+  }
+}
+
+/* ناعم */
+.store-header.veloura-top-enabled.veloura-top-border-medium {
+  .main-nav-container,
+  .main-nav-container > .inner {
+    border-radius: 0 0 24px 24px !important;
+  }
+}
+
+/* ناعم جداً */
+.store-header.veloura-top-enabled.veloura-top-border-large {
+  .main-nav-container,
+  .main-nav-container > .inner {
+    border-radius: 0 0 42px 42px !important;
+  }
+}
+
+/* حجم الأيقونات */
+.store-header.veloura-top-icons-small {
+  .veloura-header-icon,
+  .veloura-search-toggle {
+    font-size: 22px !important;
+  }
+}
+
+.store-header.veloura-top-icons-medium {
+  .veloura-header-icon,
+  .veloura-search-toggle {
+    font-size: 28px !important;
+  }
+}
+
+.store-header.veloura-top-icons-large {
+  .veloura-header-icon,
+  .veloura-search-toggle {
+    font-size: 34px !important;
+  }
+}
+
+/* الوضع الداكن */
+body.dark {
+  .veloura-dark-toggle__moon {
+    display: none !important;
+  }
+
+  .veloura-dark-toggle__sun {
+    display: inline-block !important;
+  }
+}
+
+/* ================================
+   Mobile
+================================ */
+
+@media (max-width: 1023px) {
+  .store-header.veloura-top-enabled {
+    .veloura-header-container {
+      width: 100%;
+      max-width: none !important;
+      padding-inline: 14px !important;
+      box-sizing: border-box;
+    }
+
+    .veloura-header-grid {
+      min-height: 72px;
+      gap: 10px;
+      grid-template-areas: "left logo right";
+    }
+
+    .veloura-header__tools {
+      gap: 12px;
+    }
+
+    .veloura-header__actions {
+      gap: 10px;
+    }
+
+    .veloura-menu-links-wrap,
+    .veloura-desktop-search-bar,
+    custom-main-menu,
+    .veloura-lang-desktop {
+      display: none !important;
+    }
+
+    .veloura-cart-icon-only-mobile .s-cart-summary-total,
+    .veloura-cart-icon-only-mobile .s-cart-summary-content {
+      display: none !important;
+    }
+  }
+
+  .store-header.veloura-mobile-search-icon_right {
+    .veloura-search-toggle,
+    .veloura-mobile-search-bar {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+
+  .store-header.veloura-mobile-search-icon_left {
+    .veloura-search-toggle,
+    .veloura-mobile-search-bar {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+
+  .store-header.veloura-mobile-search-bar,
+  .store-header.veloura-mobile-search-bar_sticky_icon {
+    .veloura-search-toggle,
+    .veloura-search-toggle {
+      display: none !important;
+    }
+
+    .veloura-header-grid {
+      grid-template-areas:
+        "left logo right"
+        "search search search";
+    }
+
+    .veloura-mobile-search-bar {
+      grid-area: search;
+      display: block !important;
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+
+  .store-header.veloura-mobile-search-bar_sticky_icon.veloura-top-scrolled {
+    .veloura-header-grid {
+      grid-template-areas: "left logo right";
+    }
+
+    .veloura-mobile-search-bar {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+}
+
+/* ================================
+   Desktop / Laptop
+================================ */
+
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled {
+    .veloura-header-container {
+      width: 100% !important;
+      max-width: var(--veloura-home-container-width, var(--veloura-global-container, 1280px)) !important;
+      margin-inline: auto !important;
+      padding-inline: var(--veloura-home-container-padding, var(--veloura-global-spacing, 32px)) !important;
+      box-sizing: border-box;
+    }
+
+    /* العرض الكامل فقط إذا خيار الهيدر Full Width مفعّل */
+    &.veloura-top-full-width-desktop {
+      .veloura-header-container {
+        width: 100% !important;
+        max-width: none !important;
+        margin-inline: auto !important;
+        padding-inline: 32px !important;
+      }
+    }
+
+    .veloura-lang-mobile {
+      display: none !important;
+    }
+
+    .veloura-menu-links-wrap {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    custom-main-menu {
+      display: block !important;
+      min-height: auto !important;
+      max-width: 100%;
+    }
+  }
+
+  .store-header.veloura-top-logo-no-center-laptop {
+    .veloura-header-grid {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "logo right left";
+    }
+
+    .veloura-header-logo {
+      justify-self: flex-start;
+    }
+  }
+
+  .store-header.veloura-desktop-menu-links {
+    .veloura-header__menu,
+    .veloura-header__menu .veloura-menu-trigger-mobile {
+      display: none !important;
+    }
+
+    .veloura-menu-links-wrap {
+      display: flex !important;
+    }
+  }
+
+  .store-header.veloura-desktop-menu-hamburger {
+    .veloura-menu-trigger {
+      display: inline-flex !important;
+    }
+
+    .veloura-menu-links-wrap {
+      display: none !important;
+    }
+  }
+
+  .store-header.veloura-desktop-search-icon_right {
+    .veloura-desktop-search-bar,
+    .veloura-search-toggle {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+
+  .store-header.veloura-desktop-search-icon_left {
+    .veloura-desktop-search-bar,
+    .veloura-search-toggle {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+
+  .store-header.veloura-desktop-search-bar,
+  .store-header.veloura-desktop-search-bar_sticky_icon {
+    .veloura-search-toggle,
+    .veloura-search-toggle {
+      display: none !important;
+    }
+
+    .veloura-header-grid {
+      grid-template-areas:
+        "left logo right"
+        "search search search";
+    }
+
+    .veloura-desktop-search-bar {
+      grid-area: search;
+      display: block !important;
+      width: min(620px, 100%);
+      max-width: 620px;
+      justify-self: center;
+      margin-top: 8px;
+    }
+  }
+
+  .store-header.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled {
+    .veloura-header-grid {
+      grid-template-areas: "left logo right";
+    }
+
+    .veloura-desktop-search-bar {
+      display: none !important;
+    }
+
+    .veloura-search-toggle {
+      display: inline-flex !important;
+    }
+  }
+}
+
+/* إخفاء الهيدر عند النزول */
+.store-header.veloura-top-hidden {
+  transform: translateY(-100%);
+}
+
+
+/* ================================
+   Veloura Dark Toggle + Cart Fix
+================================ */
+
+/* إصلاح ظهور أيقونتي الدارك واللايت مع بعض */
+.store-header.veloura-top-enabled {
+  .veloura-dark-toggle {
+    .veloura-dark-toggle__moon {
+      display: inline-flex !important;
+    }
+
+    .veloura-dark-toggle__sun {
+      display: none !important;
+    }
+  }
+}
+
+/* عند تفعيل الوضع الداكن */
+html.dark,
+body.dark,
+.dark {
+  .store-header.veloura-top-enabled {
+    .veloura-dark-toggle {
+      .veloura-dark-toggle__moon {
+        display: none !important;
+      }
+
+      .veloura-dark-toggle__sun {
+        display: inline-flex !important;
+      }
+    }
+  }
+}
+
+/* إصلاح حجم أيقونة السلة */
+.store-header.veloura-top-enabled {
+  .veloura-cart-summary {
+    font-size: inherit !important;
+  }
+
+  .veloura-cart-summary i[slot="icon"],
+  salla-cart-summary i[slot="icon"] {
+    font-size: inherit !important;
+    width: 1em !important;
+    height: 1em !important;
+    min-width: 1em !important;
+    min-height: 1em !important;
+    line-height: 1 !important;
+    color: var(--veloura-top-text) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* ربط حجم السلة مع خيار حجم أيقونات الهيدر */
+.store-header.veloura-top-icons-small {
+  .veloura-cart-summary,
+  .veloura-cart-summary i[slot="icon"],
+  salla-cart-summary i[slot="icon"] {
+    font-size: 22px !important;
+  }
+}
+
+.store-header.veloura-top-icons-medium {
+  .veloura-cart-summary,
+  .veloura-cart-summary i[slot="icon"],
+  salla-cart-summary i[slot="icon"] {
+    font-size: 28px !important;
+  }
+}
+
+.store-header.veloura-top-icons-large {
+  .veloura-cart-summary,
+  .veloura-cart-summary i[slot="icon"],
+  salla-cart-summary i[slot="icon"] {
+    font-size: 34px !important;
+  }
+}
+
+/* ترتيب عداد السلة فوق الأيقونة بعد تكبيرها */
+.store-header.veloura-top-enabled {
+  .s-cart-summary-count {
+    top: -6px !important;
+    inset-inline-start: -8px !important;
+  }
+}
+
+
+/* ================================
+   Veloura Dark + Cart Hard Fix
+================================ */
+
+/* زر الدارك: أيقونة واحدة فقط */
+.store-header.veloura-top-enabled {
+  .veloura-dark-toggle__moon,
+  .veloura-dark-toggle__sun {
+    display: none !important;
+  }
+
+  .veloura-dark-toggle__icon {
+    display: inline-flex !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    line-height: 1 !important;
+  }
+}
+
+/* أيقونة السلة المخصصة */
+.store-header.veloura-top-enabled {
+  .veloura-cart-custom-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--veloura-top-text) !important;
+    line-height: 1 !important;
+  }
+
+  .veloura-cart-custom-icon i {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    line-height: 1 !important;
+    width: 1em !important;
+    height: 1em !important;
+  }
+}
+
+/* ربط حجم السلة بحجم أيقونات الهيدر */
+.store-header.veloura-top-icons-small {
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon {
+    font-size: 22px !important;
+  }
+}
+
+.store-header.veloura-top-icons-medium {
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon {
+    font-size: 28px !important;
+  }
+}
+
+.store-header.veloura-top-icons-large {
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon {
+    font-size: 34px !important;
+  }
+}
+
+/* تحسين مكان عداد السلة */
+.store-header.veloura-top-enabled {
+  .s-cart-summary-count {
+    top: -7px !important;
+    inset-inline-start: -9px !important;
+  }
+}
+
+
+/* ================================
+   Veloura Native Mobile Menu On Desktop - CLEAN
+================================ */
+
+@media (max-width: 1023px) {
+  .store-header.veloura-top-enabled .veloura-menu-trigger-mobile,
+  .store-header.veloura-top-enabled a.mburger[href="#mobile-menu"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-menu-links-wrap {
+    display: block !important;
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    max-width: 1px !important;
+    max-height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    white-space: nowrap !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-menu-links-wrap custom-main-menu {
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  .veloura-desktop-menu-overlay,
+  .veloura-desktop-menu-drawer,
+  .veloura-menu-trigger-desktop {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap {
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    clip: auto !important;
+    clip-path: none !important;
+    white-space: normal !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap custom-main-menu {
+    display: block !important;
+    min-height: auto !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-trigger-mobile,
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links a.mburger[href="#mobile-menu"],
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-trigger-desktop {
+    display: none !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger .veloura-menu-links-wrap {
+    display: block !important;
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    max-width: 1px !important;
+    max-height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    white-space: nowrap !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger .veloura-menu-links-wrap custom-main-menu {
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger .veloura-menu-trigger-mobile,
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger a.mburger[href="#mobile-menu"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger .veloura-menu-trigger-mobile i,
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger a.mburger[href="#mobile-menu"] i {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: var(--veloura-top-text) !important;
+    line-height: 1 !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger .veloura-menu-trigger-desktop,
+  .veloura-desktop-menu-overlay,
+  .veloura-desktop-menu-drawer {
+    display: none !important;
+  }
+}
+
+
+/* ================================
+   Veloura Mobile Menu Final Fix v6
+   before = سهم الرجوع / after = عنوان القائمة
+================================ */
+
+/*
+  المهم:
+  حسب mmenu-light:
+  .mm-spn.mm-spn--navbar:before = سهم الرجوع
+  .mm-spn.mm-spn--navbar:after  = عنوان القائمة من data-mm-spn-title
+
+  لذلك لا نستخدم after كسهم ولا نخفيه.
+*/
+
+.mm-ocd {
+  z-index: 999999 !important;
+}
+
+.mm-ocd .mm-ocd__content,
+.mm-ocd.mm-ocd--right .mm-ocd__content,
+.mm-ocd.mm-ocd--left .mm-ocd__content {
+  width: min(360px, 86vw) !important;
+  max-width: 86vw !important;
+  background: #f8f8f8 !important;
+  box-shadow: -14px 0 34px rgba(0, 0, 0, .13) !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn {
+  --mm-spn-item-height: 56px !important;
+  --mm-spn-item-indent: 18px !important;
+  --mm-spn-line-height: 20px !important;
+  background: #f8f8f8 !important;
+  color: #111827 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+
+/* عنوان القائمة الحقيقي: after */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar:after {
+  content: attr(data-mm-spn-title) !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 70px !important;
+  right: 70px !important;
+  width: auto !important;
+  height: 56px !important;
+  min-width: 0 !important;
+  min-height: 56px !important;
+  max-width: none !important;
+  max-height: 56px !important;
+  line-height: 56px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 22 !important;
+  color: rgba(17, 24, 39, .68) !important;
+  -webkit-text-fill-color: rgba(17, 24, 39, .68) !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+/* شريط الهيدر خلف العنوان */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar {
+  padding-top: 56px !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar > ul {
+  top: 56px !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar::marker {
+  display: none !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar {
+  background:
+    linear-gradient(180deg, #fbfbfb 0 56px, #f8f8f8 56px 100%) !important;
+}
+
+/* خط تحت عنوان القائمة */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar .main-menu:after {
+  content: "" !important;
+  position: fixed !important;
+  top: 56px !important;
+  inset-inline-start: 0 !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: rgba(17, 24, 39, .13) !important;
+  z-index: 18 !important;
+  pointer-events: none !important;
+}
+
+/* امسح الأسهم الكبيرة التي كانت تظهر فوق من ul */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar > ul:before,
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar > ul:after,
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar ul.mm-spn--open:before,
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar ul.mm-spn--open:after,
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar ul.mm-spn--parent:before,
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar ul.mm-spn--parent:after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  transform: none !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+/* سهم الرجوع الحقيقي: before */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar:before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  top: 28px !important;
+  right: 25px !important;
+  left: auto !important;
+  width: 10px !important;
+  height: 10px !important;
+  min-width: 10px !important;
+  min-height: 10px !important;
+  max-width: 10px !important;
+  max-height: 10px !important;
+  z-index: 30 !important;
+  opacity: .58 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-top: 2px solid rgba(17, 24, 39, .48) !important;
+  border-left: 2px solid rgba(17, 24, 39, .48) !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
+  transform-origin: center !important;
+  transform: translateY(-50%) rotate(135deg) !important;
+  pointer-events: auto !important;
+}
+
+/* الصفحة الرئيسية: لا يوجد سهم رجوع، لكن العنوان يبقى موجود */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar.mm-spn--main:before {
+  content: none !important;
+  display: none !important;
+}
+
+/* LTR */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn.mm-spn--navbar:before,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn.mm-spn--navbar:before {
+  left: 25px !important;
+  right: auto !important;
+  transform: translateY(-50%) rotate(-45deg) !important;
+}
+
+/* القائمة سطور كاملة */
+.mm-ocd #mobile-menu.mm-spn,
+.mm-ocd #mobile-menu.mm-spn ul,
+.mm-ocd #mobile-menu.mm-spn ul.main-menu {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-inline: 0 !important;
+  list-style: none !important;
+}
+
+/* إظهار نسخة الجوال داخل drawer */
+.mm-ocd #mobile-menu.mm-spn li[class~="lg:hidden"]:not([class~="!hidden"]) {
+  display: block !important;
+}
+
+/* إخفاء نسخ الديسكتوب المكررة */
+.mm-ocd #mobile-menu.mm-spn li[class~="!hidden"],
+.mm-ocd #mobile-menu.mm-spn li[class*="!hidden"],
+.mm-ocd #mobile-menu.mm-spn li[class~="hidden"][class~="lg:block"],
+.mm-ocd #mobile-menu.mm-spn li[class~="hidden"][class~="lg:inline-block"],
+.mm-ocd #mobile-menu.mm-spn li[class~="root-level"][class~="lg:block"],
+.mm-ocd #mobile-menu.mm-spn li[class~="root-level"][class~="lg:inline-block"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  float: none !important;
+  clear: both !important;
+  text-align: start !important;
+  box-sizing: border-box !important;
+}
+
+/* كسر بادنج mm-spn الأصلي */
+.mm-ocd #mobile-menu.mm-spn a,
+.mm-ocd #mobile-menu.mm-spn span {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li > a,
+.mm-ocd #mobile-menu.mm-spn li > span {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li > a span,
+.mm-ocd #mobile-menu.mm-spn li > span span {
+  display: inline !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: inherit !important;
+}
+
+/* RTL */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > a,
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > span,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > a,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > span {
+  padding: calc(var(--veloura-side-cats-gap, 0px) / 2) 22px calc(var(--veloura-side-cats-gap, 0px) / 2) 18px !important;
+  text-align: right !important;
+  justify-content: flex-start !important;
+}
+
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > a,
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > a,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span {
+  padding: calc(var(--veloura-side-cats-gap, 0px) / 2) 22px calc(var(--veloura-side-cats-gap, 0px) / 2) 54px !important;
+}
+
+/* LTR */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > a,
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > span,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > a,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > span {
+  padding: calc(var(--veloura-side-cats-gap, 0px) / 2) 18px calc(var(--veloura-side-cats-gap, 0px) / 2) 22px !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > a,
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > a,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span {
+  padding: calc(var(--veloura-side-cats-gap, 0px) / 2) 54px calc(var(--veloura-side-cats-gap, 0px) / 2) 22px !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li > a:after,
+.mm-ocd #mobile-menu.mm-spn li > span:after {
+  content: none !important;
+  display: none !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li img {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  object-fit: cover !important;
+  border-radius: 13px !important;
+  margin-inline-start: 10px !important;
+  margin-inline-end: 0 !important;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .08) !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li:after {
+  left: 20px !important;
+  right: 20px !important;
+  width: auto !important;
+  border-color: rgba(17, 24, 39, .16) !important;
+}
+
+/* سهم الفرعيات الأصلي */
+.mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)):before {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
+  display: block !important;
+  position: absolute !important;
+  top: 50% !important;
+  z-index: 3 !important;
+  width: 9px !important;
+  height: 9px !important;
+  opacity: .58 !important;
+  pointer-events: none !important;
+}
+
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
+  left: 26px !important;
+  right: auto !important;
+  transform: translateY(-50%) rotate(135deg) !important;
+  border-top: 2px solid currentColor !important;
+  border-right: 2px solid currentColor !important;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
+  right: 26px !important;
+  left: auto !important;
+  transform: translateY(-50%) rotate(-45deg) !important;
+  border-top: 2px solid currentColor !important;
+  border-right: 2px solid currentColor !important;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+}
+
+/* زر X أحمر واضح */
+.mm-ocd #mobile-menu.mm-spn .close-mobile-menu,
+.mm-ocd #mobile-menu.mm-spn .btn--close,
+.mm-ocd #mobile-menu.mm-spn .btn--close-sm {
+  position: absolute !important;
+  top: 10px !important;
+  left: 14px !important;
+  right: auto !important;
+  z-index: 40 !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 48, 48, .38) !important;
+  border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
+  background: #ff4b4b !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(255, 75, 75, .22), inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn .close-mobile-menu:before,
+.mm-ocd #mobile-menu.mm-spn .btn--close:before,
+.mm-ocd #mobile-menu.mm-spn .btn--close-sm:before {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+/* LTR يعكس مكان X */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn .close-mobile-menu,
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn .btn--close,
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn .btn--close-sm,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn .close-mobile-menu,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn .btn--close,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn .btn--close-sm {
+  right: 14px !important;
+  left: auto !important;
+}
+
+
+/* ================================
+   Veloura Side Categories Final Override V3
+   لازم يكون آخر شيء في _header.scss
+================================ */
+
+.mm-ocd .mm-ocd__content,
+.mm-ocd.mm-ocd--right .mm-ocd__content,
+.mm-ocd.mm-ocd--left .mm-ocd__content,
+.mm-ocd #mobile-menu.mm-spn,
+.mm-ocd #mobile-menu.mm-spn ul,
+.mm-ocd #mobile-menu.mm-spn .main-menu {
+  background: var(--veloura-side-cats-bg, #f8f8f8) !important;
+  color: var(--veloura-side-cats-text, #111827) !important;
+}
+
+.mm-ocd.mm-ocd--right .mm-ocd__content {
+  border-radius: var(--veloura-side-cats-menu-radius, 18px) 0 0 var(--veloura-side-cats-menu-radius, 18px) !important;
+  overflow: hidden !important;
+}
+
+.mm-ocd.mm-ocd--left .mm-ocd__content {
+  border-radius: 0 var(--veloura-side-cats-menu-radius, 18px) var(--veloura-side-cats-menu-radius, 18px) 0 !important;
+  overflow: hidden !important;
+}
+
+/* لا يوجد خلفية خاصة للتصنيفات */
+.mm-ocd #mobile-menu.mm-spn li,
+.mm-ocd #mobile-menu.mm-spn li > a,
+.mm-ocd #mobile-menu.mm-spn li > span,
+.mm-ocd #mobile-menu.mm-spn a,
+.mm-ocd #mobile-menu.mm-spn span {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* الصفوف بدون ارتفاع ثابت: المحتوى هو الذي يحدد الارتفاع،
+   والمسافة العمودية تأتي فقط من padding الداخلي المتوازن. */
+.mm-ocd #mobile-menu.mm-spn li {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.mm-ocd #mobile-menu.mm-spn li > a,
+.mm-ocd #mobile-menu.mm-spn li > span {
+  min-height: 0 !important;
+  height: auto !important;
+  color: var(--veloura-side-cats-text, #111827) !important;
+  font-size: var(--veloura-side-cats-title-font-size, 15px) !important;
+  gap: 10px !important;
+}
+
+/* عنوان القائمة */
+.mm-ocd #mobile-menu.mm-spn.mm-spn--navbar:after {
+  font-size: var(--veloura-side-cats-title-font-size, 14px) !important;
+}
+
+/* المسافة بين التصنيفات أصبحت padding داخليًا فقط.
+   مثال: 10px => 5px أعلى + 5px أسفل داخل الصف، بدون margin خارجي. */
+.mm-ocd #mobile-menu.mm-spn .main-menu > li,
+.mm-ocd #mobile-menu.mm-spn ul.mm-spn--open > li {
+  margin-block: 0 !important;
+}
+
+/* صور التصنيفات: صور سلة الأصلية + الصور المرفوعة */
+.mm-ocd #mobile-menu.mm-spn li > a > img,
+.mm-ocd #mobile-menu.mm-spn li > span > img,
+.mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img,
+.mm-ocd #mobile-menu.mm-spn .veloura-side-menu-img {
+  width: var(--veloura-side-cats-img-w, 60px) !important;
+  height: var(--veloura-side-cats-img-h, 60px) !important;
+  min-width: var(--veloura-side-cats-img-w, 60px) !important;
+  min-height: var(--veloura-side-cats-img-h, 60px) !important;
+  max-width: var(--veloura-side-cats-img-w, 60px) !important;
+  max-height: var(--veloura-side-cats-img-h, 60px) !important;
+  object-fit: var(--veloura-side-cats-img-fit, cover) !important;
+  border-radius: var(--veloura-side-cats-img-radius, 16px) !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  flex-shrink: 0 !important;
+}
+
+/* العرض التلقائي: العرض auto والارتفاع من السلايدر */
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn li > a > img,
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn li > span > img,
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img,
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn .veloura-side-menu-img {
+  width: auto !important;
+  min-width: 0 !important;
+  /* viewport-based cap بدل النسبة من عرض الصف؛ حتى وجود Badge أو padding
+     لا يغيّر حجم نفس الصورة من تصنيف لآخر. */
+  max-width: min(45vw, 180px) !important;
+  height: var(--veloura-side-cats-img-h, 60px) !important;
+  min-height: var(--veloura-side-cats-img-h, 60px) !important;
+  max-height: var(--veloura-side-cats-img-h, 60px) !important;
+}
+
+/* RTL: الصورة يمين العنوان */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > a > img,
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > span > img,
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > a > img,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > span > img,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img {
+  order: -1 !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+/* LTR: الصورة يسار العنوان */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > a > img,
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > span > img,
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > a > img,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > span > img,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img {
+  order: -1 !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+/* صفوف الصور أيضًا بدون ارتفاع مستقل؛ ارتفاع الصورة من إعدادات الصورة،
+   والـ padding العمودي من إعداد المسافة فقط. */
+.mm-ocd #mobile-menu.mm-spn li:has(> a > img),
+.mm-ocd #mobile-menu.mm-spn li:has(> span > img),
+.mm-ocd #mobile-menu.mm-spn li:has(> a > img) > a,
+.mm-ocd #mobile-menu.mm-spn li:has(> span > img) > span {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* الروابط المخصصة بدون خلفية */
+.mm-ocd #mobile-menu.mm-spn .veloura-side-custom-link,
+.mm-ocd #mobile-menu.mm-spn .veloura-side-custom-link > a {
+  background: transparent !important;
+}
+
+/* ================================
+   Veloura Side Categories Glass Effect — V79
+   مادة واحدة من اللون الثانوي، بدون تغيير هندسة mmenu.
+================================ */
+
+html.veloura-side-cats-glass .mm-ocd .mm-ocd__content,
+body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
+  color: var(
+    --veloura-dark-side-menu-text,
+    var(--veloura-side-cats-text, #ffffff)
+  ) !important;
+
+  /* V136: نفس مادة الهيدر حرفيًا. متغيرات V86 هي المصدر النهائي
+     للـ Light / Dark، مع fallback إلى عقد الزجاج العامة. */
+  background: var(
+    --veloura-glass-surface,
+    var(--veloura-glass-surface)
+  ) !important;
+  background-color: var(
+    --veloura-glass-surface,
+    var(--veloura-glass-surface)
+  ) !important;
+  background-image: none !important;
+  border-top: 1px solid var(
+    --veloura-edge-top,
+    var(--veloura-glass-edge-top)
+  ) !important;
+  border-bottom: 1px solid var(
+    --veloura-edge-bottom,
+    var(--veloura-glass-edge-bottom)
+  ) !important;
+  border-inline: 0 !important;
+  -webkit-backdrop-filter: var(
+    --veloura-filter,
+    var(--veloura-glass-filter)
+  ) !important;
+  backdrop-filter: var(
+    --veloura-filter,
+    var(--veloura-glass-filter)
+  ) !important;
+  filter: none !important;
+  box-shadow: 0 8px 24px var(
+    --veloura-shadow,
+    var(--veloura-glass-shadow)
+  ) !important;
+}
+
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn,
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn ul,
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .main-menu,
+body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn,
+body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn ul,
+body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .main-menu {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn :is(
+  li,
+  li > a,
+  li > span,
+  a,
+  span
+),
+body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn :is(
+  li,
+  li > a,
+  li > span,
+  a,
+  span
+) {
+  background: transparent !important;
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+
+/* ================================
+   Veloura Side Categories Floating + Badges + Arrow — V132
+   - عبارة اختيارية بجانب التصنيف وقبل السهم
+   - سهم الفرعيات يتجه أفقيًا نحو اليسار في RTL
+   - وضع مصغر عائم مع فراغ خارجي وحواف على الزوايا الأربع
+================================ */
+
+.mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 92px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 8px !important;
+
+  /* V136: العبارة تذهب لأقصى الطرف المقابل لاسم التصنيف.
+     في RTL تصبح أقصى اليسار، ومع وجود فرعيات تبقى داخل مساحة السهم مباشرة. */
+  margin: 0 !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 0 !important;
+
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  border: 0 !important;
+  border-top: 1px solid color-mix(
+    in srgb,
+    var(--color-primary, #004956) 8%,
+    var(--veloura-edge-top, rgba(100, 116, 139, .10))
+  ) !important;
+  border-bottom: 1px solid color-mix(
+    in srgb,
+    var(--color-primary, #004956) 5%,
+    var(--veloura-edge-bottom, rgba(100, 116, 139, .045))
+  ) !important;
+  border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-primary, #004956) 8%,
+    transparent
+  ) !important;
+  color: var(--color-primary, #004956) !important;
+  -webkit-text-fill-color: var(--color-primary, #004956) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(108%) !important;
+  backdrop-filter: blur(6px) saturate(108%) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 7%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 3%, transparent) !important;
+}
+
+/* حتى داخل القائمة البلورية تبقى العبارة بلون المتجر الأساسي،
+   ولا ترث لون نص القائمة في الدارك. */
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge,
+body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
+  background: color-mix(
+    in srgb,
+    var(--color-primary, #004956) 9%,
+    transparent
+  ) !important;
+  color: var(--color-primary, #004956) !important;
+  -webkit-text-fill-color: var(--color-primary, #004956) !important;
+  border-top-color: color-mix(
+    in srgb,
+    var(--color-primary, #004956) 8%,
+    var(--veloura-edge-top, rgba(255, 255, 255, .055))
+  ) !important;
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--color-primary, #004956) 5%,
+    var(--veloura-edge-bottom, rgba(255, 255, 255, .022))
+  ) !important;
+}
+
+/* سهم فرعيات أنظف: في RTL مكانه يسار الصف ويتجه لليسار. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
+  content: "" !important;
+  display: block !important;
+  left: 25px !important;
+  right: auto !important;
+  top: 50% !important;
+  width: 9px !important;
+  height: 9px !important;
+  border: 0 !important;
+  border-left: 2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  border-radius: 0 !important;
+  opacity: .56 !important;
+  transform: translateY(-50%) rotate(45deg) !important;
+  transform-origin: center !important;
+}
+
+/* LTR يعكس الاتجاه تلقائيًا. */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
+  content: "" !important;
+  display: block !important;
+  right: 25px !important;
+  left: auto !important;
+  top: 50% !important;
+  width: 9px !important;
+  height: 9px !important;
+  border: 0 !important;
+  border-top: 2px solid currentColor !important;
+  border-right: 2px solid currentColor !important;
+  border-radius: 0 !important;
+  opacity: .56 !important;
+  transform: translateY(-50%) rotate(45deg) !important;
+  transform-origin: center !important;
+}
+
+/* الوضع المصغر V133:
+   نحافظ على هندسة mmenu الأصلية بالكامل (خصوصًا width / max-width)،
+   ونغيّر فقط موضع البطاقة. هذا يمنع بقاء الدرج خارج الشاشة عند الفتح. */
+html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
+  top: 15px !important;
+  bottom: 15px !important;
+  box-sizing: border-box !important;
+  border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
+  overflow: hidden !important;
+}
+
+/* RTL / drawer من اليمين: فقط أبعد البطاقة عن الحافة، ولا نلمس عرض mmenu. */
+html.veloura-side-cats-compact .mm-ocd.mm-ocd--right .mm-ocd__content {
+  right: 15px !important;
+  left: auto !important;
+}
+
+/* LTR / drawer من اليسار. */
+html.veloura-side-cats-compact .mm-ocd.mm-ocd--left .mm-ocd__content {
+  left: 15px !important;
+  right: auto !important;
+}
+
+/* عند الإغلاق نضيف الـ inset إلى مسافة الخروج حتى لا يبقى أي شريط ظاهر. */
+html.veloura-side-cats-compact .mm-ocd.mm-ocd--right:not(.mm-ocd--open) .mm-ocd__content {
+  transform: translate3d(calc(100% + 15px), 0, 0) !important;
+}
+
+html.veloura-side-cats-compact .mm-ocd.mm-ocd--left:not(.mm-ocd--open) .mm-ocd__content {
+  transform: translate3d(calc(-100% - 15px), 0, 0) !important;
+}
+
+/* حالة الفتح تبقى نفس mmenu الأصلية. */
+html.veloura-side-cats-compact .mm-ocd.mm-ocd--open .mm-ocd__content {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+/* تطبيق الحواف على جسم القائمة الداخلي والعناصر الأساسية كذلك */
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn > ul,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu {
+  border-radius: inherit !important;
+}
+
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn > ul:first-child,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu:first-child {
+  border-top-left-radius: inherit !important;
+  border-top-right-radius: inherit !important;
+}
+
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn > ul:last-child,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu:last-child {
+  border-bottom-left-radius: inherit !important;
+  border-bottom-right-radius: inherit !important;
+}
+
+/* V136: حتى في الوضع العائم نحافظ على نفس عقدة زجاج الهيدر بالضبط:
+   حافة علوية وسفلية فقط، مع بقاء الـ radius على الزوايا الأربع. */
+html.veloura-side-cats-compact.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
+  border-inline: 0 !important;
+  border-top-color: var(
+    --veloura-edge-top,
+    var(--veloura-glass-edge-top)
+  ) !important;
+  border-bottom-color: var(
+    --veloura-edge-bottom,
+    var(--veloura-glass-edge-bottom)
+  ) !important;
+}
+
+/* ================================
+   Veloura Safe mmenu Panel Offset Fix
+   حل التداخل بدون التأثير على باقي الموقع
+================================ */
+
+.mm-ocd.mm-ocd--open #mobile-menu.mm-spn {
+  --mm-spn-panel-offset: 100% !important;
+}
+
+[dir="rtl"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent,
+html[dir="rtl"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
+  left: -100% !important;
+  right: auto !important;
+}
+
+[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent,
+html[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
+  right: -100% !important;
+  left: auto !important;
+}
+
+/* ================================
+   Veloura Header Container Control - Final Guard
+   لازم يبقى بعد كود الهيدر إذا صار أي تعارض
+================================ */
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled:not(.veloura-top-full-width-desktop) .veloura-header-container {
+    width: 100% !important;
+    max-width: var(--veloura-home-container-width, var(--veloura-global-container, 1280px)) !important;
+    margin-inline: auto !important;
+    padding-inline: var(--veloura-home-container-padding, var(--veloura-global-spacing, 32px)) !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ========================================================================
+   Veloura Floating / Compact Header V3 — Container aligned
+   ======================================================================== */
+:root {
+  --veloura-shell-gap: 12px;
+  --veloura-shell-inline: max(
+    var(--veloura-site-spacing, 16px),
+    calc((100vw - var(--veloura-site-container-width, 1280px)) / 2)
+  );
+}
+
+.store-header.veloura-top-enabled {
+  --veloura-header-surface-radius: 0px;
+
+  .veloura-header-grid,
+  .veloura-store-logo,
+  .veloura-store-logo-video,
+  .main-nav-container,
+  .main-nav-container > .inner {
+    transition: min-height .25s ease, height .25s ease, max-height .25s ease,
+      border-radius .25s ease, background-color .25s ease,
+      box-shadow .25s ease, backdrop-filter .25s ease,
+      -webkit-backdrop-filter .25s ease, inset .25s ease, top .25s ease;
+  }
+}
+
+.store-header.veloura-top-enabled.veloura-top-border-sharp {
+  --veloura-header-surface-radius: 0px;
+}
+.store-header.veloura-top-enabled.veloura-top-border-soft {
+  --veloura-header-surface-radius: 12px;
+}
+.store-header.veloura-top-enabled.veloura-top-border-medium {
+  --veloura-header-surface-radius: 24px;
+}
+.store-header.veloura-top-enabled.veloura-top-border-large {
+  --veloura-header-surface-radius: 42px;
+}
+
+.store-header.veloura-top-enabled.veloura-top-floating {
+  padding: var(--veloura-shell-gap) var(--veloura-shell-inline) 0 !important;
+  background: transparent !important;
+
+  #mainnav,
+  .main-nav-container {
+    width: 100% !important;
+    max-width: none !important;
+    background: transparent !important;
+  }
+
+  .main-nav-container > .inner {
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: var(--veloura-header-surface-radius) !important;
+    overflow: hidden !important;
+    box-shadow:
+      0 16px 38px rgba(15, 23, 42, .14),
+      inset 0 1px 0 rgba(255, 255, 255, .24) !important;
+  }
+
+  #mainnav.fixed-pinned > .inner {
+    top: var(--veloura-shell-gap) !important;
+    inset-inline: var(--veloura-shell-inline) !important;
+    width: auto !important;
+    border-radius: var(--veloura-header-surface-radius) !important;
+  }
+}
+
+.store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled {
+  .veloura-header-grid {
+    min-height: 58px !important;
+  }
+
+  .veloura-store-logo,
+  .navbar-brand img {
+    max-height: min(var(--veloura-top-logo-size), 38px) !important;
+  }
+
+  .veloura-store-logo-video {
+    height: min(var(--veloura-top-logo-size), 38px) !important;
+  }
+
+  .veloura-mobile-search-bar,
+  .veloura-desktop-search-bar {
+    margin-top: 4px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --veloura-shell-gap: 10px;
+    --veloura-shell-inline: 10px;
+  }
+
+  .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled {
+    .veloura-header-grid {
+      min-height: 54px !important;
+    }
+  }
+}
+
+/* ========================================================================
+   Veloura Header — focused navigation/search/icon fixes (2026)
+   This block intentionally comes last so it only resolves the current header
+   contract without changing product, cart or page components.
+   ======================================================================== */
+
+/* Smaller, practical glyph sizes. The clickable controls keep their native
+   hit area; only the glyph is scaled. */
+.store-header.veloura-top-enabled.veloura-top-icons-small {
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-cart-summary i[slot='icon'] {
+    font-size: 18px !important;
+  }
+}
+
+.store-header.veloura-top-enabled.veloura-top-icons-medium {
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-cart-summary i[slot='icon'] {
+    font-size: 21px !important;
+  }
+}
+
+.store-header.veloura-top-enabled.veloura-top-icons-large {
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-cart-summary i[slot='icon'] {
+    font-size: 24px !important;
+  }
+}
+
+.store-header.veloura-top-enabled {
+  .veloura-header-icon,
+  .veloura-search-toggle {
+    min-width: 34px !important;
+    min-height: 34px !important;
+  }
+
+  /* Connected rectangular search keeps breathing room under the field. */
+  .veloura-mobile-search-bar,
+  .veloura-desktop-search-bar {
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Logo positioning
+   - centered switch ON: the current true-center three-column layout.
+   - centered switch OFF: logo returns to the RTL-leading/right position.
+   - "no center on laptop" applies the second layout only on desktop.
+   ------------------------------------------------------------------------ */
+.store-header.veloura-top-enabled.veloura-top-logo-centered {
+  .veloura-header-grid {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-areas: 'left logo right' !important;
+  }
+
+  .veloura-header-logo {
+    justify-self: center !important;
+  }
+}
+
+.store-header.veloura-top-enabled:not(.veloura-top-logo-centered) {
+  .veloura-header-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto !important;
+    grid-template-areas: 'left right logo' !important;
+  }
+
+  .veloura-header-logo {
+    justify-self: end !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-top-logo-centered.veloura-top-logo-no-center-laptop {
+    .veloura-header-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto !important;
+      grid-template-areas: 'left right logo' !important;
+    }
+
+    .veloura-header-logo {
+      justify-self: end !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Desktop categories as actual links
+   The menu now owns a dedicated full-width row, so the legacy overflow
+   calculation cannot hide every category inside one half of the header.
+   ------------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links {
+    .veloura-header-grid {
+      grid-auto-rows: auto !important;
+    }
+
+    .veloura-menu-links-wrap {
+      grid-area: auto !important;
+      grid-column: 1 / -1 !important;
+      grid-row: 2 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      height: auto !important;
+      max-height: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      position: relative !important;
+      overflow: visible !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      clip: auto !important;
+      clip-path: none !important;
+      white-space: normal !important;
+    }
+
+    .veloura-menu-links-wrap custom-main-menu {
+      display: block !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      min-height: 0 !important;
+    }
+
+    .veloura-menu-links-wrap .main-menu {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 0 12px !important;
+      overflow-x: auto !important;
+      overflow-y: visible !important;
+      scrollbar-width: none;
+    }
+
+    .veloura-menu-links-wrap .main-menu::-webkit-scrollbar {
+      display: none;
+    }
+
+    .veloura-menu-links-wrap .main-menu > li.root-level {
+      display: inline-flex !important;
+      flex: 0 0 auto !important;
+      margin: 0 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .veloura-menu-links-wrap .main-menu > li.root-level > a {
+      padding: 8px 12px !important;
+      white-space: nowrap !important;
+    }
+
+    /* When both links and a connected search bar are active, search becomes
+       the third row instead of occupying the same row as categories. */
+    &.veloura-desktop-search-bar,
+    &.veloura-desktop-search-bar_sticky_icon {
+      .veloura-desktop-search-bar {
+        grid-area: auto !important;
+        grid-column: 1 / -1 !important;
+        grid-row: 3 !important;
+      }
+    }
+  }
+
+  .store-header.veloura-top-enabled:not(.veloura-desktop-menu-links) {
+    &.veloura-desktop-search-bar,
+    &.veloura-desktop-search-bar_sticky_icon {
+      .veloura-desktop-search-bar {
+        grid-area: auto !important;
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .store-header.veloura-top-enabled.veloura-mobile-search-bar,
+  .store-header.veloura-top-enabled.veloura-mobile-search-bar_sticky_icon {
+    .veloura-mobile-search-bar {
+      grid-area: auto !important;
+      grid-column: 1 / -1 !important;
+      grid-row: 2 !important;
+    }
+  }
+}
+
+
+/* Localization modal host stays mounted and callable while both custom
+   desktop/mobile triggers remain ordinary header controls. */
+.store-header.veloura-top-enabled > .veloura-localization-modal-host {
+  position: absolute !important;
+  inset: 0 auto auto 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links {
+    .veloura-menu-links-wrap.veloura-menu-more-enabled .main-menu {
+      flex-wrap: nowrap !important;
+      overflow: visible !important;
+    }
+
+    .veloura-menu-links-wrap.veloura-menu-more-disabled .main-menu {
+      flex-wrap: wrap !important;
+      overflow: visible !important;
+      row-gap: 2px !important;
+    }
+  }
+}
+
+/* ================================
+   Veloura Side Category Badge Position — V137
+   تثبيت العبارة عند طرف السهم بدل الاعتماد على flex auto-margin.
+   RTL: العبارة تكون مباشرة يمين السهم.
+   LTR: انعكاس كامل تلقائيًا.
+================================ */
+.mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
+  position: absolute !important;
+  top: 50% !important;
+  z-index: 4 !important;
+  margin: 0 !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+}
+
+/* RTL — بدون سهم: أقصى اليسار. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge {
+  left: 18px !important;
+  right: auto !important;
+}
+
+/* RTL — مع فرعيات: السهم عند اليسار والعبارة مباشرة إلى يمينه. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge {
+  left: 48px !important;
+  right: auto !important;
+}
+
+/* نحجز مكان العبارة حتى لا يتداخل اسم تصنيف طويل معها. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-left: 122px !important;
+}
+
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-left: 150px !important;
+}
+
+/* LTR — انعكاس نفس المنطق. */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge {
+  right: 18px !important;
+  left: auto !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge {
+  right: 48px !important;
+  left: auto !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-right: 122px !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-right: 150px !important;
+}
+
+/* ================================
+   Veloura Side Categories Row Base Height — V147
+   ارتفاع أساسي صغير 34px، وإعداد المسافة هو الذي يزيد الارتفاع.
+   مثال: gap = 10px => ارتفاع الصف النصي الأدنى 44px، مع 5px أعلى و5px أسفل.
+   صفوف الصور تكبر طبيعيًا إذا كان ارتفاع الصورة أكبر.
+================================ */
+.mm-ocd #mobile-menu.mm-spn li > a,
+.mm-ocd #mobile-menu.mm-spn li > span {
+  min-height: calc(34px + var(--veloura-side-cats-gap, 0px)) !important;
+  height: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* ==========================================================================
+   Header tools final production contract
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled .veloura-header__tools {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    justify-self: end !important;
+    gap: 12px !important;
+    width: max-content !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html[dir="rtl"] body .store-header.veloura-top-enabled .veloura-header__tools,
+  html[dir="rtl"] body .store-header.veloura-top-enabled .veloura-header__actions {
+    direction: rtl !important;
+  }
+
+  html[dir="ltr"] body .store-header.veloura-top-enabled .veloura-header__tools,
+  html[dir="ltr"] body .store-header.veloura-top-enabled .veloura-header__actions {
+    direction: ltr !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-header__actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    width: max-content !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-header__menu {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-header__menu,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-trigger-mobile {
+    display: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-search-toggle {
+    display: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled salla-cart-summary.veloura-cart-total-visible {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    flex-basis: auto !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled salla-cart-summary.veloura-cart-total-visible .s-cart-summary-wrapper {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html[dir="rtl"] body .store-header.veloura-top-enabled salla-cart-summary.veloura-cart-total-visible .s-cart-summary-wrapper {
+    direction: rtl !important;
+  }
+
+  html[dir="ltr"] body .store-header.veloura-top-enabled salla-cart-summary.veloura-cart-total-visible .s-cart-summary-wrapper {
+    direction: ltr !important;
+  }
+
+  html body .store-header.veloura-top-enabled salla-cart-summary.veloura-cart-total-visible :is(.s-cart-summary-content, .s-cart-summary-total) {
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop[data-veloura-localization-trigger] {
+    display: inline-flex !important;
+    direction: rtl !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    height: 38px !important;
+    padding: 0 12px !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    color: #fff !important;
+    background: rgba(15, 23, 42, .20) !important;
+    border: 1px solid rgba(255, 255, 255, .14) !important;
+    border-radius: var(--veloura-header-surface-radius, var(--veloura-radius, 24px)) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
+    backdrop-filter: blur(10px) saturate(120%) !important;
+    box-shadow: none !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop :is(.veloura-localization-pill__language, .veloura-localization-pill__currency) {
+    display: inline-flex !important;
+    align-items: center !important;
+    color: inherit !important;
+    white-space: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop .veloura-localization-pill__divider {
+    width: 1px !important;
+    height: 15px !important;
+    flex: 0 0 1px !important;
+    background: rgba(255, 255, 255, .45) !important;
+  }
+}

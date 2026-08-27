@@ -1,0 +1,47 @@
+.veloura-cart-banners {
+  width: 100%;
+  margin: 0 0 1.25rem;
+}
+
+.veloura-cart-banners[data-position='after_checkout_button'] {
+  margin-top: var(--veloura-cart-banner-checkout-gap, 16px);
+  margin-bottom: 0;
+}
+
+.veloura-cart-banners__title {
+  margin: 0 0 .75rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.veloura-cart-banners__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--veloura-cart-banner-columns, 2), minmax(0, 1fr));
+  gap: var(--veloura-cart-banner-gap, 14px);
+}
+
+.veloura-cart-banners__item {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.veloura-cart-banners__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.veloura-cart-banners__grid--sharp .veloura-cart-banners__item { border-radius: 0; }
+.veloura-cart-banners__grid--soft .veloura-cart-banners__item { border-radius: 8px; }
+.veloura-cart-banners__grid--medium .veloura-cart-banners__item { border-radius: 14px; }
+.veloura-cart-banners__grid--large .veloura-cart-banners__item { border-radius: 22px; }
+.veloura-cart-banners__grid--round .veloura-cart-banners__item { border-radius: 999px; }
+
+/* Keep product-option host transparent inside a customized cart surface. */
+.veloura-cart-page .cart-item salla-product-options {
+  display: block;
+  background: transparent !important;
+}

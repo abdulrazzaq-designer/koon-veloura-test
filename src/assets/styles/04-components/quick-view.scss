@@ -1,0 +1,467 @@
+html.veloura-quick-view-lock {
+  overflow: hidden;
+}
+
+/* ================================
+   Quick View Button Base
+================================ */
+
+body.veloura-quick-view-enabled .veloura-quick-view-image-host {
+  position: relative !important;
+}
+
+body.veloura-quick-view-enabled .veloura-quick-view-btn {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+
+  border: 1px solid transparent;
+  border-radius: var(--veloura-quick-view-button-radius, 999px);
+  background: var(--veloura-quick-view-button-bg, #004d65);
+  color: var(--veloura-quick-view-button-text, #ffffff);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 25;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+body.veloura-quick-view-enabled .veloura-quick-view-btn i,
+body.veloura-quick-view-enabled .veloura-quick-view-btn span {
+  color: inherit !important;
+  pointer-events: none;
+}
+
+/* ================================
+   Icon beside wishlist
+================================ */
+
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-image-host,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-image-host {
+  position: relative !important;
+}
+
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only {
+  position: absolute !important;
+  top: 18px !important;
+  left: 72px !important;
+  right: auto !important;
+  bottom: auto !important;
+
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 999px !important;
+
+  font-size: 16px !important;
+
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #0f172a !important;
+  border-color: rgba(255, 255, 255, 0.65) !important;
+
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only i,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only i {
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only:hover,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only:hover {
+  transform: translateY(-1px) scale(1.03) !important;
+}
+
+/* ================================
+   Button below Add to Cart
+================================ */
+
+body.veloura-quick-view-position-below_add_to_cart .veloura-quick-view-under-cart-wrap,
+body.veloura-quick-view-position-below-add-to-cart .veloura-quick-view-under-cart-wrap,
+body.veloura-quick-view-position-inside_card .veloura-quick-view-under-cart-wrap {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+
+  flex: 0 0 100% !important;
+  flex-basis: 100% !important;
+  order: 99 !important;
+
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  clear: both !important;
+}
+
+body.veloura-quick-view-position-below_add_to_cart .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
+body.veloura-quick-view-position-below-add-to-cart .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
+body.veloura-quick-view-position-inside_card .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
+body.veloura-quick-view-position-below_add_to_cart .veloura-quick-view-btn.is-under-cart,
+body.veloura-quick-view-position-below-add-to-cart .veloura-quick-view-btn.is-under-cart,
+body.veloura-quick-view-position-inside_card .veloura-quick-view-btn.is-under-cart {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+
+  width: calc(100% - 24px) !important;
+  max-width: calc(100% - 24px) !important;
+  min-width: 0 !important;
+
+  height: auto !important;
+  min-height: var(--veloura-quick-view-button-height, 42px) !important;
+
+  padding: 0 14px !important;
+  margin: 0 auto !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  flex: 0 0 calc(100% - 24px) !important;
+  flex-basis: calc(100% - 24px) !important;
+
+  border-radius: var(--veloura-quick-view-button-radius, 999px) !important;
+}
+
+body.veloura-quick-view-position-below_add_to_cart .veloura-quick-view-btn.is-under-cart:hover,
+body.veloura-quick-view-position-below-add-to-cart .veloura-quick-view-btn.is-under-cart:hover,
+body.veloura-quick-view-position-inside_card .veloura-quick-view-btn.is-under-cart:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* منع الأيقونة لو الخيار هو زر تحت السلة */
+body.veloura-quick-view-position-below_add_to_cart .veloura-quick-view-btn.is-icon-only,
+body.veloura-quick-view-position-below-add-to-cart .veloura-quick-view-btn.is-icon-only,
+body.veloura-quick-view-position-inside_card .veloura-quick-view-btn.is-icon-only {
+  display: none !important;
+}
+
+
+/* ================================
+   Modal
+================================ */
+
+.veloura-quick-view-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.veloura-quick-view-modal.is-open {
+  display: flex;
+}
+
+.veloura-quick-view-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+body.veloura-quick-view-overlay-blur .veloura-quick-view-modal__overlay {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.veloura-quick-view-modal__dialog {
+  position: relative;
+  width: min(920px, 100%);
+  max-height: min(720px, 92vh);
+  overflow: auto;
+  background: var(--veloura-quick-view-modal-bg, #ffffff);
+  color: var(--veloura-quick-view-modal-text, #111827);
+  border-radius: var(--veloura-quick-view-modal-radius, 28px);
+  box-shadow: 0 24px 90px rgba(15, 23, 42, 0.24);
+  padding: 22px;
+  animation: velouraQuickViewZoom 0.22s ease both;
+}
+
+body.veloura-quick-view-animation-fade .veloura-quick-view-modal__dialog {
+  animation-name: velouraQuickViewFade;
+}
+
+body.veloura-quick-view-animation-slide_up .veloura-quick-view-modal__dialog {
+  animation-name: velouraQuickViewSlideUp;
+}
+
+.veloura-quick-view-modal__close {
+  position: absolute;
+  top: 12px;
+  inset-inline-end: 12px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  color: inherit;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.veloura-quick-view-modal__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+.veloura-quick-view-modal__media {
+  background: rgba(15, 23, 42, 0.04);
+  border-radius: calc(var(--veloura-quick-view-modal-radius, 28px) - 8px);
+  overflow: hidden;
+}
+
+.veloura-quick-view-modal__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  object-fit: cover;
+}
+
+.veloura-quick-view-modal__loading {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.veloura-quick-view-modal__title {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.veloura-quick-view-modal__price {
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--veloura-quick-view-button-bg, #004d65);
+}
+
+.veloura-quick-view-modal__description {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.9;
+  opacity: 0.78;
+}
+
+.veloura-quick-view-modal__link {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--veloura-quick-view-button-bg, #004d65);
+  color: var(--veloura-quick-view-button-text, #ffffff) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .veloura-quick-view-modal__dialog {
+    padding: 16px;
+  }
+
+  .veloura-quick-view-modal__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .veloura-quick-view-modal__title {
+    font-size: 19px;
+  }
+
+  body.veloura-quick-view-position-wishlist_icon
+    .veloura-quick-view-btn.is-icon-only,
+  body.veloura-quick-view-position-wishlist-icon
+    .veloura-quick-view-btn.is-icon-only {
+    top: 14px !important;
+    left: 64px !important;
+
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    max-width: 42px !important;
+  }
+}
+
+@keyframes velouraQuickViewZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes velouraQuickViewFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes velouraQuickViewSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   Veloura Quick View Final Style
+   فقط لون الخلفية + لون النص + الحواف
+================================ */
+
+body.veloura-quick-view-enabled .veloura-quick-view-btn,
+body.veloura-quick-view-enabled .veloura-quick-view-btn.is-icon-only,
+body.veloura-quick-view-enabled .veloura-quick-view-btn.is-under-cart {
+  background: var(--veloura-quick-view-button-bg, #004d65) !important;
+  color: var(--veloura-quick-view-button-text, #ffffff) !important;
+  border-color: var(--veloura-quick-view-button-bg, #004d65) !important;
+  border-radius: var(--veloura-quick-view-button-radius, 999px) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.veloura-quick-view-enabled .veloura-quick-view-btn i,
+body.veloura-quick-view-enabled .veloura-quick-view-btn span {
+  color: var(--veloura-quick-view-button-text, #ffffff) !important;
+}
+
+/* حجم أيقونة العرض السريع مثل المفضلة */
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  max-width: 42px !important;
+
+  padding: 0 !important;
+  font-size: 15px !important;
+}
+
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only i,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only i {
+  font-size: 15px !important;
+}
+
+
+/* ================================
+   Wishlist + Quick View Same Size
+================================ */
+
+body.veloura-product-card-enabled .s-product-card-entry {
+  --veloura-action-size: var(--veloura-product-action-size, 42px);
+  --veloura-action-gap: 8px;
+  --veloura-action-top: 18px;
+  --veloura-action-start: 18px;
+}
+
+/* زر المفضلة */
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-wishlist-btn,
+body.veloura-product-card-enabled .s-product-card-entry [class*="wishlist"],
+body.veloura-product-card-enabled .s-product-card-entry [class*="Wishlist"] {
+  width: var(--veloura-action-size) !important;
+  height: var(--veloura-action-size) !important;
+  min-width: var(--veloura-action-size) !important;
+  min-height: var(--veloura-action-size) !important;
+  max-width: var(--veloura-action-size) !important;
+  max-height: var(--veloura-action-size) !important;
+
+  padding: 0 !important;
+  border-radius: 999px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* أيقونة المفضلة */
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-wishlist-btn i,
+body.veloura-product-card-enabled .s-product-card-entry [class*="wishlist"] i,
+body.veloura-product-card-enabled .s-product-card-entry [class*="Wishlist"] i,
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-wishlist-btn svg,
+body.veloura-product-card-enabled .s-product-card-entry [class*="wishlist"] svg,
+body.veloura-product-card-enabled .s-product-card-entry [class*="Wishlist"] svg {
+  font-size: calc(var(--veloura-action-size) * 0.42) !important;
+  width: calc(var(--veloura-action-size) * 0.42) !important;
+  height: calc(var(--veloura-action-size) * 0.42) !important;
+}
+
+/* زر العرض السريع كأيقونة */
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only {
+  width: var(--veloura-action-size) !important;
+  height: var(--veloura-action-size) !important;
+  min-width: var(--veloura-action-size) !important;
+  min-height: var(--veloura-action-size) !important;
+  max-width: var(--veloura-action-size) !important;
+  max-height: var(--veloura-action-size) !important;
+
+  top: var(--veloura-action-top) !important;
+  left: calc(
+    var(--veloura-action-start) + var(--veloura-action-size) + var(--veloura-action-gap)
+  ) !important;
+
+  padding: 0 !important;
+  border-radius: 999px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* أيقونة العرض السريع */
+body.veloura-quick-view-position-wishlist_icon .veloura-quick-view-btn.is-icon-only i,
+body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-only i {
+  font-size: calc(var(--veloura-action-size) * 0.42) !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 767px) {
+  body.veloura-product-card-enabled .s-product-card-entry {
+    --veloura-action-top: 14px;
+    --veloura-action-start: 14px;
+    --veloura-action-gap: 7px;
+  }
+}
+
+
+
+

@@ -1,0 +1,31 @@
+/* ========================================================================
+   Veloura Cart Surfaces V2.2
+   Scoped to the cart page container and enabled only by the merchant switch.
+   ======================================================================== */
+
+.veloura-cart-surfaces-enabled {
+  .cart-item,
+  .sticky.top-24 > .bg-white {
+    background-color: var(--veloura-cart-surface-bg, #f3f4f6) !important;
+    background-image: none !important;
+    border-radius: var(--veloura-cart-surface-radius, 16px) !important;
+    border: 0 solid transparent !important;
+    box-shadow: none !important;
+  }
+
+  &.veloura-cart-border-enabled {
+    .cart-item,
+    .sticky.top-24 > .bg-white {
+      border-width: 1px !important;
+      border-style: solid !important;
+      border-color: var(--veloura-cart-surface-border-color, #e5e7eb) !important;
+    }
+  }
+
+  &.veloura-cart-shadow-enabled {
+    .cart-item,
+    .sticky.top-24 > .bg-white {
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.09) !important;
+    }
+  }
+}
