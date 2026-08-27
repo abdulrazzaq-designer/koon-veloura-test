@@ -2556,3 +2556,49 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .v
     font-weight: 600 !important;
   }
 }
+
+/* Desktop: mobile language/globe control must never appear. */
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled
+    .veloura-header__actions
+    .veloura-lang-mobile {
+    display: none !important;
+  }
+}
+
+/* Mobile: keep the mobile language/globe control available. */
+@media (max-width: 1023px) {
+  html body .store-header.veloura-top-enabled
+    .veloura-header__actions
+    .veloura-lang-mobile {
+    display: inline-flex !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop.veloura-localization-pill {
+    min-width: 150px !important;
+    height: 46px !important;
+    padding-inline: 18px !important;
+    border-radius: 999px !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop.veloura-localization-pill
+    .veloura-localization-pill__language,
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop.veloura-localization-pill
+    .veloura-localization-pill__currency {
+    font-size: 14px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop.veloura-localization-pill
+    .veloura-localization-pill__divider {
+    height: 20px !important;
+    opacity: .22 !important;
+  }
+}
