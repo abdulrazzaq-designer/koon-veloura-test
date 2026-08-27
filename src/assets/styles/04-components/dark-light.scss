@@ -710,3 +710,104 @@ html body.veloura-glass-effect
     backdrop-filter: none !important;
   }
 }
+
+
+/* =========================================================
+   Veloura V3 — Final Header Glass + Desktop Localization
+   ========================================================= */
+
+html body.veloura-glass-effect .veloura-header-tabs-stack__surface {
+  border-radius: 28px !important;
+  overflow: hidden !important;
+
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: none !important;
+
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+
+  box-shadow:
+    0 10px 30px var(--veloura-shadow),
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+/* Inner header layers must not cover the glass surface. */
+html body.veloura-glass-effect
+.veloura-header-tabs-stack__surface
+:is(
+  .store-header,
+  #mainnav.main-nav-container,
+  #mainnav.main-nav-container > .inner,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* ---------------------------------------------------------
+   Desktop localization
+   --------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+
+  html body .store-header.veloura-top-enabled
+  .veloura-lang-desktop {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    direction: rtl !important;
+
+    min-width: 138px !important;
+    height: 44px !important;
+
+    padding: 0 18px !important;
+    gap: 11px !important;
+
+    border: 1px solid rgba(255,255,255,.12) !important;
+    border-radius: 999px !important;
+
+    background: rgba(255,255,255,.055) !important;
+    background-image: none !important;
+
+    box-shadow: none !important;
+  }
+
+  /* The desktop pill must never contain the old globe icon. */
+  html body .store-header.veloura-top-enabled
+  .veloura-lang-desktop > .sicon-earth {
+    display: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+  .veloura-lang-desktop
+  .veloura-localization-pill__language,
+  html body .store-header.veloura-top-enabled
+  .veloura-lang-desktop
+  .veloura-localization-pill__currency {
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+  .veloura-lang-desktop
+  .veloura-localization-pill__divider {
+    display: inline-block !important;
+    width: 1px !important;
+    height: 20px !important;
+    background: currentColor !important;
+    opacity: .25 !important;
+  }
+}

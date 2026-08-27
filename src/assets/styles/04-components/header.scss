@@ -2481,3 +2481,78 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .v
     background: rgba(255, 255, 255, .45) !important;
   }
 }
+
+
+
+
+/* =========================================================
+   Veloura Desktop Localization — final visual contract
+   ========================================================= */
+
+@media (min-width: 1024px) {
+
+  /* Desktop only: one localization control. */
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    direction: rtl !important;
+
+    width: auto !important;
+    min-width: 118px !important;
+    height: 40px !important;
+
+    padding: 0 14px !important;
+    margin: 0 !important;
+
+    border: 1px solid rgba(100, 116, 139, .18) !important;
+    border-radius: 999px !important;
+
+    background: rgba(255, 255, 255, .18) !important;
+    background-image: none !important;
+
+    box-shadow: none !important;
+    gap: 9px !important;
+
+    color: inherit !important;
+  }
+
+  /* Remove the old globe icon completely. */
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop > .sicon-earth {
+    display: none !important;
+  }
+
+  /* Language text. */
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop .veloura-localization-pill__language {
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+  }
+
+  /* Divider. */
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop .veloura-localization-pill__divider {
+    display: inline-block !important;
+    width: 1px !important;
+    height: 18px !important;
+    background: currentColor !important;
+    opacity: .22 !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Currency. */
+  html body .store-header.veloura-top-enabled
+    .veloura-lang-desktop .veloura-localization-pill__currency {
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+  }
+}
