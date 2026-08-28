@@ -2647,3 +2647,224 @@ html body .store-header.veloura-top-enabled .s-cart-summary-count {
   box-sizing: border-box !important;
   transform: none !important;
 }
+
+/* ==========================================================================
+   Veloura V3 — final mobile floating-header / search / icon alignment
+   --------------------------------------------------------------------------
+   Fixes only:
+   1) Mobile floating header keeps ~15px top offset and does not inherit
+      an oversized global container inset.
+   2) Mobile menu control occupies the left side while header actions stay
+      on the right, with the logo remaining truly centered.
+   3) Header search is part of the same glass material: no shadow and no
+      second solid paint layer; optional blur is retained.
+   4) Mobile globe remains mobile-only; desktop localization remains
+      Arabic | currency.
+   ========================================================================== */
+
+/* -----------------------------
+   Mobile outer geometry
+   ----------------------------- */
+@media (max-width: 1023px) {
+  html body .veloura-header-tabs-stack {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack > .veloura-header-tabs-stack__container,
+  html body .veloura-header-tabs-stack > .container.veloura-header-tabs-stack__container {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-top-floating {
+    --veloura-shell-gap: 15px !important;
+    --veloura-shell-inline: 15px !important;
+    padding: 15px 15px 0 !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-top-floating #mainnav.fixed-pinned > .inner {
+    top: 15px !important;
+    inset-inline: 15px !important;
+  }
+
+  /* The stack itself owns the rounded glass frame. */
+  html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+  html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+    border-radius: 28px !important;
+    overflow: hidden !important;
+  }
+
+  /* -----------------------------
+     True three-column mobile header
+     ----------------------------- */
+  .store-header.veloura-top-enabled .veloura-header-grid {
+    display: grid !important;
+    width: 100% !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-areas: "left logo right" !important;
+    align-items: center !important;
+    column-gap: 8px !important;
+  }
+
+  /*
+    The tools wrapper currently owns both actions and the mobile menu.
+    `display: contents` lets those two children occupy the actual grid
+    columns instead of being trapped inside the right column.
+  */
+  .store-header.veloura-top-enabled .veloura-header__tools {
+    display: contents !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__actions {
+    grid-area: right !important;
+    justify-self: end !important;
+    align-self: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__menu {
+    grid-area: left !important;
+    justify-self: start !important;
+    align-self: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-menu-trigger-mobile,
+  .store-header.veloura-top-enabled a.mburger[href="#mobile-menu"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+
+  /* Keep the mobile localization globe in the actions only on mobile. */
+  .store-header.veloura-top-enabled .veloura-lang-mobile {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-lang-desktop {
+    display: none !important;
+  }
+
+  /* -----------------------------
+     Mobile search = same glass
+     ----------------------------- */
+
+  /* Outer shell: no second shadow/material. */
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar,
+  .store-header.veloura-top-enabled .veloura-desktop-search-bar {
+    box-shadow: none !important;
+    background: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /*
+    Search container and input remain softly blurred/glassy, but belong to
+    the same header material and never cast their own shadow.
+  */
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar,
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar {
+    box-shadow: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar
+    salla-search.veloura-header-search-component,
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar
+    salla-search.veloura-header-search-component {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar
+    salla-search.veloura-header-search-component::part(container),
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar
+    salla-search.veloura-header-search-component::part(container) {
+    background: color-mix(
+      in srgb,
+      var(--veloura-glass-surface, rgba(255,255,255,.08)) 78%,
+      transparent
+    ) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar
+    salla-search.veloura-header-search-component input,
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar
+    salla-search.veloura-header-search-component::part(input) {
+    box-shadow: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar {
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Prevent the mobile search row from inheriting a detached/floating shadow. */
+  .store-header.veloura-top-enabled.veloura-mobile-search-bar
+    .veloura-mobile-search-bar,
+  .store-header.veloura-top-enabled.veloura-mobile-search-bar_sticky_icon
+    .veloura-mobile-search-bar {
+    box-shadow: none !important;
+  }
+}
+
+/* Keep the existing desktop contract untouched. */
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled .veloura-lang-mobile {
+    display: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__menu {
+    display: none !important;
+  }
+}
