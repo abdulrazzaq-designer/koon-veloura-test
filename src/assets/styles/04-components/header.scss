@@ -2868,3 +2868,212 @@ html body .store-header.veloura-top-enabled .s-cart-summary-count {
     display: none !important;
   }
 }
+
+/* ========================================================================
+   Veloura V4 — mobile floating geometry / physical icon groups / flat search
+   ======================================================================== */
+
+/* The floating mode owns the outer inset.  The header itself must not add
+   another top/side offset on top of that shell. */
+.veloura-header-tabs-stack.veloura-header-tabs-stack--floating {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 15px !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.veloura-header-tabs-stack.veloura-header-tabs-stack--floating
+> .veloura-header-tabs-stack__container,
+.veloura-header-tabs-stack.veloura-header-tabs-stack--floating
+> .container.veloura-header-tabs-stack__container {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.veloura-header-tabs-stack.veloura-header-tabs-stack--floating
+.veloura-header-tabs-stack__surface {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-floating {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  background: transparent !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-floating #mainnav,
+.store-header.veloura-top-enabled.veloura-top-floating .main-nav-container,
+.store-header.veloura-top-enabled.veloura-top-floating #mainnav > .inner {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-floating
+#mainnav.fixed-pinned > .inner {
+  top: 15px !important;
+  inset-inline: 15px !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+/* The surface is the only glass/shadow owner; inner header layers do not
+   create a second frame. */
+html body.veloura-glass-effect .veloura-header-tabs-stack__surface,
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+  background: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
+  background-color: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
+  background-image: none !important;
+  box-shadow: 0 10px 30px var(--veloura-shadow, rgba(0,0,0,.18)) !important;
+  border-top: 1px solid var(--veloura-edge-top, rgba(255,255,255,.055)) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom, rgba(255,255,255,.022)) !important;
+  border-inline: 0 !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner,
+.store-header.veloura-top-enabled.veloura-top-floating #mainnav > .inner {
+  box-shadow: none !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+/* ------------------------------------------------------------------------
+   Mobile: account + cart on the physical left; remaining controls on the
+   physical right; menu is the outermost right control. The logo stays in
+   the true center column.
+   ------------------------------------------------------------------------ */
+@media (max-width: 1023px) {
+  .store-header.veloura-top-enabled .veloura-header-grid {
+    position: relative !important;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) !important;
+    grid-template-areas: "left logo right" "search search search" !important;
+    align-items: center !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__tools {
+    position: static !important;
+    display: contents !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__actions {
+    position: absolute !important;
+    inset-inline: 0 !important;
+    top: 0 !important;
+    height: 72px !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 48px 0 10px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    direction: ltr !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+    z-index: 4 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__actions > .veloura-login-btn,
+  .store-header.veloura-top-enabled .veloura-header__actions > salla-cart-summary {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__actions > .veloura-wishlist-btn,
+  .store-header.veloura-top-enabled .veloura-header__actions > .veloura-dark-toggle,
+  .store-header.veloura-top-enabled .veloura-header__actions > .veloura-lang-mobile {
+    order: 2 !important;
+    flex: 0 0 auto !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header__actions > .veloura-wishlist-btn {
+    margin-inline-start: auto !important;
+  }
+
+  /* Physical-right mobile menu. */
+  .store-header.veloura-top-enabled .veloura-header__menu {
+    position: absolute !important;
+    right: 10px !important;
+    left: auto !important;
+    top: 0 !important;
+    width: 34px !important;
+    height: 72px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 6 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-menu-trigger-mobile,
+  .store-header.veloura-top-enabled a.mburger[href="#mobile-menu"] {
+    display: inline-flex !important;
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Let the center logo occupy the grid's actual center, not a side group. */
+  .store-header.veloura-top-enabled .veloura-header-logo {
+    grid-area: logo !important;
+    justify-self: center !important;
+    align-self: center !important;
+    position: relative !important;
+    z-index: 7 !important;
+  }
+
+  /* One paint owner for an integrated header search. */
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar,
+  .store-header.veloura-top-enabled .veloura-desktop-search-bar,
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar,
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar,
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search,
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar salla-search,
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search::part(container),
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar salla-search::part(container),
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search::part(form),
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar salla-search::part(form),
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search::part(input),
+  html body .veloura-header-tabs-stack .veloura-desktop-search-bar salla-search::part(input) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar {
+    grid-area: search !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 10px 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search,
+  html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search::part(container) {
+    width: 100% !important;
+  }
+}
