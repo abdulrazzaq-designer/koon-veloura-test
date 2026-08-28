@@ -2482,123 +2482,168 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .v
   }
 }
 
+/* ========================================================================
+   Veloura Header — final consolidated glass / localization / cart contract
+   This is intentionally the LAST header.scss override block.
+   ======================================================================== */
 
+/* The outer stack surface is the single glass paint owner. */
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+  border-radius: 38px !important;
+  overflow: hidden !important;
+}
 
+/* Remove the legacy per-header pseudo glass. The stack surface paints the glass. */
+html body .store-header.veloura-top-enabled.veloura-top-blur::before,
+html body .store-header.veloura-top-enabled.veloura-top-blur::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 
-/* =========================================================
-   Veloura Desktop Localization — final visual contract
-   ========================================================= */
+/* Keep the nested header layers transparent so they cannot cover the glass surface. */
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(
+  .store-header,
+  #mainnav.main-nav-container,
+  #mainnav.main-nav-container > .inner,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid
+),
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface :is(
+  .store-header,
+  #mainnav.main-nav-container,
+  #mainnav.main-nav-container > .inner,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 
+/* Full rounded frame for both mobile and desktop when the glass stack is active. */
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+  -webkit-backdrop-filter: var(--veloura-header-glass-filter, blur(20px) saturate(180%)) !important;
+  backdrop-filter: var(--veloura-header-glass-filter, blur(20px) saturate(180%)) !important;
+}
+
+/* ------------------------------------------------------------------------
+   Desktop localization: Arabic | currency. Globe is mobile-only.
+   ------------------------------------------------------------------------ */
 @media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled .veloura-lang-mobile,
+  html body .store-header.veloura-top-enabled .veloura-header__actions .veloura-lang-mobile {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 
-  /* Desktop only: one localization control. */
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop {
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop[data-veloura-localization-trigger] {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     direction: rtl !important;
-
+    flex: 0 0 auto !important;
     width: auto !important;
-    min-width: 118px !important;
-    height: 40px !important;
-
-    padding: 0 14px !important;
+    min-width: 140px !important;
+    height: 46px !important;
+    padding: 0 18px !important;
     margin: 0 !important;
-
-    border: 1px solid rgba(100, 116, 139, .18) !important;
-    border-radius: 999px !important;
-
-    background: rgba(255, 255, 255, .18) !important;
+    gap: 10px !important;
+    color: var(--veloura-top-text) !important;
+    background: rgba(255, 255, 255, .10) !important;
     background-image: none !important;
-
+    border: 1px solid rgba(255, 255, 255, .14) !important;
+    border-radius: 999px !important;
     box-shadow: none !important;
-    gap: 9px !important;
-
-    color: inherit !important;
-  }
-
-  /* Remove the old globe icon completely. */
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop > .sicon-earth {
-    display: none !important;
-  }
-
-  /* Language text. */
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop .veloura-localization-pill__language {
-    display: inline-flex !important;
-    align-items: center !important;
     white-space: nowrap !important;
-    font-size: 14px !important;
     line-height: 1 !important;
   }
 
-  /* Divider. */
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop .veloura-localization-pill__divider {
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop[data-veloura-localization-trigger] > .sicon-earth {
+    display: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop :is(
+    .veloura-localization-pill__language,
+    .veloura-localization-pill__currency
+  ) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    color: inherit !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+  }
+
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop .veloura-localization-pill__divider {
     display: inline-block !important;
     width: 1px !important;
-    height: 18px !important;
+    height: 20px !important;
+    flex: 0 0 1px !important;
     background: currentColor !important;
-    opacity: .22 !important;
-    flex: 0 0 auto !important;
-  }
-
-  /* Currency. */
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop .veloura-localization-pill__currency {
-    display: inline-flex !important;
-    align-items: center !important;
-    white-space: nowrap !important;
-    font-size: 13px !important;
-    line-height: 1 !important;
-    font-weight: 600 !important;
+    opacity: .28 !important;
   }
 }
 
-/* Desktop: mobile language/globe control must never appear. */
-@media (min-width: 1024px) {
-  html body .store-header.veloura-top-enabled
-    .veloura-header__actions
-    .veloura-lang-mobile {
+/* Mobile localization keeps the globe control. */
+@media (max-width: 1023px) {
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop {
     display: none !important;
   }
-}
 
-/* Mobile: keep the mobile language/globe control available. */
-@media (max-width: 1023px) {
-  html body .store-header.veloura-top-enabled
-    .veloura-header__actions
-    .veloura-lang-mobile {
+  html body .store-header.veloura-top-enabled .veloura-lang-mobile {
     display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 }
 
-@media (min-width: 1024px) {
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop.veloura-localization-pill {
-    min-width: 150px !important;
-    height: 46px !important;
-    padding-inline: 18px !important;
-    border-radius: 999px !important;
-  }
+/* ------------------------------------------------------------------------
+   Cart counter: anchor it to the cart instead of the header corner.
+   ------------------------------------------------------------------------ */
+html body .store-header.veloura-top-enabled .veloura-header__cart,
+html body .store-header.veloura-top-enabled .veloura-cart-summary,
+html body .store-header.veloura-top-enabled .veloura-header__actions salla-cart-summary {
+  position: relative !important;
+  overflow: visible !important;
+}
 
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop.veloura-localization-pill
-    .veloura-localization-pill__language,
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop.veloura-localization-pill
-    .veloura-localization-pill__currency {
-    font-size: 14px !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-  }
-
-  html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop.veloura-localization-pill
-    .veloura-localization-pill__divider {
-    height: 20px !important;
-    opacity: .22 !important;
-  }
+html body .store-header.veloura-top-enabled .s-cart-summary-count {
+  position: absolute !important;
+  top: -5px !important;
+  inset-inline-end: -5px !important;
+  inset-inline-start: auto !important;
+  z-index: 10 !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  padding: 0 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: var(--veloura-top-cart-bg, #ef4444) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  line-height: 18px !important;
+  box-sizing: border-box !important;
+  transform: none !important;
 }
