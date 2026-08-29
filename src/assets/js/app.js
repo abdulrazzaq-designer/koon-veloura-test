@@ -4306,7 +4306,7 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
   };
 
   const reorderActions = (actions) => {
-    if (!actions) return;
+    if (!actions || !actions.classList.contains('veloura-header__actions')) return;
 
     const account = actions.querySelector('.veloura-login-btn');
     const cart = actions.querySelector('salla-cart-summary');

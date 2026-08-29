@@ -1278,3 +1278,215 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   }
 
 }
+
+/* ========================================================================
+   Veloura Header — canonical semantic axis (stabilized 2026-08)
+   Source of truth for the current header.twig structure:
+   .veloura-header-left  = cart + login (+ optional left dark)
+   .veloura-header-right = menu + dark + mobile language + search + wishlist
+                           + desktop language/currency
+   The mobile layout uses three columns: left / logo / right.
+   ======================================================================== */
+
+@media (max-width: 1023px) {
+  html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating {
+    padding-top: 15px !important;
+  }
+
+  html body .veloura-header-tabs-stack--floating
+    > .veloura-header-tabs-stack__container {
+    padding-inline: 15px !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-header-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-header-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-areas:
+      'left logo right'
+      'search search search' !important;
+    grid-template-rows: 64px auto !important;
+    align-items: center !important;
+    column-gap: 0 !important;
+    row-gap: 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    direction: ltr !important;
+    position: relative !important;
+  }
+
+  /* The legacy tools wrapper is now structural only. */
+  html body .store-header.veloura-top-enabled
+    .veloura-header__tools {
+    display: contents !important;
+  }
+
+  /* LEFT: cart at the edge, login nearest the centered logo. */
+  html body .store-header.veloura-top-enabled
+    .veloura-header-left {
+    grid-area: left !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-direction: row !important;
+    direction: ltr !important;
+    gap: 10px !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 64px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: start !important;
+    align-self: center !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-header-left > * {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    align-self: center !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* RIGHT: menu at the outer edge, then dark, language, search/wishlist toward logo. */
+  html body .store-header.veloura-top-enabled
+    .veloura-header-right {
+    grid-area: right !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-direction: row !important;
+    direction: rtl !important;
+    gap: 10px !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 64px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: end !important;
+    align-self: center !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-header-right > * {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    align-self: center !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Explicit hit-boxes keep every control on one horizontal axis. */
+  html body .store-header.veloura-top-enabled
+    :is(
+      .veloura-login-btn,
+      .veloura-lang-mobile,
+      .veloura-dark-toggle,
+      .veloura-menu-trigger-mobile,
+      .veloura-search-toggle,
+      .veloura-wishlist-btn
+    ) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-header__cart,
+  html body .store-header.veloura-top-enabled
+    .veloura-cart-summary {
+    width: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 0 0 38px !important;
+    align-self: center !important;
+  }
+
+  /* Center logo on the exact middle axis of the container. */
+  html body .store-header.veloura-top-enabled
+    .veloura-header-logo {
+    grid-area: logo !important;
+    justify-self: center !important;
+    align-self: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    z-index: 10 !important;
+  }
+
+  /* Connected mobile search is row two and has no independent paint/shadow. */
+  html body .store-header.veloura-top-enabled
+    .veloura-mobile-search-bar {
+    grid-area: search !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 4px 10px 10px !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-mobile-search-bar salla-search {
+    display: block !important;
+    width: 100% !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    .veloura-mobile-search-bar
+    :is(
+      .s-search-input,
+      input,
+      [part~='input'],
+      salla-search::part(input)
+    ) {
+    box-shadow: none !important;
+  }
+
+  /* Only one floating/glass paint layer. */
+  html body .store-header.veloura-top-enabled.veloura-top-blur::before,
+  html body .store-header.veloura-top-enabled.veloura-top-blur::after {
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}

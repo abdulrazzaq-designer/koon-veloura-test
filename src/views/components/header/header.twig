@@ -407,61 +407,64 @@
         <div class="veloura-header-grid">
 
           <div class="veloura-header__tools">
-            <div class="veloura-header__actions">
-            {# Desktop RTL visual order: account → cart → language/currency. #}
-            <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
-              <i class="{{ top_login_icon }}"></i>
-            </button>
+            <div class="veloura-header-left">
+              {# Mobile/desktop physical LEFT group: cart → login. #}
+              <salla-cart-summary class="veloura-header__cart veloura-cart-summary {{ hide_cart_total_mobile ? 'veloura-cart-hide-total veloura-cart-icon-only-mobile' : 'veloura-cart-total-visible' }}">
+                <span slot="icon" class="veloura-cart-custom-icon">
+                  <i class="{{ top_cart_icon }}"></i>
+                </span>
+              </salla-cart-summary>
 
-            <salla-cart-summary class="veloura-header__cart veloura-cart-summary {{ hide_cart_total_mobile ? 'veloura-cart-hide-total veloura-cart-icon-only-mobile' : 'veloura-cart-total-visible' }}">
-              <span slot="icon" class="veloura-cart-custom-icon">
-                <i class="{{ top_cart_icon }}"></i>
-              </span>
-            </salla-cart-summary>
-
-            {% if localization_available and not hide_lang_desktop %}
-              <button type="button" class="veloura-header-icon veloura-lang-desktop veloura-localization-pill" data-veloura-localization-trigger aria-label="اللغة والعملة">
-                <span class="veloura-localization-pill__language" data-veloura-language-label>{{ language.code == 'ar' ? 'العربية' : 'English' }}</span>
-                <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
-                <span class="veloura-localization-pill__currency" data-veloura-currency-label></span>
+              <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
+                <i class="{{ top_login_icon }}"></i>
               </button>
-            {% endif %}
 
-            {% if show_wishlist %}
-              <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">
-                <i class="sicon-heart"></i>
-              </a>
-            {% endif %}
-
-            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
-              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
-                <i class="sicon-moon veloura-dark-toggle__icon"></i>
-              </button>
-            {% endif %}
-
-            {% if desktop_search not in ['bar', 'bar_sticky_icon'] %}
-              <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
-                <i class="sicon-search"></i>
-              </button>
-            {% endif %}
-
-            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'right' %}
-              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
-                <i class="sicon-moon veloura-dark-toggle__icon"></i>
-              </button>
-            {% endif %}
-
-            {% if show_mobile_lang and localization_available %}
-              <button type="button" class="veloura-header-icon veloura-lang-mobile" data-veloura-localization-trigger aria-label="اللغة والعملة">
-                <i class="sicon-earth"></i>
-              </button>
-            {% endif %}
+              {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
+                <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                  <i class="sicon-moon veloura-dark-toggle__icon"></i>
+                </button>
+              {% endif %}
             </div>
 
-            <div class="veloura-header__menu">
-              <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
-                <i class="{{ top_menu_icon }}"></i>
-              </a>
+            <div class="veloura-header-right">
+              {# Physical RIGHT group: menu → dark → language → search/wishlist toward the logo. #}
+              <div class="veloura-header__menu">
+                <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
+                  <i class="{{ top_menu_icon }}"></i>
+                </a>
+              </div>
+
+              {% if dark_enabled and dark_toggle_enabled and dark_pos == 'right' %}
+                <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                  <i class="sicon-moon veloura-dark-toggle__icon"></i>
+                </button>
+              {% endif %}
+
+              {% if show_mobile_lang and localization_available %}
+                <button type="button" class="veloura-header-icon veloura-lang-mobile" data-veloura-localization-trigger aria-label="اللغة والعملة">
+                  <i class="sicon-earth"></i>
+                </button>
+              {% endif %}
+
+              {% if desktop_search not in ['bar', 'bar_sticky_icon'] %}
+                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                  <i class="sicon-search"></i>
+                </button>
+              {% endif %}
+
+              {% if show_wishlist %}
+                <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">
+                  <i class="sicon-heart"></i>
+                </a>
+              {% endif %}
+
+              {% if localization_available and not hide_lang_desktop %}
+                <button type="button" class="veloura-header-icon veloura-lang-desktop veloura-localization-pill" data-veloura-localization-trigger aria-label="اللغة والعملة">
+                  <span class="veloura-localization-pill__language" data-veloura-language-label>{{ language.code == 'ar' ? 'العربية' : 'English' }}</span>
+                  <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
+                  <span class="veloura-localization-pill__currency" data-veloura-currency-label></span>
+                </button>
+              {% endif %}
             </div>
           </div>
 
