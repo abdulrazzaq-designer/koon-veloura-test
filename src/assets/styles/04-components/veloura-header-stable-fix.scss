@@ -1,31 +1,22 @@
 /*
- * Veloura Header — stable mobile layout patch
+ * Veloura Header — Stable Mobile Fix V2
  *
- * This file contains ONLY the layout values that were verified live in DevTools:
- * - Header container remains the real outer container.
- * - Mobile header grid is expanded to the full container width.
- * - Logo is centered.
- * - Left side: cart -> login.
- * - Right side: language -> dark -> menu (physical RTL order).
- * - All top controls share the same centerY axis.
- * - Search outer surface is clear; only the search field paints.
- *
- * Import this file AFTER the existing header/layout styles so these rules win.
+ * Important DOM fact verified in DevTools:
+ * .veloura-mobile-search-bar and .veloura-desktop-search-bar are also
+ * present on the <header> element itself. Therefore every search rule below
+ * deliberately targets ONLY the direct search wrappers under .veloura-header-grid.
+ * This prevents hiding/styling the whole header by accident.
  */
 
 @media (max-width: 1023px) {
   .store-header.veloura-top-enabled {
-    /* Keep the mobile floating header about 15px from the viewport top. */
     margin-top: 15px !important;
   }
 
   /* ================================================================
-     1. FULL-WIDTH GRID INSIDE THE EXISTING HEADER CONTAINER
-     Verified live: container x=16 / w=341, grid x=16 / w=341.
-     The 36px inner padding is preserved on the container itself; the
-     grid is pulled back out to the container edges.
+     1) GRID: full width of the real header container
+     Verified in DevTools: container x=16 / w=341 and desired grid x=16 / w=341.
      ================================================================ */
-
   .store-header.veloura-top-enabled .veloura-header-grid {
     position: relative !important;
     width: calc(100% + 72px) !important;
@@ -38,19 +29,16 @@
   }
 
   /* ================================================================
-     2. KEEP THE NESTED TOOLS FROM CREATING ANOTHER AXIS
+     2) NESTED TOOLS: do not create another positioning axis
      ================================================================ */
-
-  .store-header.veloura-top-enabled .veloura-header__tools {
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header__tools {
     display: contents !important;
   }
 
   /* ================================================================
-     3. CENTER LOGO
-     Verified live centerX ~= viewport center.
+     3) LOGO: exact center of grid
      ================================================================ */
-
-  .store-header.veloura-top-enabled .veloura-header-logo {
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header-logo {
     position: absolute !important;
     left: 50% !important;
     right: auto !important;
@@ -68,18 +56,17 @@
     z-index: 50 !important;
   }
 
-  .store-header.veloura-top-enabled .veloura-header-logo img,
-  .store-header.veloura-top-enabled .veloura-header-logo picture {
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header-logo img,
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header-logo picture {
     max-width: 100% !important;
     max-height: 100% !important;
   }
 
   /* ================================================================
-     4. LEFT: CART -> LOGIN
-     Both controls use the same 30x30 hit area and same top axis.
+     4) LEFT: CART -> LOGIN
      ================================================================ */
-
-  .store-header.veloura-top-enabled .veloura-header-left {
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header__tools > .veloura-header-left,
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header-left {
     position: absolute !important;
     left: 0 !important;
     right: auto !important;
@@ -122,19 +109,19 @@
     order: 2 !important;
   }
 
-  /* Keep the cart badge attached to the cart, not the header corner. */
-  .store-header.veloura-top-enabled .veloura-header-left .s-cart-summary-count {
+  /* Badge stays attached to the cart. */
+  .store-header.veloura-top-enabled .veloura-header-left .s-cart-summary-count,
+  .store-header.veloura-top-enabled .veloura-header-left salla-cart-summary .s-cart-summary-count {
     top: -5px !important;
     inset-inline-end: -5px !important;
     inset-inline-start: auto !important;
   }
 
   /* ================================================================
-     5. RIGHT: LANGUAGE -> DARK -> MENU
-     Physical far right is MENU in RTL.
+     5) RIGHT: MENU -> DARK -> LANGUAGE, physical RTL
      ================================================================ */
-
-  .store-header.veloura-top-enabled .veloura-header-right {
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header__tools > .veloura-header-right,
+  .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header-right {
     position: absolute !important;
     right: 0 !important;
     left: auto !important;
@@ -152,12 +139,18 @@
     z-index: 50 !important;
   }
 
-  .store-header.veloura-top-enabled .veloura-header-right
-  .veloura-lang-mobile,
-  .store-header.veloura-top-enabled .veloura-header-right
-  .veloura-dark-toggle,
-  .store-header.veloura-top-enabled .veloura-header-right
-  .veloura-menu-trigger-mobile {
+  /* Explicitly REMOVE mobile wishlist. It is not part of the requested mobile axis. */
+  .store-header.veloura-top-enabled .veloura-header-wishlist,
+  .store-header.veloura-top-enabled .veloura-wishlist-btn,
+  .store-header.veloura-top-enabled [aria-label="المفضلة"] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-right .veloura-lang-mobile,
+  .store-header.veloura-top-enabled .veloura-header-right .veloura-dark-toggle,
+  .store-header.veloura-top-enabled .veloura-header-right .veloura-menu-trigger-mobile {
     position: static !important;
     width: 30px !important;
     height: 30px !important;
@@ -172,49 +165,76 @@
     flex: 0 0 30px !important;
   }
 
-  .store-header.veloura-top-enabled .veloura-header-right
-  .veloura-menu-trigger-mobile { order: 1 !important; }
+  .store-header.veloura-top-enabled .veloura-header-right .veloura-menu-trigger-mobile {
+    order: 1 !important;
+  }
 
-  .store-header.veloura-top-enabled .veloura-header-right
-  .veloura-dark-toggle { order: 2 !important; }
+  .store-header.veloura-top-enabled .veloura-header-right .veloura-dark-toggle {
+    order: 2 !important;
+  }
 
-  .store-header.veloura-top-enabled .veloura-header-right
-  .veloura-lang-mobile { order: 3 !important; }
+  .store-header.veloura-top-enabled .veloura-header-right .veloura-lang-mobile {
+    order: 3 !important;
+  }
 
-  /* Mobile must not render the desktop language pill. */
-  .store-header.veloura-top-enabled .veloura-lang-desktop {
+  .store-header.veloura-top-enabled .veloura-header-grid .veloura-lang-desktop {
     display: none !important;
+    visibility: hidden !important;
   }
 
   /* ================================================================
-     6. SEARCH: ONE PAINT OWNER
-     The outer wrapper is clear; the input is the only search surface.
+     6) SEARCH: ONLY ONE SEARCH WRAPPER MAY PAINT ON MOBILE
+
+     Critical: these selectors MUST be direct children of .veloura-header-grid.
+     This avoids matching the <header> itself, which also carries the same
+     search mode class names.
      ================================================================ */
 
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar {
+  /* Desktop search wrapper: completely removed from the mobile layout. */
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-desktop-search-bar {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Mobile search wrapper: the only active wrapper. */
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar {
     position: relative !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 76px !important;
-    margin-bottom: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 76px 0 0 !important;
     padding: 5px 10px 10px !important;
     box-sizing: border-box !important;
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
     border: 0 !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
-  .store-header.veloura-top-enabled .veloura-desktop-search-bar {
-    display: none !important;
-  }
-
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar > salla-search,
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar salla-search.veloura-header-search-component {
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar > salla-search,
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar salla-search.veloura-header-search-component {
     display: block !important;
     width: 100% !important;
     background: transparent !important;
@@ -226,12 +246,21 @@
     -webkit-backdrop-filter: none !important;
   }
 
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar
-  salla-search::part(form),
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar
-  salla-search::part(container),
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar
-  salla-search::part(wrapper) {
+  /* Internal Salla layers stay transparent. */
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar .s-search-modal,
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar .s-search-container,
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar .s-search-wrapper,
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar .s-search-input-wrapper,
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(form),
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(container),
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(wrapper) {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -241,7 +270,11 @@
     -webkit-backdrop-filter: none !important;
   }
 
-  .store-header.veloura-top-enabled .veloura-mobile-search-bar .s-search-input {
+  /* Only the input paints the actual search field. */
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar .s-search-input,
+  .store-header.veloura-top-enabled
+  .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(input) {
     background: rgba(255,255,255,.055) !important;
     background-color: rgba(255,255,255,.055) !important;
     background-image: none !important;
@@ -251,15 +284,21 @@
   }
 
   /* ================================================================
-     7. ONE DARK GLASS OWNER FOR THE MOBILE HEADER SURFACE
-     Slightly darker than the previous test, but still translucent.
+     7) ONE DARK GLASS OWNER
      ================================================================ */
-
-  .store-header.veloura-top-enabled.veloura-top-blur {
+  .veloura-header-tabs-stack__surface {
+    background: rgba(18,19,28,.92) !important;
+    background-color: rgba(18,19,28,.92) !important;
     border-radius: 28px !important;
     overflow: hidden !important;
+    box-shadow:
+      0 14px 32px rgba(0,0,0,.20),
+      inset 0 1px 0 rgba(255,255,255,.035) !important;
+    backdrop-filter: blur(20px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(120%) !important;
   }
 
+  /* Remove legacy header paint layers; the surface above is the owner. */
   .store-header.veloura-top-enabled.veloura-top-blur::before,
   .store-header.veloura-top-enabled.veloura-top-blur::after {
     content: none !important;
