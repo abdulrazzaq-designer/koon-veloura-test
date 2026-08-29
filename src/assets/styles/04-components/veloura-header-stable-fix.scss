@@ -1,0 +1,268 @@
+/*
+ * Veloura Header — stable mobile layout patch
+ *
+ * This file contains ONLY the layout values that were verified live in DevTools:
+ * - Header container remains the real outer container.
+ * - Mobile header grid is expanded to the full container width.
+ * - Logo is centered.
+ * - Left side: cart -> login.
+ * - Right side: language -> dark -> menu (physical RTL order).
+ * - All top controls share the same centerY axis.
+ * - Search outer surface is clear; only the search field paints.
+ *
+ * Import this file AFTER the existing header/layout styles so these rules win.
+ */
+
+@media (max-width: 1023px) {
+  .store-header.veloura-top-enabled {
+    /* Keep the mobile floating header about 15px from the viewport top. */
+    margin-top: 15px !important;
+  }
+
+  /* ================================================================
+     1. FULL-WIDTH GRID INSIDE THE EXISTING HEADER CONTAINER
+     Verified live: container x=16 / w=341, grid x=16 / w=341.
+     The 36px inner padding is preserved on the container itself; the
+     grid is pulled back out to the container edges.
+     ================================================================ */
+
+  .store-header.veloura-top-enabled .veloura-header-grid {
+    position: relative !important;
+    width: calc(100% + 72px) !important;
+    max-width: none !important;
+    margin-left: -36px !important;
+    margin-right: -36px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ================================================================
+     2. KEEP THE NESTED TOOLS FROM CREATING ANOTHER AXIS
+     ================================================================ */
+
+  .store-header.veloura-top-enabled .veloura-header__tools {
+    display: contents !important;
+  }
+
+  /* ================================================================
+     3. CENTER LOGO
+     Verified live centerX ~= viewport center.
+     ================================================================ */
+
+  .store-header.veloura-top-enabled .veloura-header-logo {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 2px !important;
+    width: 61px !important;
+    height: 44px !important;
+    min-width: 61px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform: translateX(-50%) !important;
+    z-index: 50 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-logo img,
+  .store-header.veloura-top-enabled .veloura-header-logo picture {
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  /* ================================================================
+     4. LEFT: CART -> LOGIN
+     Both controls use the same 30x30 hit area and same top axis.
+     ================================================================ */
+
+  .store-header.veloura-top-enabled .veloura-header-left {
+    position: absolute !important;
+    left: 0 !important;
+    right: auto !important;
+    top: 9px !important;
+    width: 74px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+    direction: ltr !important;
+    transform: none !important;
+    z-index: 50 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-left salla-cart-summary,
+  .store-header.veloura-top-enabled .veloura-header-left .veloura-login-btn {
+    position: static !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 30px !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-left salla-cart-summary {
+    order: 1 !important;
+    position: relative !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-left .veloura-login-btn {
+    order: 2 !important;
+  }
+
+  /* Keep the cart badge attached to the cart, not the header corner. */
+  .store-header.veloura-top-enabled .veloura-header-left .s-cart-summary-count {
+    top: -5px !important;
+    inset-inline-end: -5px !important;
+    inset-inline-start: auto !important;
+  }
+
+  /* ================================================================
+     5. RIGHT: LANGUAGE -> DARK -> MENU
+     Physical far right is MENU in RTL.
+     ================================================================ */
+
+  .store-header.veloura-top-enabled .veloura-header-right {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 9px !important;
+    width: 118px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-direction: row !important;
+    direction: rtl !important;
+    transform: none !important;
+    z-index: 50 !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-right
+  .veloura-lang-mobile,
+  .store-header.veloura-top-enabled .veloura-header-right
+  .veloura-dark-toggle,
+  .store-header.veloura-top-enabled .veloura-header-right
+  .veloura-menu-trigger-mobile {
+    position: static !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 30px !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-header-right
+  .veloura-menu-trigger-mobile { order: 1 !important; }
+
+  .store-header.veloura-top-enabled .veloura-header-right
+  .veloura-dark-toggle { order: 2 !important; }
+
+  .store-header.veloura-top-enabled .veloura-header-right
+  .veloura-lang-mobile { order: 3 !important; }
+
+  /* Mobile must not render the desktop language pill. */
+  .store-header.veloura-top-enabled .veloura-lang-desktop {
+    display: none !important;
+  }
+
+  /* ================================================================
+     6. SEARCH: ONE PAINT OWNER
+     The outer wrapper is clear; the input is the only search surface.
+     ================================================================ */
+
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar {
+    position: relative !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 76px !important;
+    margin-bottom: 0 !important;
+    padding: 5px 10px 10px !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-desktop-search-bar {
+    display: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar > salla-search,
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar salla-search.veloura-header-search-component {
+    display: block !important;
+    width: 100% !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar
+  salla-search::part(form),
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar
+  salla-search::part(container),
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar
+  salla-search::part(wrapper) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .store-header.veloura-top-enabled .veloura-mobile-search-bar .s-search-input {
+    background: rgba(255,255,255,.055) !important;
+    background-color: rgba(255,255,255,.055) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+  }
+
+  /* ================================================================
+     7. ONE DARK GLASS OWNER FOR THE MOBILE HEADER SURFACE
+     Slightly darker than the previous test, but still translucent.
+     ================================================================ */
+
+  .store-header.veloura-top-enabled.veloura-top-blur {
+    border-radius: 28px !important;
+    overflow: hidden !important;
+  }
+
+  .store-header.veloura-top-enabled.veloura-top-blur::before,
+  .store-header.veloura-top-enabled.veloura-top-blur::after {
+    content: none !important;
+    display: none !important;
+  }
+}
