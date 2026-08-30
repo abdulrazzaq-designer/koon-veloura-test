@@ -1353,6 +1353,18 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     box-sizing: border-box !important;
   }
 
+  /* The stack class is present so this selector matches the specificity of
+     header-navigation-stability.scss (0,4,2) and, being imported later, wins.
+     column-gap must stay above the JS layout observer's 5px safety margin:
+     the right group fills its column exactly, so the gap IS the clearance
+     between the logo and that group. At 4px the observer read every header
+     as colliding and promoted it to two tiers permanently. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-grid {
+    column-gap: 10px !important;
+  }
+
   html body .store-header.veloura-top-enabled
     .veloura-header-grid {
     display: grid !important;
@@ -1387,7 +1399,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: ltr !important;
-    gap: clamp(6px, 2.2vw, 10px) !important;
+    gap: clamp(2px, 1.6vw, 9px) !important;
     width: max-content !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -1417,7 +1429,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: rtl !important;
-    gap: clamp(6px, 2.2vw, 10px) !important;
+    gap: clamp(2px, 1.6vw, 9px) !important;
     width: max-content !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -1462,10 +1474,10 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 38px !important;
-    min-width: 38px !important;
-    height: 38px !important;
-    min-height: 38px !important;
+    width: clamp(28px, 8.2vw, 38px) !important;
+    min-width: clamp(28px, 8.2vw, 38px) !important;
+    height: clamp(28px, 8.2vw, 38px) !important;
+    min-height: clamp(28px, 8.2vw, 38px) !important;
     padding: 0 !important;
     margin: 0 !important;
     line-height: 1 !important;
@@ -1475,11 +1487,11 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     .veloura-header__cart,
   html body .store-header.veloura-top-enabled
     .veloura-cart-summary {
-    width: 38px !important;
-    min-width: 38px !important;
-    max-width: 38px !important;
-    height: 38px !important;
-    min-height: 38px !important;
+    width: clamp(28px, 8.2vw, 38px) !important;
+    min-width: clamp(28px, 8.2vw, 38px) !important;
+    max-width: clamp(28px, 8.2vw, 38px) !important;
+    height: clamp(28px, 8.2vw, 38px) !important;
+    min-height: clamp(28px, 8.2vw, 38px) !important;
     margin: 0 !important;
     padding: 0 !important;
     flex: 0 0 38px !important;
