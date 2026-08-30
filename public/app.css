@@ -38503,7 +38503,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: ltr !important;
-    gap: 10px !important;
+    gap: max(6px, min(2.2vw, 10px)) !important;
     width: -moz-max-content !important;
     width: max-content !important;
     max-width: 100% !important;
@@ -38533,7 +38533,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: rtl !important;
-    gap: 10px !important;
+    gap: max(6px, min(2.2vw, 10px)) !important;
     width: -moz-max-content !important;
     width: max-content !important;
     max-width: 100% !important;
@@ -38556,12 +38556,22 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     flex: 0 0 auto !important;
   }
   /* Explicit hit-boxes keep every control on one horizontal axis. */
+  /* Mobile never shows the wishlist or the desktop language pill.
+     They are listed here explicitly because this section owns the mobile
+     axis: when they leak in, the icon row widens, the logo collides with a
+     group, and the JS layout observer promotes the header to two tiers. */
+  html body .store-header.veloura-top-enabled .veloura-wishlist-btn,
+  html body .store-header.veloura-top-enabled .veloura-header-wishlist,
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
   html body .store-header.veloura-top-enabled .veloura-login-btn,
   html body .store-header.veloura-top-enabled .veloura-lang-mobile,
   html body .store-header.veloura-top-enabled .veloura-dark-toggle,
   html body .store-header.veloura-top-enabled .veloura-menu-trigger-mobile,
-  html body .store-header.veloura-top-enabled .veloura-search-toggle,
-  html body .store-header.veloura-top-enabled .veloura-wishlist-btn {
+  html body .store-header.veloura-top-enabled .veloura-search-toggle {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;

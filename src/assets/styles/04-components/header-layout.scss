@@ -1387,7 +1387,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: ltr !important;
-    gap: 10px !important;
+    gap: clamp(6px, 2.2vw, 10px) !important;
     width: max-content !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -1417,7 +1417,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: rtl !important;
-    gap: 10px !important;
+    gap: clamp(6px, 2.2vw, 10px) !important;
     width: max-content !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -1439,14 +1439,25 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   }
 
   /* Explicit hit-boxes keep every control on one horizontal axis. */
+  /* Mobile never shows the wishlist or the desktop language pill.
+     They are listed here explicitly because this section owns the mobile
+     axis: when they leak in, the icon row widens, the logo collides with a
+     group, and the JS layout observer promotes the header to two tiers. */
+  html body .store-header.veloura-top-enabled .veloura-wishlist-btn,
+  html body .store-header.veloura-top-enabled .veloura-header-wishlist,
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   html body .store-header.veloura-top-enabled
     :is(
       .veloura-login-btn,
       .veloura-lang-mobile,
       .veloura-dark-toggle,
       .veloura-menu-trigger-mobile,
-      .veloura-search-toggle,
-      .veloura-wishlist-btn
+      .veloura-search-toggle
     ) {
     display: inline-flex !important;
     align-items: center !important;
