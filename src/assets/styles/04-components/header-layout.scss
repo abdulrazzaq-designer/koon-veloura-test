@@ -1280,12 +1280,58 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
 }
 
 /* ========================================================================
-   Veloura Header — canonical semantic axis (stabilized 2026-08)
-   Source of truth for the current header.twig structure:
-   .veloura-header-left  = cart + login (+ optional left dark)
-   .veloura-header-right = menu + dark + mobile language + search + wishlist
-                           + desktop language/currency
-   The mobile layout uses three columns: left / logo / right.
+   7. MOBILE HEADER LAYOUT — SINGLE OWNER (2026-08-30)
+   ------------------------------------------------------------------------
+   This section is the ONLY owner of the mobile header layout.
+   Do not add mobile header positioning anywhere else in the codebase.
+
+   Three previous systems used to fight over these same elements and were
+   deleted on 2026-08-30 after a real-browser audit at 390px:
+
+     - header.scss  "Stable Geometry Lock V29"        (203 lines)
+     - header.scss  "MOBILE — exact physical RTL"     (147 lines)
+     - veloura-header-stable-fix.scss                 (307 lines)
+
+   All three positioned the logo and the icon groups with position:absolute
+   while this section lays them out with grid. The absolute rules won on
+   specificity, dropped the search wrapper out of flow, and the logo and the
+   icons were painted on top of the search field.
+
+   ------------------------------------------------------------------------
+   SELECTOR TRAP — read before adding any rule here.
+
+   The <header> element itself carries a generated mode class:
+
+       veloura-mobile-search-{{ mobile_search }}
+
+   When that setting is "bar", the header's own class is literally
+   .veloura-mobile-search-bar — the SAME name as the search wrapper div
+   inside it. A bare `.veloura-mobile-search-bar` therefore matches the
+   whole header, and a descendant form such as
+
+       .store-header.veloura-mobile-search-bar .veloura-mobile-search-bar
+
+   reaches specificity (0,4,2) and silently outranks the intended rule.
+   That is exactly how the search row offset used to be discarded.
+
+   Rule: always reach the search wrapper through .veloura-header-grid,
+   never by its class alone. 54 rules across five files still rely on the
+   header's mode classes, so the class name itself was left untouched.
+
+   ------------------------------------------------------------------------
+   Structure this section targets (views/components/header/header.twig):
+
+     .veloura-header-grid
+       .veloura-header__tools        -> display: contents (structural only)
+         .veloura-header-left        -> cart + login (+ optional left dark)
+         .veloura-header-right       -> menu + dark + language + search
+                                        + wishlist + desktop lang pill
+       .veloura-header-logo
+       .veloura-menu-links-wrap
+       .veloura-mobile-search-bar    -> row two
+
+   Mobile grid: three columns (left / logo / right) over two rows.
+   Desktop (min-width: 1024px) is not touched by this section at all.
    ======================================================================== */
 
 @media (max-width: 1023px) {

@@ -35378,6 +35378,191 @@ html body .store-header.veloura-top-enabled.veloura-top-blur::after {
     border: 0 !important;
   }
 }
+/*
+ Veloura Header — Stable Geometry Lock V29
+ Import LAST in the main stylesheet.
+ Mobile only. Desktop intentionally untouched.
+*/
+@media (max-width: 1023px) {
+  html body .store-header.veloura-top-enabled .veloura-header-container {
+    position: relative !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-grid {
+    position: relative !important;
+    width: calc(100% + 72px) !important;
+    max-width: none !important;
+    margin-left: -36px !important;
+    margin-right: -36px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+    gap: 0 !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-header-layout-tight .veloura-header-grid,
+  html body .store-header.veloura-top-enabled.veloura-header-layout-two-tier .veloura-header-grid {
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+    gap: 0 !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header__tools,
+  html body .store-header.veloura-top-enabled .veloura-header__actions,
+  html body .store-header.veloura-top-enabled .veloura-header__menu {
+    position: static !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Logo */
+  html body .store-header.veloura-top-enabled .veloura-header-grid > .veloura-header-logo {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 2px !important;
+    width: 61px !important;
+    height: 44px !important;
+    min-width: 61px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 60 !important;
+  }
+  /* Left: cart -> login */
+  html body .store-header.veloura-top-enabled .veloura-header-left {
+    position: absolute !important;
+    left: 0 !important;
+    right: auto !important;
+    top: 9px !important;
+    width: 74px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    direction: ltr !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    z-index: 50 !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-left salla-cart-summary,
+  html body .store-header.veloura-top-enabled .veloura-header-left .veloura-login-btn {
+    position: static !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    flex: 0 0 30px !important;
+  }
+  /* Right: language -> dark -> menu */
+  html body .store-header.veloura-top-enabled .veloura-header-right {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 9px !important;
+    width: 118px !important;
+    height: 30px !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    z-index: 50 !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-right .veloura-lang-mobile {
+    position: absolute !important;
+    right: 88px !important;
+    left: auto !important;
+    top: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-right .veloura-dark-toggle {
+    position: absolute !important;
+    right: 44px !important;
+    left: auto !important;
+    top: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-right .veloura-menu-trigger-mobile {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  /* Mobile-only */
+  html body .store-header.veloura-top-enabled .veloura-lang-desktop {
+    display: none !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-wishlist-btn {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  /* Search: second row */
+  html body .store-header.veloura-top-enabled .veloura-header-grid > .veloura-mobile-search-bar {
+    position: absolute !important;
+    left: 12px !important;
+    right: 12px !important;
+    top: 63px !important;
+    width: auto !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    z-index: 30 !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-grid > .veloura-desktop-search-bar {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  /* Cart badge */
+  html body .store-header.veloura-top-enabled .veloura-header-left salla-cart-summary {
+    position: relative !important;
+  }
+  html body .store-header.veloura-top-enabled .veloura-header-left salla-cart-summary .s-cart-summary-count {
+    position: absolute !important;
+    top: -7px !important;
+    right: -7px !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 30 !important;
+  }
+}
 /* ========================================================================
    Veloura Header + Tabs V16 — structural restore + focused tabs/mobile/admin fixes
 
