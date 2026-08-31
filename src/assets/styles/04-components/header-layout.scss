@@ -1354,112 +1354,109 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   }
 
   /* ----------------------------------------------------------------------
-     Row one is a single flex line: left group, logo, right group.
-     The search wrapper takes a full-width flex line of its own below it.
+     Row one: icon groups pinned to the two edges, logo on the TRUE centre.
 
-     Why not the three-column grid ('left logo right') the theme shipped:
+     tools becomes a real flex row spanning the full width, with the two
+     groups pushed apart by space-between. The logo is NOT part of that row:
+     it is placed in the SAME grid cell and centred there, so it sits on the
+     exact middle of the header no matter how many icons each side carries.
+     Because it never participates in the row's horizontal sizing, an uneven
+     icon count can no longer shift it.
+
+     Why not the three-column grid the theme shipped ('left logo right'):
      its two side columns are forced to the SAME width, so the wider group
-     (icons, ~98px) sizes both, and the narrower group (cart + login, ~67px)
-     wastes ~31px it cannot give back. At 269px of usable row that overflows,
-     and the JS layout observer in app.js promotes the header to two tiers.
+     sizes both and the narrower one wastes the difference. At mobile widths
+     that overflowed, and the JS layout observer promoted the header to two
+     tiers. It also fixed the logo-to-icons clearance at exactly column-gap
+     (4px) while the observer's safety margin is 5px, so every header
+     measured as colliding, at every width.
 
-     It also fixed the logo-to-icons clearance at exactly column-gap, because
-     the icon group filled its column edge to edge. With column-gap at 4px
-     and the observer's safety margin at 5px, every header measured as
-     colliding at every viewport width.
-
-     margin-inline: auto on the logo splits the leftover space equally on
-     both sides. The logo sits midway between the two groups rather than on
-     the geometric centre of the screen; in exchange the clearance is
-     symmetric and a collision becomes arithmetically impossible, whatever
-     the width or the number of icons.
-
-     This layout is UNCONDITIONAL on mobile. An earlier version guarded it with
-     :not(.veloura-header-layout-two-tier) to keep the theme's two-tier
+     This layout is UNCONDITIONAL on mobile. An earlier version guarded it
+     with :not(.veloura-header-layout-two-tier) to keep the theme's two-tier
      fallback available, which deadlocked: once the observer had added that
-     class, the guard switched this layout off and the class could never be
-     cleared. The fallback is unnecessary here anyway, because equal-gap
-     centring cannot collide.
+     class the guard switched this layout off, and the class could never be
+     cleared again.
      ---------------------------------------------------------------------- */
   html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled
-    .veloura-header-container
-    .veloura-header-grid {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
+    .veloura-header-container .veloura-header-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      'tools'
+      'search' !important;
+    grid-template-rows: auto auto !important;
     align-items: center !important;
-    grid-template-columns: none !important;
-    grid-template-areas: none !important;
-    grid-template-rows: none !important;
     column-gap: 0 !important;
     row-gap: 0 !important;
+    position: relative !important;
   }
 
-  html body .veloura-header-tabs-stack
+    html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled
     .veloura-header-container .veloura-header-grid
     .veloura-header__tools {
-    display: contents !important;
+    display: flex !important;
+    grid-area: tools !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 56px !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* The menu wrapper must not float out of the right group. */
-  html body .veloura-header-tabs-stack
+    html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled
     .veloura-header-container .veloura-header-grid
     .veloura-header__menu {
     display: contents !important;
   }
 
-  html body .veloura-header-tabs-stack
+    html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled
     .veloura-header-container .veloura-header-grid
-    .veloura-header-left {
-    order: 1 !important;
-    display: flex !important;
-    grid-area: auto !important;
-    justify-self: auto !important;
-    flex: 0 0 auto !important;
-    height: auto !important;
-    min-height: 56px !important;
-    margin: 0 !important;
-  }
-
-  html body .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled
-    .veloura-header-container .veloura-header-grid
-    .veloura-header-logo {
-    order: 2 !important;
-    grid-area: auto !important;
-    justify-self: auto !important;
-    align-self: center !important;
-    flex: 0 0 auto !important;
-    margin-inline: auto !important;
-    margin-block: 0 !important;
-    z-index: 5 !important;
-  }
-
-  html body .veloura-header-tabs-stack
+    .veloura-header-left,
+    html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled
     .veloura-header-container .veloura-header-grid
     .veloura-header-right {
-    order: 3 !important;
-    display: flex !important;
     grid-area: auto !important;
     justify-self: auto !important;
+    display: flex !important;
+    align-items: center !important;
     flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: 45% !important;
     height: auto !important;
-    min-height: 56px !important;
     margin: 0 !important;
   }
 
-  /* The search wrapper always owns a full line under the icon row. */
-  html body .veloura-header-tabs-stack
+  /* The logo shares row one's cell and centres itself in it. */
+    html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-logo {
+    grid-area: tools !important;
+    justify-self: center !important;
+    /* Safety cap: true centring means an over-wide logo would reach the
+       icon groups on the narrowest phones. This bound keeps it clear
+       without touching normally sized logos. */
+    max-width: min(26vw, 132px) !important;
+    align-self: center !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 5 !important;
+  }
+
+  /* The search wrapper owns the second row. */
+    html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled
     .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
-    order: 4 !important;
-    grid-area: auto !important;
-    flex: 0 0 100% !important;
+    grid-area: search !important;
     width: 100% !important;
     max-width: 100% !important;
   }
