@@ -55,10 +55,6 @@ html body .veloura-header-tabs-stack--blur
     0 8px 26px var(--veloura-glass-shadow) !important;
 }
 
-html body .veloura-search-surface > .veloura-search-field-icon {
-  display: none !important;
-}
-
 /* Solid search still uses the actual secondary site color. */
 html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   .veloura-search-surface {

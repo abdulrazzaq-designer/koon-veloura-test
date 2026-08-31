@@ -261,24 +261,6 @@ html body .veloura-search-surface {
   isolation: isolate !important;
 }
 
-html body .veloura-search-surface > .veloura-search-field-icon {
-  position: absolute !important;
-  inset-inline-start: 16px !important;
-  top: 50% !important;
-  z-index: 6 !important;
-  display: inline-flex !important;
-  width: 22px !important;
-  height: 22px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transform: translateY(-50%) !important;
-  color: var(--veloura-top-text, currentColor) !important;
-  font-size: 20px !important;
-  line-height: 1 !important;
-  opacity: .78 !important;
-  pointer-events: none !important;
-}
-
 html body .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
 html body .veloura-search-surface salla-search.veloura-header-search-component input,
 html body .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
@@ -439,11 +421,6 @@ html body .veloura-search-surface salla-search.veloura-header-search-component .
 
   html body .veloura-header-tabs-stack .veloura-detached-search-shell {
     padding-inline: 8px !important;
-  }
-
-  html body .veloura-search-surface > .veloura-search-field-icon {
-    inset-inline-start: 14px !important;
-    font-size: 19px !important;
   }
 
   html body .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,

@@ -98,11 +98,6 @@ body.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::befo
   order: 4 !important;
 }
 
-/* Hard guard against old/cached duplicate mobile markup. */
-#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-contact-wrap > .veloura-footer-social--mobile {
-  display: none !important;
-}
-
 /* In merge mode social must exist only in the contact surface. */
 #veloura-footer.veloura-footer-merge-social .veloura-footer-identity > .veloura-footer-social {
   display: none !important;

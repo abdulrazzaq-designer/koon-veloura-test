@@ -1546,8 +1546,6 @@
   padding-bottom: 40px;
   overflow: hidden;
 }
-
-.veloura-products__container,
 .veloura-products__inner {
   width: 100%;
   overflow: hidden;
@@ -4018,11 +4016,9 @@
 .veloura-before-after__container,
 .veloura-branches__container,
 .veloura-brands__container,
-.veloura-products__container,
 .veloura-purchase-steps__container,
 .veloura-quick-links__container,
-.veloura-testimonials__container,
-.veloura-title__container {
+.veloura-testimonials__container{
   width: 100%;
   box-sizing: border-box;
 }
@@ -4035,13 +4031,10 @@
 .veloura-before-after:not(.has-spacing) .veloura-before-after__container,
 .veloura-branches:not(.has-spacing) .veloura-branches__container,
 .veloura-brands:not(.has-spacing) .veloura-brands__container,
-.veloura-products:not(.has-spacing) .veloura-products__container,
-.veloura-products:not(.has-custom-spacing) .veloura-products__container,
 .veloura-purchase-steps:not(.has-spacing) .veloura-purchase-steps__container,
 .veloura-quick-links:not(.has-spacing) .veloura-quick-links__container,
 .veloura-quick-links:not(.has-custom-spacing) .veloura-quick-links__container,
-.veloura-testimonials:not(.has-spacing) .veloura-testimonials__container,
-.veloura-title:not(.has-spacing) .veloura-title__container {
+.veloura-testimonials:not(.has-spacing) .veloura-testimonials__container{
   margin-inline: auto;
 }
 
@@ -4088,13 +4081,6 @@
   padding-inline: var(--veloura-brands-spacing, 0px);
 }
 
-.veloura-products.has-spacing .veloura-products__container,
-.veloura-products.has-custom-spacing .veloura-products__container {
-  max-width: none;
-  margin-inline: auto;
-  padding-inline: var(--veloura-products-spacing, 0px);
-}
-
 .veloura-purchase-steps.has-spacing .veloura-purchase-steps__container {
   max-width: none;
   margin-inline: auto;
@@ -4112,12 +4098,6 @@
   max-width: none;
   margin-inline: auto;
   padding-inline: var(--veloura-testimonials-spacing, 0px);
-}
-
-.veloura-title.has-spacing .veloura-title__container {
-  max-width: none;
-  margin-inline: auto;
-  padding-inline: var(--veloura-title-spacing, 0px);
 }
 
 /* ---------- Common section title bridge ---------- */
@@ -4224,7 +4204,6 @@
 
 /* تحسينات للسلايدرات داخل الحاويات المخصصة */
 .veloura-quick-links__container salla-slider,
-.veloura-products__container salla-products-slider,
 .veloura-brands__container salla-slider,
 .veloura-testimonials__container salla-slider,
 .veloura-animated-articles__container salla-slider,
@@ -4437,21 +4416,6 @@
   text-align: var(--veloura-title-align, center);
 }
 
-.veloura-title--align-right .veloura-title__heading {
-  justify-content: flex-start;
-  text-align: right;
-}
-
-.veloura-title--align-center .veloura-title__heading {
-  justify-content: center;
-  text-align: center;
-}
-
-.veloura-title--align-left .veloura-title__heading {
-  justify-content: flex-end;
-  text-align: left;
-}
-
 .veloura-title__content {
   display: inline-flex;
   align-items: center;
@@ -4462,18 +4426,6 @@
   line-height: inherit;
   flex: 0 1 auto;
   direction: inherit;
-}
-
-.veloura-title--align-right .veloura-title__content {
-  justify-content: flex-start;
-}
-
-.veloura-title--align-center .veloura-title__content {
-  justify-content: center;
-}
-
-.veloura-title--align-left .veloura-title__content {
-  justify-content: flex-end;
 }
 
 /* الأيقونة نفس طريقة المميزات:
@@ -4509,36 +4461,12 @@
   flex: 0 1 auto;
 }
 
-.veloura-title--line-none .veloura-title__line {
-  display: none !important;
-}
-
-.veloura-title--line-right .veloura-title__line--left {
-  display: none !important;
-}
-
-.veloura-title--line-left .veloura-title__line--right {
-  display: none !important;
-}
-
 .veloura-title__subtitle {
   margin: 10px 0 0;
   color: var(--veloura-title-color, #323232);
   font-size: var(--veloura-subtitle-size, 18px);
   line-height: 1.6;
   text-align: var(--veloura-title-align, center);
-}
-
-.veloura-title--align-center .veloura-title__subtitle {
-  text-align: center;
-}
-
-.veloura-title--align-right .veloura-title__subtitle {
-  text-align: right;
-}
-
-.veloura-title--align-left .veloura-title__subtitle {
-  text-align: left;
 }
 
 /* إخفاء عنوان/أيقونة القسم التالي */

@@ -1043,8 +1043,7 @@ body.dark,
   }
 
   .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-trigger-mobile,
-  .store-header.veloura-top-enabled.veloura-desktop-menu-links a.mburger[href="#mobile-menu"],
-  .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-trigger-desktop {
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links a.mburger[href="#mobile-menu"]{
     display: none !important;
   }
 
@@ -1086,8 +1085,6 @@ body.dark,
     color: var(--veloura-top-text) !important;
     line-height: 1 !important;
   }
-
-  .store-header.veloura-top-enabled.veloura-desktop-menu-hamburger .veloura-menu-trigger-desktop,
   .veloura-desktop-menu-overlay,
   .veloura-desktop-menu-drawer {
     display: none !important;
