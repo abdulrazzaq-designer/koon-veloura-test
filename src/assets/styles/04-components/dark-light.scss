@@ -13,11 +13,11 @@
 :root,
 html body {
   /* Canonical header glass material. */
-  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-background: rgba(228, 231, 235, .80);
   --veloura-header-glass-solid: #e6e8eb;
   --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
   --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);
-  --veloura-header-glass-shadow: rgba(15, 23, 42, .055);
+  --veloura-header-glass-shadow: rgba(15, 23, 42, .10);
   --veloura-header-glass-filter: blur(20px) saturate(200%);
 
   /* Compatibility aliases for older theme sections. */

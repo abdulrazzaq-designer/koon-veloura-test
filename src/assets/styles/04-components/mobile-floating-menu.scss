@@ -335,6 +335,44 @@
     display: none;
   }
 
+  /* Full-width / connected */
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-nav {
+    bottom: 0;
+  }
+
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-nav__surface {
+    min-height: calc(var(--vbn-height, 56px) + var(--vbn-safe-bottom));
+    padding-bottom: calc(4px + var(--vbn-safe-bottom));
+
+    border-radius:
+      var(--vbn-radius, 20px)
+      var(--vbn-radius, 20px)
+      0
+      0;
+  }
+
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-search-panel {
+    inset-inline: 8px;
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+    bottom: auto;
+    max-width: none;
+  }
+
+  /* Floating pill */
+  body.veloura-bottom-nav-position-pill .veloura-bottom-nav {
+    bottom: calc(var(--vbn-bottom, 18px) + var(--vbn-safe-bottom));
+
+    padding-inline: var(
+      --veloura-home-container-padding,
+      var(--veloura-site-spacing, 14px)
+    );
+  }
+
+  body.veloura-bottom-nav-position-pill .veloura-bottom-nav__surface {
+    width: min(430px, 100%);
+    border-radius: var(--vbn-radius, 999px);
+  }
+
   /* Glass belongs to the bottom bar only. */
   body.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
     background: var(--veloura-glass-surface, rgba(230, 232, 235, .72));

@@ -16,9 +16,9 @@
     var(--veloura-glass-source) 72%,
     transparent
   );
-  --veloura-glass-edge-top: rgba(148, 163, 184, .22);
-  --veloura-glass-edge-bottom: rgba(148, 163, 184, .08);
-  --veloura-glass-shadow: rgba(15, 23, 42, .07);
+  --veloura-glass-edge-top: rgba(100, 116, 139, .20);
+  --veloura-glass-edge-bottom: rgba(100, 116, 139, .12);
+  --veloura-glass-shadow: rgba(15, 23, 42, .10);
   --veloura-glass-filter: blur(20px) saturate(124%) brightness(101%);
 
   --veloura-glass-base: var(--veloura-glass-surface);

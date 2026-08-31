@@ -2482,7 +2482,7 @@ html body.veloura-glass-effect .s-modal-content .s-input,
 html body.veloura-glass-effect .s-modal-content .s-form-control {
   background: rgba(255, 255, 255, .48);
   background: var(--veloura-global-glass-control);
-  border-color: rgba(148, 163, 184, 0.132);
+  border-color: rgba(100, 116, 139, 0.12);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -31027,7 +31027,7 @@ body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter, var(--veloura-glass-filter)) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow, var(--veloura-glass-shadow)) !important;
 }
 html.veloura-side-cats-glass .mm-ocd .mm-ocd__content,
@@ -32254,7 +32254,7 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
   background-image: none !important;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 10px 30px var(--veloura-shadow, rgba(0, 0, 0, 0.18)) !important;
   border-top: 1px solid rgba(100, 116, 139, .10) !important;
   border-top: 1px solid var(--veloura-edge-top, rgba(255, 255, 255, 0.055)) !important;
@@ -33880,15 +33880,15 @@ html body .veloura-header-tabs-stack--blur {
   --veloura-filter: var(--veloura-glass-filter);
 }
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
-  background-image: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%) !important;
+  background-image: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%) !important;
   background-image: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -33896,7 +33896,7 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22), inset 0 -1px 0 rgba(148, 163, 184, .08), 0 8px 26px rgba(15, 23, 42, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20), inset 0 -1px 0 rgba(100, 116, 139, .12), 0 8px 26px rgba(15, 23, 42, .10) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
 }
 /* Solid search still uses the actual secondary site color. */
@@ -33924,13 +33924,13 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
 /* Glass search has exactly the same paint and opacity as the header. */
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -33938,7 +33938,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22), inset 0 -1px 0 rgba(148, 163, 184, .08), 0 8px 26px rgba(15, 23, 42, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20), inset 0 -1px 0 rgba(100, 116, 139, .12), 0 8px 26px rgba(15, 23, 42, .10) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
 }
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
@@ -34694,13 +34694,13 @@ html body.dark .veloura-header-tabs-stack .veloura-search-surface {
 }
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -34708,7 +34708,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22), inset 0 -1px 0 rgba(148, 163, 184, .08), 0 8px 26px rgba(15, 23, 42, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20), inset 0 -1px 0 rgba(100, 116, 139, .12), 0 8px 26px rgba(15, 23, 42, .10) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
 }
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
@@ -41947,11 +41947,11 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
 :root,
 html body {
   /* Canonical header glass material. */
-  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-background: rgba(228, 231, 235, .80);
   --veloura-header-glass-solid: #e6e8eb;
   --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
   --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);
-  --veloura-header-glass-shadow: rgba(15, 23, 42, .055);
+  --veloura-header-glass-shadow: rgba(15, 23, 42, .10);
   --veloura-header-glass-filter: blur(20px) saturate(200%);
   /* Compatibility aliases for older theme sections. */
   --veloura-glass-surface: var(--veloura-header-glass-background);
@@ -42032,7 +42032,7 @@ html body :is(.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surfa
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body :is(.veloura-popup .veloura-popup__box:not(.does-not-exist)) {
@@ -42053,7 +42053,7 @@ html body :is(.veloura-popup .veloura-popup__box:not(.does-not-exist)) {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body :is(.swal2-container .swal2-popup:not(.swal2-toast)) {
@@ -42074,7 +42074,7 @@ html body :is(.swal2-container .swal2-popup:not(.swal2-toast)) {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body :is(.s-modal .s-salla-modal-body:not(.does-not-exist)) {
@@ -42095,7 +42095,7 @@ html body :is(.s-modal .s-salla-modal-body:not(.does-not-exist)) {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body :is(.s-modal .s-modal-body:not(.does-not-exist)) {
@@ -42116,7 +42116,7 @@ html body :is(.s-modal .s-modal-body:not(.does-not-exist)) {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body :is(.s-modal .s-modal-content:not(.does-not-exist)) {
@@ -42137,7 +42137,7 @@ html body :is(.s-modal .s-modal-content:not(.does-not-exist)) {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body .veloura-search-surface:not(.does-not-exist):not(.does-not-exist),
@@ -42165,7 +42165,7 @@ html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 /* Quick-view rules use the exact parent chain to beat the late inline V27 style. */
@@ -42188,7 +42188,7 @@ html body.veloura-quick-view-overlay-blur .veloura-quick-view-modal .veloura-qui
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 /* Product-page sticky bar receives glass only while its sticky mode is active. */
@@ -42211,7 +42211,7 @@ html body.veloura-quick-view-overlay-blur .veloura-quick-view-modal .veloura-qui
     -webkit-backdrop-filter: var(--veloura-filter) !important;
     backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
     backdrop-filter: var(--veloura-filter) !important;
-    box-shadow: 0 -8px 24px rgba(15, 23, 42, .055) !important;
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, .10) !important;
     box-shadow: 0 -8px 24px var(--veloura-shadow) !important;
   }
 }
@@ -42792,7 +42792,7 @@ html body.veloura-glass-effect salla-login-modal::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-localization-modal::part(body) {
@@ -42811,7 +42811,7 @@ html body.veloura-glass-effect salla-localization-modal::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-user-menu::part(body) {
@@ -42830,7 +42830,7 @@ html body.veloura-glass-effect salla-user-menu::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-scopes::part(body) {
@@ -42849,7 +42849,7 @@ html body.veloura-glass-effect salla-scopes::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-offer-modal::part(body) {
@@ -42868,7 +42868,7 @@ html body.veloura-glass-effect salla-offer-modal::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-modal::part(body) {
@@ -42887,7 +42887,7 @@ html body.veloura-glass-effect salla-modal::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-sheet::part(body) {
@@ -42906,7 +42906,7 @@ html body.veloura-glass-effect salla-sheet::part(body) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-login-modal::part(content) {
@@ -42925,7 +42925,7 @@ html body.veloura-glass-effect salla-login-modal::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-localization-modal::part(content) {
@@ -42944,7 +42944,7 @@ html body.veloura-glass-effect salla-localization-modal::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-user-menu::part(content) {
@@ -42963,7 +42963,7 @@ html body.veloura-glass-effect salla-user-menu::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-scopes::part(content) {
@@ -42982,7 +42982,7 @@ html body.veloura-glass-effect salla-scopes::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-offer-modal::part(content) {
@@ -43001,7 +43001,7 @@ html body.veloura-glass-effect salla-offer-modal::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-modal::part(content) {
@@ -43020,7 +43020,7 @@ html body.veloura-glass-effect salla-modal::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-sheet::part(content) {
@@ -43039,7 +43039,7 @@ html body.veloura-glass-effect salla-sheet::part(content) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-login-modal::part(panel) {
@@ -43058,7 +43058,7 @@ html body.veloura-glass-effect salla-login-modal::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-localization-modal::part(panel) {
@@ -43077,7 +43077,7 @@ html body.veloura-glass-effect salla-localization-modal::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-user-menu::part(panel) {
@@ -43096,7 +43096,7 @@ html body.veloura-glass-effect salla-user-menu::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-scopes::part(panel) {
@@ -43115,7 +43115,7 @@ html body.veloura-glass-effect salla-scopes::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-offer-modal::part(panel) {
@@ -43134,7 +43134,7 @@ html body.veloura-glass-effect salla-offer-modal::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-modal::part(panel) {
@@ -43153,7 +43153,7 @@ html body.veloura-glass-effect salla-modal::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-sheet::part(panel) {
@@ -43172,7 +43172,7 @@ html body.veloura-glass-effect salla-sheet::part(panel) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-login-modal::part(surface) {
@@ -43191,7 +43191,7 @@ html body.veloura-glass-effect salla-login-modal::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-localization-modal::part(surface) {
@@ -43210,7 +43210,7 @@ html body.veloura-glass-effect salla-localization-modal::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-user-menu::part(surface) {
@@ -43229,7 +43229,7 @@ html body.veloura-glass-effect salla-user-menu::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-scopes::part(surface) {
@@ -43248,7 +43248,7 @@ html body.veloura-glass-effect salla-scopes::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-offer-modal::part(surface) {
@@ -43267,7 +43267,7 @@ html body.veloura-glass-effect salla-offer-modal::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-modal::part(surface) {
@@ -43286,7 +43286,7 @@ html body.veloura-glass-effect salla-modal::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-sheet::part(surface) {
@@ -43305,7 +43305,7 @@ html body.veloura-glass-effect salla-sheet::part(surface) {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-login-modal::part(overlay) {
@@ -43465,7 +43465,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
     border-bottom: 1px solid var(--veloura-edge-bottom) !important;
     border-left: 0 !important;
     border-right: 0 !important;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
     box-shadow: 0 8px 24px var(--veloura-shadow) !important;
   }
   html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-submenu-surface, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .sub-menu, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-submenu-surface, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .sub-menu {
@@ -43527,7 +43527,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack__surface {
   -webkit-backdrop-filter: var(--veloura-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, .055), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .10), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
   box-shadow: 0 10px 30px var(--veloura-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
 }
 /* Inner header layers must not cover the glass surface. */
@@ -49064,6 +49064,18 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
   text-align: center;
   text-align: var(--veloura-title-align, center);
 }
+.veloura-title--align-right .veloura-title__heading {
+  justify-content: flex-start;
+  text-align: right;
+}
+.veloura-title--align-center .veloura-title__heading {
+  justify-content: center;
+  text-align: center;
+}
+.veloura-title--align-left .veloura-title__heading {
+  justify-content: flex-end;
+  text-align: left;
+}
 .veloura-title__content {
   display: inline-flex;
   align-items: center;
@@ -49074,6 +49086,15 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
   line-height: inherit;
   flex: 0 1 auto;
   direction: inherit;
+}
+.veloura-title--align-right .veloura-title__content {
+  justify-content: flex-start;
+}
+.veloura-title--align-center .veloura-title__content {
+  justify-content: center;
+}
+.veloura-title--align-left .veloura-title__content {
+  justify-content: flex-end;
 }
 /* الأيقونة نفس طريقة المميزات:
    <span class="veloura-title__icon sicon-store"></span>
@@ -49105,6 +49126,15 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
   background: var(--veloura-title-line-color, #111111);
   flex: 0 1 auto;
 }
+.veloura-title--line-none .veloura-title__line {
+  display: none !important;
+}
+.veloura-title--line-right .veloura-title__line--left {
+  display: none !important;
+}
+.veloura-title--line-left .veloura-title__line--right {
+  display: none !important;
+}
 .veloura-title__subtitle {
   margin: 10px 0 0;
   color: #323232;
@@ -49114,6 +49144,15 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
   line-height: 1.6;
   text-align: center;
   text-align: var(--veloura-title-align, center);
+}
+.veloura-title--align-center .veloura-title__subtitle {
+  text-align: center;
+}
+.veloura-title--align-right .veloura-title__subtitle {
+  text-align: right;
+}
+.veloura-title--align-left .veloura-title__subtitle {
+  text-align: left;
 }
 /* إخفاء عنوان/أيقونة القسم التالي */
 .veloura-hidden-by-title-block,
@@ -54974,17 +55013,49 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
   body.veloura-bottom-nav-no-labels .veloura-bottom-nav__item span {
     display: none;
   }
+  /* Full-width / connected */
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-nav {
+    bottom: 0;
+  }
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-nav__surface {
+    min-height: calc(56px + var(--vbn-safe-bottom));
+    min-height: calc(var(--vbn-height, 56px) + var(--vbn-safe-bottom));
+    padding-bottom: calc(4px + var(--vbn-safe-bottom));
+    border-radius: 20px 20px 0 0;
+    border-radius: var(--vbn-radius, 20px) var(--vbn-radius, 20px) 0 0;
+  }
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-search-panel {
+    left: 8px;
+    right: 8px;
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+    bottom: auto;
+    max-width: none;
+  }
+  /* Floating pill */
+  body.veloura-bottom-nav-position-pill .veloura-bottom-nav {
+    bottom: calc(18px + var(--vbn-safe-bottom));
+    bottom: calc(var(--vbn-bottom, 18px) + var(--vbn-safe-bottom));
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-left: var(--veloura-home-container-padding, var(--veloura-site-spacing, 14px));
+    padding-right: var(--veloura-home-container-padding, var(--veloura-site-spacing, 14px));
+  }
+  body.veloura-bottom-nav-position-pill .veloura-bottom-nav__surface {
+    width: min(430px, 100%);
+    border-radius: 999px;
+    border-radius: var(--vbn-radius, 999px);
+  }
   /* Glass belongs to the bottom bar only. */
   body.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
     background: rgba(244, 245, 247, 0.72);
     background: var(--veloura-glass-surface, rgba(230, 232, 235, 0.72));
-    border-top: 1px solid rgba(148, 163, 184, .22);
+    border-top: 1px solid rgba(100, 116, 139, .20);
     border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, 0.11));
-    border-bottom: 1px solid rgba(148, 163, 184, .08);
+    border-bottom: 1px solid rgba(100, 116, 139, .12);
     border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, 0.0495));
     -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%);
     backdrop-filter: blur(20px) saturate(124%) contrast(200%);
-    box-shadow: 0 8px 24px rgba(15, 23, 42, .07);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .10);
     box-shadow: 0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, 0.08));
   }
   html.dark body.veloura-bottom-nav-enabled .veloura-bottom-nav__surface,
@@ -55009,7 +55080,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
     backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
     filter: none !important;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, .055), inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, .10), inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
     box-shadow: 0 10px 28px var(--veloura-shadow, rgba(0, 0, 0, 0.27)), inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
   }
 
@@ -55613,7 +55684,7 @@ html body.dark .mm-ocd .mm-ocd__content {
 }
 html.dark.veloura-side-cats-glass body .mm-ocd .mm-ocd__content,
 html body.dark.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
 }
 /* Footer is one visual piece and preserves its existing radius variable. */
@@ -56271,13 +56342,13 @@ html body.veloura-glass-effect .veloura-category-children[data-veloura-header-ma
   border-top-width: var(--vcat-header-border-top-width, 1px) !important;
   border-top-style: solid !important;
   border-top-style: var(--vcat-header-border-top-style, solid) !important;
-  border-top-color: rgba(148, 163, 184, .22) !important;
+  border-top-color: rgba(100, 116, 139, .20) !important;
   border-top-color: var(--vcat-header-border-top-color, var(--veloura-glass-edge-top)) !important;
   border-bottom-width: 1px !important;
   border-bottom-width: var(--vcat-header-border-bottom-width, 1px) !important;
   border-bottom-style: solid !important;
   border-bottom-style: var(--vcat-header-border-bottom-style, solid) !important;
-  border-bottom-color: rgba(148, 163, 184, .08) !important;
+  border-bottom-color: rgba(100, 116, 139, .12) !important;
   border-bottom-color: var(--vcat-header-border-bottom-color, var(--veloura-glass-edge-bottom)) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -56285,7 +56356,7 @@ html body.veloura-glass-effect .veloura-category-children[data-veloura-header-ma
   -webkit-backdrop-filter: var(--vcat-header-backdrop-filter, var(--veloura-glass-filter)) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--vcat-header-backdrop-filter, var(--veloura-glass-filter)) !important;
-  box-shadow: 0 8px 26px rgba(15, 23, 42, .07) !important;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 26px var(--veloura-glass-shadow) !important;
 }
 html body.veloura-glass-effect .veloura-category-children[data-veloura-header-material-synced=true] {
@@ -56298,9 +56369,9 @@ html body.veloura-glass-effect .veloura-category-children:not([data-veloura-head
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
   background-image: none !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -56308,7 +56379,7 @@ html body.veloura-glass-effect .veloura-category-children:not([data-veloura-head
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: 0 8px 26px rgba(15, 23, 42, .07) !important;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 26px var(--veloura-glass-shadow) !important;
 }
 html body.veloura-glass-effect .veloura-category-children::before {
@@ -56479,9 +56550,9 @@ body.dark .veloura-category-page #product-filter {
     var(--veloura-glass-source) 72%,
     transparent
   );
-  --veloura-glass-edge-top: rgba(148, 163, 184, .22);
-  --veloura-glass-edge-bottom: rgba(148, 163, 184, .08);
-  --veloura-glass-shadow: rgba(15, 23, 42, .07);
+  --veloura-glass-edge-top: rgba(100, 116, 139, .20);
+  --veloura-glass-edge-bottom: rgba(100, 116, 139, .12);
+  --veloura-glass-shadow: rgba(15, 23, 42, .10);
   --veloura-glass-filter: blur(20px) saturate(124%) brightness(101%);
   --veloura-glass-base: var(--veloura-glass-surface);
   --veloura-glass-layer: linear-gradient(
@@ -56521,13 +56592,13 @@ html.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
 body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
 body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
   box-sizing: border-box !important;
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -56535,7 +56606,7 @@ body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22), inset 0 -1px 0 rgba(148, 163, 184, .08), 0 8px 26px rgba(15, 23, 42, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20), inset 0 -1px 0 rgba(100, 116, 139, .12), 0 8px 26px rgba(15, 23, 42, .10) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
   filter: none !important;
 }
@@ -56686,13 +56757,13 @@ html body.veloura-glass-effect .s-auth-modal .s-modal-content,
 html body.veloura-glass-effect .login-modal .modal-content,
 html body.veloura-glass-effect .auth-modal .modal-content {
   box-sizing: border-box !important;
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -56701,7 +56772,7 @@ html body.veloura-glass-effect .auth-modal .modal-content {
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   filter: none !important;
-  box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22), inset 0 -1px 0 rgba(148, 163, 184, .08), 0 10px 32px rgba(15, 23, 42, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20), inset 0 -1px 0 rgba(100, 116, 139, .12), 0 10px 32px rgba(15, 23, 42, .10) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 10px 32px var(--veloura-glass-shadow) !important;
 }
 html body.veloura-glass-effect .veloura-popup__box .veloura-popup__content,
@@ -56751,13 +56822,13 @@ html body.veloura-glass-effect salla-login-modal::part(panel),
 html body.veloura-glass-effect salla-modal::part(body),
 html body.veloura-glass-effect salla-modal::part(content),
 html body.veloura-glass-effect salla-modal::part(panel) {
-  background: linear-gradient(to bottom, rgba(148, 163, 184, .22) 0, rgba(148, 163, 184, .22) 1px, transparent 1px, transparent calc(100% - 1px), rgba(148, 163, 184, .08) calc(100% - 1px), rgba(148, 163, 184, .08) 100%), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(to bottom, rgba(100, 116, 139, .20) 0, rgba(100, 116, 139, .20) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .12) calc(100% - 1px), rgba(100, 116, 139, .12) 100%), rgba(244, 245, 247, 0.72) !important;
   background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
   background-color: var(--veloura-glass-surface) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -56765,7 +56836,7 @@ html body.veloura-glass-effect salla-modal::part(panel) {
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22), inset 0 -1px 0 rgba(148, 163, 184, .08), 0 10px 32px rgba(15, 23, 42, .07) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20), inset 0 -1px 0 rgba(100, 116, 139, .12), 0 10px 32px rgba(15, 23, 42, .10) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 10px 32px var(--veloura-glass-shadow) !important;
 }
 html body.veloura-glass-effect salla-login-modal::part(overlay),
@@ -56794,7 +56865,7 @@ html body.veloura-glass-effect .s-modal-content .form-input,
 html body.veloura-glass-effect .s-modal-content .s-form-control {
   background: rgba(255, 255, 255, .48) !important;
   background: var(--veloura-global-glass-control) !important;
-  border-color: rgba(148, 163, 184, 0.132) !important;
+  border-color: rgba(100, 116, 139, 0.12) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
@@ -56820,9 +56891,9 @@ html body.veloura-glass-effect .s-modal-content .s-form-control {
 html body.veloura-glass-effect .veloura-popup__close {
   background: rgba(255, 255, 255, .48) !important;
   background: var(--veloura-global-glass-control) !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
+  border-top: 1px solid rgba(100, 116, 139, .20) !important;
   border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .12) !important;
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
@@ -56836,7 +56907,7 @@ html body.veloura-glass-effect .veloura-popup__close {
     background: var(--veloura-glass-surface) !important;
     background-color: rgba(244, 245, 247, 0.72) !important;
     background-color: var(--veloura-glass-surface) !important;
-    border-top: 1px solid rgba(148, 163, 184, .22) !important;
+    border-top: 1px solid rgba(100, 116, 139, .20) !important;
     border-top: 1px solid var(--veloura-glass-edge-top) !important;
     border-bottom: 0 !important;
     border-left: 0 !important;
@@ -56845,7 +56916,7 @@ html body.veloura-glass-effect .veloura-popup__close {
     -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
     backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
     backdrop-filter: var(--veloura-glass-filter) !important;
-    box-shadow: inset 0 1px 0 rgba(148, 163, 184, .22) !important;
+    box-shadow: inset 0 1px 0 rgba(100, 116, 139, .20) !important;
     box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top) !important;
   }
 }
