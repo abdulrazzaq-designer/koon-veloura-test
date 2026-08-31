@@ -1,0 +1,165 @@
+/* ==========================================================================
+   VELOURA — HEADER MATERIAL: SINGLE OWNER
+   --------------------------------------------------------------------------
+   This file is the ONLY owner of the header panel's colour, blur, edges and
+   shadow. Imported LAST in app.scss so it wins on order, not on selector
+   tricks. Do not paint .veloura-header-tabs-stack__surface anywhere else.
+
+   Why it exists
+   -------------
+   Measured on the live storefront, the header's glass layer painted nothing
+   at all — in BOTH themes:
+
+       header ::before   background = rgba(0, 0, 0, 0)
+                         backdrop-filter = none
+                         box-shadow = none
+
+   Two rules combine to produce that. header-layout.scss kills the legacy
+   paint layer with `content: none` on .veloura-top-blur::before, and
+   dark-light.scss forces .veloura-header-tabs-stack__surface transparent.
+   The rule that was supposed to paint the surface instead lived in
+   veloura-header-stable-fix.scss — a file removed on 2026-08-30 because it
+   was one of three systems fighting over the header layout. Its hardcoded
+   rgba(18,19,28,.92) went with it, and nothing replaced it.
+
+   The material below is copied declaration for declaration from the floating
+   bottom navigation (mobile-floating-menu.scss), which measured as:
+
+       light   background rgba(230, 232, 235, .72)
+               backdrop-filter blur(20px) saturate(1.24) contrast(2)
+               border-top rgba(100, 116, 139, .11)
+               box-shadow rgba(15, 23, 42, .055) 0 8px 24px
+
+       dark    background color(srgb .248 .244 .270 / .6)
+               backdrop-filter blur(24px) saturate(2)
+               border-top rgba(255, 255, 255, .12)
+
+   Same tokens, same fallbacks, same numbers — so the header and the bottom
+   bar cannot drift apart again. Change one and change the other.
+   Specificity note
+   ----------------
+   dark-light.scss reaches (0,3,2) on this element through a compiled
+   :is(... :not(.does-not-exist)) pattern and forces background-color to
+   var(--veloura-glass-surface) — the broken self-referential token — which
+   computes to transparent. Matching that specificity is not enough on its
+   own, so these selectors walk two real ancestors (the stack's data
+   attribute and __container) to land above it.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Nothing inside the panel paints its own background.
+   -------------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .store-header,
+html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .main-nav-container,
+html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .main-nav-container > .inner,
+html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .veloura-header-container,
+html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .veloura-header-grid {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. LIGHT — identical to the bottom navigation's light glass.
+   -------------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface {
+  /* The literal value, not var(--veloura-glass-surface): that token is
+     defined as a reference to itself in veloura-glass.scss, which makes it
+     invalid at computed-value time. A property that reads it computes to its
+     initial value — transparent — and the fallback never runs. Measured:
+     the header surface came out rgba(0,0,0,0) in light mode because of it. */
+  background: rgba(230, 232, 235, .72) !important;
+  background-color: rgba(230, 232, 235, .72) !important;
+  background-image: none !important;
+
+  border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .11)) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .0495)) !important;
+  border-inline: 0 !important;
+
+  -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+  backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+
+  box-shadow: 0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, .08)) !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. DARK — identical to the bottom navigation's dark glass.
+   -------------------------------------------------------------------------- */
+html.dark body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface,
+html body.dark .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface {
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%,
+    transparent
+  ) !important;
+  background-color: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%,
+    transparent
+  ) !important;
+
+  border-top: 1px solid rgba(255, 255, 255, .120) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .055) !important;
+  border-inline: 0 !important;
+
+  -webkit-backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
+  backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
+
+  box-shadow:
+    0 10px 28px var(--veloura-shadow, rgba(0, 0, 0, .27)),
+    inset 0 1px 0 rgba(255, 255, 255, .018) !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. SEARCH — the control material, not a solid slab.
+
+   The search field sits ON the panel, so it uses --veloura-control: the
+   token the theme reserves for controls resting on glass. It is translucent
+   and blurred like the panel, one shade apart from it, so the field reads as
+   part of the same material instead of a pasted rectangle.
+   -------------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
+  background: var(--veloura-control, rgba(255, 255, 255, .48)) !important;
+  background-color: var(--veloura-control, rgba(255, 255, 255, .48)) !important;
+  background-image: none !important;
+
+  border: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .11)) !important;
+
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+
+  box-shadow: none !important;
+}
+
+html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
+html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
+  border-color: rgba(255, 255, 255, .10) !important;
+}
+
+/* Every layer Salla renders inside the field stays transparent, so exactly
+   one surface paints and the field never reads as two stacked pieces. */
+html body .veloura-header-tabs-stack .veloura-search-surface salla-search,
+html body .veloura-header-tabs-stack .veloura-search-surface .s-search-modal,
+html body .veloura-header-tabs-stack .veloura-search-surface .s-search-container,
+html body .veloura-header-tabs-stack .veloura-search-surface .s-search-wrapper,
+html body .veloura-header-tabs-stack .veloura-search-surface .s-search-input-wrapper,
+html body .veloura-header-tabs-stack .veloura-search-surface .s-search-input,
+html body .veloura-header-tabs-stack .veloura-search-surface input,
+html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(container),
+html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(form),
+html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(wrapper),
+html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(input) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
