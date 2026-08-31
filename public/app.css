@@ -35130,18 +35130,17 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .cont
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
-/* One dark glass owner. Inner layers do not paint another surface. */
+/* Geometry only. The colour, blur and shadow of this surface belong to the
+   theme's glass tokens (--veloura-glass / --veloura-glass-surface), which are
+   also what the floating bottom navigation reads, so the two always match.
+
+   This block used to hardcode background: rgba(15, 18, 28, .72) with no
+   html.dark scope, so a floating header was painted with a dark slab in
+   LIGHT mode too. That was the dark-grey header on a light storefront. */
 html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface {
-  background: rgba(15, 18, 28, 0.72) !important;
-  background-color: rgba(15, 18, 28, 0.72) !important;
-  background-image: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 28px !important;
   overflow: hidden !important;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
-  backdrop-filter: blur(22px) saturate(150%) !important;
 }
 html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface :is(.main-nav-container > .inner) {
   background: transparent !important;
@@ -36397,7 +36396,6 @@ html body .s-product-card-entry salla-add-product-button.veloura-card-add-button
   --veloura-glass-bg-dark: var(--veloura-glass-surface);
   --veloura-glass-border: transparent;
   --veloura-glass-border-dark: transparent;
-  --veloura-glass-filter: var(--veloura-glass-filter);
   --veloura-search-height: 36px;
   --veloura-edge-inset: max(16px, min(1.35vw, 24px));
 }
@@ -44884,7 +44882,6 @@ html body {
   --veloura-filter: var(--veloura-header-glass-filter);
   /* Redirect every older glass consumer to the same V86 contract. */
   --veloura-glass-source: #e6e8eb;
-  --veloura-glass-surface: var(--veloura-glass-surface);
   --veloura-glass-edge-top: var(--veloura-edge-top);
   --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
   --veloura-glass-shadow: var(--veloura-shadow);
@@ -44913,13 +44910,12 @@ html body.dark {
   --veloura-overlay: rgba(0, 0, 0, .30);
   --veloura-control: color-mix(
     in srgb,
-    var(--veloura-dark-source) 82%,
+    var(--veloura-dark-source) 50%,
     transparent
   );
   --veloura-primary-text: var(--veloura-dark-primary-text, #ffffff);
   --veloura-secondary-text: var(--veloura-dark-secondary-text, #cccccc);
   --veloura-glass-source: var(--veloura-dark-source);
-  --veloura-glass-surface: var(--veloura-glass-surface);
   --veloura-glass-edge-top: var(--veloura-edge-top);
   --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
   --veloura-glass-shadow: var(--veloura-shadow);
@@ -61380,166 +61376,6 @@ body.dark .store-header.veloura-top-enabled.veloura-top-blur .sub-menu {
   background: var(--veloura-header-glass-background-dark) !important;
   border-color: rgba(255, 255, 255, .14) !important;
   border-color: var(--veloura-header-glass-border-dark) !important;
-}
-/* ==========================================================================
-   VELOURA — HEADER MATERIAL: SINGLE OWNER
-   --------------------------------------------------------------------------
-   This file is the ONLY owner of the header panel's colour, blur, edges and
-   shadow. Imported LAST in app.scss so it wins on order, not on selector
-   tricks. Do not paint .veloura-header-tabs-stack__surface anywhere else.
-
-   Why it exists
-   -------------
-   Measured on the live storefront, the header's glass layer painted nothing
-   at all — in BOTH themes:
-
-       header ::before   background = rgba(0, 0, 0, 0)
-                         backdrop-filter = none
-                         box-shadow = none
-
-   Two rules combine to produce that. header-layout.scss kills the legacy
-   paint layer with `content: none` on .veloura-top-blur::before, and
-   dark-light.scss forces .veloura-header-tabs-stack__surface transparent.
-   The rule that was supposed to paint the surface instead lived in
-   veloura-header-stable-fix.scss — a file removed on 2026-08-30 because it
-   was one of three systems fighting over the header layout. Its hardcoded
-   rgba(18,19,28,.92) went with it, and nothing replaced it.
-
-   The material below is copied declaration for declaration from the floating
-   bottom navigation (mobile-floating-menu.scss), which measured as:
-
-       light   background rgba(230, 232, 235, .72)
-               backdrop-filter blur(20px) saturate(1.24) contrast(2)
-               border-top rgba(100, 116, 139, .11)
-               box-shadow rgba(15, 23, 42, .055) 0 8px 24px
-
-       dark    background color(srgb .248 .244 .270 / .6)
-               backdrop-filter blur(24px) saturate(2)
-               border-top rgba(255, 255, 255, .12)
-
-   Same tokens, same fallbacks, same numbers — so the header and the bottom
-   bar cannot drift apart again. Change one and change the other.
-   Specificity note
-   ----------------
-   dark-light.scss reaches (0,3,2) on this element through a compiled
-   :is(... :not(.does-not-exist)) pattern and forces background-color to
-   var(--veloura-glass-surface) — the broken self-referential token — which
-   computes to transparent. Matching that specificity is not enough on its
-   own, so these selectors walk two real ancestors (the stack's data
-   attribute and __container) to land above it.
-   ========================================================================== */
-/* --------------------------------------------------------------------------
-   1. Nothing inside the panel paints its own background.
-   -------------------------------------------------------------------------- */
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .store-header,
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .main-nav-container,
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .main-nav-container > .inner,
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .veloura-header-container,
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface .veloura-header-grid {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  box-shadow: none !important;
-}
-/* --------------------------------------------------------------------------
-   2. LIGHT — identical to the bottom navigation's light glass.
-   -------------------------------------------------------------------------- */
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface {
-  background: rgba(230, 232, 235, 0.72) !important;
-  background-color: rgba(230, 232, 235, 0.72) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(148, 163, 184, .22) !important;
-  border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, 0.11)) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, .08) !important;
-  border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, 0.0495)) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
-  backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .07) !important;
-  box-shadow: 0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, 0.08)) !important;
-}
-html body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface {
-  /* The literal value, not var(--veloura-glass-surface): that token is
-     defined as a reference to itself in veloura-glass.scss, which makes it
-     invalid at computed-value time. A property that reads it computes to its
-     initial value — transparent — and the fallback never runs. Measured:
-     the header surface came out rgba(0,0,0,0) in light mode because of it. */
-}
-/* --------------------------------------------------------------------------
-   3. DARK — identical to the bottom navigation's dark glass.
-   -------------------------------------------------------------------------- */
-html.dark body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface,
-html body.dark .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface {
-  background: rgba(15, 44, 63, 0.6) !important;
-  background-color: rgba(15, 44, 63, 0.6) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.055) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, .055), inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
-  box-shadow: 0 10px 28px var(--veloura-shadow, rgba(0, 0, 0, 0.27)), inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
-}
-@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
-html.dark body .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface,
-html body.dark .veloura-header-tabs-stack[data-veloura-header-tabs-stack] .veloura-header-tabs-stack__container .veloura-header-tabs-stack__surface {
-  background: color-mix(in srgb, color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%, transparent) !important;
-  background-color: color-mix(in srgb, color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%, transparent) !important;
-}
-}
-/* --------------------------------------------------------------------------
-   4. SEARCH — the control material, not a solid slab.
-
-   The search field sits ON the panel, so it uses --veloura-control: the
-   token the theme reserves for controls resting on glass. It is translucent
-   and blurred like the panel, one shade apart from it, so the field reads as
-   part of the same material instead of a pasted rectangle.
-   -------------------------------------------------------------------------- */
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
-html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
-  background: rgba(255, 255, 255, .48) !important;
-  background: var(--veloura-control, rgba(255, 255, 255, 0.48)) !important;
-  background-color: rgba(255, 255, 255, .48) !important;
-  background-color: var(--veloura-control, rgba(255, 255, 255, 0.48)) !important;
-  background-image: none !important;
-  border: 1px solid rgba(148, 163, 184, .22) !important;
-  border: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, 0.11)) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-  backdrop-filter: blur(14px) saturate(140%) !important;
-  box-shadow: none !important;
-}
-html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
-html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
-html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
-html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-/* Every layer Salla renders inside the field stays transparent, so exactly
-   one surface paints and the field never reads as two stacked pieces. */
-html body .veloura-header-tabs-stack .veloura-search-surface salla-search,
-html body .veloura-header-tabs-stack .veloura-search-surface .s-search-modal,
-html body .veloura-header-tabs-stack .veloura-search-surface .s-search-container,
-html body .veloura-header-tabs-stack .veloura-search-surface .s-search-wrapper,
-html body .veloura-header-tabs-stack .veloura-search-surface .s-search-input-wrapper,
-html body .veloura-header-tabs-stack .veloura-search-surface .s-search-input,
-html body .veloura-header-tabs-stack .veloura-search-surface input,
-html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(container),
-html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(form),
-html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(wrapper),
-html body .veloura-header-tabs-stack .veloura-search-surface salla-search::part(input) {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);

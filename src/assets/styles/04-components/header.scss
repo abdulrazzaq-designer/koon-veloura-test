@@ -3337,20 +3337,19 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
   padding-top: 0 !important;
 }
 
-/* One dark glass owner. Inner layers do not paint another surface. */
+/* Geometry only. The colour, blur and shadow of this surface belong to the
+   theme's glass tokens (--veloura-glass / --veloura-glass-surface), which are
+   also what the floating bottom navigation reads, so the two always match.
+
+   This block used to hardcode background: rgba(15, 18, 28, .72) with no
+   html.dark scope, so a floating header was painted with a dark slab in
+   LIGHT mode too. That was the dark-grey header on a light storefront. */
 html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 .veloura-header-tabs-stack__surface,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 .veloura-header-tabs-stack__surface {
-  background: rgba(15, 18, 28, .72) !important;
-  background-color: rgba(15, 18, 28, .72) !important;
-  background-image: none !important;
-  border: 1px solid rgba(255,255,255,.10) !important;
   border-radius: 28px !important;
   overflow: hidden !important;
-  box-shadow: 0 12px 30px rgba(0,0,0,.28) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
-  backdrop-filter: blur(22px) saturate(150%) !important;
 }
 
 html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-stack--floating

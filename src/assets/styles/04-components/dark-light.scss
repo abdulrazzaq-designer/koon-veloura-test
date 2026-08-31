@@ -34,7 +34,6 @@ html body {
 
   /* Redirect every older glass consumer to the same V86 contract. */
   --veloura-glass-source: #e6e8eb;
-  --veloura-glass-surface: var(--veloura-glass-surface);
   --veloura-glass-edge-top: var(--veloura-edge-top);
   --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
   --veloura-glass-shadow: var(--veloura-shadow);
@@ -64,14 +63,13 @@ html body.dark {
   --veloura-overlay: rgba(0, 0, 0, .30);
   --veloura-control: color-mix(
     in srgb,
-    var(--veloura-dark-source) 82%,
+    var(--veloura-dark-source) 50%,
     transparent
   );
   --veloura-primary-text: var(--veloura-dark-primary-text, #ffffff);
   --veloura-secondary-text: var(--veloura-dark-secondary-text, #cccccc);
 
   --veloura-glass-source: var(--veloura-dark-source);
-  --veloura-glass-surface: var(--veloura-glass-surface);
   --veloura-glass-edge-top: var(--veloura-edge-top);
   --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
   --veloura-glass-shadow: var(--veloura-shadow);
