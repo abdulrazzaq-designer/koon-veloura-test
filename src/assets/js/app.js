@@ -4080,24 +4080,31 @@ const initVelouraHomeTabs = (() => {
     document.querySelectorAll('[data-veloura-home-tab]')
   );
 
-  const setActiveTab = (bar, requestedTarget, focusButton = false) => {
+  const setActiveTab = (bar, requested, focusButton = false) => {
     const buttons = Array.from(bar.querySelectorAll('[data-veloura-tab-target]'));
-    const buttonMap = new Map();
+    if (!buttons.length) return;
 
+    const buttonMap = new Map();
     buttons.forEach(button => {
       const key = normalizeTabName(button.dataset.velouraTabTarget);
       if (key && !buttonMap.has(key)) buttonMap.set(key, button);
     });
 
-    const requestedKey = normalizeTabName(requestedTarget);
-    const activeKey = buttonMap.has(requestedKey)
-      ? requestedKey
-      : buttonMap.keys().next().value;
+    /* The active tab is identified by its ELEMENT, not by its name.
+       Keying on the name broke whenever a merchant gave two tabs the same
+       label: every button whose name matched was marked selected, so all of
+       them took the active colour and none took the inactive one.
+       Callers may still pass a name (restoring state, keyboard) — that
+       resolves to the first button carrying it, as before. */
+    const activeButton = (requested instanceof Element && bar.contains(requested))
+      ? requested
+      : (buttonMap.get(normalizeTabName(requested)) || buttons[0]);
 
+    const activeKey = normalizeTabName(activeButton.dataset.velouraTabTarget);
     if (!activeKey) return;
 
     buttons.forEach(button => {
-      const active = normalizeTabName(button.dataset.velouraTabTarget) === activeKey;
+      const active = button === activeButton;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-selected', active ? 'true' : 'false');
       button.tabIndex = active ? 0 : -1;
@@ -4139,7 +4146,7 @@ const initVelouraHomeTabs = (() => {
       nextIndex = (currentIndex + visualStep + buttons.length) % buttons.length;
     }
 
-    setActiveTab(bar, buttons[nextIndex].dataset.velouraTabTarget, true);
+    setActiveTab(bar, buttons[nextIndex], true);
   };
 
   const syncCurrentTab = () => {
@@ -4167,7 +4174,7 @@ const initVelouraHomeTabs = (() => {
       bar.addEventListener('click', event => {
         const button = event.target.closest('[data-veloura-tab-target]');
         if (!button || !bar.contains(button)) return;
-        setActiveTab(bar, button.dataset.velouraTabTarget);
+        setActiveTab(bar, button);
       });
 
       bar.addEventListener('keydown', event => bindKeyboard(bar, event));
