@@ -36251,6 +36251,146 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     box-shadow: none !important;
   }
 }
+/* ==========================================================================
+   8. DESKTOP HEADER — SEARCH LEFT, ICONS RIGHT, LOGO CENTRED
+   --------------------------------------------------------------------------
+   Agreed layout when the search is NOT detached from the header:
+
+       [ search ]      [ logo ]      [ every icon ]
+       [ ................ menu links ................ ]
+
+   Two things were in the way.
+
+   1) Two competing templates, same specificity (0,4,2), and the later one
+      won. The theme already ships the inline-search template
+
+          "left search logo right" / "menu menu menu menu"
+
+      scoped to :not(.veloura-top-search-detached).veloura-desktop-search-bar,
+      but `.veloura-top-logo-centered ... .veloura-header-grid` follows it and
+      replaces it with "left logo right" / "menu" / "search" — which drops the
+      search onto its own row.
+
+   2) 47 rules across six files lay the icon cluster out through
+      `.veloura-header__actions`, a wrapper header.twig does not contain: the
+      markup was refactored to `__tools > left / right` and those rules were
+      never repointed. Measured at 1440px the cluster collapsed — tools
+      squeezed into 46px, the right group at zero width, and the language
+      pill left position:absolute over its neighbour.
+
+   This section carries both conditions in one selector, so it cannot be
+   outranked by either, and keeps the two icon groups in a single flex rail
+   at the inline end. The detached-search layout is left untouched.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-areas: "search logo tools" "menu   menu menu" !important;
+    grid-template-rows: auto auto !important;
+    align-items: center !important;
+    grid-column-gap: max(12px, min(1.4vw, 26px)) !important;
+    -moz-column-gap: max(12px, min(1.4vw, 26px)) !important;
+         column-gap: max(12px, min(1.4vw, 26px)) !important;
+    grid-row-gap: 6px !important;
+    row-gap: 6px !important;
+    direction: ltr !important;
+    position: relative !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid {
+    /* A physical axis: search left and icons right in RTL and LTR alike.
+       Children restore their own reading direction below. */
+  }
+  /* Search — physical left. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar {
+    grid-area: search !important;
+    justify-self: start !important;
+    align-self: center !important;
+    width: max(220px, min(24vw, 360px)) !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    direction: rtl !important;
+  }
+  /* Logo — true centre. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-logo {
+    grid-area: logo !important;
+    justify-self: center !important;
+    align-self: center !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 5 !important;
+  }
+  /* Every icon in ONE rail at the physical right: the tools wrapper stays a
+     real element here (not display: contents) so both groups sit inside it. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header__tools {
+    grid-area: tools !important;
+    justify-self: end !important;
+    align-self: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: max(10px, min(1vw, 16px)) !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    direction: rtl !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header__menu {
+    display: contents !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-right {
+    grid-area: auto !important;
+    justify-self: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: max(10px, min(1vw, 16px)) !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Nothing in the cluster escapes the flow — the language pill above all. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left > *,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-right > *,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-lang-desktop {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+  }
+  /* The cart badge keeps its own corner. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left salla-cart-summary,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left .veloura-header__cart {
+    position: relative !important;
+    overflow: visible !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left .s-cart-summary-count {
+    position: absolute !important;
+    top: -4px !important;
+    right: -4px !important;
+    left: auto !important;
+    margin: 0 !important;
+  }
+  /* Menu links — full width under everything. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-menu-links-wrap {
+    grid-area: menu !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    margin: 0 !important;
+    direction: rtl !important;
+  }
+  /* The mobile search wrapper never paints on desktop. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
+    display: none !important;
+  }
+}
 .store-footer{
     position: relative;
     margin-top: 2rem;
