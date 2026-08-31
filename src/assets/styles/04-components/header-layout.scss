@@ -1464,6 +1464,111 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     max-width: 100% !important;
   }
 
+  /* ----------------------------------------------------------------------
+     Cart badge — belongs to the cart icon's own corner.
+
+     header.scss anchors the badge with
+       .veloura-header__actions salla-cart-summary { position: relative }
+     but header.twig has no .veloura-header__actions wrapper any more, so
+     that rule matches nothing. The badge is position:absolute, so with no
+     positioned ancestor nearby it resolves against the header itself and
+     parks in its top-right corner. Anchoring it here on the element that
+     actually exists puts it back on the icon.
+     ---------------------------------------------------------------------- */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-left salla-cart-summary,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-left .veloura-header__cart {
+    position: relative !important;
+    overflow: visible !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-left .s-cart-summary-count {
+    position: absolute !important;
+    top: -4px !important;
+    inset-inline-end: -4px !important;
+    inset-inline-start: auto !important;
+    margin: 0 !important;
+    z-index: 10 !important;
+  }
+
+  /* ----------------------------------------------------------------------
+     Search — ONE piece of glass.
+
+     Section 6 gives .veloura-search-surface a top/bottom border so the
+     desktop field separates from its background. On mobile the wrapper sits
+     directly around Salla's own rounded input, so that border draws a second
+     visible edge around the first and the field reads as two stacked layers.
+     The wrapper keeps the theme's glass (it is .veloura-search-surface, and
+     carries the merchant's radius, blur and colour). Every layer Salla
+     renders inside it — container, form, wrapper and the input itself — is
+     forced transparent, so exactly one surface paints.
+     ---------------------------------------------------------------------- */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
+    border-radius: var(--veloura-search-radius, 999px) !important;
+    border: 1px solid var(--veloura-search-border, transparent) !important;
+    box-shadow: none !important;
+    padding: 0 12px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: var(--veloura-search-height, 40px) !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar salla-search,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar .s-search-modal,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar .s-search-container,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar .s-search-wrapper,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar .s-search-input-wrapper,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(container),
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(form),
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(wrapper),
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar salla-search::part(input),
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar .s-search-input,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar input {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
   html body .store-header.veloura-top-enabled
     .veloura-header-grid {
     display: grid !important;
@@ -1498,7 +1603,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: ltr !important;
-    gap: clamp(2px, 1.6vw, 9px) !important;
+    gap: clamp(3px, 1.2vw, 6px) !important;
     width: max-content !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -1528,7 +1633,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     justify-content: flex-start !important;
     flex-direction: row !important;
     direction: rtl !important;
-    gap: clamp(2px, 1.6vw, 9px) !important;
+    gap: clamp(3px, 1.2vw, 6px) !important;
     width: max-content !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -1573,10 +1678,10 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: clamp(28px, 8.2vw, 38px) !important;
-    min-width: clamp(28px, 8.2vw, 38px) !important;
-    height: clamp(28px, 8.2vw, 38px) !important;
-    min-height: clamp(28px, 8.2vw, 38px) !important;
+    width: clamp(26px, 7.4vw, 32px) !important;
+    min-width: clamp(26px, 7.4vw, 32px) !important;
+    height: clamp(26px, 7.4vw, 32px) !important;
+    min-height: clamp(26px, 7.4vw, 32px) !important;
     padding: 0 !important;
     margin: 0 !important;
     line-height: 1 !important;
@@ -1586,11 +1691,11 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     .veloura-header__cart,
   html body .store-header.veloura-top-enabled
     .veloura-cart-summary {
-    width: clamp(28px, 8.2vw, 38px) !important;
-    min-width: clamp(28px, 8.2vw, 38px) !important;
-    max-width: clamp(28px, 8.2vw, 38px) !important;
-    height: clamp(28px, 8.2vw, 38px) !important;
-    min-height: clamp(28px, 8.2vw, 38px) !important;
+    width: clamp(26px, 7.4vw, 32px) !important;
+    min-width: clamp(26px, 7.4vw, 32px) !important;
+    max-width: clamp(26px, 7.4vw, 32px) !important;
+    height: clamp(26px, 7.4vw, 32px) !important;
+    min-height: clamp(26px, 7.4vw, 32px) !important;
     margin: 0 !important;
     padding: 0 !important;
     flex: 0 0 38px !important;
