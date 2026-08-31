@@ -4276,7 +4276,14 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
       && rect.height > 0.5;
   };
 
+  /* salla.money() does not return plain text: it returns markup, e.g.
+     "٠ <i class=sicon-sar></i>" — the amount plus an icon ELEMENT for the
+     symbol. Tags are stripped here, so a money string whose symbol is only an
+     icon reduces to an empty string and the caller falls through to the
+     currency code instead of injecting an <i> into the pill. */
   const stripAmount = (text) => String(text || '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&[a-z]+;|&#\d+;/gi, '')
     .replace(/[0-9٠-٩]/g, '')
     .replace(/^[\s.,،٬٫]+/, '')
     .replace(/[\s.,،٬٫]+$/, '')
