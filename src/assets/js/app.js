@@ -4276,11 +4276,32 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
       && rect.height > 0.5;
   };
 
+  const stripAmount = (text) => String(text || '')
+    .replace(/[0-9٠-٩]/g, '')
+    .replace(/^[\s.,،٬٫]+/, '')
+    .replace(/[\s.,،٬٫]+$/, '')
+    .trim();
+
+  /* The currency used to be scraped from the cart-summary total. That text is
+     absent whenever the merchant hides the total (icon-only cart) or before
+     the cart hydrates, and the fallback was a hardcoded 'د.إ' — the wrong
+     currency for most stores. Salla's own money formatter is asked first, so
+     the pill carries the store's real currency from the first paint. */
   const getCurrencyLabel = (header) => {
-    const total = header?.querySelector('.s-cart-summary-total')?.textContent?.trim() || '';
-    const withoutDigits = total.replace(/[0-9٠-٩]/g, '');
-    const currency = withoutDigits.replace(/^[\s.,،٬٫]+/, '').trim();
-    return currency || 'د.إ';
+    try {
+      if (window.salla && typeof salla.money === 'function') {
+        const symbol = stripAmount(salla.money(0));
+        if (symbol) return symbol;
+      }
+    } catch (e) { /* formatter unavailable */ }
+
+    try {
+      const code = window.salla && salla.config
+        && (salla.config.get('user.currency_code') || salla.config.get('store.currency'));
+      if (code) return String(code).toUpperCase();
+    } catch (e) { /* config unavailable */ }
+
+    return stripAmount(header?.querySelector('.s-cart-summary-total')?.textContent);
   };
 
   const getLanguageLabel = () => {
@@ -4301,19 +4322,33 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     const signature = `${language}|${currency}`;
 
     button.classList.add('veloura-localization-pill');
+    button.classList.toggle('veloura-localization-pill--no-currency', !currency);
 
     if (button.dataset.velouraLocalizationPill !== signature) {
       button.dataset.velouraLocalizationPill = signature;
-      button.innerHTML = `
+      /* With no currency resolved, render the language alone rather than a
+         label followed by a divider with nothing after it. */
+      button.innerHTML = currency
+        ? `
         <span class="veloura-localization-pill__language">${language}</span>
         <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
         <span class="veloura-localization-pill__currency">${currency}</span>
+      `
+        : `
+        <span class="veloura-localization-pill__language">${language}</span>
       `;
     }
   };
 
+  /* header.twig no longer contains .veloura-header__actions; the cluster is
+     .veloura-header__tools > .veloura-header-left / .veloura-header-right.
+     The old guard matched nothing, so this ordering never ran at all. */
   const reorderActions = (actions) => {
-    if (!actions || !actions.classList.contains('veloura-header__actions')) return;
+    if (!actions) return;
+    const isCluster = actions.classList.contains('veloura-header__actions')
+      || actions.classList.contains('veloura-header-right')
+      || actions.classList.contains('veloura-header-left');
+    if (!isCluster) return;
 
     const account = actions.querySelector('.veloura-login-btn');
     const cart = actions.querySelector('salla-cart-summary');
