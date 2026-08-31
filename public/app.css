@@ -38494,11 +38494,14 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
      symmetric and a collision becomes arithmetically impossible, whatever
      the width or the number of icons.
 
-     Specificity (0,5,2) with :not() beats header-navigation-stability.scss
-     and leaves its two-tier fallback intact for content that genuinely
-     stops fitting.
+     This layout is UNCONDITIONAL on mobile. An earlier version guarded it with
+     :not(.veloura-header-layout-two-tier) to keep the theme's two-tier
+     fallback available, which deadlocked: once the observer had added that
+     class, the guard switched this layout off and the class could never be
+     cleared. The fallback is unnecessary here anyway, because equal-gap
+     centring cannot collide.
      ---------------------------------------------------------------------- */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header-grid {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
@@ -38510,14 +38513,14 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
          column-gap: 0 !important;
     row-gap: 0 !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header__tools {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools {
     display: contents !important;
   }
   /* The menu wrapper must not float out of the right group. */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header__menu {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__menu {
     display: contents !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header-left {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-left {
     order: 1 !important;
     display: flex !important;
     grid-area: auto !important;
@@ -38527,7 +38530,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     min-height: 56px !important;
     margin: 0 !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header-logo {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-logo {
     order: 2 !important;
     grid-area: auto !important;
     justify-self: auto !important;
@@ -38539,7 +38542,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     margin-bottom: 0 !important;
     z-index: 5 !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header-right {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-right {
     order: 3 !important;
     display: flex !important;
     grid-area: auto !important;
@@ -38550,7 +38553,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     margin: 0 !important;
   }
   /* The search wrapper always owns a full line under the icon row. */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-header-layout-two-tier) .veloura-header-grid > .veloura-mobile-search-bar {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
     order: 4 !important;
     grid-area: auto !important;
     flex: 0 0 100% !important;
