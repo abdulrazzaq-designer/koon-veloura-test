@@ -10,7 +10,21 @@
   const INLINE_ATTR = 'data-veloura-inline';
 
   const COMPONENTS = [
-    /* salla-login-modal removed: it has no shadow root (measured). */
+    /* salla-login-modal itself is excluded on purpose: measured with the
+       dialog open, it has no shadowRoot and no child nodes — it is just the
+       empty trigger element, so a shadow-root bridge for it would never run.
+
+       salla-modal is different and was missing here by mistake. It is the
+       actual dialog Salla appends at body level for login/auth (and is
+       reused for other sheets), and SHADOW_CSS below already targets its
+       exact class names (.s-login-modal, .s-modal-body, .s-modal-wrapper,
+       [part~='body'], etc.) — that CSS was written for this element, it just
+       never ran because syncHost()/installStyle() only fires for tags in
+       this list. If salla-modal turns out to have no shadow root either,
+       installStyle() no-ops on it (see the `if (!shadowRoot) return;` guard)
+       and this is harmless; if it does, this is the actual fix. */
+    'salla-modal',
+    'salla-sheet',
     'salla-localization-modal',
     'salla-user-menu',
     'salla-scopes',
@@ -325,12 +339,16 @@
        - keep nested login wrappers transparent so one glass surface owns paint
        - in dark mode use translucent dark glass, not a white/opaque inner sheet
        --------------------------------------------------------------- */
-    /* The :host(salla-login-modal) block that used to be here is gone.
+    /* There's no :host(salla-login-modal) rule here, and there shouldn't be:
+       measured with the dialog open, salla-login-modal has no shadowRoot and
+       no child nodes, so a :host() rule for it would style an empty element.
 
-       Measured on the live store with the dialog open: salla-login-modal has
-       no shadowRoot and no child nodes, so a :host() rule for it styles an
-       empty element. The real dialog is <salla-modal class="s-login-modal">
-       in the light DOM, handled by veloura-global-overlays.scss. */
+       The real dialog is <salla-modal class="s-login-modal">, appended at
+       body level. It gets a light-DOM fallback from veloura-global-overlays.scss
+       AND, now that 'salla-modal' is back in COMPONENTS above, this SHADOW_CSS
+       block runs inside its actual shadow root too (if it has one) — the
+       :is(.s-login-modal, ...) and .s-modal-body selectors right below were
+       already written for it. */
 
     @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
       :host { --v86-surface: var(--v86-solid); }

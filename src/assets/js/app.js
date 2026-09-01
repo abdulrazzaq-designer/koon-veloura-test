@@ -4955,11 +4955,14 @@ const initVelouraBottomNavOverlaysV13 = () => {
      and shadow). That is why the login dialog never followed the glass option
      in the general settings — it was not reading the theme's tokens at all.
 
-     .s-modal-body already receives the theme's glass material from
-     veloura-global-overlays.scss and dark-light.scss, in both themes and with
-     the glass option respected. Deleting the engine lets those rules through;
-     the only thing that still needed saying is the close button, which is one
-     rule in veloura-global-overlays.scss. */
+     .s-modal-body receives the theme's glass material from
+     veloura-global-overlays.scss and dark-light.scss if it renders in the
+     light DOM, and from SHADOW_CSS in veloura-exact-dark-light-plus3-v86.js
+     (COMPONENTS includes 'salla-modal') if it renders inside a shadow root —
+     that split existed before but 'salla-modal' had been left out of
+     COMPONENTS, so the shadow-root path never actually ran. Deleting the
+     engine lets those rules through; the only thing that still needed saying
+     is the close button, which is one rule in veloura-global-overlays.scss. */
 
   /* The login dialog is styled entirely in CSS now; nothing to schedule. */
   const scheduleLoginPatch = () => {};

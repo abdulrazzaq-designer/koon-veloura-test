@@ -226,8 +226,8 @@ html body .s-modal-close {
    backdrop-filter blur(20px), with the option off. The panel is given the
    solid form of the same colour instead, so the setting decides.
    ------------------------------------------------------------------------ */
-html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
-html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content {
+html body:not(.veloura-glass-effect) .s-modal-body,
+html body:not(.veloura-glass-effect) .s-modal-content {
   background: var(--veloura-glass-solid, #e6e8eb) !important;
   background-color: var(--veloura-glass-solid, #e6e8eb) !important;
   background-image: none !important;
@@ -235,10 +235,8 @@ html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content
   backdrop-filter: none !important;
 }
 
-html.dark body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
-html.dark body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content,
-html body.dark:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
-html body.dark:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content {
+.dark body:not(.veloura-glass-effect) .s-modal-body,
+.dark body:not(.veloura-glass-effect) .s-modal-content {
   background: var(--veloura-dark-secondary-bg, #010612) !important;
   background-color: var(--veloura-dark-secondary-bg, #010612) !important;
 }
