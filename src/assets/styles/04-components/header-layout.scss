@@ -1838,13 +1838,6 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached)
     .veloura-header-container .veloura-header-grid
-    .veloura-header__menu {
-    display: contents !important;
-  }
-
-  html body .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached)
-    .veloura-header-container .veloura-header-grid
     .veloura-header-left,
   html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached)
@@ -1922,6 +1915,92 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   html body .veloura-header-tabs-stack
     .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached)
     .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
+    display: none !important;
+  }
+}
+
+/* Section 9 is scoped to the desktop breakpoint on purpose: the pill is a
+   desktop-only control and header-navigation-stability.scss hides it below
+   1024px. An unscoped `display: inline-flex !important` here outranked that
+   hide and made the pill reappear on phones, widening the icon rail until
+   the logo collided with it. */
+@media (min-width: 1024px) {
+
+  /* ==========================================================================
+     9. LANGUAGE / CURRENCY PILL
+     --------------------------------------------------------------------------
+     One control carrying two labels, so it is sized by its content — not by
+     the square icon box its neighbours use. Section 7 puts every header
+     control in a fixed clamp(26px, 7.4vw, 32px) box; the pill must opt out of
+     that or its background clips to an icon-sized square while the text spills.
+
+     The currency slot may hold TEXT (a code such as SAR) or an ELEMENT — for
+     SAR, Salla returns the official new riyal mark as an <i> icon. Both are
+     sized to the pill's own font-size so the two halves read as one label.
+     ========================================================================== */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+
+    /* Content-sized: overrides the square icon box from section 7. */
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: clamp(26px, 7.4vw, 32px) !important;
+
+    padding-block: 4px !important;
+    padding-inline: 11px !important;
+    border-radius: 999px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-localization-pill .veloura-localization-pill__language,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-localization-pill .veloura-localization-pill__currency {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    line-height: 1 !important;
+  }
+
+  /* The riyal mark (or any symbol icon) matches the text beside it. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-localization-pill .veloura-localization-pill__currency :is(i, svg, img) {
+    display: inline-block !important;
+    width: auto !important;
+    height: 1em !important;
+    font-size: 1em !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+
+  /* The divider only earns its space when a currency follows it. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-localization-pill .veloura-localization-pill__divider {
+    flex: 0 0 auto !important;
+    width: 1px !important;
+    height: 1em !important;
+    background: currentColor !important;
+    opacity: .35 !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-localization-pill.veloura-localization-pill--no-currency
+    .veloura-localization-pill__divider {
     display: none !important;
   }
 }

@@ -4276,11 +4276,6 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
       && rect.height > 0.5;
   };
 
-  /* salla.money() does not return plain text: it returns markup, e.g.
-     "٠ <i class=sicon-sar></i>" — the amount plus an icon ELEMENT for the
-     symbol. Tags are stripped here, so a money string whose symbol is only an
-     icon reduces to an empty string and the caller falls through to the
-     currency code instead of injecting an <i> into the pill. */
   const stripAmount = (text) => String(text || '')
     .replace(/<[^>]*>/g, '')
     .replace(/&[a-z]+;|&#\d+;/gi, '')
@@ -4289,26 +4284,55 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     .replace(/[\s.,،٬٫]+$/, '')
     .trim();
 
+  /* salla.money() returns MARKUP, not text: "٠ <i class=sicon-sar></i>" —
+     the amount plus an icon element carrying the currency symbol. For SAR
+     that icon is the official new riyal mark, which is exactly what should
+     appear in the pill, so the element is preserved and only the numeric
+     part is removed. Returns '' when Salla gives no symbol at all. */
+  const currencyMarkupFromSalla = () => {
+    if (!(window.salla && typeof salla.money === 'function')) return '';
+
+    const box = document.createElement('div');
+    box.innerHTML = String(salla.money(0) ?? '');
+
+    const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+    const texts = [];
+    while (walker.nextNode()) texts.push(walker.currentNode);
+    texts.forEach((node) => {
+      node.nodeValue = node.nodeValue
+        .replace(/[0-9٠-٩]/g, '')
+        .replace(/[\s.,،٬٫]+/g, ' ');
+    });
+
+    const html = box.innerHTML.trim();
+    const hasSymbolElement = !!box.querySelector('i, svg, img, span');
+    return (hasSymbolElement || html.replace(/\s+/g, '')) ? html : '';
+  };
+
   /* The currency used to be scraped from the cart-summary total. That text is
      absent whenever the merchant hides the total (icon-only cart) or before
      the cart hydrates, and the fallback was a hardcoded 'د.إ' — the wrong
      currency for most stores. Salla's own money formatter is asked first, so
      the pill carries the store's real currency from the first paint. */
+  /* The pill's currency slot must never be empty, and it must never depend on
+     whether the merchant shows the cart total — hiding the price in the
+     header used to erase the currency with it. Order: Salla's own symbol,
+     then the currency code, then the cart text, then a last-resort code. */
   const getCurrencyLabel = (header) => {
     try {
-      if (window.salla && typeof salla.money === 'function') {
-        const symbol = stripAmount(salla.money(0));
-        if (symbol) return symbol;
-      }
+      const markup = currencyMarkupFromSalla();
+      if (markup) return markup;
     } catch (e) { /* formatter unavailable */ }
 
+    let code = '';
     try {
-      const code = window.salla && salla.config
-        && (salla.config.get('user.currency_code') || salla.config.get('store.currency'));
-      if (code) return String(code).toUpperCase();
+      code = (window.salla && salla.config
+        && (salla.config.get('user.currency_code') || salla.config.get('store.currency'))) || '';
     } catch (e) { /* config unavailable */ }
+    if (code) return String(code).toUpperCase();
 
-    return stripAmount(header?.querySelector('.s-cart-summary-total')?.textContent);
+    const fromCart = stripAmount(header?.querySelector('.s-cart-summary-total')?.textContent);
+    return fromCart || 'SAR';
   };
 
   const getLanguageLabel = () => {
