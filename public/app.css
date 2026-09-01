@@ -36607,14 +36607,17 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
   }
 }
 /* --------------------------------------------------------------------------
-   10.3 The search field reads as its own surface, not as a hole in the panel.
+   10.3 ONE SURFACE FOR SEARCH, LANGUAGE/CURRENCY AND LOGIN
 
-   It sat on --veloura-control, close enough to the panel that the field
-   dissolved into it. Here it keeps a real edge and a clearly separated fill,
-   with no shadow in either theme.
+   The three controls now share a single material: same fill, same edge, same
+   radius, no shadow, in both themes. Previously the search sat on
+   --veloura-control (so close to the panel that it dissolved into it) while
+   the pill and the login button had no fill at all.
    -------------------------------------------------------------------------- */
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
 html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
   background: rgba(255, 255, 255, 0.62) !important;
   background-color: rgba(255, 255, 255, 0.62) !important;
@@ -36628,6 +36631,10 @@ html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .vel
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
+html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
 html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
 html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
   background: rgba(1, 6, 18, 0.62) !important;
@@ -36640,11 +36647,34 @@ html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .vel
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
+html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
 html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
 html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
   background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
   background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
 }
+}
+/* --------------------------------------------------------------------------
+   10.4 The cart price sits BEFORE the cart icon in Arabic reading order.
+
+   Row one runs on a physical LTR axis so the sides never swap with the store
+   language. That also flips the cart's own contents, putting the amount to
+   the right of the icon. The cart is handed its reading direction back.
+   -------------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-left salla-cart-summary,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-left .veloura-header__cart {
+  direction: rtl !important;
+}
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-left salla-cart-summary .s-cart-summary-wrapper,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-left salla-cart-summary > a {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 6px !important;
+  direction: rtl !important;
 }
 .store-footer{
     position: relative;

@@ -4475,6 +4475,21 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     document.addEventListener('theme::ready', schedule);
     document.addEventListener('veloura:menu:ready', schedule);
 
+    /* The pill is often built before Salla's money formatter exists, so the
+       first render has no currency and the result is cached by signature.
+       Nothing re-rendered it afterwards, and the currency stayed missing for
+       the life of the page — which is what made it vanish whenever the
+       merchant toggled the cart total. These re-syncs cover late hydration
+       without keeping an observer alive. */
+    [300, 900, 2000].forEach(delay => window.setTimeout(schedule, delay));
+    try {
+      if (window.salla && salla.event && typeof salla.event.on === 'function') {
+        ['salla::ready', 'currency::fetched', 'cart::updated'].forEach(evt => {
+          try { salla.event.on(evt, schedule); } catch (e) { /* unknown event */ }
+        });
+      }
+    } catch (e) { /* Salla bus unavailable */ }
+
     const header = document.querySelector('.store-header.veloura-top-enabled');
     if (header && typeof MutationObserver === 'function') {
       observer = new MutationObserver(schedule);
