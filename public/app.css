@@ -36136,7 +36136,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     align-items: center !important;
     justify-content: flex-start !important;
     flex-direction: row !important;
-    direction: rtl !important;
+    direction: ltr !important;
     gap: max(3px, min(1.2vw, 6px)) !important;
     width: -moz-max-content !important;
     width: max-content !important;
@@ -36286,7 +36286,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
-    grid-template-areas: "search logo tools" "menu   menu menu" !important;
+    grid-template-areas: "tools logo search" "menu  menu menu" !important;
     grid-template-rows: auto auto !important;
     align-items: center !important;
     grid-column-gap: max(12px, min(1.4vw, 26px)) !important;
@@ -36298,13 +36298,15 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     position: relative !important;
   }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid {
+    /* Salla's own convention in Arabic stores: the cart and the account sit
+       at the physical LEFT edge. The search takes the right. */
     /* A physical axis: search left and icons right in RTL and LTR alike.
        Children restore their own reading direction below. */
   }
-  /* Search — physical left. */
+  /* Search — physical right. */
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar {
     grid-area: search !important;
-    justify-self: start !important;
+    justify-self: end !important;
     align-self: center !important;
     width: max(220px, min(24vw, 360px)) !important;
     max-width: 100% !important;
@@ -36320,11 +36322,11 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     transform: none !important;
     z-index: 5 !important;
   }
-  /* Every icon in ONE rail at the physical right: the tools wrapper stays a
+  /* Every icon in ONE rail at the physical LEFT: the tools wrapper stays a
      real element here (not display: contents) so both groups sit inside it. */
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header__tools {
     grid-area: tools !important;
-    justify-self: end !important;
+    justify-self: start !important;
     align-self: center !important;
     display: flex !important;
     flex-direction: row !important;
@@ -36334,7 +36336,12 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     min-width: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
-    direction: rtl !important;
+    direction: ltr !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header__tools {
+    /* Physical axis: the cart group is first in the markup, so it lands on
+       the outer left edge — where Salla stores put the cart and account.
+       Each control keeps its own reading direction. */
   }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left,
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-right {
@@ -36609,32 +36616,49 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
 /* --------------------------------------------------------------------------
    10.3 ONE SURFACE FOR SEARCH, LANGUAGE/CURRENCY AND LOGIN
 
-   The three controls now share a single material: same fill, same edge, same
-   radius, no shadow, in both themes. Previously the search sat on
-   --veloura-control (so close to the panel that it dissolved into it) while
-   the pill and the login button had no fill at all.
+   The three controls share a single material: same fill, same edge, same
+   radius, no shadow, in both themes.
+
+   Two things this section is careful about:
+
+   - The light fill is near-white, not the panel's own silver. At
+     rgba(255,255,255,.62) over a panel of rgba(228,231,235,.80) the two were
+     within a few percent of each other and the pill dissolved into the
+     header. The contrast has to come from lightness, not from the border
+     alone.
+
+   - Only the SEARCH carries this surface on phones. The language pill and
+     the login button are desktop controls: on mobile the login button is a
+     square icon, and painting it there put a stray box behind the account
+     glyph. Their surface therefore lives inside the desktop query.
    -------------------------------------------------------------------------- */
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
 html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
-  background: rgba(255, 255, 255, 0.62) !important;
-  background-color: rgba(255, 255, 255, 0.62) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   background-image: none !important;
-  border: 1px solid rgba(100, 116, 139, 0.22) !important;
+  border: 1px solid rgba(100, 116, 139, 0.3) !important;
   box-shadow: none !important;
   -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
   backdrop-filter: blur(14px) saturate(140%) !important;
+}
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn {
+    background: rgba(255, 255, 255, 0.92) !important;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    background-image: none !important;
+    border: 1px solid rgba(100, 116, 139, 0.3) !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+  }
 }
 html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
-html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
-html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
-html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
-html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
 html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
 html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
   background: rgba(1, 6, 18, 0.62) !important;
@@ -36647,14 +36671,31 @@ html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .vel
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
-html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
-html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
-html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
-html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn,
 html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
 html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
   background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
   background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
+}
+}
+@media (min-width: 1024px) {
+  html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+  html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn:not(.does-not-exist),
+  html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+  html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn:not(.does-not-exist) {
+    background: rgba(1, 6, 18, 0.62) !important;
+    background-color: rgba(1, 6, 18, 0.62) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    box-shadow: none !important;
+  }
+
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
+html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+  html.dark body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn:not(.does-not-exist),
+  html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+  html body.dark .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn:not(.does-not-exist) {
+    background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
+    background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
+  }
 }
 }
 /* --------------------------------------------------------------------------

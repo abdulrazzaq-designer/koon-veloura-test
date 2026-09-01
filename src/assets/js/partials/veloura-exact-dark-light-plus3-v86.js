@@ -976,11 +976,7 @@
 
     /* Search surface is the SINGLE glass paint owner. */
     html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface,
-    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface,
-    html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-grid > .veloura-mobile-search-bar,
-    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-grid > .veloura-mobile-search-bar,
-    html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-grid > .veloura-desktop-search-bar,
-    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-grid > .veloura-desktop-search-bar {
+    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface {
       --veloura-search-inner-bg: transparent !important;
       --veloura-top-text: var(--veloura-dark-primary-text, #fff) !important;
 
