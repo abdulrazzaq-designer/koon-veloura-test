@@ -4371,15 +4371,14 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     }
   };
 
-  /* header.twig no longer contains .veloura-header__actions; the cluster is
-     .veloura-header__tools > .veloura-header-left / .veloura-header-right.
-     The old guard matched nothing, so this ordering never ran at all. */
+  /* Kept scoped to the legacy .veloura-header__actions wrapper ON PURPOSE.
+     header.twig no longer contains it, so this never runs — and it must not.
+     Its order is [account, cart, language]; pointing it at the current
+     .veloura-header-left moved the account button ahead of the cart, so the
+     cart stopped being the outermost control on mobile. Order in the current
+     markup is owned by the template and by header-layout.scss, not here. */
   const reorderActions = (actions) => {
-    if (!actions) return;
-    const isCluster = actions.classList.contains('veloura-header__actions')
-      || actions.classList.contains('veloura-header-right')
-      || actions.classList.contains('veloura-header-left');
-    if (!isCluster) return;
+    if (!actions || !actions.classList.contains('veloura-header__actions')) return;
 
     const account = actions.querySelector('.veloura-login-btn');
     const cart = actions.querySelector('salla-cart-summary');

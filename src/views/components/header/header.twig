@@ -417,6 +417,9 @@
 
               <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
                 <i class="{{ top_login_icon }}"></i>
+                {# Desktop shows the words beside the icon, in a pill that matches
+                   the language/currency control. CSS hides the label on mobile. #}
+                <span class="veloura-login-btn__label">تسجيل الدخول</span>
               </button>
 
               {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}

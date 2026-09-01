@@ -2040,3 +2040,218 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   10. LOGIN PILL, UN-CENTRED LOGO, AND A READABLE SEARCH FIELD
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   10.1 Login shows its words on desktop, in the same pill as the language.
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid .veloura-header__tools
+    .veloura-header-icon.veloura-login-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: var(--veloura-icon-hit, 38px) !important;
+
+    padding-block: 4px !important;
+    padding-inline: 12px !important;
+    border-radius: 999px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled
+    .veloura-header-container .veloura-header-grid .veloura-header__tools
+    .veloura-login-btn .veloura-login-btn__label {
+    display: inline-block !important;
+    font-size: inherit !important;
+    line-height: 1 !important;
+  }
+}
+
+/* The label is desktop-only; on phones the button stays a square icon. */
+@media (max-width: 1023px) {
+  html body .store-header.veloura-top-enabled
+    .veloura-login-btn .veloura-login-btn__label {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10.2 "Un-centre the logo on laptops" — the setting had no layout of its own.
+
+   Section 8 is scoped to .veloura-top-logo-centered, so switching the toggle
+   dropped the header back to the broken template instead of moving anything.
+   Un-centred means: logo at the physical right, search in the middle, every
+   icon at the physical left. The row keeps a physical axis so the sides do
+   not swap with the store language.
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid {
+    display: grid !important;
+    /* tools sizes to its content so the icon rail can never overflow into
+       the search column; the search takes whatever is left. */
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      'tools search logo'
+      'menu  menu   menu' !important;
+    grid-template-rows: auto auto !important;
+    align-items: center !important;
+    column-gap: clamp(12px, 1.4vw, 26px) !important;
+    row-gap: 6px !important;
+    direction: ltr !important;
+    position: relative !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar {
+    grid-area: search !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    width: 100% !important;
+    max-width: 460px !important;
+    margin: 0 !important;
+    direction: rtl !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-logo {
+    grid-area: logo !important;
+    justify-self: end !important;
+    align-self: center !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header__tools {
+    grid-area: tools !important;
+    justify-self: start !important;
+    align-self: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: clamp(10px, 1vw, 16px) !important;
+    width: auto !important;
+    margin: 0 !important;
+    direction: rtl !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-left,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-right {
+    grid-area: auto !important;
+    justify-self: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: clamp(10px, 1vw, 16px) !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-left > *,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-right > *,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-lang-desktop {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid
+    .veloura-menu-links-wrap {
+    grid-area: menu !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    direction: rtl !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-top-search-detached)
+    .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10.3 The search field reads as its own surface, not as a hole in the panel.
+
+   It sat on --veloura-control, close enough to the panel that the field
+   dissolved into it. Here it keeps a real edge and a clearly separated fill,
+   with no shadow in either theme.
+   -------------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack
+  .store-header.veloura-top-enabled
+  .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html body .veloura-header-tabs-stack
+  .store-header.veloura-top-enabled
+  .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
+  background: rgba(255, 255, 255, .62) !important;
+  background-color: rgba(255, 255, 255, .62) !important;
+  background-image: none !important;
+  border: 1px solid rgba(100, 116, 139, .22) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+html.dark body .veloura-header-tabs-stack
+  .store-header.veloura-top-enabled
+  .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html body.dark .veloura-header-tabs-stack
+  .store-header.veloura-top-enabled
+  .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html.dark body .veloura-header-tabs-stack
+  .store-header.veloura-top-enabled
+  .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html body.dark .veloura-header-tabs-stack
+  .store-header.veloura-top-enabled
+  .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html.dark body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
+html body.dark .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
+  background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
+  background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 62%, transparent) !important;
+  border-color: rgba(255, 255, 255, .16) !important;
+  box-shadow: none !important;
+}
