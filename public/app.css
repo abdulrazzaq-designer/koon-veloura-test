@@ -36678,9 +36678,16 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
        the store's own text colour, which switches with the theme.
 
    (c) EDGE. Glass wants a hairline, but a full border round a pill reads as a
-       button. Only the top and bottom edges are drawn, so the rounded shape
-       picks up a bright arc above and a darker one below — the classic glass
-       lip — and nothing at all when the glass option is off.
+       button, and so does a dark bottom edge — that is a drop shadow drawn as
+       a line, and it makes the control look raised rather than see-through.
+       Both edges are therefore LIGHT in both themes: white at very low alpha
+       over the dark surface, silver over the light one, with the bottom
+       fainter than the top so the shape still has an implied light source.
+       Nothing is drawn at all when the glass option is off.
+
+       The fill is carried at 20% of the store colour, not 46%, so the panel
+       and whatever is scrolling behind it read through the control; the blur
+       is raised to 18px to keep that from turning into noise.
    -------------------------------------------------------------------------- */
 /* The switching tokens. Both are new names, so neither can be
    self-referential: --veloura-control-surface never reads itself. */
@@ -36688,15 +36695,22 @@ html body {
   --veloura-control-h: 40px;
   --veloura-control-surface: var(--veloura-site-bg, #f4f5f7);
   --veloura-control-text: var(--veloura-primary-text, var(--color-text, #111827));
-  --veloura-control-edge-top: rgba(255, 255, 255, .55);
-  --veloura-control-edge-bottom: rgba(15, 23, 42, .12);
+  /* Light: one silver hairline, top a little stronger than the bottom.
+     Neither edge is a shadow — a dark bottom edge reads as a raised button,
+     which is the opposite of glass. */
+  --veloura-control-edge-top: rgba(203, 213, 225, .95);
+  --veloura-control-edge-bottom: rgba(203, 213, 225, .50);
 }
 html.dark body,
 html body.dark {
   --veloura-control-surface: var(--veloura-dark-body-bg, #010202);
   --veloura-control-text: var(--veloura-dark-primary-text, #ffffff);
-  --veloura-control-edge-top: rgba(255, 255, 255, .10);
-  --veloura-control-edge-bottom: rgba(0, 0, 0, .45);
+  /* Dark: BOTH edges are light. Sampled off the reference: the line sits about
+     40 luminance above the surface on top and about 30 below that on the
+     bottom, i.e. roughly .18 and .13 alpha white. Taken a shade further down
+     because the ask was for the faintest possible lip. */
+  --veloura-control-edge-top: rgba(255, 255, 255, .16);
+  --veloura-control-edge-bottom: rgba(255, 255, 255, .07);
 }
 /* The icon rail is measured with the same number, so the row has one baseline.
 
@@ -36791,8 +36805,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-detached-sear
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-detached-search-shell .veloura-detached-search {
-  background: rgba(244, 245, 247, 0.46) !important;
-  background-color: rgba(244, 245, 247, 0.46) !important;
+  background: rgba(244, 245, 247, 0.2) !important;
+  background-color: rgba(244, 245, 247, 0.2) !important;
   box-shadow: none !important;
   box-sizing: border-box !important;
   border: 0 !important;
@@ -36800,8 +36814,8 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-de
   border-top: 1px solid var(--veloura-control-edge-top, rgba(255, 255, 255, 0.55)) !important;
   border-bottom: 1px solid rgba(15, 23, 42, 0.12) !important;
   border-bottom: 1px solid var(--veloura-control-edge-bottom, rgba(15, 23, 42, 0.12)) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-  backdrop-filter: blur(14px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
 html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
@@ -36810,8 +36824,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-detached-sear
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-detached-search-shell .veloura-detached-search {
-  background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
-  background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
+  background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
+  background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
 }
 }
 @media (min-width: 1024px) {
@@ -36819,8 +36833,8 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-de
   html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist),
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist) {
-    background: rgba(244, 245, 247, 0.46) !important;
-    background-color: rgba(244, 245, 247, 0.46) !important;
+    background: rgba(244, 245, 247, 0.2) !important;
+    background-color: rgba(244, 245, 247, 0.2) !important;
     box-shadow: none !important;
     box-sizing: border-box !important;
     border: 0 !important;
@@ -36828,8 +36842,8 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-de
     border-top: 1px solid var(--veloura-control-edge-top, rgba(255, 255, 255, 0.55)) !important;
     border-bottom: 1px solid rgba(15, 23, 42, 0.12) !important;
     border-bottom: 1px solid var(--veloura-control-edge-bottom, rgba(15, 23, 42, 0.12)) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-    backdrop-filter: blur(14px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+    backdrop-filter: blur(18px) saturate(150%) !important;
   }
 
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
@@ -36837,8 +36851,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-
   html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist),
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist) {
-    background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
-    background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
+    background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
+    background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
   }
 }
 }
