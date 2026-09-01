@@ -4553,11 +4553,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
   // V13 never owns the Login modal. Clear any stale class left by V12/HMR.
   removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
-  document.querySelectorAll('[data-v12-login-surface], [data-v12-login-clear], [data-v12-login-close]').forEach(el => {
-    el.removeAttribute('data-v12-login-surface');
-    el.removeAttribute('data-v12-login-clear');
-    el.removeAttribute('data-v12-login-close');
-  });
 
   // Clean all previous bottom-nav experiments. V12 owns search only; login goes
   // back to Salla's native login modal and is styled from the light DOM.
@@ -4706,47 +4701,11 @@ const initVelouraBottomNavOverlaysV13 = () => {
         pointer-events: auto !important;
       }
 
-      /* Native Salla login: V12 keeps the working component and changes only
-         the visible modal material. This is scoped to login-open so other Salla
-         modals are untouched. */
-      body.${LOGIN_OPEN_CLASS} :is(
-        .s-salla-modal-overlay,
-        .s-modal-overlay,
-        .s-modal-backdrop,
-        .modal-backdrop
-      ) {
-        background: rgba(226,230,235,.34) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(122%) contrast(200%) !important;
-        backdrop-filter: blur(20px) saturate(122%) contrast(200%) !important;
-      }
-
-      body.${LOGIN_OPEN_CLASS} [data-v12-login-surface="true"] {
-        background: rgba(226,229,233,.90) !important;
-        background-color: rgba(226,229,233,.90) !important;
-        background-image: none !important;
-        border: 1px solid rgba(71,85,105,.14) !important;
-        border-radius: var(--v12-login-radius, 24px) !important;
-        box-shadow:
-          0 18px 48px rgba(15,23,42,.18),
-          inset 0 1px 0 rgba(255,255,255,.72) !important;
-        -webkit-backdrop-filter: blur(22px) saturate(124%) contrast(200%) !important;
-        backdrop-filter: blur(22px) saturate(124%) contrast(200%) !important;
-        overflow: hidden !important;
-      }
-
-      body.${LOGIN_OPEN_CLASS} [data-v12-login-clear="true"],
-      body.${LOGIN_OPEN_CLASS} [data-v12-login-close="true"] {
-        background: transparent !important;
-        background-color: transparent !important;
-        background-image: none !important;
-        box-shadow: none !important;
-      }
-
-      body.${LOGIN_OPEN_CLASS} [data-v12-login-close="true"] {
-        border-color: transparent !important;
-        -webkit-backdrop-filter: none !important;
-        backdrop-filter: none !important;
-      }
+      /* The login dialog's own material is NOT set here. It is
+         .s-modal-body, and veloura-global-overlays.scss already gives that the
+         theme's glass so it follows the glass option in the general settings.
+         The block that used to sit here painted a hard-coded light surface and
+         overrode that. See the note where patchNativeLogin used to live. */
 
       /* Light bottom nav remains readable over the frosted page. */
       html:not(.dark) body:is(.veloura-bottom-nav-search-open,.${LOGIN_OPEN_CLASS})
@@ -4824,18 +4783,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
         backdrop-filter: blur(20px) saturate(114%) !important;
       }
 
-      html.dark body.${LOGIN_OPEN_CLASS} [data-v12-login-surface="true"],
-      html body.dark.${LOGIN_OPEN_CLASS} [data-v12-login-surface="true"] {
-        background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 90%, transparent) !important;
-        background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 90%, transparent) !important;
-        border-color: rgba(255,255,255,.075) !important;
-        box-shadow:
-          0 18px 48px rgba(0,0,0,.28),
-          inset 0 1px 0 rgba(255,255,255,.045) !important;
-        -webkit-backdrop-filter: blur(22px) saturate(116%) !important;
-        backdrop-filter: blur(22px) saturate(116%) !important;
-        color: var(--veloura-dark-primary-text, #fff) !important;
-      }
     }
   `;
   document.head.appendChild(style);
@@ -4932,10 +4879,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
       else search.removeAttribute('oval');
     }
 
-    // A pill nav can have 9999px radius. That shape is correct for a 56px bar,
-    // but would turn a tall login modal into a giant oval, so clamp login only.
-    const loginRadius = `${Math.max(8, Math.min(parseRadius(radius), 28))}px`;
-    document.documentElement.style.setProperty('--v12-login-radius', loginRadius);
   };
 
   const closeSearch = ({ restore = true } = {}) => {
@@ -4995,113 +4938,37 @@ const initVelouraBottomNavOverlaysV13 = () => {
     return rect.width > 0 && rect.height > 0 && cs.display !== 'none' && cs.visibility !== 'hidden';
   };
 
-  const patchNativeLogin = () => {
-    if (!isLoginOpen()) return;
+  /* patchNativeLogin USED TO LIVE HERE — deliberately removed.
 
-    const loginHost = document.querySelector('salla-login-modal');
-    if (loginHost) {
-      const dark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
-      const lightSurface = 'rgba(226,229,233,.90)';
-      const darkSurface =
-        (getComputedStyle(document.documentElement).getPropertyValue('--veloura-dark-secondary-bg') || '').trim() ||
-        '#001f33';
-      const modalSurface = dark ? darkSurface : lightSurface;
+     Measured on the live store with the modal open: <salla-login-modal> has
+     NO shadow root and ZERO child nodes. It is an empty trigger element. The
+     dialog Salla actually renders is a separate <salla-modal class="s-login-modal">
+     appended at body level, whose panel is .s-modal-body and whose close
+     control is .s-modal-close.
 
-      ['--s-modal-bg', '--modal-bg', '--s-login-bg', '--s-login-modal-bg', '--s-login-content-bg', '--s-login-form-bg']
-        .forEach(name => loginHost.style.setProperty(name, modalSurface, 'important'));
-    }
+     So every selector this function used that was rooted at salla-login-modal
+     could never match anything, and what it did do was worse: it walked the
+     dialog, guessed which element was "the surface" by measuring rectangles
+     and sniffing class/id/aria text for the word "close", stamped
+     data-v12-login-* attributes on its guesses, and painted them from a
+     HARD-CODED material (rgba(226,229,233,.90), its own blur, its own border
+     and shadow). That is why the login dialog never followed the glass option
+     in the general settings — it was not reading the theme's tokens at all.
 
-    // Find the currently visible native modal surface. Salla's login is light
-    // DOM in this build, so no shadowRoot traversal is required.
-    const candidates = [...document.querySelectorAll(`
-      salla-login-modal [role="dialog"],
-      salla-login-modal .s-salla-modal-body,
-      salla-login-modal .s-modal-body,
-      salla-login-modal .s-modal-content,
-      salla-login-modal .s-modal-container,
-      salla-login-modal .s-modal-wrapper,
-      [role="dialog"].s-modal,
-      .s-salla-modal-body,
-      .s-modal-body,
-      .s-modal-content
-    `)].filter(visible);
+     .s-modal-body already receives the theme's glass material from
+     veloura-global-overlays.scss and dark-light.scss, in both themes and with
+     the glass option respected. Deleting the engine lets those rules through;
+     the only thing that still needed saying is the close button, which is one
+     rule in veloura-global-overlays.scss. */
 
-    if (!candidates.length) return;
-
-    // Prefer a substantial visible surface, not a tiny child.
-    const surface = candidates
-      .filter(el => {
-        const r = el.getBoundingClientRect();
-        return r.width >= Math.min(260, window.innerWidth * .55) && r.height >= 120;
-      })
-      .sort((a, b) => {
-        const ar = a.getBoundingClientRect();
-        const br = b.getBoundingClientRect();
-        return (br.width * br.height) - (ar.width * ar.height);
-      })[0] || candidates[0];
-
-    document.querySelectorAll('[data-v12-login-surface="true"]').forEach(el => {
-      if (el !== surface) el.removeAttribute('data-v12-login-surface');
-    });
-    surface.setAttribute('data-v12-login-surface', 'true');
-
-    // Remove only accidental large white paint layers inside the chosen login
-    // panel. Inputs/buttons keep their own backgrounds.
-    surface.querySelectorAll('*').forEach(el => {
-      if (!visible(el)) return;
-      const tag = el.tagName;
-      const role = el.getAttribute('role') || '';
-      const cls = String(el.className || '');
-      const id = el.id || '';
-      const aria = el.getAttribute('aria-label') || '';
-      const title = el.getAttribute('title') || '';
-      const text = `${cls} ${id} ${aria} ${title}`.toLowerCase();
-
-      const isClose =
-        /close|إغلاق|اغلاق|dismiss/.test(text) ||
-        (['BUTTON', 'A'].includes(tag) && ['×', '✕', '✖'].includes((el.textContent || '').trim()));
-
-      if (isClose) {
-        el.setAttribute('data-v12-login-close', 'true');
-        return;
-      }
-
-      if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(tag) || role === 'button') return;
-
-      const rect = el.getBoundingClientRect();
-      const bg = getComputedStyle(el).backgroundColor;
-      if (rect.width >= 120 && rect.height >= 36 && isNearWhite(bg)) {
-        el.setAttribute('data-v12-login-clear', 'true');
-      }
-    });
-
-    // Close controls sometimes live beside, not inside, the panel.
-    document.querySelectorAll(`
-      salla-login-modal button,
-      .s-modal button,
-      .s-salla-modal button,
-      button[aria-label*="close" i],
-      button[title*="close" i]
-    `).forEach(el => {
-      if (!visible(el)) return;
-      const text = `${el.className || ''} ${el.id || ''} ${el.getAttribute('aria-label') || ''} ${el.getAttribute('title') || ''}`.toLowerCase();
-      if (/close|إغلاق|اغلاق|dismiss/.test(text) || ['×', '✕', '✖'].includes((el.textContent || '').trim())) {
-        el.setAttribute('data-v12-login-close', 'true');
-      }
-    });
-  };
-
-  let loginPatchTimers = [];
-  const scheduleLoginPatch = () => {
-    loginPatchTimers.forEach(clearTimeout);
-    loginPatchTimers = [0, 60, 160, 320, 650, 1100].map(ms => setTimeout(patchNativeLogin, ms));
-  };
+  /* The login dialog is styled entirely in CSS now; nothing to schedule. */
+  const scheduleLoginPatch = () => {};
 
   const closeNativeLogin = ({ restore = true } = {}) => {
     if (!isLoginOpen()) return;
 
     const nestedModal = [...document.querySelectorAll('salla-modal')].find(visible);
-    const closeButton = document.querySelector('[data-v12-login-close="true"]') ||
+    const closeButton = document.querySelector('.s-modal-close') ||
       [...document.querySelectorAll('.s-modal button, .s-salla-modal button, salla-login-modal button')]
         .find(el => visible(el) && /close|إغلاق|اغلاق|dismiss/.test(
           `${el.className || ''} ${el.id || ''} ${el.getAttribute('aria-label') || ''} ${el.getAttribute('title') || ''}`.toLowerCase()
@@ -5114,12 +4981,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
     removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
     accountItem?.setAttribute('aria-expanded', 'false');
-    document.querySelectorAll('[data-v12-login-surface], [data-v12-login-clear], [data-v12-login-close]')
-      .forEach(el => {
-        el.removeAttribute('data-v12-login-surface');
-        el.removeAttribute('data-v12-login-clear');
-        el.removeAttribute('data-v12-login-close');
-      });
     if (restore && !isSearchOpen()) restoreRouteActive();
   };
 
@@ -5232,7 +5093,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
   document.addEventListener('click', event => {
     if (!isLoginOpen()) return;
     const target = event.target;
-    const isClose = target?.closest?.('[data-v12-login-close="true"], .s-modal-overlay, .s-salla-modal-overlay, .s-modal-backdrop, .modal-backdrop');
+    const isClose = target?.closest?.('.s-modal-close, .s-modal-overlay, .s-salla-modal-overlay, .s-modal-backdrop, .modal-backdrop');
     if (!isClose) return;
     window.setTimeout(() => {
       removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
@@ -5264,7 +5125,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
   // Re-patch native login if Salla renders/replaces modal nodes asynchronously.
   if (typeof MutationObserver === 'function') {
     const loginObserver = new MutationObserver(() => {
-      if (isLoginOpen()) patchNativeLogin();
     });
     loginObserver.observe(document.body, { childList: true, subtree: true });
   }

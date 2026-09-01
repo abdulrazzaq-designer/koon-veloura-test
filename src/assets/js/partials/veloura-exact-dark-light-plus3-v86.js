@@ -10,7 +10,7 @@
   const INLINE_ATTR = 'data-veloura-inline';
 
   const COMPONENTS = [
-    'salla-login-modal',
+    /* salla-login-modal removed: it has no shadow root (measured). */
     'salla-localization-modal',
     'salla-user-menu',
     'salla-scopes',
@@ -325,120 +325,13 @@
        - keep nested login wrappers transparent so one glass surface owns paint
        - in dark mode use translucent dark glass, not a white/opaque inner sheet
        --------------------------------------------------------------- */
-    :host(salla-login-modal) {
-      --v86-login-surface: rgba(230, 232, 235, .76);
-      --v86-login-control: rgba(255, 255, 255, .44);
-    }
+    /* The :host(salla-login-modal) block that used to be here is gone.
 
-    :host(salla-login-modal[${THEME_ATTR}='dark']) {
-      --v86-login-surface: color-mix(
-        in srgb,
-        var(--veloura-dark-secondary-bg, #010612) 84%,
-        transparent
-      );
-      --v86-login-control: color-mix(
-        in srgb,
-        var(--veloura-dark-secondary-bg, #010612) 72%,
-        transparent
-      );
-    }
+       Measured on the live store with the dialog open: salla-login-modal has
+       no shadowRoot and no child nodes, so a :host() rule for it styles an
+       empty element. The real dialog is <salla-modal class="s-login-modal">
+       in the light DOM, handled by veloura-global-overlays.scss. */
 
-    :host(salla-login-modal) :is(
-      .s-salla-modal-body,
-      .s-modal-body,
-      .s-modal-content,
-      .modal-content,
-      .s-login-modal__body,
-      .s-login-modal__content,
-      .s-auth-modal__body,
-      .s-auth-modal__content,
-      [part~='body'],
-      [part~='content'],
-      [part~='panel'],
-      [part~='surface'],
-      [part~='dialog'],
-      [role='dialog']
-    ) {
-      background: var(--v86-login-surface) !important;
-      background-color: var(--v86-login-surface) !important;
-      background-image: none !important;
-      border-color: var(--v86-edge-top) !important;
-      -webkit-backdrop-filter: var(--v86-filter) !important;
-      backdrop-filter: var(--v86-filter) !important;
-      box-shadow: 0 10px 30px var(--v86-shadow) !important;
-      color: var(--v86-primary) !important;
-    }
-
-    /* Native inner sheets are what created the large white rectangle. */
-    :host(salla-login-modal) :is(
-      .s-login-modal__body,
-      .s-login-modal__content,
-      .s-auth-modal__body,
-      .s-auth-modal__content,
-      [part~='body'],
-      [part~='content']
-    ) :is(
-      form,
-      .s-login-modal__form,
-      .s-auth-modal__form,
-      .bg-white,
-      .bg-gray-50,
-      .bg-gray-100
-    ) {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-    }
-
-    :host(salla-login-modal) :is(
-      input,
-      select,
-      textarea,
-      .form-input,
-      .s-form-control
-    ) {
-      background: var(--v86-login-control) !important;
-      background-color: var(--v86-login-control) !important;
-      color: var(--v86-primary) !important;
-      border-color: var(--v86-edge-top) !important;
-    }
-
-    /* Close X: never render a white square behind the icon. */
-    :host(salla-login-modal) :is(
-      .s-salla-modal-close,
-      .s-modal-close,
-      .s-login-modal__close,
-      .s-login-modal-close,
-      .modal-close,
-      [part~='close'],
-      button[aria-label='Close'],
-      button[aria-label='close'],
-      button[aria-label*='إغلاق']
-    ) {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-    }
-
-    :host(salla-login-modal) :is(
-      .s-salla-modal-close,
-      .s-modal-close,
-      .s-login-modal__close,
-      .s-login-modal-close,
-      .modal-close,
-      [part~='close'],
-      button[aria-label='Close'],
-      button[aria-label='close'],
-      button[aria-label*='إغلاق']
-    ) :is(svg, i, span) {
-      background: transparent !important;
-      box-shadow: none !important;
-    }
     @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
       :host { --v86-surface: var(--v86-solid); }
     }

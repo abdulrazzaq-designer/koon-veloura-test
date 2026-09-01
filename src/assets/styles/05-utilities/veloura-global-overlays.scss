@@ -37,9 +37,7 @@ html body.veloura-glass-effect .s-modal .s-modal-content,
 html body.veloura-glass-effect .s-salla-modal-body,
 html body.veloura-glass-effect .s-modal-body,
 html body.veloura-glass-effect .s-modal-content,
-html body.veloura-glass-effect .s-login-modal .s-salla-modal-body,
 html body.veloura-glass-effect .s-login-modal .s-modal-body,
-html body.veloura-glass-effect .s-login-modal .s-modal-content,
 html body.veloura-glass-effect .s-auth-modal .s-salla-modal-body,
 html body.veloura-glass-effect .s-auth-modal .s-modal-content,
 html body.veloura-glass-effect .login-modal .modal-content,
@@ -79,7 +77,6 @@ html body.veloura-glass-effect .s-salla-modal-body > * {
   background-color: transparent !important;
 }
 
-html body.veloura-glass-effect salla-login-modal,
 html body.veloura-glass-effect salla-modal,
 html body.veloura-glass-effect salla-search,
 html body.veloura-glass-effect .s-login-modal,
@@ -110,7 +107,6 @@ html body.veloura-glass-effect :is(
   box-shadow: none !important;
 }
 
-html body.veloura-glass-effect salla-login-modal,
 html body.veloura-glass-effect salla-modal,
 html body.veloura-glass-effect salla-search {
   --s-modal-bg: var(--veloura-glass-surface);
@@ -118,9 +114,6 @@ html body.veloura-glass-effect salla-search {
   --s-modal-overlay-bg: var(--veloura-global-glass-overlay);
 }
 
-html body.veloura-glass-effect salla-login-modal::part(body),
-html body.veloura-glass-effect salla-login-modal::part(content),
-html body.veloura-glass-effect salla-login-modal::part(panel),
 html body.veloura-glass-effect salla-modal::part(body),
 html body.veloura-glass-effect salla-modal::part(content),
 html body.veloura-glass-effect salla-modal::part(panel) {
@@ -147,8 +140,6 @@ html body.veloura-glass-effect salla-modal::part(panel) {
     0 10px 32px var(--veloura-glass-shadow) !important;
 }
 
-html body.veloura-glass-effect salla-login-modal::part(overlay),
-html body.veloura-glass-effect salla-login-modal::part(backdrop),
 html body.veloura-glass-effect salla-modal::part(overlay),
 html body.veloura-glass-effect salla-modal::part(backdrop) {
   background: var(--veloura-global-glass-overlay) !important;
@@ -198,4 +189,56 @@ html body.veloura-glass-effect .veloura-popup__close {
     backdrop-filter: var(--veloura-glass-filter) !important;
     box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top) !important;
   }
+}
+
+/* ------------------------------------------------------------------------
+   The dialog's close control.
+
+   Measured with the modal open: <salla-login-modal> is EMPTY — no shadow
+   root, no children. Salla renders the dialog as a separate
+   <salla-modal class="s-login-modal"> at body level, so .s-modal-body is the
+   panel and .s-modal-close is the button. Everything this theme aimed at
+   salla-login-modal, including its ::part() rules and a runtime engine that
+   stamped its own attributes, was addressing an element with nothing in it.
+
+   The button only ever needed to stop painting a box and to inherit the
+   panel's text colour, which is two declarations, not a system.
+   ------------------------------------------------------------------------ */
+html body :is(.s-modal-body, .s-modal-content) .s-modal-close,
+html body .s-modal-close {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: inherit !important;
+}
+
+/* ------------------------------------------------------------------------
+   Glass OFF must actually be off.
+
+   .s-modal-body is handed --veloura-glass-surface by an unconditional rule in
+   dark-light.scss — no .veloura-glass-effect in the selector — so with the
+   glass option turned off the dialog was still translucent and still blurring
+   what was behind it. Measured: background alpha .80 in light and .72 in dark,
+   backdrop-filter blur(20px), with the option off. The panel is given the
+   solid form of the same colour instead, so the setting decides.
+   ------------------------------------------------------------------------ */
+html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
+html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content {
+  background: var(--veloura-glass-solid, #e6e8eb) !important;
+  background-color: var(--veloura-glass-solid, #e6e8eb) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.dark body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
+html.dark body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content,
+html body.dark:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
+html body.dark:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
 }
