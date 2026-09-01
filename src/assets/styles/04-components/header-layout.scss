@@ -2318,9 +2318,20 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
        fainter than the top so the shape still has an implied light source.
        Nothing is drawn at all when the glass option is off.
 
-       The fill is carried at 20% of the store colour, not 46%, so the panel
+       The fill is carried at 22% of the store colour, not 46%, so the panel
        and whatever is scrolling behind it read through the control; the blur
        is raised to 18px to keep that from turning into noise.
+
+       The store colour ALONE is not enough to see. Measured over the dark
+       header: the control landed at luminance 19 against a panel at 28 — the
+       store's dark background is darker than the panel it sits on, so a
+       translucent wash of it makes the control recede instead of reading as a
+       separate pane, and in light the two were 232 against 229, which is no
+       difference at all. Glass is legible because it catches light, so a thin
+       white veil is laid over the store tint: enough to lift the control
+       clear of the panel, far too little to make it opaque. The veil is what
+       is tuned per theme — .10 over dark, .55 over light — because the light
+       theme starts much closer to white and needs more of it to move.
    -------------------------------------------------------------------------- */
 
 /* The switching tokens. Both are new names, so neither can be
@@ -2334,6 +2345,9 @@ html body {
      which is the opposite of glass. */
   --veloura-control-edge-top: rgba(203, 213, 225, .95);
   --veloura-control-edge-bottom: rgba(203, 213, 225, .50);
+
+  /* See the veil note in (b) below. */
+  --veloura-control-veil: rgba(255, 255, 255, .55);
 }
 
 html.dark body,
@@ -2347,6 +2361,8 @@ html body.dark {
      because the ask was for the faintest possible lip. */
   --veloura-control-edge-top: rgba(255, 255, 255, .16);
   --veloura-control-edge-bottom: rgba(255, 255, 255, .07);
+
+  --veloura-control-veil: rgba(255, 255, 255, .13);
 }
 
 /* The icon rail is measured with the same number, so the row has one baseline.
@@ -2465,8 +2481,11 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur
   .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur
   .veloura-detached-search-shell .veloura-detached-search {
-  background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
-  background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
+  background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 22%, transparent) !important;
+  background-image: linear-gradient(
+    var(--veloura-control-veil, rgba(255, 255, 255, .55)),
+    var(--veloura-control-veil, rgba(255, 255, 255, .55))
+  ) !important;
   box-shadow: none !important;
   box-sizing: border-box !important;
   border: 0 !important;
@@ -2487,8 +2506,11 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur
     .veloura-header-container .veloura-header-grid
     :is(.veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
         .veloura-header-icon.veloura-login-btn) {
-    background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
-    background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 20%, transparent) !important;
+    background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 22%, transparent) !important;
+    background-image: linear-gradient(
+      var(--veloura-control-veil, rgba(255, 255, 255, .55)),
+      var(--veloura-control-veil, rgba(255, 255, 255, .55))
+    ) !important;
     box-shadow: none !important;
     box-sizing: border-box !important;
     border: 0 !important;
