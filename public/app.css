@@ -36265,8 +36265,21 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
    Row one is therefore a single flex line and every control is a direct item
    of it — __tools, __menu and the two groups become display: contents, which
    dissolves the wrappers without touching the template. Order is then set per
-   control, and margin-inline: auto on the logo splits the leftover space so it
-   sits midway between the two clusters.
+   control.
+
+   THE LOGO IS NOT A FLEX ITEM.
+   margin-inline: auto only splits the LEFTOVER space, so the logo lands midway
+   between the two clusters — which is the header's optical centre only when
+   both clusters happen to be the same width. They are not: login + cart +
+   wishlist + pill on one side against search + dark on the other. The logo is
+   therefore taken out of the flow and pinned to the grid's own 50% line, which
+   is the geometric centre by construction and stays there whatever either
+   cluster does. .veloura-header-grid is already position: relative, so it is
+   the containing block.
+
+   Removing the logo from the line leaves the two clusters packed at the start,
+   so the LAST item of the left cluster (the language pill, order 4) carries
+   margin-inline-end: auto and pushes search + dark to the far end.
    ========================================================================== */
 @media (min-width: 1024px) {
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid {
@@ -36280,6 +36293,25 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     grid-template-rows: none !important;
     direction: ltr !important;
     position: relative !important;
+    padding-top: 10px !important;
+    padding-top: var(--veloura-header-rail-pad-top) !important;
+    padding-bottom: 4px !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid {
+    /* Row one is the taller of the logo and the control rail. */
+    --veloura-header-row-one-h: max(
+      var(--veloura-top-logo-size, 61px),
+      var(--veloura-control-h, 40px)
+    );
+    /* EIGHT !important padding declarations from five older sections match
+       this element, so its padding was whatever the cascade happened to leave
+       — measured at 9.36px top against 2px bottom. That matters here because
+       an absolutely positioned child is offset from the PADDING box while the
+       flex line lays out in the CONTENT box, so top: 0 on the logo missed the
+       row by exactly the padding-top. The rail declares its own padding and
+       hands the top value to the logo, which makes the offset exact instead
+       of coincidental. */
+    --veloura-header-rail-pad-top: 10px;
   }
   /* The wrappers dissolve so their children join the rail. */
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header__tools,
@@ -36320,13 +36352,42 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
   }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-logo {
     order: 5 !important;
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 10px !important;
+    top: var(--veloura-header-rail-pad-top, 10px) !important;
+    bottom: auto !important;
+    height: var(--veloura-header-row-one-h) !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     flex: 0 0 auto !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    transform: none !important;
     z-index: 5 !important;
+    pointer-events: auto !important;
+  }
+  /* Row one used to be as tall as the logo. With the logo out of the flow that
+     height has to come from somewhere, and it also has to be a number the logo
+     can be centred against — a zero-width strut supplies both. It is order 0 so
+     it always sits on row one, and it carries no width, so it moves nothing. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid::before {
+    content: "" !important;
+    order: 0 !important;
+    flex: 0 0 0px !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    height: var(--veloura-header-row-one-h) !important;
+    pointer-events: none !important;
+  }
+  /* Last item of the left cluster pushes everything after it to the far end. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop {
+    margin-right: auto !important;
   }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar {
     order: 6 !important;
@@ -36403,17 +36464,24 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     width: auto !important;
     min-width: 0 !important;
     max-width: none !important;
-    height: auto !important;
-    min-height: 38px !important;
-    min-height: var(--veloura-icon-hit, 38px) !important;
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
+    height: 40px !important;
+    height: var(--veloura-control-h, 40px) !important;
+    min-height: 40px !important;
+    min-height: var(--veloura-control-h, 40px) !important;
+    max-height: 40px !important;
+    max-height: var(--veloura-control-h, 40px) !important;
+    box-sizing: border-box !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
     border-radius: 999px !important;
     line-height: 1 !important;
     white-space: nowrap !important;
     flex: 0 0 auto !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill {
+    /* One height for search, login and the pill — see 10.3. */
   }
   /* The two halves read as one label; neither paints its own box. */
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__language,
@@ -36464,11 +36532,15 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     width: auto !important;
     min-width: 0 !important;
     max-width: none !important;
-    height: auto !important;
-    min-height: 38px !important;
-    min-height: var(--veloura-icon-hit, 38px) !important;
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
+    height: 40px !important;
+    height: var(--veloura-control-h, 40px) !important;
+    min-height: 40px !important;
+    min-height: var(--veloura-control-h, 40px) !important;
+    max-height: 40px !important;
+    max-height: var(--veloura-control-h, 40px) !important;
+    box-sizing: border-box !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
     border-radius: 999px !important;
@@ -36476,9 +36548,12 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     white-space: nowrap !important;
     flex: 0 0 auto !important;
   }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-login-btn {
+    /* One height for search, login and the pill — see 10.3. */
+  }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-login-btn .veloura-login-btn__label {
     display: inline-block !important;
-    font-size: inherit !important;
+    font-size: 0.86em !important;
     line-height: 1 !important;
   }
 }
@@ -36580,27 +36655,73 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
   }
 }
 /* --------------------------------------------------------------------------
-   10.3 SEARCH, LANGUAGE AND LOGIN — THE STORE'S OWN BACKGROUND, NO EDGE
+   10.3 SEARCH, LANGUAGE AND LOGIN — ONE MATERIAL, ONE HEIGHT, ONE TEXT COLOUR
 
-   The three controls share one material taken from --veloura-site-bg, the
-   store's main background colour, with no border at all.
+   Three separate faults were measured here, and each needed its own fix.
 
-   The translucency only applies while the glass option is on
-   (body.veloura-glass-effect / the --blur stack). With glass off the same
-   colour is painted solid, because a translucent control over an opaque
-   header would just look like a mistake.
+   (a) HEIGHT. The search bar was sized by --veloura-search-height (36px) and
+       the two pills by --veloura-icon-hit (38px), so the row never lined up.
+       All three now read one token, --veloura-control-h, and the icon rail is
+       given the same number so the whole row shares a single baseline.
 
-   Only the SEARCH carries this on phones. The language pill and the login
-   button are desktop controls — on mobile the login button is a square icon
-   and painting it there left a stray box behind the account glyph.
+   (b) COLOUR. --veloura-site-bg is declared ONCE, at :root in master.twig,
+       from the light background setting. It does not change in dark mode, so
+       "take the store background" was painting the LIGHT colour on a dark
+       page. The store's real background is --veloura-site-bg in light and
+       --veloura-dark-body-bg in dark, and those are aliased here into a pair
+       of tokens that do switch.
+
+       The same applied to the text. --veloura-top-text is the HEADER text
+       setting, and this store has it set to a near-white, which is correct
+       over the old coloured header and invisible over a light store
+       background. The controls no longer wear the header's colour; they wear
+       the store's own text colour, which switches with the theme.
+
+   (c) EDGE. Glass wants a hairline, but a full border round a pill reads as a
+       button. Only the top and bottom edges are drawn, so the rounded shape
+       picks up a bright arc above and a darker one below — the classic glass
+       lip — and nothing at all when the glass option is off.
    -------------------------------------------------------------------------- */
+/* The switching tokens. Both are new names, so neither can be
+   self-referential: --veloura-control-surface never reads itself. */
+html body {
+  --veloura-control-h: 40px;
+  --veloura-control-surface: var(--veloura-site-bg, #f4f5f7);
+  --veloura-control-text: var(--veloura-primary-text, var(--color-text, #111827));
+  --veloura-control-edge-top: rgba(255, 255, 255, .55);
+  --veloura-control-edge-bottom: rgba(15, 23, 42, .12);
+}
+html.dark body,
+html body.dark {
+  --veloura-control-surface: var(--veloura-dark-body-bg, #010202);
+  --veloura-control-text: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-control-edge-top: rgba(255, 255, 255, .10);
+  --veloura-control-edge-bottom: rgba(0, 0, 0, .45);
+}
+/* The icon rail is measured with the same number, so the row has one baseline.
+
+   TWO tokens size the search, not one: --veloura-search-height (declared in
+   header-glass-search.scss) drives the bar itself, and
+   --veloura-header-search-height (declared in BOTH header-search.scss and
+   header-submenu.scss) drives .veloura-search-surface, where it is applied as
+   max-height. Setting only the first one left the max-height capping the bar
+   at 36px while everything else had already moved to 40 — measured, not
+   assumed. Both are redirected to the one number. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled {
+    --veloura-icon-hit: var(--veloura-control-h, 40px);
+    --veloura-search-height: var(--veloura-control-h, 40px);
+    --veloura-header-search-height: var(--veloura-control-h, 40px);
+  }
+}
+/* Glass off: the store's own colour, painted solid, no edge. */
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search {
   background: #f4f5f7 !important;
-  background: var(--veloura-site-bg, #f4f5f7) !important;
+  background: var(--veloura-control-surface, #f4f5f7) !important;
   background-color: #f4f5f7 !important;
-  background-color: var(--veloura-site-bg, #f4f5f7) !important;
+  background-color: var(--veloura-control-surface, #f4f5f7) !important;
   background-image: none !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -36609,15 +36730,61 @@ html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-det
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn {
     background: #f4f5f7 !important;
-    background: var(--veloura-site-bg, #f4f5f7) !important;
+    background: var(--veloura-control-surface, #f4f5f7) !important;
     background-color: #f4f5f7 !important;
-    background-color: var(--veloura-site-bg, #f4f5f7) !important;
+    background-color: var(--veloura-control-surface, #f4f5f7) !important;
     background-image: none !important;
     border: 0 !important;
     box-shadow: none !important;
   }
 }
-/* Glass on: the same colour, carried at 46% so the panel reads through it. */
+/* --------------------------------------------------------------------------
+   Text colour. The two pills and the search placeholder read the store's text
+   colour, not the header's, because they now sit on the store's background.
+   -webkit-text-fill-color is set alongside every colour: Salla's own header
+   rules use it, and it wins over color on WebKit whatever the specificity.
+   -------------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar input:not(.does-not-exist),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar .s-search-input,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar i:not(.does-not-exist),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar svg:not(.does-not-exist),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar input:not(.does-not-exist),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar .s-search-input,
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar i:not(.does-not-exist),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar svg:not(.does-not-exist),
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search input:not(.does-not-exist),
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search .s-search-input,
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search i:not(.does-not-exist),
+html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search svg:not(.does-not-exist) {
+  color: #111827 !important;
+  color: var(--veloura-control-text, #111827) !important;
+  -webkit-text-fill-color: #111827 !important;
+  -webkit-text-fill-color: var(--veloura-control-text, #111827) !important;
+}
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill .veloura-localization-pill__language,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill .veloura-localization-pill__currency,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill i:not(.does-not-exist),
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill svg:not(.does-not-exist),
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill span:not(.does-not-exist),
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn i,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn svg,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn span {
+    color: #111827 !important;
+    color: var(--veloura-control-text, #111827) !important;
+    -webkit-text-fill-color: #111827 !important;
+    -webkit-text-fill-color: var(--veloura-control-text, #111827) !important;
+  }
+}
+/* --------------------------------------------------------------------------
+   Glass on: the same colour carried at 46% so the panel reads through it,
+   plus the top/bottom hairline.
+   -------------------------------------------------------------------------- */
 html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-detached-search,
@@ -36626,8 +36793,13 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-head
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-detached-search-shell .veloura-detached-search {
   background: rgba(244, 245, 247, 0.46) !important;
   background-color: rgba(244, 245, 247, 0.46) !important;
-  border: 0 !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-top: 1px solid var(--veloura-control-edge-top, rgba(255, 255, 255, 0.55)) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.12) !important;
+  border-bottom: 1px solid var(--veloura-control-edge-bottom, rgba(15, 23, 42, 0.12)) !important;
   -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
   backdrop-filter: blur(14px) saturate(140%) !important;
 }
@@ -36638,8 +36810,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-detached-sear
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-detached-search-shell .veloura-detached-search {
-  background: color-mix(in srgb, var(--veloura-site-bg, #f4f5f7) 46%, transparent) !important;
-  background-color: color-mix(in srgb, var(--veloura-site-bg, #f4f5f7) 46%, transparent) !important;
+  background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
+  background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
 }
 }
 @media (min-width: 1024px) {
@@ -36649,8 +36821,13 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-de
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist) {
     background: rgba(244, 245, 247, 0.46) !important;
     background-color: rgba(244, 245, 247, 0.46) !important;
-    border: 0 !important;
     box-shadow: none !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.55) !important;
+    border-top: 1px solid var(--veloura-control-edge-top, rgba(255, 255, 255, 0.55)) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.12) !important;
+    border-bottom: 1px solid var(--veloura-control-edge-bottom, rgba(15, 23, 42, 0.12)) !important;
     -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
     backdrop-filter: blur(14px) saturate(140%) !important;
   }
@@ -36660,8 +36837,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-
   html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist),
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header-icon.veloura-login-btn:not(.does-not-exist) {
-    background: color-mix(in srgb, var(--veloura-site-bg, #f4f5f7) 46%, transparent) !important;
-    background-color: color-mix(in srgb, var(--veloura-site-bg, #f4f5f7) 46%, transparent) !important;
+    background: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
+    background-color: color-mix(in srgb, var(--veloura-control-surface, #f4f5f7) 46%, transparent) !important;
   }
 }
 }
@@ -56103,7 +56280,16 @@ html body.dark .s-product-card-entry [class*=Price] {
   color: #ffffff !important;
   color: var(--veloura-dark-product-card-text, #ffffff) !important;
 }
-/* Header text/icons use the dark primary text setting only. */
+/* Header text/icons use the dark primary text setting only.
+
+   EXCEPTION: a menu entry that Salla was given its own colour for — the red
+   "تخفيضات" is the one in this store — arrives from custom-main-menu as an
+   INLINE style on the <a> (main-menu.js prints menu.link_attrs verbatim).
+   An inline declaration loses to !important, so the blanket dark rule below
+   was repainting that link white and the colour only survived in light mode,
+   where no such rule exists. Anchors that carry their own colour are excluded
+   instead of being special-cased by name, so every coloured menu entry the
+   merchant configures keeps its colour in both themes. */
 html.dark body .store-header.veloura-top-enabled,
 html body.dark .store-header.veloura-top-enabled {
   --veloura-top-text: var(--veloura-dark-primary-text, #ffffff) !important;
@@ -56113,7 +56299,7 @@ html body.dark .store-header.veloura-top-enabled {
 html.dark body .store-header.veloura-top-enabled :where(.veloura-header-icon,
 .veloura-header__actions a,
 .veloura-header__actions button,
-.veloura-menu-links-wrap a,
+.veloura-menu-links-wrap a:not([style*=color]),
 .veloura-cart-summary,
 .veloura-cart-custom-icon,
 .veloura-dark-toggle,
@@ -56123,7 +56309,7 @@ salla-cart-summary),
 html body.dark .store-header.veloura-top-enabled :where(.veloura-header-icon,
 .veloura-header__actions a,
 .veloura-header__actions button,
-.veloura-menu-links-wrap a,
+.veloura-menu-links-wrap a:not([style*=color]),
 .veloura-cart-summary,
 .veloura-cart-custom-icon,
 .veloura-dark-toggle,

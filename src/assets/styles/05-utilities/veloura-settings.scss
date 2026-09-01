@@ -132,7 +132,16 @@ html body.dark .s-product-card-entry :is(
   color: var(--veloura-dark-product-card-text, #ffffff) !important;
 }
 
-/* Header text/icons use the dark primary text setting only. */
+/* Header text/icons use the dark primary text setting only.
+
+   EXCEPTION: a menu entry that Salla was given its own colour for — the red
+   "تخفيضات" is the one in this store — arrives from custom-main-menu as an
+   INLINE style on the <a> (main-menu.js prints menu.link_attrs verbatim).
+   An inline declaration loses to !important, so the blanket dark rule below
+   was repainting that link white and the colour only survived in light mode,
+   where no such rule exists. Anchors that carry their own colour are excluded
+   instead of being special-cased by name, so every coloured menu entry the
+   merchant configures keeps its colour in both themes. */
 html.dark body .store-header.veloura-top-enabled,
 html body.dark .store-header.veloura-top-enabled {
   --veloura-top-text: var(--veloura-dark-primary-text, #ffffff) !important;
@@ -143,7 +152,7 @@ html.dark body .store-header.veloura-top-enabled :where(
   .veloura-header-icon,
   .veloura-header__actions a,
   .veloura-header__actions button,
-  .veloura-menu-links-wrap a,
+  .veloura-menu-links-wrap a:not([style*="color"]),
   .veloura-cart-summary,
   .veloura-cart-custom-icon,
   .veloura-dark-toggle,
@@ -155,7 +164,7 @@ html body.dark .store-header.veloura-top-enabled :where(
   .veloura-header-icon,
   .veloura-header__actions a,
   .veloura-header__actions button,
-  .veloura-menu-links-wrap a,
+  .veloura-menu-links-wrap a:not([style*="color"]),
   .veloura-cart-summary,
   .veloura-cart-custom-icon,
   .veloura-dark-toggle,
