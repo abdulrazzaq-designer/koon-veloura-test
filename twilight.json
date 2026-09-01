@@ -1703,29 +1703,6 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "إلغاء التوسيط للشعار في أجهزة اللابتوب",
-      "description": "يتم وضع الشعار في مكانه العادي في اللابتوب، الزر لا يعمل إلا عند تفعيل توسيط الشعار",
-      "id": "veloura_top_logo_no_center_laptop_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_top_logo_center_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
       "label": "إخفاء الهيدر بعد النزول وإظهاره عند العودة لأعلى الصفحة",
       "description": "عند تفعيله يختفي الهيدر أثناء النزول، ولا يعود بمجرد الصعود قليلاً؛ يظهر فقط عند الرجوع إلى منطقة رأس الصفحة.",
       "id": "veloura_top_hide_on_scroll_v6_2026",
@@ -16399,7 +16376,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل222222",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,

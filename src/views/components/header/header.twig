@@ -89,20 +89,12 @@
 {% endif %}
 {% set top_logo_center = top_logo_center_raw == true or top_logo_center_raw == 'true' or top_logo_center_raw == 1 or top_logo_center_raw == '1' or top_logo_center_raw == 'on' %}
 
-{% set top_logo_no_center_laptop_setting = theme.settings.get('veloura_top_logo_no_center_laptop_2026', false) %}
-{% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting %}
-{% if top_logo_no_center_laptop_setting.selected is defined %}
-  {% if top_logo_no_center_laptop_setting.selected.value is defined %}
-    {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.selected.value %}
-  {% elseif top_logo_no_center_laptop_setting.selected is iterable and top_logo_no_center_laptop_setting.selected[0] is defined and top_logo_no_center_laptop_setting.selected[0].value is defined %}
-    {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.selected[0].value %}
-  {% else %}
-    {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.selected %}
-  {% endif %}
-{% elseif top_logo_no_center_laptop_setting.value is defined %}
-  {% set top_logo_no_center_laptop_raw = top_logo_no_center_laptop_setting.value %}
-{% endif %}
-{% set top_logo_no_center_laptop = top_logo_no_center_laptop_raw == true or top_logo_no_center_laptop_raw == 'true' or top_logo_no_center_laptop_raw == 1 or top_logo_no_center_laptop_raw == '1' or top_logo_no_center_laptop_raw == 'on' %}
+{# veloura_top_logo_no_center_laptop_2026 removed 2026-09: the logo is
+   always centered now, laptop included. Removing this setting also drops
+   the .veloura-top-logo-no-center-laptop class from the header, which
+   means every :not(.veloura-top-logo-no-center-laptop) guard in the CSS
+   is now permanently satisfied — that's what "always centered" means in
+   practice, no CSS rewrite required for this part. #}
 
 {% set top_logo_size_value = theme.settings.get('veloura_top_logo_size_2026', 5) %}
 {% if top_logo_size_value.value is defined %}{% set top_logo_size_value = top_logo_size_value.value %}{% endif %}
@@ -373,10 +365,21 @@
   {{ top_compact_on_scroll ? 'veloura-top-compact-on-scroll' : '' }}
   {{ top_blur ? 'veloura-top-blur' : '' }}
   {{ top_logo_center ? 'veloura-top-logo-centered' : '' }}
-  {{ top_logo_no_center_laptop ? 'veloura-top-logo-no-center-laptop' : '' }}
   {{ full_width_desktop ? 'veloura-top-full-width-desktop' : '' }}
   {{ search_detached ? 'veloura-top-search-detached' : '' }}
-  {{ (not search_detached and desktop_search in ['bar', 'bar_sticky_icon']) ? 'veloura-header-balanced-search' : '' }}
+  {# Bug fixed 2026-09: this used to require "not search_detached", so
+     detaching the search dropped .veloura-header-balanced-search and the
+     header fell back to an older grid (grid-template-areas: 'left logo
+     right') that targets grid children named .veloura-header-left /
+     .veloura-header-right directly. Those elements are nested a level
+     deeper now, inside .veloura-header__tools, so that fallback grid had no
+     element to place in either named area and the header's whole layout
+     (icon grouping, logo centering) broke. The balanced-search grid
+     (V63/V64 below) has no such assumption — when detached, its search
+     track (column 1) is simply empty, which is harmless in CSS Grid — so
+     applying it unconditionally for bar/bar_sticky_icon fixes detached
+     search without a fallback layout to keep in sync. #}
+  {{ desktop_search in ['bar', 'bar_sticky_icon'] ? 'veloura-header-balanced-search' : '' }}
   {{ hide_lang_desktop ? 'veloura-top-hide-lang-desktop' : '' }}
   {{ top_hide_on_scroll ? 'veloura-hide-top-on-scroll' : '' }}
 

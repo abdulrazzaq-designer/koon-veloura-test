@@ -653,9 +653,18 @@ html body.veloura-glass-effect
 
 /* =========================================================
    Veloura V3 — Final Header Glass + Desktop Localization
+
+   Bug fixed 2026-09: this used to fire on body.veloura-glass-effect alone —
+   the GENERAL glass setting (veloura_general_glass_effect_2026), used for
+   modals/popups. The header's own glass toggle is a different setting
+   (veloura_top_blur_v4_2026 → .veloura-header-tabs-stack--blur). So turning
+   the header's glass off did nothing here: this block kept painting glass
+   on the header surface as long as the unrelated general setting was on.
+   Requiring .veloura-header-tabs-stack--blur too makes the header's own
+   toggle the one that actually controls it.
    ========================================================= */
 
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   border-radius: 28px !important;
   overflow: hidden !important;
 
@@ -677,7 +686,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack__surface {
 }
 
 /* Inner header layers must not cover the glass surface. */
-html body.veloura-glass-effect
+html body
+.veloura-header-tabs-stack--blur
 .veloura-header-tabs-stack__surface
 :is(
   .store-header,

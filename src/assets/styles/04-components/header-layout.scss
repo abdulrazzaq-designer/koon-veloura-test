@@ -270,14 +270,23 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
 
 /* A real glass surface must be translucent at the wrapper level; styling
    only an internal shadow-DOM input is not reliable across Salla hydration.
-   This contract covers connected and detached search bars equally. */
+   This contract covers connected and detached search bars equally.
+
+   Bug fixed 2026-09: this used to mix in --veloura-site-second-bg (the
+   site's general secondary background — unrelated to the header) plus a
+   white gradient overlay, so the search pill came out off-white/light no
+   matter what color the header actually was, light or dark mode included.
+   It now uses --veloura-glass-surface directly — the exact same token the
+   header surface itself paints with (see dark-light.scss) — so the search
+   pill is always the header's own color, just distinguished by its border
+   and a light highlight rather than by being a different color. */
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
   --veloura-search-bg: transparent;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .035)),
-    color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 46%, transparent) !important;
-  background-color: color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 46%, transparent) !important;
+    linear-gradient(145deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .02)),
+    var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
   border: 1px solid color-mix(in srgb, var(--veloura-top-text, #1f2937) 16%, rgba(255, 255, 255, .38)) !important;
   border-radius: var(--veloura-search-radius, var(--veloura-radius, 24px)) !important;
   -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(16px) saturate(145%)) !important;

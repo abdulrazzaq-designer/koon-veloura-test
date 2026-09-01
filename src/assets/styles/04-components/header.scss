@@ -2925,8 +2925,17 @@ html body .store-header.veloura-top-enabled .s-cart-summary-count {
 }
 
 /* The surface is the only glass/shadow owner; inner header layers do not
-   create a second frame. */
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface,
+   create a second frame.
+
+   Bug fixed 2026-09: the body.veloura-glass-effect branch below was a
+   FOURTH independent copy of "paint the header glass" (alongside two in
+   dark-light.scss and one injected from JS), each gated differently. This
+   one fired off the general glass setting alone, ignoring the header's own
+   blur toggle entirely — so with header-blur off but the unrelated general
+   setting on, this rule (loaded before dark-light.scss, so uncontested
+   wherever dark-light.scss's blur-gated rule didn't also fire) still
+   painted a full glass border/shadow/background on the header. All four
+   copies now agree: .veloura-header-tabs-stack--blur is the only gate. */
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   background: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
   background-color: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;

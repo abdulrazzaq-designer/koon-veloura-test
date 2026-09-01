@@ -42595,15 +42595,22 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
   }
 }
 /* ========================================================================
-   Veloura V86 — exact dark secondary + light glass +3%
+   Veloura V89 — exact dark secondary + light glass +3%
 
    Architecture:
-   1) The root html/body .dark class is the only light-DOM theme switch.
-   2) Light selectors are mirrored by html.dark body / html body.dark selectors.
-   3) Each glass component has one visible paint owner; nested wrappers are clear.
-   4) Product-card badges and solid action buttons keep their own configured colors.
-   5) Salla Shadow DOM components are handled by the V86 bridge, using the same
-      root state and the same material tokens.
+   1) app.js's applyTheme() toggles .dark on <html> and <body> together, in
+      the same call, every time — the two are never out of sync. So every
+      rule below only needs ONE selector, ".dark ancestor", instead of the
+      three-way "html.dark, html.dark body, html body.dark" that used to be
+      written out for each rule. That tripling was pure bulk: it never
+      changed which elements matched, only how many lines it took to say so.
+   2) Each glass component has one visible paint owner; nested wrappers are clear.
+   3) Product-card badges and solid action buttons keep their own configured colors.
+   4) Salla Shadow DOM components are handled by the V86 bridge in
+      veloura-exact-dark-light-plus3-v86.js — see COMPONENTS there. salla-modal
+      (the real login/auth dialog) was missing from that list; its shadow root
+      never received SHADOW_CSS even though SHADOW_CSS was already written for
+      exactly its class names (.s-login-modal, .s-modal-body, .s-modal-wrapper).
    ======================================================================== */
 :root,
 html body {
@@ -42640,9 +42647,7 @@ html body {
   --veloura-global-glass-overlay: var(--veloura-overlay);
   --veloura-global-glass-control: var(--veloura-control);
 }
-html.dark,
-html.dark body,
-html body.dark {
+html.dark {
   /* The configured dark secondary color is the exact opaque material — no whitening from transparency. */
   --veloura-dark-source: var(--veloura-dark-secondary-bg, #010612);
   --veloura-header-glass-background: var(--veloura-dark-source);
@@ -42970,14 +42975,13 @@ html body .veloura-search-surface salla-search::part(input) {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
-html.dark body .veloura-search-surface,
-html body.dark .veloura-search-surface {
+.dark .veloura-search-surface {
   color: #ffffff !important;
   color: var(--veloura-dark-primary-text, #ffffff) !important;
   --color-text: var(--veloura-dark-primary-text, #ffffff) !important;
   --color-muted: var(--veloura-dark-secondary-text, #cccccc) !important;
 }
-html.dark body .veloura-search-surface input, html.dark body .veloura-search-surface textarea, html body.dark .veloura-search-surface input, html body.dark .veloura-search-surface textarea {
+.dark .veloura-search-surface input, .dark .veloura-search-surface textarea {
   background: transparent !important;
   background-color: transparent !important;
   border-color: transparent !important;
@@ -42985,49 +42989,25 @@ html.dark body .veloura-search-surface input, html.dark body .veloura-search-sur
   color: var(--veloura-dark-primary-text, #ffffff) !important;
   -webkit-text-fill-color: currentColor !important;
 }
-html.dark body .veloura-search-surface input::-moz-placeholder {
+.dark .veloura-search-surface input::-moz-placeholder {
   color: #cccccc !important;
   color: var(--veloura-dark-secondary-text, #cccccc) !important;
   -webkit-text-fill-color: currentColor !important;
   opacity: 0.78 !important;
 }
-html.dark body .veloura-search-surface input::placeholder {
+.dark .veloura-search-surface input::placeholder {
   color: #cccccc !important;
   color: var(--veloura-dark-secondary-text, #cccccc) !important;
   -webkit-text-fill-color: currentColor !important;
   opacity: 0.78 !important;
 }
-html.dark body .veloura-search-surface textarea::-moz-placeholder {
+.dark .veloura-search-surface textarea::-moz-placeholder {
   color: #cccccc !important;
   color: var(--veloura-dark-secondary-text, #cccccc) !important;
   -webkit-text-fill-color: currentColor !important;
   opacity: 0.78 !important;
 }
-html.dark body .veloura-search-surface textarea::placeholder {
-  color: #cccccc !important;
-  color: var(--veloura-dark-secondary-text, #cccccc) !important;
-  -webkit-text-fill-color: currentColor !important;
-  opacity: 0.78 !important;
-}
-html body.dark .veloura-search-surface input::-moz-placeholder {
-  color: #cccccc !important;
-  color: var(--veloura-dark-secondary-text, #cccccc) !important;
-  -webkit-text-fill-color: currentColor !important;
-  opacity: 0.78 !important;
-}
-html body.dark .veloura-search-surface input::placeholder {
-  color: #cccccc !important;
-  color: var(--veloura-dark-secondary-text, #cccccc) !important;
-  -webkit-text-fill-color: currentColor !important;
-  opacity: 0.78 !important;
-}
-html body.dark .veloura-search-surface textarea::-moz-placeholder {
-  color: #cccccc !important;
-  color: var(--veloura-dark-secondary-text, #cccccc) !important;
-  -webkit-text-fill-color: currentColor !important;
-  opacity: 0.78 !important;
-}
-html body.dark .veloura-search-surface textarea::placeholder {
+.dark .veloura-search-surface textarea::placeholder {
   color: #cccccc !important;
   color: var(--veloura-dark-secondary-text, #cccccc) !important;
   -webkit-text-fill-color: currentColor !important;
@@ -43039,9 +43019,7 @@ html body.dark .veloura-search-surface textarea::placeholder {
    material as the header. The dedicated side-menu dark background is used
    only when glass is OFF.
    ------------------------------------------------------------------------ */
-html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
-html.dark body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
-html body.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+html.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   background: rgba(16, 21, 32, 0.6) !important;
   background: var(--veloura-side-dark-glass-surface) !important;
   background-color: rgba(16, 21, 32, 0.6) !important;
@@ -43058,9 +43036,10 @@ html body.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   color: #ffffff !important;
   color: var(--veloura-dark-side-menu-text, #ffffff) !important;
 }
-html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
-html.dark body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
-html body.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+html.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  /* veloura-side-cats-glass is only ever toggled on <html> (app.js
+     syncVisualModes) — the body.veloura-side-cats-glass variants below
+     could never match and are removed, not just merged. */
   --veloura-side-dark-glass-source: var(--veloura-dark-secondary-bg, #010612);
   --veloura-side-dark-glass-tint: color-mix(
     in srgb,
@@ -43073,9 +43052,7 @@ html body.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
     transparent
   );
 }
-html.dark:not(.veloura-side-cats-glass) body .mm-ocd.mm-ocd--open .mm-ocd__content,
-html.dark body:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content,
-html body.dark:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content {
+html.dark:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content {
   background: #010612 !important;
   background: var(--veloura-dark-side-menu-bg, var(--veloura-dark-secondary-bg, #010612)) !important;
   background-color: #010612 !important;
@@ -43086,20 +43063,13 @@ html body.dark:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__conte
   color: #ffffff !important;
   color: var(--veloura-dark-side-menu-text, #ffffff) !important;
 }
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content a:not(.does-not-exist),
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content button:not(.does-not-exist),
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content span:not(.does-not-exist),
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content i:not(.does-not-exist),
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content svg:not(.does-not-exist),
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--open,
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--navbar,
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content a:not(.does-not-exist),
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content button:not(.does-not-exist),
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content span:not(.does-not-exist),
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content i:not(.does-not-exist),
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content svg:not(.does-not-exist),
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--open,
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--navbar {
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content a:not(.does-not-exist),
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content button:not(.does-not-exist),
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content span:not(.does-not-exist),
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content i:not(.does-not-exist),
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content svg:not(.does-not-exist),
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--open,
+.dark .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--navbar {
   color: #ffffff !important;
   color: var(--veloura-dark-side-menu-text, #ffffff) !important;
   fill: currentColor !important;
@@ -43107,248 +43077,129 @@ html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content .mm-spn--navbar {
 /* ------------------------------------------------------------------------
    Dialog text roles. Scope is limited to real dialog panels; no global recolor.
    ------------------------------------------------------------------------ */
-html.dark body .veloura-popup__box h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .veloura-popup__box .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html.dark body .swal2-popup h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .swal2-popup h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .swal2-popup h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .swal2-popup h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .swal2-popup h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .swal2-popup h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .swal2-popup .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .swal2-popup .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .swal2-popup .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .s-salla-modal-body .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html.dark body .s-modal-body h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-body h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-body h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-body h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-body h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-body h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-body .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .s-modal-body .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .s-modal-body .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html.dark body .s-modal-content h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-content h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-content h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-content h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-content h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-content h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .s-modal-content .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .s-modal-content .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .s-modal-content .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .veloura-qv-full__dialog .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog .s-modal-title:not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html.dark body .veloura-quick-view-modal__dialog .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .veloura-popup__box .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .swal2-popup h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .swal2-popup h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .swal2-popup h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .swal2-popup h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .swal2-popup h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .swal2-popup h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .swal2-popup .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .swal2-popup .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .swal2-popup .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .s-salla-modal-body .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .s-modal-body h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-body h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-body h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-body h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-body h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-body h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-body .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .s-modal-body .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .s-modal-body .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .s-modal-content h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-content h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-content h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-content h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-content h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-content h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .s-modal-content .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .s-modal-content .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .s-modal-content .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .veloura-qv-full__dialog .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog h1:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog h2:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog h3:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog h4:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog h5:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog h6:not(.does-not-exist):not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog .s-modal-title:not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog .veloura-qv-full__title:not(.s-product-card-promotion-title),
-html body.dark .veloura-quick-view-modal__dialog .veloura-quick-view-modal__title:not(.s-product-card-promotion-title) {
+.dark .veloura-popup__box h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-popup__box h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-popup__box h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-popup__box h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-popup__box h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-popup__box h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-popup__box .s-modal-title:not(.s-product-card-promotion-title),
+.dark .veloura-popup__box .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .veloura-popup__box .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
+.dark .swal2-popup h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .swal2-popup h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .swal2-popup h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .swal2-popup h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .swal2-popup h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .swal2-popup h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .swal2-popup .s-modal-title:not(.s-product-card-promotion-title),
+.dark .swal2-popup .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .swal2-popup .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body .s-modal-title:not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .s-salla-modal-body .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
+.dark .s-modal-body h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-body h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-body h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-body h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-body h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-body h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-body .s-modal-title:not(.s-product-card-promotion-title),
+.dark .s-modal-body .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .s-modal-body .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
+.dark .s-modal-content h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-content h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-content h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-content h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-content h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-content h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .s-modal-content .s-modal-title:not(.s-product-card-promotion-title),
+.dark .s-modal-content .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .s-modal-content .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog .s-modal-title:not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .veloura-qv-full__dialog .veloura-quick-view-modal__title:not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog h1:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog h2:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog h3:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog h4:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog h5:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog h6:not(.does-not-exist):not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog .s-modal-title:not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog .veloura-qv-full__title:not(.s-product-card-promotion-title),
+.dark .veloura-quick-view-modal__dialog .veloura-quick-view-modal__title:not(.s-product-card-promotion-title) {
   color: #ffffff !important;
   color: var(--veloura-dark-primary-text, #ffffff) !important;
   -webkit-text-fill-color: currentColor !important;
 }
-html.dark body .veloura-popup__box p:not(.does-not-exist),
-html.dark body .veloura-popup__box small:not(.does-not-exist),
-html.dark body .veloura-popup__box label:not(.does-not-exist),
-html.dark body .veloura-popup__box .description,
-html.dark body .veloura-popup__box .text-muted,
-html.dark body .veloura-popup__box .veloura-qv-full__description,
-html.dark body .veloura-popup__box .veloura-quick-view-modal__description,
-html.dark body .veloura-popup__box .veloura-quick-view-modal__loading,
-html.dark body .swal2-popup p:not(.does-not-exist),
-html.dark body .swal2-popup small:not(.does-not-exist),
-html.dark body .swal2-popup label:not(.does-not-exist),
-html.dark body .swal2-popup .description,
-html.dark body .swal2-popup .text-muted,
-html.dark body .swal2-popup .veloura-qv-full__description,
-html.dark body .swal2-popup .veloura-quick-view-modal__description,
-html.dark body .swal2-popup .veloura-quick-view-modal__loading,
-html.dark body .s-salla-modal-body p:not(.does-not-exist),
-html.dark body .s-salla-modal-body small:not(.does-not-exist),
-html.dark body .s-salla-modal-body label:not(.does-not-exist),
-html.dark body .s-salla-modal-body .description,
-html.dark body .s-salla-modal-body .text-muted,
-html.dark body .s-salla-modal-body .veloura-qv-full__description,
-html.dark body .s-salla-modal-body .veloura-quick-view-modal__description,
-html.dark body .s-salla-modal-body .veloura-quick-view-modal__loading,
-html.dark body .s-modal-body p:not(.does-not-exist),
-html.dark body .s-modal-body small:not(.does-not-exist),
-html.dark body .s-modal-body label:not(.does-not-exist),
-html.dark body .s-modal-body .description,
-html.dark body .s-modal-body .text-muted,
-html.dark body .s-modal-body .veloura-qv-full__description,
-html.dark body .s-modal-body .veloura-quick-view-modal__description,
-html.dark body .s-modal-body .veloura-quick-view-modal__loading,
-html.dark body .s-modal-content p:not(.does-not-exist),
-html.dark body .s-modal-content small:not(.does-not-exist),
-html.dark body .s-modal-content label:not(.does-not-exist),
-html.dark body .s-modal-content .description,
-html.dark body .s-modal-content .text-muted,
-html.dark body .s-modal-content .veloura-qv-full__description,
-html.dark body .s-modal-content .veloura-quick-view-modal__description,
-html.dark body .s-modal-content .veloura-quick-view-modal__loading,
-html.dark body .veloura-qv-full__dialog p:not(.does-not-exist),
-html.dark body .veloura-qv-full__dialog small:not(.does-not-exist),
-html.dark body .veloura-qv-full__dialog label:not(.does-not-exist),
-html.dark body .veloura-qv-full__dialog .description,
-html.dark body .veloura-qv-full__dialog .text-muted,
-html.dark body .veloura-qv-full__dialog .veloura-qv-full__description,
-html.dark body .veloura-qv-full__dialog .veloura-quick-view-modal__description,
-html.dark body .veloura-qv-full__dialog .veloura-quick-view-modal__loading,
-html.dark body .veloura-quick-view-modal__dialog p:not(.does-not-exist),
-html.dark body .veloura-quick-view-modal__dialog small:not(.does-not-exist),
-html.dark body .veloura-quick-view-modal__dialog label:not(.does-not-exist),
-html.dark body .veloura-quick-view-modal__dialog .description,
-html.dark body .veloura-quick-view-modal__dialog .text-muted,
-html.dark body .veloura-quick-view-modal__dialog .veloura-qv-full__description,
-html.dark body .veloura-quick-view-modal__dialog .veloura-quick-view-modal__description,
-html.dark body .veloura-quick-view-modal__dialog .veloura-quick-view-modal__loading,
-html body.dark .veloura-popup__box p:not(.does-not-exist),
-html body.dark .veloura-popup__box small:not(.does-not-exist),
-html body.dark .veloura-popup__box label:not(.does-not-exist),
-html body.dark .veloura-popup__box .description,
-html body.dark .veloura-popup__box .text-muted,
-html body.dark .veloura-popup__box .veloura-qv-full__description,
-html body.dark .veloura-popup__box .veloura-quick-view-modal__description,
-html body.dark .veloura-popup__box .veloura-quick-view-modal__loading,
-html body.dark .swal2-popup p:not(.does-not-exist),
-html body.dark .swal2-popup small:not(.does-not-exist),
-html body.dark .swal2-popup label:not(.does-not-exist),
-html body.dark .swal2-popup .description,
-html body.dark .swal2-popup .text-muted,
-html body.dark .swal2-popup .veloura-qv-full__description,
-html body.dark .swal2-popup .veloura-quick-view-modal__description,
-html body.dark .swal2-popup .veloura-quick-view-modal__loading,
-html body.dark .s-salla-modal-body p:not(.does-not-exist),
-html body.dark .s-salla-modal-body small:not(.does-not-exist),
-html body.dark .s-salla-modal-body label:not(.does-not-exist),
-html body.dark .s-salla-modal-body .description,
-html body.dark .s-salla-modal-body .text-muted,
-html body.dark .s-salla-modal-body .veloura-qv-full__description,
-html body.dark .s-salla-modal-body .veloura-quick-view-modal__description,
-html body.dark .s-salla-modal-body .veloura-quick-view-modal__loading,
-html body.dark .s-modal-body p:not(.does-not-exist),
-html body.dark .s-modal-body small:not(.does-not-exist),
-html body.dark .s-modal-body label:not(.does-not-exist),
-html body.dark .s-modal-body .description,
-html body.dark .s-modal-body .text-muted,
-html body.dark .s-modal-body .veloura-qv-full__description,
-html body.dark .s-modal-body .veloura-quick-view-modal__description,
-html body.dark .s-modal-body .veloura-quick-view-modal__loading,
-html body.dark .s-modal-content p:not(.does-not-exist),
-html body.dark .s-modal-content small:not(.does-not-exist),
-html body.dark .s-modal-content label:not(.does-not-exist),
-html body.dark .s-modal-content .description,
-html body.dark .s-modal-content .text-muted,
-html body.dark .s-modal-content .veloura-qv-full__description,
-html body.dark .s-modal-content .veloura-quick-view-modal__description,
-html body.dark .s-modal-content .veloura-quick-view-modal__loading,
-html body.dark .veloura-qv-full__dialog p:not(.does-not-exist),
-html body.dark .veloura-qv-full__dialog small:not(.does-not-exist),
-html body.dark .veloura-qv-full__dialog label:not(.does-not-exist),
-html body.dark .veloura-qv-full__dialog .description,
-html body.dark .veloura-qv-full__dialog .text-muted,
-html body.dark .veloura-qv-full__dialog .veloura-qv-full__description,
-html body.dark .veloura-qv-full__dialog .veloura-quick-view-modal__description,
-html body.dark .veloura-qv-full__dialog .veloura-quick-view-modal__loading,
-html body.dark .veloura-quick-view-modal__dialog p:not(.does-not-exist),
-html body.dark .veloura-quick-view-modal__dialog small:not(.does-not-exist),
-html body.dark .veloura-quick-view-modal__dialog label:not(.does-not-exist),
-html body.dark .veloura-quick-view-modal__dialog .description,
-html body.dark .veloura-quick-view-modal__dialog .text-muted,
-html body.dark .veloura-quick-view-modal__dialog .veloura-qv-full__description,
-html body.dark .veloura-quick-view-modal__dialog .veloura-quick-view-modal__description,
-html body.dark .veloura-quick-view-modal__dialog .veloura-quick-view-modal__loading {
+.dark .veloura-popup__box p:not(.does-not-exist),
+.dark .veloura-popup__box small:not(.does-not-exist),
+.dark .veloura-popup__box label:not(.does-not-exist),
+.dark .veloura-popup__box .description,
+.dark .veloura-popup__box .text-muted,
+.dark .veloura-popup__box .veloura-qv-full__description,
+.dark .veloura-popup__box .veloura-quick-view-modal__description,
+.dark .veloura-popup__box .veloura-quick-view-modal__loading,
+.dark .swal2-popup p:not(.does-not-exist),
+.dark .swal2-popup small:not(.does-not-exist),
+.dark .swal2-popup label:not(.does-not-exist),
+.dark .swal2-popup .description,
+.dark .swal2-popup .text-muted,
+.dark .swal2-popup .veloura-qv-full__description,
+.dark .swal2-popup .veloura-quick-view-modal__description,
+.dark .swal2-popup .veloura-quick-view-modal__loading,
+.dark .s-salla-modal-body p:not(.does-not-exist),
+.dark .s-salla-modal-body small:not(.does-not-exist),
+.dark .s-salla-modal-body label:not(.does-not-exist),
+.dark .s-salla-modal-body .description,
+.dark .s-salla-modal-body .text-muted,
+.dark .s-salla-modal-body .veloura-qv-full__description,
+.dark .s-salla-modal-body .veloura-quick-view-modal__description,
+.dark .s-salla-modal-body .veloura-quick-view-modal__loading,
+.dark .s-modal-body p:not(.does-not-exist),
+.dark .s-modal-body small:not(.does-not-exist),
+.dark .s-modal-body label:not(.does-not-exist),
+.dark .s-modal-body .description,
+.dark .s-modal-body .text-muted,
+.dark .s-modal-body .veloura-qv-full__description,
+.dark .s-modal-body .veloura-quick-view-modal__description,
+.dark .s-modal-body .veloura-quick-view-modal__loading,
+.dark .s-modal-content p:not(.does-not-exist),
+.dark .s-modal-content small:not(.does-not-exist),
+.dark .s-modal-content label:not(.does-not-exist),
+.dark .s-modal-content .description,
+.dark .s-modal-content .text-muted,
+.dark .s-modal-content .veloura-qv-full__description,
+.dark .s-modal-content .veloura-quick-view-modal__description,
+.dark .s-modal-content .veloura-quick-view-modal__loading,
+.dark .veloura-qv-full__dialog p:not(.does-not-exist),
+.dark .veloura-qv-full__dialog small:not(.does-not-exist),
+.dark .veloura-qv-full__dialog label:not(.does-not-exist),
+.dark .veloura-qv-full__dialog .description,
+.dark .veloura-qv-full__dialog .text-muted,
+.dark .veloura-qv-full__dialog .veloura-qv-full__description,
+.dark .veloura-qv-full__dialog .veloura-quick-view-modal__description,
+.dark .veloura-qv-full__dialog .veloura-quick-view-modal__loading,
+.dark .veloura-quick-view-modal__dialog p:not(.does-not-exist),
+.dark .veloura-quick-view-modal__dialog small:not(.does-not-exist),
+.dark .veloura-quick-view-modal__dialog label:not(.does-not-exist),
+.dark .veloura-quick-view-modal__dialog .description,
+.dark .veloura-quick-view-modal__dialog .text-muted,
+.dark .veloura-quick-view-modal__dialog .veloura-qv-full__description,
+.dark .veloura-quick-view-modal__dialog .veloura-quick-view-modal__description,
+.dark .veloura-quick-view-modal__dialog .veloura-quick-view-modal__loading {
   color: #cccccc !important;
   color: var(--veloura-dark-secondary-text, #cccccc) !important;
   -webkit-text-fill-color: currentColor !important;
@@ -43373,14 +43224,10 @@ html body.veloura-glass-effect .swal2-container.swal2-backdrop-show {
    Product-card exclusion boundary: dark mode may style the card body/text,
    but it must never replace promotional or solid action colors.
    ------------------------------------------------------------------------ */
-html.dark body .s-product-card-entry .s-product-card-promotion-title,
-html.dark body .s-product-card-entry .s-product-card-quantity,
-html.dark body .s-product-card-entry .s-product-card-out-badge,
-html.dark body .s-product-card-entry .veloura-pc-native-promo,
-html body.dark .s-product-card-entry .s-product-card-promotion-title,
-html body.dark .s-product-card-entry .s-product-card-quantity,
-html body.dark .s-product-card-entry .s-product-card-out-badge,
-html body.dark .s-product-card-entry .veloura-pc-native-promo {
+.dark .s-product-card-entry .s-product-card-promotion-title,
+.dark .s-product-card-entry .s-product-card-quantity,
+.dark .s-product-card-entry .s-product-card-out-badge,
+.dark .s-product-card-entry .veloura-pc-native-promo {
   background: #414042 !important;
   background: var(--veloura-pc-promo-bg, var(--color-primary, #004d65)) !important;
   background-color: #414042 !important;
@@ -43390,20 +43237,15 @@ html body.dark .s-product-card-entry .veloura-pc-native-promo {
   color: var(--veloura-pc-promo-text, #ffffff) !important;
   -webkit-text-fill-color: currentColor !important;
 }
-html.dark body .s-product-card-entry .s-product-card-promotion-title *,
-html.dark body .s-product-card-entry .s-product-card-quantity *,
-html.dark body .s-product-card-entry .s-product-card-out-badge *,
-html.dark body .s-product-card-entry .veloura-pc-native-promo *,
-html body.dark .s-product-card-entry .s-product-card-promotion-title *,
-html body.dark .s-product-card-entry .s-product-card-quantity *,
-html body.dark .s-product-card-entry .s-product-card-out-badge *,
-html body.dark .s-product-card-entry .veloura-pc-native-promo * {
+.dark .s-product-card-entry .s-product-card-promotion-title *,
+.dark .s-product-card-entry .s-product-card-quantity *,
+.dark .s-product-card-entry .s-product-card-out-badge *,
+.dark .s-product-card-entry .veloura-pc-native-promo * {
   color: inherit !important;
   fill: currentColor !important;
   -webkit-text-fill-color: currentColor !important;
 }
-html.dark body .s-product-card-entry salla-add-product-button.veloura-card-add-button,
-html body.dark .s-product-card-entry salla-add-product-button.veloura-card-add-button {
+.dark .s-product-card-entry salla-add-product-button.veloura-card-add-button {
   --color-primary: var(--veloura-product-button-bg, #004d65) !important;
   --color-primary-reverse: var(--veloura-product-button-text, #ffffff) !important;
   --button-background-color: var(--veloura-product-button-bg, #004d65) !important;
@@ -43419,8 +43261,7 @@ html body.dark .s-product-card-entry salla-add-product-button.veloura-card-add-b
   color: var(--veloura-product-button-text, #ffffff) !important;
   -webkit-text-fill-color: currentColor !important;
 }
-html.dark body .s-product-card-entry .veloura-quick-view-btn,
-html body.dark .s-product-card-entry .veloura-quick-view-btn {
+.dark .s-product-card-entry .veloura-quick-view-btn {
   background: #004d65 !important;
   background: var(--veloura-quick-view-button-bg, #004d65) !important;
   background-color: #004d65 !important;
@@ -43431,31 +43272,11 @@ html body.dark .s-product-card-entry .veloura-quick-view-btn {
   color: var(--veloura-quick-view-button-text, #ffffff) !important;
   -webkit-text-fill-color: currentColor !important;
 }
-html.dark body .s-product-card-entry .veloura-quick-view-btn *,
-html body.dark .s-product-card-entry .veloura-quick-view-btn * {
+.dark .s-product-card-entry .veloura-quick-view-btn * {
   color: inherit !important;
   fill: currentColor !important;
 }
 /* Salla parts exposed to light DOM use the same exact material. */
-html body.veloura-glass-effect salla-login-modal::part(body) {
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
 html body.veloura-glass-effect salla-localization-modal::part(body) {
   background: rgba(244, 245, 247, 0.72) !important;
   background: var(--veloura-glass-surface) !important;
@@ -43552,25 +43373,6 @@ html body.veloura-glass-effect salla-modal::part(body) {
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-sheet::part(body) {
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
-html body.veloura-glass-effect salla-login-modal::part(content) {
   background: rgba(244, 245, 247, 0.72) !important;
   background: var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
@@ -43703,25 +43505,6 @@ html body.veloura-glass-effect salla-sheet::part(content) {
   box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
-html body.veloura-glass-effect salla-login-modal::part(panel) {
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
 html body.veloura-glass-effect salla-localization-modal::part(panel) {
   background: rgba(244, 245, 247, 0.72) !important;
   background: var(--veloura-glass-surface) !important;
@@ -43818,25 +43601,6 @@ html body.veloura-glass-effect salla-modal::part(panel) {
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 html body.veloura-glass-effect salla-sheet::part(panel) {
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
-html body.veloura-glass-effect salla-login-modal::part(surface) {
   background: rgba(244, 245, 247, 0.72) !important;
   background: var(--veloura-glass-surface) !important;
   background-color: rgba(244, 245, 247, 0.72) !important;
@@ -43969,12 +43733,6 @@ html body.veloura-glass-effect salla-sheet::part(surface) {
   box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
-html body.veloura-glass-effect salla-login-modal::part(overlay) {
-  background: rgba(15, 23, 42, .16) !important;
-  background: var(--veloura-overlay) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
 html body.veloura-glass-effect salla-localization-modal::part(overlay) {
   background: rgba(15, 23, 42, .16) !important;
   background: var(--veloura-overlay) !important;
@@ -44006,12 +43764,6 @@ html body.veloura-glass-effect salla-modal::part(overlay) {
   backdrop-filter: none !important;
 }
 html body.veloura-glass-effect salla-sheet::part(overlay) {
-  background: rgba(15, 23, 42, .16) !important;
-  background: var(--veloura-overlay) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-html body.veloura-glass-effect salla-login-modal::part(backdrop) {
   background: rgba(15, 23, 42, .16) !important;
   background: var(--veloura-overlay) !important;
   -webkit-backdrop-filter: none !important;
@@ -57614,8 +57366,8 @@ html body .s-modal-body .s-modal-close, html body .s-modal-content .s-modal-clos
    backdrop-filter blur(20px), with the option off. The panel is given the
    solid form of the same colour instead, so the setting decides.
    ------------------------------------------------------------------------ */
-html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
-html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content {
+html body:not(.veloura-glass-effect) .s-modal-body,
+html body:not(.veloura-glass-effect) .s-modal-content {
   background: #e6e8eb !important;
   background: var(--veloura-glass-solid, #e6e8eb) !important;
   background-color: #e6e8eb !important;
@@ -57624,10 +57376,8 @@ html body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
-html.dark body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
-html.dark body:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content,
-html body.dark:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-body,
-html body.dark:not(.veloura-glass-effect):not(.veloura-glass-effect) .s-modal-content {
+.dark body:not(.veloura-glass-effect) .s-modal-body,
+.dark body:not(.veloura-glass-effect) .s-modal-content {
   background: #010612 !important;
   background: var(--veloura-dark-secondary-bg, #010612) !important;
   background-color: #010612 !important;
