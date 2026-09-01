@@ -36336,9 +36336,6 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
     padding: 0 !important;
     direction: rtl !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header__menu {
-    display: contents !important;
-  }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-left,
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid .veloura-header-right {
     grid-area: auto !important;
@@ -36388,6 +36385,94 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
   }
   /* The mobile search wrapper never paints on desktop. */
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-centered:not(.veloura-top-search-detached) .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar {
+    display: none !important;
+  }
+}
+/* ==========================================================================
+   9. LANGUAGE / CURRENCY PILL, AND CONTROLS THAT MUST NOT RESERVE SPACE
+   --------------------------------------------------------------------------
+   Both problems here were measured on the live storefront, not guessed.
+
+   1) The pill was locked to a square icon box. The winning rule is
+
+        (0,5,2) @media (min-width: 1024px)
+        html body .store-header.veloura-top-enabled.veloura-header-balanced-search
+        .veloura-header__tools .veloura-header-icon
+          -> width: var(--veloura-icon-hit, 38px)
+
+      Every earlier attempt sat at (0,4,2) and lost. The pill carries
+      .veloura-header-icon like its neighbours, so it inherits their square
+      box unless a longer chain exempts it. The selectors below walk
+      __tools as well, reaching (0,9,2).
+
+   2) .veloura-lang-mobile is hidden on desktop with `visibility: hidden`,
+      which removes the paint but KEEPS the 38px box - the empty gap in the
+      icon rail. Only `display: none` takes an element out of layout.
+
+   Scoped to the desktop breakpoint: the pill is a desktop-only control and
+   is hidden below 1024px. An unscoped display rule here outranks that hide
+   and makes the pill reappear on phones, widening the rail until the logo
+   collides with it.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  /* Mobile-only controls leave the layout entirely on desktop. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-mobile,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-menu-trigger-mobile,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header__menu {
+    display: none !important;
+  }
+  /* The pill is sized by its two labels, not by the icon box. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 38px !important;
+    min-height: var(--veloura-icon-hit, 38px) !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    border-radius: 999px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+  }
+  /* The two halves read as one label; neither paints its own box. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__language,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__currency {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    line-height: 1 !important;
+  }
+  /* Salla returns the riyal mark as an icon element; it matches the text. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__currency i, html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__currency svg, html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__currency img {
+    display: inline-block !important;
+    width: auto !important;
+    height: 1em !important;
+    font-size: 1em !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill .veloura-localization-pill__divider {
+    flex: 0 0 auto !important;
+    width: 1px !important;
+    height: 1em !important;
+    background: currentColor !important;
+    opacity: 0.35 !important;
+  }
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container .veloura-header-grid .veloura-header__tools .veloura-localization-pill.veloura-localization-pill--no-currency .veloura-localization-pill__divider {
     display: none !important;
   }
 }
