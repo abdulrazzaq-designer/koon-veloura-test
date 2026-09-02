@@ -32243,8 +32243,17 @@ html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search.vel
   margin: 0 !important;
 }
 /* The surface is the only glass/shadow owner; inner header layers do not
-   create a second frame. */
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface,
+   create a second frame.
+
+   Bug fixed 2026-09: the body.veloura-glass-effect branch below was a
+   FOURTH independent copy of "paint the header glass" (alongside two in
+   dark-light.scss and one injected from JS), each gated differently. This
+   one fired off the general glass setting alone, ignoring the header's own
+   blur toggle entirely — so with header-blur off but the unrelated general
+   setting on, this rule (loaded before dark-light.scss, so uncontested
+   wherever dark-light.scss's blur-gated rule didn't also fire) still
+   painted a full glass border/shadow/background on the header. All four
+   copies now agree: .veloura-header-tabs-stack--blur is the only gate. */
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   background: rgba(244, 245, 247, 0.72) !important;
   background: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
@@ -34962,11 +34971,22 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
 }
 /* A real glass surface must be translucent at the wrapper level; styling
    only an internal shadow-DOM input is not reliable across Salla hydration.
-   This contract covers connected and detached search bars equally. */
+   This contract covers connected and detached search bars equally.
+
+   Bug fixed 2026-09: this used to mix in --veloura-site-second-bg (the
+   site's general secondary background — unrelated to the header) plus a
+   white gradient overlay, so the search pill came out off-white/light no
+   matter what color the header actually was, light or dark mode included.
+   It now uses --veloura-glass-surface directly — the exact same token the
+   header surface itself paints with (see dark-light.scss) — so the search
+   pill is always the header's own color, just distinguished by its border
+   and a light highlight rather than by being a different color. */
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.035)), rgba(244, 244, 245, 0.46) !important;
-  background-color: rgba(244, 244, 245, 0.46) !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)), rgba(244, 245, 247, 0.72) !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)), var(--veloura-glass-surface) !important;
+  background-color: rgba(244, 245, 247, 0.72) !important;
+  background-color: var(--veloura-glass-surface) !important;
   border: 1px solid rgba(180, 184, 188, 0.479) !important;
   border-radius: 24px !important;
   border-radius: var(--veloura-search-radius, var(--veloura-radius, 24px)) !important;
@@ -34983,8 +35003,6 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.035)), color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 46%, transparent) !important;
-  background-color: color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 46%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--veloura-top-text, #1f2937) 16%, rgba(255, 255, 255, 0.38)) !important;
 }
 }
@@ -43921,8 +43939,17 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
 }
 /* =========================================================
    Veloura V3 — Final Header Glass + Desktop Localization
+
+   Bug fixed 2026-09: this used to fire on body.veloura-glass-effect alone —
+   the GENERAL glass setting (veloura_general_glass_effect_2026), used for
+   modals/popups. The header's own glass toggle is a different setting
+   (veloura_top_blur_v4_2026 → .veloura-header-tabs-stack--blur). So turning
+   the header's glass off did nothing here: this block kept painting glass
+   on the header surface as long as the unrelated general setting was on.
+   Requiring .veloura-header-tabs-stack--blur too makes the header's own
+   toggle the one that actually controls it.
    ========================================================= */
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   border-radius: 28px !important;
   overflow: hidden !important;
   background: rgba(244, 245, 247, 0.72) !important;
@@ -43944,25 +43971,25 @@ html body.veloura-glass-effect .veloura-header-tabs-stack__surface {
   box-shadow: 0 10px 30px var(--veloura-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
 }
 /* Inner header layers must not cover the glass surface. */
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface :is(#mainnav.main-nav-container > .inner) {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(#mainnav.main-nav-container > .inner) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
   box-shadow: none !important;
   border-color: transparent !important;
 }
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface :is(.main-nav-container > .inner:not(#does-not-exist)) {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(.main-nav-container > .inner:not(#does-not-exist)) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
   box-shadow: none !important;
   border-color: transparent !important;
 }
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface .store-header:not(#does-not-exist):not(.does-not-exist),
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface #mainnav.main-nav-container:not(.does-not-exist),
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface .main-nav-container:not(#does-not-exist):not(.does-not-exist),
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface .veloura-header-container:not(#does-not-exist):not(.does-not-exist),
-html body.veloura-glass-effect .veloura-header-tabs-stack__surface .veloura-header-grid:not(#does-not-exist):not(.does-not-exist) {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface .store-header:not(#does-not-exist):not(.does-not-exist),
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface #mainnav.main-nav-container:not(.does-not-exist),
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface .main-nav-container:not(#does-not-exist):not(.does-not-exist),
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface .veloura-header-container:not(#does-not-exist):not(.does-not-exist),
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface .veloura-header-grid:not(#does-not-exist):not(.does-not-exist) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;

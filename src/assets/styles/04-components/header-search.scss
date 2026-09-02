@@ -18,8 +18,7 @@
 /* ------------------------------------------------------------------------
    One neutral glass contract for the header and search.
    ------------------------------------------------------------------------ */
-html body .veloura-header-tabs-stack--blur,
-html body.veloura-glass-effect .veloura-header-tabs-stack {
+html body .veloura-header-tabs-stack--blur {
   --veloura-glass-bg: var(--veloura-header-glass-background);
   --veloura-glass-bg-dark: var(--veloura-header-glass-background-dark);
   --veloura-glass-border: var(--veloura-header-glass-border);
@@ -32,9 +31,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack {
 }
 
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
-html body .veloura-header-tabs-stack--blur .veloura-search-surface,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
+html body .veloura-header-tabs-stack--blur .veloura-search-surface {
   background: var(--veloura-header-glass-background) !important;
   background-color: var(--veloura-header-glass-background) !important;
   background-image: none !important;
@@ -45,12 +42,8 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
 
 html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
 html body.dark .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-html.dark body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
-html body.dark.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
 html.dark body .veloura-header-tabs-stack--blur .veloura-search-surface,
-html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface,
-html.dark body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface,
-html body.dark.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
+html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface {
   background: var(--veloura-header-glass-background-dark) !important;
   background-color: var(--veloura-header-glass-background-dark) !important;
   border-color: var(--veloura-header-glass-border-dark) !important;
@@ -64,14 +57,7 @@ html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(input),
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(form),
-html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(container),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component input,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(input),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(form),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -179,13 +165,7 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
   html body .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-main-menu-desktop .sub-menu,
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .veloura-main-menu-desktop .sub-menu,
   html body .veloura-header-tabs-stack--blur
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .main-menu .sub-menu,
-  html body.veloura-glass-effect .veloura-header-tabs-stack
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .main-menu .sub-menu {
     background: var(--veloura-header-glass-background) !important;
@@ -204,12 +184,6 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
     .sub-menu > li,
   html body .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .sub-menu > li > a,
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .sub-menu > li,
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .sub-menu > li > a {
     background: transparent !important;
     background-color: transparent !important;
@@ -219,12 +193,6 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-main-menu-desktop .sub-menu,
   html body.dark .veloura-header-tabs-stack--blur
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .veloura-main-menu-desktop .sub-menu,
-  html.dark body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .veloura-main-menu-desktop .sub-menu,
-  html body.dark.veloura-glass-effect .veloura-header-tabs-stack
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-main-menu-desktop .sub-menu {
     background: var(--veloura-header-glass-background-dark) !important;

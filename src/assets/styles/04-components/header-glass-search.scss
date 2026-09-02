@@ -76,10 +76,7 @@ html body.dark
 }
 
 /* Glass search has exactly the same paint and opacity as the header. */
-html body .veloura-header-tabs-stack--blur .veloura-search-surface,
-html body.veloura-glass-effect
-  .veloura-header-tabs-stack
-  .veloura-search-surface {
+html body .veloura-header-tabs-stack--blur .veloura-search-surface {
   --veloura-search-bg: var(--veloura-glass-surface);
   background:
     linear-gradient(

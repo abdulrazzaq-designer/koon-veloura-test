@@ -452,11 +452,14 @@
                 </button>
               {% endif %}
 
-              {% if desktop_search not in ['bar', 'bar_sticky_icon'] %}
-                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
-                  <i class="sicon-search"></i>
-                </button>
-              {% endif %}
+              {# Always rendered now: bar/bar_sticky_icon modes need this icon
+                 too, as the fallback shown once the header compacts on
+                 scroll (the search bar always collapses to an icon then —
+                 see header.scss / header-tabs.scss). CSS hides it whenever
+                 the full bar is visible. #}
+              <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                <i class="sicon-search"></i>
+              </button>
 
               {% if show_wishlist %}
                 <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">

@@ -145,10 +145,9 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
 /* ------------------------------------------------------------------------
    Desktop/laptop layout
    - Icon groups stay pinned to the two physical sides.
-   - Centered mode remains truly centered but uses real grid tracks, so the
-     logo can never sit on top of an icon.
-   - "No center on laptop" shifts the logo gently toward the right side of
-     center, matching the requested visual hierarchy.
+   - The logo is ALWAYS centered on desktop/laptop. Logo centering is a
+     mobile-only setting (see the mobile block below and header.scss); it
+     never changes the desktop grid.
    ------------------------------------------------------------------------ */
 @media (min-width: 1024px) {
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-grid {
@@ -162,25 +161,6 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
       'left . logo . right'
       'menu menu menu menu menu'
       'search search search search search' !important;
-  }
-
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-top-logo-centered) .veloura-header-grid,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop .veloura-header-grid {
-    grid-template-columns:
-      max-content
-      minmax(14px, 1.28fr)
-      minmax(0, auto)
-      minmax(8px, .72fr)
-      max-content !important;
-    grid-template-areas:
-      'left . logo . right'
-      'menu menu menu menu menu'
-      'search search search search search' !important;
-  }
-
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-top-logo-centered) .veloura-header-logo,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop .veloura-header-logo {
-    justify-self: center !important;
   }
 
   html body .veloura-header-tabs-stack--container-desktop .store-header.veloura-top-enabled .veloura-header-container {
@@ -419,8 +399,7 @@ html body salla-search.veloura-header-search-component::part(results) {
 
 /* Header blur and the global glass setting both turn the secondary search
    color into a glass layer. Detached search receives the same effect. */
-html body .veloura-header-tabs-stack--blur,
-html body.veloura-glass-effect .veloura-header-tabs-stack {
+html body .veloura-header-tabs-stack--blur {
   --veloura-search-bg: var(--veloura-search-solid-bg);
   --veloura-search-bg: color-mix(in srgb, var(--veloura-search-solid-bg) 72%, transparent);
   --veloura-search-border: color-mix(in srgb, var(--veloura-top-text, #1f2937) 16%, transparent);
@@ -431,12 +410,7 @@ html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-co
 html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-component input,
 html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-component [part~='input'],
 html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-component::part(input),
-html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-component::part(form),
-html body.veloura-glass-effect salla-search.veloura-header-search-component .s-search-input,
-html body.veloura-glass-effect salla-search.veloura-header-search-component input,
-html body.veloura-glass-effect salla-search.veloura-header-search-component [part~='input'],
-html body.veloura-glass-effect salla-search.veloura-header-search-component::part(input),
-html body.veloura-glass-effect salla-search.veloura-header-search-component::part(form) {
+html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-component::part(form) {
   -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(14px) saturate(135%)) !important;
   backdrop-filter: var(--veloura-global-glass-filter, blur(14px) saturate(135%)) !important;
 }
@@ -497,6 +471,10 @@ html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-ta
     padding-inline: clamp(7px, 2.5vw, 14px) !important;
     column-gap: 4px !important;
   }
+
+  /* Logo-centering is mobile-only; the actual mobile grid (icon groups as a
+     flex row with the logo overlaid) lives in header-layout.scss, which is
+     loaded after this file and owns the real geometry + the "off" state. */
 
   html body .store-header.veloura-top-enabled .veloura-wishlist-btn,
   html body .store-header.veloura-top-enabled .veloura-lang-desktop,

@@ -214,31 +214,8 @@
     justify-self: center !important;
   }
 
-  /* Laptop de-centering ON: the center section remains flexible, but its logo
-     sits at the section's far-right edge, immediately before the right icon
-     group with only a small controlled gap. */
-  html body .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-header-layout-two-tier)
-    .veloura-header-grid,
-  html body .store-header.veloura-top-enabled:not(.veloura-top-logo-centered):not(.veloura-header-layout-two-tier)
-    .veloura-header-grid {
-    grid-template-columns:
-      max-content
-      minmax(12px, 1fr)
-      minmax(0, auto)
-      clamp(8px, .8vw, 14px)
-      max-content !important;
-    grid-template-areas:
-      'left . logo . right'
-      'menu menu menu menu menu'
-      'search search search search search' !important;
-  }
-
-  html body .store-header.veloura-top-enabled.veloura-top-logo-no-center-laptop:not(.veloura-header-layout-two-tier)
-    .veloura-header-logo,
-  html body .store-header.veloura-top-enabled:not(.veloura-top-logo-centered):not(.veloura-header-layout-two-tier)
-    .veloura-header-logo {
-    justify-self: end !important;
-  }
+  /* Logo centering is a mobile-only setting; desktop/laptop always keeps
+     the centered three-column layout above regardless of this toggle. */
 }
 
 
@@ -280,8 +257,7 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
    header surface itself paints with (see dark-light.scss) — so the search
    pill is always the header's own color, just distinguished by its border
    and a light highlight rather than by being a different color. */
-html body .veloura-header-tabs-stack--blur .veloura-search-surface,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
+html body .veloura-header-tabs-stack--blur .veloura-search-surface{
   --veloura-search-bg: transparent;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .02)),
@@ -297,19 +273,12 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
 }
 
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component,
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component input,
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(input),
 html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(form),
-html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(container),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component .s-search-input,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component input,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component [part~='input'],
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(input),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(form),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
+html body .veloura-header-tabs-stack--blur .veloura-search-surface salla-search.veloura-header-search-component::part(container){
   background: transparent !important;
   background-color: transparent !important;
   border-color: transparent !important;
@@ -441,8 +410,7 @@ html body .veloura-search-surface salla-search.veloura-header-search-component .
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-  html body .veloura-header-tabs-stack--blur .veloura-search-surface,
-  html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
+  html body .veloura-header-tabs-stack--blur .veloura-search-surface{
     background: color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 88%, #ffffff) !important;
     background-color: color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 88%, #ffffff) !important;
   }
@@ -1423,7 +1391,7 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
 
   /* The logo shares row one's cell and centres itself in it. */
     html body .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled
+    .store-header.veloura-top-enabled.veloura-top-logo-centered
     .veloura-header-container .veloura-header-grid
     .veloura-header-logo {
     grid-area: tools !important;
@@ -1431,6 +1399,31 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
     /* Safety cap: true centring means an over-wide logo would reach the
        icon groups on the narrowest phones. This bound keeps it clear
        without touching normally sized logos. */
+    max-width: min(26vw, 132px) !important;
+    align-self: center !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 5 !important;
+  }
+
+  /* Logo-centering OFF (mobile-only setting): logo sits at the physical
+     right edge of the row, and both icon groups (cart/login + menu/dark
+     toggle/language) are pushed together to the physical left instead of
+     being spread to opposite ends. */
+    html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled:not(.veloura-top-logo-centered)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header__tools {
+    justify-content: flex-start !important;
+    gap: var(--veloura-icon-gap, 6px) !important;
+  }
+
+    html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled:not(.veloura-top-logo-centered)
+    .veloura-header-container .veloura-header-grid
+    .veloura-header-logo {
+    grid-area: tools !important;
+    justify-self: end !important;
     max-width: min(26vw, 132px) !important;
     align-self: center !important;
     margin: 0 !important;
@@ -2472,16 +2465,6 @@ html body .veloura-header-tabs-stack .veloura-detached-search-shell .veloura-det
 
 /* --------------------------------------------------------------------------
    Glass on: the same colour carried at 46% so the panel reads through it,
-   plus the top/bottom hairline.
-   -------------------------------------------------------------------------- */
-html body.veloura-glass-effect .veloura-header-tabs-stack
-  .store-header.veloura-top-enabled
-  .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
-html body.veloura-glass-effect .veloura-header-tabs-stack
-  .store-header.veloura-top-enabled
-  .veloura-header-container .veloura-header-grid > .veloura-desktop-search-bar,
-html body.veloura-glass-effect .veloura-header-tabs-stack
-  .veloura-detached-search-shell .veloura-detached-search,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur
   .store-header.veloura-top-enabled
   .veloura-header-container .veloura-header-grid > .veloura-mobile-search-bar,
@@ -2505,11 +2488,6 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur
 }
 
 @media (min-width: 1024px) {
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled
-    .veloura-header-container .veloura-header-grid
-    :is(.veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
-        .veloura-header-icon.veloura-login-btn),
   html body .veloura-header-tabs-stack.veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled
     .veloura-header-container .veloura-header-grid

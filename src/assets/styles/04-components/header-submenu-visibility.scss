@@ -62,10 +62,7 @@ html body.dark .veloura-header-tabs-stack .veloura-search-surface {
   color: var(--veloura-dark-primary-text, #ffffff) !important;
 }
 
-html body .veloura-header-tabs-stack--blur .veloura-search-surface,
-html body.veloura-glass-effect
-  .veloura-header-tabs-stack
-  .veloura-search-surface {
+html body .veloura-header-tabs-stack--blur .veloura-search-surface {
   --veloura-search-bg: var(--veloura-glass-surface);
 
   background:

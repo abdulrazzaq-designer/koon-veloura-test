@@ -661,6 +661,11 @@ body.dark {
     }
   }
 
+  /* The bar always collapses to an icon once the header compacts on
+     scroll — this used to be exclusive to "bar_sticky_icon"; the plain
+     "bar" mode now behaves the same way instead of staying full-size and
+     eating space on small screens. */
+  .store-header.veloura-mobile-search-bar.veloura-top-scrolled,
   .store-header.veloura-mobile-search-bar_sticky_icon.veloura-top-scrolled {
     .veloura-header-grid {
       grid-template-areas: "left logo right";
@@ -795,6 +800,9 @@ body.dark {
     }
   }
 
+  /* Same merge as mobile: any connected bar collapses to an icon on
+     scroll, not only the "sticky icon" variant. */
+  .store-header.veloura-desktop-search-bar.veloura-top-scrolled,
   .store-header.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled {
     .veloura-header-grid {
       grid-template-areas: "left logo right";
@@ -2082,45 +2090,12 @@ html[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
 }
 
 /* ------------------------------------------------------------------------
-   Logo positioning
-   - centered switch ON: the current true-center three-column layout.
-   - centered switch OFF: logo returns to the RTL-leading/right position.
-   - "no center on laptop" applies the second layout only on desktop.
+   Logo positioning is MOBILE-ONLY and its real geometry lives in
+   header-layout.scss (the flex tools-row + overlaid-logo mobile system,
+   loaded later at equal-or-higher specificity, so it is the single file
+   that owns this — avoids two competing "off" layouts). Desktop/laptop
+   always keeps the logo centered — see header-navigation-stability.scss.
    ------------------------------------------------------------------------ */
-.store-header.veloura-top-enabled.veloura-top-logo-centered {
-  .veloura-header-grid {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
-    grid-template-areas: 'left logo right' !important;
-  }
-
-  .veloura-header-logo {
-    justify-self: center !important;
-  }
-}
-
-.store-header.veloura-top-enabled:not(.veloura-top-logo-centered) {
-  .veloura-header-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto !important;
-    grid-template-areas: 'left right logo' !important;
-  }
-
-  .veloura-header-logo {
-    justify-self: end !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .store-header.veloura-top-enabled.veloura-top-logo-centered.veloura-top-logo-no-center-laptop {
-    .veloura-header-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto !important;
-      grid-template-areas: 'left right logo' !important;
-    }
-
-    .veloura-header-logo {
-      justify-self: end !important;
-    }
-  }
-}
 
 /* ------------------------------------------------------------------------
    Desktop categories as actual links
@@ -2484,8 +2459,7 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .v
    ======================================================================== */
 
 /* The outer stack surface is the single glass paint owner. */
-html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface{
   border-radius: 38px !important;
   overflow: hidden !important;
 }
@@ -2511,16 +2485,7 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :
   .main-nav-container > .inner,
   .veloura-header-container,
   .veloura-header-grid
-),
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface :is(
-  .store-header,
-  #mainnav.main-nav-container,
-  #mainnav.main-nav-container > .inner,
-  .main-nav-container,
-  .main-nav-container > .inner,
-  .veloura-header-container,
-  .veloura-header-grid
-) {
+){
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -2531,8 +2496,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
 }
 
 /* Full rounded frame for both mobile and desktop when the glass stack is active. */
-html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface{
   -webkit-backdrop-filter: var(--veloura-header-glass-filter, blur(20px) saturate(180%)) !important;
   backdrop-filter: var(--veloura-header-glass-filter, blur(20px) saturate(180%)) !important;
 }
@@ -2697,8 +2661,7 @@ html body .store-header.veloura-top-enabled .s-cart-summary-count {
   }
 
   /* The stack itself owns the rounded glass frame. */
-  html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-  html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+  html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface{
     border-radius: 28px !important;
     overflow: hidden !important;
   }
@@ -3350,15 +3313,13 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
    This block used to hardcode background: rgba(15, 18, 28, .72) with no
    html.dark scope, so a floating header was painted with a dark slab in
    LIGHT mode too. That was the dark-grey header on a light storefront. */
-html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
-.veloura-header-tabs-stack__surface,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 .veloura-header-tabs-stack__surface {
   border-radius: 28px !important;
   overflow: hidden !important;
 }
 
-html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
+html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 .veloura-header-tabs-stack__surface :is(
   .store-header,
   .main-nav-container,
@@ -3374,8 +3335,6 @@ html body.veloura-glass-effect .veloura-header-tabs-stack.veloura-header-tabs-st
 }
 
 /* Never paint the legacy header pseudo-layer while the floating glass shell owns paint. */
-html body.veloura-glass-effect .store-header.veloura-top-enabled.veloura-top-blur::before,
-html body.veloura-glass-effect .store-header.veloura-top-enabled.veloura-top-blur::after,
 html body .store-header.veloura-top-enabled.veloura-top-blur::before,
 html body .store-header.veloura-top-enabled.veloura-top-blur::after {
   content: none !important;

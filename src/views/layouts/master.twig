@@ -220,20 +220,9 @@
     {% endif %}
     {% set vh_floating = vh_floating_raw == true or vh_floating_raw == 'true' or vh_floating_raw == 1 or vh_floating_raw == '1' or vh_floating_raw == 'on' %}
 
-    {% set vh_compact_setting = theme.settings.get('veloura_top_compact_on_scroll_v4_2026', true) %}
-    {% set vh_compact_raw = vh_compact_setting %}
-    {% if vh_compact_setting.value is defined %}
-      {% set vh_compact_raw = vh_compact_setting.value %}
-    {% elseif vh_compact_setting.selected is defined %}
-      {% if vh_compact_setting.selected.value is defined %}
-        {% set vh_compact_raw = vh_compact_setting.selected.value %}
-      {% elseif vh_compact_setting.selected is iterable and vh_compact_setting.selected[0] is defined and vh_compact_setting.selected[0].value is defined %}
-        {% set vh_compact_raw = vh_compact_setting.selected[0].value %}
-      {% else %}
-        {% set vh_compact_raw = vh_compact_setting.selected %}
-      {% endif %}
-    {% endif %}
-    {% set vh_compact = vh_compact_raw == true or vh_compact_raw == 'true' or vh_compact_raw == 1 or vh_compact_raw == '1' or vh_compact_raw == 'on' %}
+    {# The header ALWAYS compacts on scroll now — this stopped being an
+       optional setting per merchant request. No settings read needed. #}
+    {% set vh_compact = true %}
 
     {% set vh_blur_setting = theme.settings.get('veloura_top_blur_v4_2026', true) %}
     {% set vh_blur_raw = vh_blur_setting %}
@@ -4037,4 +4026,3 @@ function markCard(card) {
 
 </body>
 </html>
-

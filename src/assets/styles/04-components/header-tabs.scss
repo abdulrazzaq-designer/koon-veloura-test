@@ -59,6 +59,17 @@ html body .veloura-header-tabs-stack--floating > .veloura-header-tabs-stack__con
   box-sizing: border-box !important;
 }
 
+/* Floating + full-width desktop must combine correctly: the floating shell
+   keeps its top gap and rounded corners, but its outer container stretches
+   edge-to-edge instead of being clamped to the theme's boxed container width.
+   Without this, "full width" only affected the header's inner padding while
+   the floating pill itself stayed capped at --veloura-global-container,
+   producing a mismatched half-boxed/half-full-width header. */
+html body .veloura-header-tabs-stack--floating.veloura-header-tabs-stack--full-width-desktop > .veloura-header-tabs-stack__container {
+  max-width: none !important;
+  padding-inline: var(--veloura-top-gap) !important;
+}
+
 /* Normal/non-floating mode is the native full-width header. */
 html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) {
   top: 0 !important;
@@ -453,11 +464,23 @@ html body .veloura-detached-search salla-search {
     display: block !important;
   }
 
+  /* The detached bar always collapses to the header's search icon on
+     scroll, whichever "bar" mode is selected — it must never keep eating
+     header space while the page is scrolled. */
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+    .veloura-detached-search-shell.veloura-detached-mobile-bar
+    .veloura-detached-search--mobile,
   html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
     .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon
     .veloura-detached-search--mobile {
     display: none !important;
   }
+
+  /* The fallback icon itself lives inside .store-header (a separate sibling
+     of this shell) and is already shown on scroll by the
+     .store-header.veloura-mobile-search-bar[_sticky_icon].veloura-top-scrolled
+     rule in header.scss — that class combo exists regardless of detached
+     mode, so no extra rule is needed here to reveal it. */
 }
 
 @media (min-width: 1024px) {
@@ -471,6 +494,14 @@ html body .veloura-detached-search salla-search {
     display: block !important;
   }
 
+  /* Same merge as mobile: any detached desktop bar collapses on scroll,
+     not only the "sticky icon" variant. The fallback icon inside
+     .store-header is already revealed by header.scss's
+     .store-header.veloura-desktop-search-bar[_sticky_icon].veloura-top-scrolled
+     rule, which applies regardless of detached mode. */
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+    .veloura-detached-search-shell.veloura-detached-desktop-bar
+    .veloura-detached-search--desktop,
   html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
     .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon
     .veloura-detached-search--desktop {

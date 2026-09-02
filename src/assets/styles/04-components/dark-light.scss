@@ -519,8 +519,7 @@ html body.veloura-glass-effect :is(
    Header glass + desktop submenu — same material, nested-backdrop safe.
    No stronger dropdown blur: both header and submenu use the exact V86 tokens.
    ========================================================================== */
-html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface{
   position: relative !important;
   background: transparent !important;
   background-color: transparent !important;
@@ -529,8 +528,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
   backdrop-filter: none !important;
 }
 
-html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::before,
-html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface::before {
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::before{
   content: '' !important;
   position: absolute !important;
   inset: 0 !important;
@@ -546,37 +544,25 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
 }
 
 html body .veloura-header-tabs-stack--blur
-  .veloura-header-tabs-stack__surface > :is(.store-header, .veloura-home-tabs),
-html body.veloura-glass-effect
-  .veloura-header-tabs-stack
-  .veloura-header-tabs-stack__surface > :is(.store-header, .veloura-home-tabs) {
+  .veloura-header-tabs-stack__surface > :is(.store-header, .veloura-home-tabs){
   position: relative !important;
 }
 
 /* Store header must outrank tabs so its submenu is painted over the tab bar. */
 html body .veloura-header-tabs-stack--blur
-  .veloura-header-tabs-stack__surface > .store-header,
-html body.veloura-glass-effect
-  .veloura-header-tabs-stack
-  .veloura-header-tabs-stack__surface > .store-header {
+  .veloura-header-tabs-stack__surface > .store-header{
   z-index: 3 !important;
 }
 
 html body .veloura-header-tabs-stack--blur
-  .veloura-header-tabs-stack__surface > .veloura-home-tabs,
-html body.veloura-glass-effect
-  .veloura-header-tabs-stack
-  .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+  .veloura-header-tabs-stack__surface > .veloura-home-tabs{
   z-index: 1 !important;
 }
 
 @media (min-width: 1024px) {
   html body .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    :is(.veloura-submenu-surface, .sub-menu),
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    :is(.veloura-submenu-surface, .sub-menu) {
+    :is(.veloura-submenu-surface, .sub-menu){
     box-sizing: border-box !important;
     z-index: 4200 !important;
 
@@ -597,11 +583,7 @@ html body.veloura-glass-effect
   html body .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     :is(.veloura-submenu-surface, .sub-menu)
-    :is(ul, li, a),
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    :is(.veloura-submenu-surface, .sub-menu)
-    :is(ul, li, a) {
+    :is(ul, li, a){
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -616,11 +598,7 @@ html body.veloura-glass-effect
   html body .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-menu-links-wrap .veloura-main-menu-desktop
-    :is(.veloura-submenu-surface, .sub-menu),
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .veloura-menu-links-wrap .veloura-main-menu-desktop
-    :is(.veloura-submenu-surface, .sub-menu) {
+    :is(.veloura-submenu-surface, .sub-menu){
     background: var(--veloura-header-glass-background) !important;
     background-color: var(--veloura-header-glass-background) !important;
     background-image: none !important;
@@ -636,12 +614,7 @@ html body.veloura-glass-effect
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-menu-links-wrap .veloura-main-menu-desktop
     :is(.veloura-submenu-surface, .sub-menu)
-    :is(ul, li, a),
-  html body.veloura-glass-effect .veloura-header-tabs-stack
-    .store-header.veloura-top-enabled.veloura-desktop-menu-links
-    .veloura-menu-links-wrap .veloura-main-menu-desktop
-    :is(.veloura-submenu-surface, .sub-menu)
-    :is(ul, li, a) {
+    :is(ul, li, a){
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;

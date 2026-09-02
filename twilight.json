@@ -1754,30 +1754,6 @@
     },
     {
       "type": "boolean",
-      "icon": "sicon-compress",
-      "label": "تصغير الهيدر العائم عند التمرير",
-      "description": "يصغر الهيدر مباشرة عند بدء التثبيت والتمرير، بدون تأخير أو اهتزاز للشعار.",
-      "id": "veloura_top_compact_on_scroll_v4_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_top_floating_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "default": true
-    },
-    {
-      "type": "boolean",
       "icon": "sicon-eye",
       "label": "تفعيل الوضع الزجاجي الموحد",
       "description": "عند التفعيل يستخدم الهيدر والتبويبات لوناً زجاجياً ثابتاً ومحايداً، وتختفي خلفيتهما الصلبة فقط.",
@@ -16376,7 +16352,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
