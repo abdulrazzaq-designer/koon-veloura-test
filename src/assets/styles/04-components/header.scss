@@ -661,11 +661,9 @@ body.dark {
     }
   }
 
-  /* The bar always collapses to an icon once the header compacts on
-     scroll — this used to be exclusive to "bar_sticky_icon"; the plain
-     "bar" mode now behaves the same way instead of staying full-size and
-     eating space on small screens. */
-  .store-header.veloura-mobile-search-bar.veloura-top-scrolled,
+  /* Only "bar_sticky_icon" collapses to an icon on scroll — that is what the
+     setting promises. The plain "bar" mode stays a bar at every scroll
+     position. header-order.scss holds the full visibility contract. */
   .store-header.veloura-mobile-search-bar_sticky_icon.veloura-top-scrolled {
     .veloura-header-grid {
       grid-template-areas: "left logo right";
@@ -800,9 +798,7 @@ body.dark {
     }
   }
 
-  /* Same merge as mobile: any connected bar collapses to an icon on
-     scroll, not only the "sticky icon" variant. */
-  .store-header.veloura-desktop-search-bar.veloura-top-scrolled,
+  /* Same as mobile: only "bar_sticky_icon" collapses on scroll. */
   .store-header.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled {
     .veloura-header-grid {
       grid-template-areas: "left logo right";

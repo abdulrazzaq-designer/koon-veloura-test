@@ -1217,8 +1217,16 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
 
 @media (min-width: 1024px) {
 
-  html body .veloura-header-tabs-stack {
+  /* Side breathing room belongs to the FLOATING header only. A non-floating
+     header is meant to sit flush against the viewport edges, so this padding
+     used to leave a permanent gap on both sides of a full-width, non-floating
+     header — the "why is there still a margin?" case. */
+  html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating {
     padding-inline: clamp(18px, 2vw, 34px) !important;
+  }
+
+  html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) {
+    padding-inline: 0 !important;
   }
 
   html body .veloura-header-grid {

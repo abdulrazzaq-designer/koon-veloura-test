@@ -132,17 +132,12 @@ $order-detached:
       display: none !important;
     }
 
-    /* In detached mode the in-header bar never renders, and the icon only
-       stands in for the detached bar once the header compacts on scroll. */
-    .veloura-desktop-search-bar,
-    .veloura-search-toggle {
+    /* In detached mode the in-header bar never renders. Whether the ICON is
+       shown is not decided here — the SEARCH VISIBILITY CONTRACT at the end
+       of this file owns that for every mode and both breakpoints. */
+    .veloura-desktop-search-bar {
       display: none !important;
     }
-  }
-
-  #{$order-detached}.veloura-top-scrolled .veloura-header-grid
-  .veloura-search-toggle {
-    display: inline-flex !important;
   }
 }
 
@@ -167,4 +162,179 @@ $order-detached:
   .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon {
     margin-top: 0 !important;
   }
+}
+
+/* ==========================================================================
+   SEARCH VISIBILITY CONTRACT — one owner, both breakpoints
+
+   The four search modes come from the theme settings, and their own labels
+   already say what each one does:
+
+     icon_right / icon_left  "أيقونة فقط"                 → icon only, no bar
+     bar                     "شريط بحث مستطيل"            → a bar, and it STAYS a bar
+     bar_sticky_icon         "شريط بالأعلى وأيقونة عند النزول" → bar, collapsing to
+                                                            an icon on scroll
+
+   So the merchant already has both behaviours; a header that collapses the
+   plain `bar` mode too would contradict the setting the merchant picked.
+   This block restores that distinction and applies it identically on laptop
+   and mobile, connected and detached.
+
+   The invariant that matters most: the bar and the icon are two states of the
+   same control, so they are NEVER both on screen at once.
+   ========================================================================== */
+
+/* ---------------------------- DESKTOP ----------------------------------- */
+@media (min-width: 1024px) {
+
+  /* icon modes: never a bar. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached]:is(.veloura-desktop-search-icon_right, .veloura-desktop-search-icon_left) .veloura-desktop-search-bar {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached]:is(.veloura-desktop-search-icon_right, .veloura-desktop-search-icon_left) .veloura-search-toggle {
+    display: inline-flex !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell:is(.veloura-detached-desktop-icon_right, .veloura-detached-desktop-icon_left) .veloura-detached-search--desktop {
+    display: none !important;
+  }
+
+  /* bar: a bar at every scroll position, and no icon beside it. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-desktop-search-bar:not(.veloura-top-search-detached) .veloura-desktop-search-bar {
+    display: flex !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-desktop-search-bar .veloura-search-toggle {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar .veloura-detached-search--desktop {
+    display: block !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled .veloura-detached-search-shell.veloura-detached-desktop-bar {
+    margin-top: 10px !important;
+  }
+
+  /* bar_sticky_icon: bar at the top, icon once the page is scrolled. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-search-toggle {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled .veloura-desktop-search-bar {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled .veloura-search-toggle {
+    display: inline-flex !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon .veloura-detached-search--desktop {
+    display: none !important;
+  }
+}
+
+/* ---------------------------- MOBILE ------------------------------------ */
+@media (max-width: 1023px) {
+
+  /* icon modes: never a bar. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached]:is(.veloura-mobile-search-icon_right, .veloura-mobile-search-icon_left) .veloura-mobile-search-bar {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached]:is(.veloura-mobile-search-icon_right, .veloura-mobile-search-icon_left) .veloura-search-toggle {
+    display: inline-flex !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell:is(.veloura-detached-mobile-icon_right, .veloura-detached-mobile-icon_left) .veloura-detached-search--mobile {
+    display: none !important;
+  }
+
+  /* bar: the bar stays, so the icon must not double it. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-mobile-search-bar:not(.veloura-top-search-detached) .veloura-mobile-search-bar {
+    display: flex !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-mobile-search-bar .veloura-search-toggle {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar .veloura-detached-search--mobile {
+    display: block !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled .veloura-detached-search-shell.veloura-detached-mobile-bar {
+    margin-top: 10px !important;
+  }
+
+  /* bar_sticky_icon: same collapse behaviour the laptop gets. */
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-mobile-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-search-toggle {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-mobile-search-bar_sticky_icon.veloura-top-scrolled .veloura-mobile-search-bar {
+    display: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header][data-veloura-search-detached].veloura-mobile-search-bar_sticky_icon.veloura-top-scrolled .veloura-search-toggle {
+    display: inline-flex !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon .veloura-detached-search--mobile {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   SEARCH SURFACE — exactly ONE painted layer
+
+   .veloura-search-surface draws the pill. Everything the Salla web component
+   renders inside it (host, exposed parts, and the light-DOM input) must be
+   transparent and fill that pill, otherwise a second, smaller rounded box is
+   painted inside the first — the "search looks like two pieces, one smaller
+   than the other" report.
+   ========================================================================== */
+html body .veloura-search-surface {
+  overflow: hidden !important;
+}
+
+html body .veloura-search-surface salla-search,
+html body .veloura-search-surface salla-search *,
+html body .veloura-search-surface :is(form, label, fieldset) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .veloura-search-surface salla-search::part(form),
+html body .veloura-search-surface salla-search::part(container),
+html body .veloura-search-surface salla-search::part(wrapper),
+html body .veloura-search-surface salla-search::part(input) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .veloura-search-surface salla-search,
+html body .veloura-search-surface salla-search::part(container),
+html body .veloura-search-surface salla-search::part(form) {
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
 }
