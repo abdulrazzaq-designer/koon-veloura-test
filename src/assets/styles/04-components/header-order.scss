@@ -338,3 +338,60 @@ html body .veloura-search-surface salla-search::part(form) {
   display: flex !important;
   align-items: center !important;
 }
+
+/* --------------------------------------------------------------------------
+   Search surface, second pass: make the two boxes COINCIDE.
+
+   Transparency alone was not enough, because plain descendant selectors do
+   not cross a web component's shadow boundary — only ::part() does, and only
+   for the parts the component chooses to expose. So rather than relying on
+   reaching the inner box, this pass removes every reason for it to look like
+   a separate box: the wrapper carries no padding of its own, and the host and
+   its exposed parts are stretched to the wrapper's full width, full height
+   and same corner radius. Two boxes drawn on exactly the same rectangle read
+   as one, whichever of them ends up painted.
+   -------------------------------------------------------------------------- */
+html body .veloura-search-surface {
+  padding: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+html body .veloura-search-surface > salla-search,
+html body .veloura-search-surface salla-search.veloura-header-search-component {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: inherit !important;
+  overflow: hidden !important;
+}
+
+html body .veloura-search-surface salla-search::part(container),
+html body .veloura-search-surface salla-search::part(form),
+html body .veloura-search-surface salla-search::part(wrapper),
+html body .veloura-search-surface salla-search::part(search),
+html body .veloura-search-surface salla-search::part(base),
+html body .veloura-search-surface salla-search::part(root),
+html body .veloura-search-surface salla-search::part(field),
+html body .veloura-search-surface salla-search::part(control),
+html body .veloura-search-surface salla-search::part(input),
+html body .veloura-search-surface salla-search [part~='container'],
+html body .veloura-search-surface salla-search [part~='form'],
+html body .veloura-search-surface salla-search [part~='wrapper'],
+html body .veloura-search-surface salla-search [part~='input'],
+html body .veloura-search-surface salla-search :is(.s-search-container, .s-search-wrapper, .s-search-form, .s-search-input) {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border-radius: inherit !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
