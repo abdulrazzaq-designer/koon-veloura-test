@@ -3258,17 +3258,29 @@ html body.veloura-glass-effect .s-modal-content .s-form-control {
      based on the full-width-desktop setting (--container-desktop vs
      --full-width-desktop). This block used to force max-width:none
      unconditionally with higher specificity than that logic, so a floating
-     header stayed full-width even with the full-width-desktop setting OFF. */
+     header stayed full-width even with the full-width-desktop setting OFF.
+
+     margin-inline must stay auto for the same reason: once the container is
+     capped at the boxed width, `margin: 0` would pin the whole header to the
+     inline-start edge (the right, on an RTL storefront) instead of centring
+     it in the viewport. */
   box-sizing: border-box;
   width: 100%;
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
 }
 
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .s-advertisement-content.veloura-header-tabs-stack__container {
   /* Same reasoning as the V4 block above: max-width stays owned by
-     header-tabs.scss's --container-desktop / --full-width-desktop split. */
-  margin: 0;
+     header-tabs.scss's --container-desktop / --full-width-desktop split, and
+     margin-inline stays auto so a boxed floating header sits in the middle of
+     the viewport instead of against the inline-start edge. */
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
   width: 100%;
   box-sizing: border-box;
@@ -32179,7 +32191,10 @@ html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search.vel
 .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .container.veloura-header-tabs-stack__container {
   box-sizing: border-box !important;
   width: 100% !important;
-  margin: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   padding: 0 !important;
 }
 .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .veloura-header-tabs-stack__container,
@@ -32189,7 +32204,12 @@ html body .veloura-header-tabs-stack .veloura-mobile-search-bar salla-search.vel
      based on the full-width-desktop setting (--container-desktop vs
      --full-width-desktop). This block used to force max-width:none
      unconditionally with higher specificity than that logic, so a floating
-     header stayed full-width even with the full-width-desktop setting OFF. */
+     header stayed full-width even with the full-width-desktop setting OFF.
+
+     margin-inline must stay auto for the same reason: once the container is
+     capped at the boxed width, `margin: 0` would pin the whole header to the
+     inline-start edge (the right, on an RTL storefront) instead of centring
+     it in the viewport. */
 }
 .veloura-header-tabs-stack.veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface {
   width: 100% !important;
@@ -32384,7 +32404,10 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating {
 }
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .veloura-header-tabs-stack__container,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .container.veloura-header-tabs-stack__container {
-  margin: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   padding: 0 !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -32392,7 +32415,9 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .cont
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .veloura-header-tabs-stack__container,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .container.veloura-header-tabs-stack__container {
   /* Same reasoning as the V4 block above: max-width stays owned by
-     header-tabs.scss's --container-desktop / --full-width-desktop split. */
+     header-tabs.scss's --container-desktop / --full-width-desktop split, and
+     margin-inline stays auto so a boxed floating header sits in the middle of
+     the viewport instead of against the inline-start edge. */
 }
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface {
   margin: 0 !important;
@@ -50140,17 +50165,29 @@ model-viewer[style*=width]:before{
      based on the full-width-desktop setting (--container-desktop vs
      --full-width-desktop). This block used to force max-width:none
      unconditionally with higher specificity than that logic, so a floating
-     header stayed full-width even with the full-width-desktop setting OFF. */
+     header stayed full-width even with the full-width-desktop setting OFF.
+
+     margin-inline must stay auto for the same reason: once the container is
+     capped at the boxed width, `margin: 0` would pin the whole header to the
+     inline-start edge (the right, on an RTL storefront) instead of centring
+     it in the viewport. */
   box-sizing: border-box;
   width: 100%;
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
 }
 
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating > .s-comments-product .s-comments-container.veloura-header-tabs-stack__container {
   /* Same reasoning as the V4 block above: max-width stays owned by
-     header-tabs.scss's --container-desktop / --full-width-desktop split. */
-  margin: 0;
+     header-tabs.scss's --container-desktop / --full-width-desktop split, and
+     margin-inline stays auto so a boxed floating header sits in the middle of
+     the viewport instead of against the inline-start edge. */
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
   width: 100%;
   box-sizing: border-box;
