@@ -1169,15 +1169,29 @@ html body .veloura-search-surface salla-search.veloura-header-search-component .
   }
 
   /* The detached search field is a sibling of the header surface, so it
-     needs the same ceiling to stay on the icons' vertical edge line. */
+     needs the same ceiling to stay on the icons' vertical edge line.
+
+     The ceiling and the side padding belong to the SHELL, never to the field
+     itself. The field is the painted pill: giving it padding pushed the
+     search component inward, so the component sat inset inside the pill and
+     the two read as two stacked boxes, the inner one visibly shorter — the
+     "search looks like two layers" report. The pill now fills the shell's
+     content box exactly and the component fills the pill. */
   html body .veloura-header-tabs-stack--full-width-desktop
-    .veloura-detached-search-shell,
-  html body .veloura-header-tabs-stack--full-width-desktop
-    .veloura-detached-search {
+    .veloura-detached-search-shell {
     width: 100% !important;
     max-width: var(--veloura-global-container, 1280px) !important;
     margin-inline: auto !important;
     padding-inline: var(--veloura-global-spacing, 12px) !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .veloura-header-tabs-stack--full-width-desktop
+    .veloura-detached-search {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
     box-sizing: border-box !important;
   }
 }
