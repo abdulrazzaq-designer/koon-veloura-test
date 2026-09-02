@@ -2468,60 +2468,94 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
        The blur is also a notch stronger than the site's, for the same reason:
        a full-screen sheet needs more blur than a small pill to read as glass. */
-    /* WHY THIS IS BUILT THE WAY IT IS.
+    /* GLASS, TAKE THREE — the pane is the CONTENT PANEL, not the whole screen.
 
-       Measured on the live store: the tint was already thin (alpha .34) and
-       backdrop-filter: blur(26px) was applied and supported, with nothing
-       above the loader breaking it, over a fully painted page. In other words
-       the glass was working — and still looked like a flat sheet.
+       The two earlier attempts glazed the entire viewport, and measurement on
+       the live store showed why that can never look like glass there: the
+       veil composited to about #272B2C over a #1B1A1F page — roughly 8%
+       lighter than the page it covers. A full-bleed sheet has no edge, no
+       corner and no surrounding contrast, so 8% is all the eye gets, and it
+       reads as a slightly different flat colour no matter how much blur or
+       sheen is piled on.
 
-       The reason is contrast, not CSS. The veil colour sat at about #3F3E45
-       and the page behind it at #1B1A1F: two near-identical dark greys. A
-       blur over large flat areas of an almost identical colour produces that
-       same colour, so there is nothing for the eye to read as glass.
-
-       So the pane gets the things that actually make glass look like glass and
-       do not depend on what is behind it: a light sheen falling from the top
-       edge, and a bright hairline along that edge. The tint and the blur stay
-       as they were. */
+       What reads as glass on this store is the header pill: a rounded panel
+       with a clear edge, sitting over content. So the loader now does the
+       same. The full screen only gets a calm tint plus blur, and the logo and
+       text sit on a real glass panel — theme glass tokens, sheen, hairline
+       edge and a soft shadow. That panel matches the header by construction,
+       which is what "the same glass as the site" actually means.
+       -------------------------------------------------------------------- */
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-      background-color:rgba(248,250,252,.42)!important;
-      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(248,250,252,.72)) 52%, transparent)!important;
-      background-image:linear-gradient(
-        180deg,
-        rgba(255,255,255,.38) 0%,
-        rgba(255,255,255,.12) 42%,
-        rgba(255,255,255,.04) 100%
-      )!important;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.45)!important;
-      backdrop-filter:blur(26px) saturate(135%)!important;
-      -webkit-backdrop-filter:blur(26px) saturate(135%)!important;
+      background-color:rgba(248,250,252,.28)!important;
+      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(248,250,252,.72)) 34%, transparent)!important;
+      background-image:none!important;
+      backdrop-filter:blur(18px) saturate(120%)!important;
+      -webkit-backdrop-filter:blur(18px) saturate(120%)!important;
     }
 
     html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg,
     body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-      background-color:rgba(17,24,39,.46)!important;
-      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 56%, transparent)!important;
-      background-image:linear-gradient(
-        180deg,
-        rgba(255,255,255,.16) 0%,
-        rgba(255,255,255,.06) 45%,
-        rgba(255,255,255,.02) 100%
-      )!important;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.16)!important;
+      background-color:rgba(10,12,18,.34)!important;
+      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 40%, transparent)!important;
     }
 
     @media (prefers-color-scheme: dark){
       #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-        background-color:rgba(17,24,39,.46)!important;
-        background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 56%, transparent)!important;
+        background-color:rgba(10,12,18,.34)!important;
+        background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 40%, transparent)!important;
+      }
+    }
+
+    /* The panel. This is the piece that has to look like glass, so it gets
+       everything glass needs: its own blur, a tint LIGHTER than the page
+       behind it, a sheen falling from the top, a bright hairline on the top
+       edge and a soft shadow underneath to lift it off the page. */
+    #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content{
+      border-radius:28px!important;
+      padding:34px 30px!important;
+      background-color:rgba(255,255,255,.58)!important;
+      background-image:linear-gradient(
+        160deg,
+        rgba(255,255,255,.55) 0%,
+        rgba(255,255,255,.18) 38%,
+        rgba(255,255,255,.06) 100%
+      )!important;
+      border:1px solid rgba(255,255,255,.55)!important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.80),
+        0 24px 60px rgba(15,23,42,.18)!important;
+      backdrop-filter:blur(26px) saturate(150%)!important;
+      -webkit-backdrop-filter:blur(26px) saturate(150%)!important;
+    }
+
+    html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content,
+    body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content{
+      background-color:rgba(88,86,102,.34)!important;
+      background-image:linear-gradient(
+        160deg,
+        rgba(255,255,255,.20) 0%,
+        rgba(255,255,255,.07) 38%,
+        rgba(255,255,255,.02) 100%
+      )!important;
+      border:1px solid rgba(255,255,255,.16)!important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.24),
+        0 26px 70px rgba(0,0,0,.45)!important;
+    }
+
+    @media (prefers-color-scheme: dark){
+      #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content{
+        background-color:rgba(88,86,102,.34)!important;
         background-image:linear-gradient(
-          180deg,
-          rgba(255,255,255,.16) 0%,
-          rgba(255,255,255,.06) 45%,
+          160deg,
+          rgba(255,255,255,.20) 0%,
+          rgba(255,255,255,.07) 38%,
           rgba(255,255,255,.02) 100%
         )!important;
-        box-shadow:inset 0 1px 0 rgba(255,255,255,.16)!important;
+        border:1px solid rgba(255,255,255,.16)!important;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.24),
+          0 26px 70px rgba(0,0,0,.45)!important;
       }
     }
 
@@ -2533,7 +2567,10 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-store-name,
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts h2,
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts p{
-      color:var(--veloura-primary-text, #111827)!important;
+      /* A solid, high-contrast colour rather than the theme's body-text
+         token: that token is a mid grey on this store and washed out on a
+         bright glass panel. */
+      color:#0f172a!important;
     }
 
     html.dark #veloura-loader-2026.veloura-loader-bg-glass,
@@ -2544,7 +2581,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-store-name,
     body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts h2,
     body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts p{
-      color:var(--veloura-dark-primary-text, #ffffff)!important;
+      color:#ffffff!important;
     }
 
     #veloura-loader-2026 .veloura-loader-content{
