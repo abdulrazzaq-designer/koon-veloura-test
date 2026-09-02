@@ -1,0 +1,170 @@
+/* ========================================================================
+   Veloura Header — DESKTOP ORDER FOR THE DETACHED-SEARCH HEADER
+
+   Imported last on purpose.
+
+   Why this file exists, and why it is small:
+
+   The CONNECTED header (search bar inside the header) already has one owner:
+   section 8 of header-layout.scss, which builds a flat icon rail and orders
+   it dark → search → logo → language/currency → wishlist → cart → login.
+   Nothing is repeated here for that mode — the order is edited there.
+
+   The DETACHED header (search bar on its own row underneath) had no owner at
+   all: section 8 excludes it with :not(.veloura-top-search-detached), so it
+   fell through to the raw template grid and the controls scattered over two
+   rows. This file is that missing owner, and only that:
+
+     RIGHT cluster : dark → language/currency → (search icon) → wishlist
+     CENTER        : logo, on the true centre line, so it does not drift when
+                     one cluster is wider than the other
+     LEFT cluster  : cart → login
+     UNDER         : the search bar, as its own row. On scroll the bar hides
+                     and the search icon appears in the right cluster next to
+                     the language/currency control.
+
+   Specificity note: the older layers reach (0,6,2). $detached pins the two
+   data-attributes the header template always emits and lands at (0,7,2) —
+   one notch above, so this wins without a louder hack later.
+
+   Mobile (< 1024px) is not touched here; header-layout.scss owns it.
+   ======================================================================== */
+
+$order-detached:
+  'html body .veloura-header-tabs-stack .store-header.veloura-top-enabled'
+  + '.veloura-top-search-detached[data-veloura-header]'
+  + '[data-veloura-search-detached="true"]';
+
+@media (min-width: 1024px) {
+  #{$order-detached} .veloura-header-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      'tools'
+      'links' !important;
+    grid-template-rows: auto auto !important;
+    align-items: center !important;
+    direction: rtl !important;
+    width: 100% !important;
+    row-gap: 6px !important;
+
+    /* The rail itself runs on a PHYSICAL axis (ltr), so .veloura-header-left
+       is always the physical left cluster and .veloura-header-right always
+       the physical right one, whatever the store language. Each cluster then
+       switches back to rtl below so its own controls read right-to-left. */
+    .veloura-header__tools {
+      grid-area: tools !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      direction: ltr !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .veloura-header-right,
+    .veloura-header-left {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex: 0 0 auto !important;
+      grid-area: auto !important;
+      width: auto !important;
+      direction: rtl !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Each control keeps its own box and its own reading direction. */
+    .veloura-header-right > *,
+    .veloura-header-left > * {
+      position: static !important;
+      inset: auto !important;
+      transform: none !important;
+      margin: 0 !important;
+      flex: 0 0 auto !important;
+      direction: rtl !important;
+    }
+
+    /* RIGHT cluster: dark → language/currency → search icon → wishlist. */
+    .veloura-header-right {
+      .veloura-dark-toggle   { order: 1 !important; }
+      .veloura-lang-desktop  { order: 2 !important; }
+      .veloura-search-toggle { order: 3 !important; }
+      .veloura-wishlist-btn  { order: 4 !important; }
+    }
+
+    /* LEFT cluster: cart → login. */
+    .veloura-header-left {
+      .veloura-header__cart,
+      salla-cart-summary { order: 1 !important; position: relative !important; overflow: visible !important; }
+      .veloura-login-btn { order: 2 !important; }
+    }
+
+    /* The logo overlaps the same grid cell as the clusters, so its centre is
+       the header's centre no matter how wide either cluster grows. */
+    .veloura-header-logo {
+      grid-area: tools !important;
+      justify-self: center !important;
+      align-self: center !important;
+      position: relative !important;
+      inset: auto !important;
+      z-index: 5 !important;
+      margin: 0 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+
+    .veloura-menu-links-wrap {
+      grid-area: links !important;
+      justify-self: stretch !important;
+      width: 100% !important;
+      direction: rtl !important;
+    }
+
+    /* Mobile-only controls leave the desktop row entirely. */
+    .veloura-header__menu,
+    .veloura-lang-mobile,
+    .veloura-mobile-search-bar {
+      display: none !important;
+    }
+
+    /* In detached mode the in-header bar never renders, and the icon only
+       stands in for the detached bar once the header compacts on scroll. */
+    .veloura-desktop-search-bar,
+    .veloura-search-toggle {
+      display: none !important;
+    }
+  }
+
+  #{$order-detached}.veloura-top-scrolled .veloura-header-grid
+  .veloura-search-toggle {
+    display: inline-flex !important;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   The detached shell keeps its 10px top gap only while it actually shows a
+   bar. Once the bar collapses on scroll the gap goes with it, otherwise the
+   header sits on top of an empty 10px strip.
+   ------------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+  .veloura-detached-search-shell.veloura-detached-desktop-bar,
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+  .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon {
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+  .veloura-detached-search-shell.veloura-detached-mobile-bar,
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+  .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon {
+    margin-top: 0 !important;
+  }
+}

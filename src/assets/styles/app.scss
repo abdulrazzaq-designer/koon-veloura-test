@@ -68,3 +68,6 @@
 @import './05-utilities/veloura-global-overlays';
 @import './05-utilities/veloura-cart-banners';
 @import './04-components/header-glass';
+
+/* Desktop header element order — must stay LAST so it always wins. */
+@import './04-components/header-order';

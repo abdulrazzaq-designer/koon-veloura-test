@@ -2846,9 +2846,14 @@ html body .store-header.veloura-top-enabled .s-cart-summary-count {
 > .veloura-header-tabs-stack__container,
 .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 > .container.veloura-header-tabs-stack__container {
+  /* max-width is NOT set here on purpose: whether the floating container is
+     boxed (1280px) or edge-to-edge is decided solely by header-tabs.scss
+     based on the full-width-desktop setting (--container-desktop vs
+     --full-width-desktop). This block used to force max-width:none
+     unconditionally with higher specificity than that logic, so a floating
+     header stayed full-width even with the full-width-desktop setting OFF. */
   box-sizing: border-box !important;
   width: 100% !important;
-  max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -3063,10 +3068,11 @@ html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 > .veloura-header-tabs-stack__container,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack--floating
 > .container.veloura-header-tabs-stack__container {
+  /* Same reasoning as the V4 block above: max-width stays owned by
+     header-tabs.scss's --container-desktop / --full-width-desktop split. */
   margin: 0 !important;
   padding: 0 !important;
   width: 100% !important;
-  max-width: none !important;
   box-sizing: border-box !important;
 }
 
