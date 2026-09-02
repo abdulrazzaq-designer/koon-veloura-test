@@ -58329,6 +58329,76 @@ html body .veloura-search-surface salla-search .s-search-input {
   border: 0 !important;
   box-shadow: none !important;
 }
+/* ==========================================================================
+   LAST-RESORT GUARDS
+
+   Everything above is written at the specificity the rest of the theme uses,
+   which is the right way to do it. These few rules are deliberately louder,
+   because the compiled stylesheet on the live store turned out to contain
+   rules that are not in this source tree — a bar that must stay visible was
+   still being hidden there. Repeating a class is a legal way to raise
+   specificity, so these win without needing an id or an inline style.
+
+   If the stylesheet is ever cleaned up so the source is the only thing that
+   ships, this section can be deleted and nothing should change.
+   ========================================================================== */
+/* A "bar" mode bar stays visible at every scroll position, in both the
+   connected and the detached header, on both breakpoints. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar.veloura-detached-desktop-bar .veloura-detached-search--desktop.veloura-detached-search--desktop {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar.veloura-detached-desktop-bar {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-top-enabled.veloura-desktop-search-bar.veloura-desktop-search-bar:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+@media (max-width: 1023px) {
+  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar.veloura-detached-mobile-bar .veloura-detached-search--mobile.veloura-detached-search--mobile {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar.veloura-detached-mobile-bar {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-top-enabled.veloura-mobile-search-bar.veloura-mobile-search-bar:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-mobile-search-bar {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+/* The currency symbol may arrive as an icon element (Salla ships the Saudi
+   riyal that way). It has to read as part of the pill's text, not as a
+   floating glyph at whatever size the icon font defaults to. */
+html body .veloura-localization-pill .veloura-localization-pill__currency-icon,
+html body .veloura-localization-pill__currency .veloura-localization-pill__currency-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1em !important;
+  line-height: 1 !important;
+  color: inherit !important;
+  vertical-align: middle !important;
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;

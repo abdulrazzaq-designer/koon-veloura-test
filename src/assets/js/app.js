@@ -4309,26 +4309,34 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
         .replace(/^[\s.,،٬٫]+|[\s.,،٬٫]+$/g, '');
     });
 
-    /* TEXT WINS OVER AN ICON ELEMENT, ON PURPOSE.
+    /* Order: a text symbol, then an icon element, then nothing.
 
-       This used to return the markup whenever it contained any element at
-       all, so an icon-only symbol (Salla ships SAR as <i class="sicon-sar">)
-       was accepted as the currency. If that glyph is missing from the icon
-       font the theme actually loads, the element renders as blank space and
-       the pill shows a language label, a divider, and nothing after it.
+       Text first, because "د.إ", "ر.س" and "$" always render. But an icon is
+       still a perfectly good symbol and must be kept when there is no text —
+       Salla ships the Saudi riyal as <i class="sicon-sar">, which is the new
+       riyal mark and exactly what the pill should show. Dropping it sent the
+       pill to the currency CODE instead, so an SAR store read "SAR" while its
+       own currency picker showed the proper mark.
 
-       So the text form is preferred: "د.إ", "ر.س", "$" all survive here and
-       always render. Only when the symbol is purely an icon element do we
-       return '' and let the caller fall back to the currency CODE (AED, SAR),
-       which is text and therefore always visible. */
+       Only the element is carried over, never the surrounding text nodes, so
+       nothing but the symbol itself reaches the pill. */
     const symbolText = box.textContent.replace(/\s+/g, ' ').trim();
     if (symbolText) return symbolText;
 
-    const iconOnly = box.querySelector('i[class*="sicon-"], i[class*="icon-"]');
-    if (iconOnly) return '';
+    const iconEl = box.querySelector('i[class], svg, img');
+    if (iconEl) {
+      /* Rebuild the element from scratch: tag plus class only. Whatever else
+         Salla put on it (inline sizes, data hooks, event bindings) has no
+         business in the header pill. */
+      const tag = iconEl.tagName.toLowerCase();
+      const cls = (iconEl.getAttribute('class') || '').replace(/[^\w\s-]/g, '').trim();
+      if (tag === 'i' && cls) {
+        return '<i class="' + cls + ' veloura-localization-pill__currency-icon" aria-hidden="true"></i>';
+      }
+      return iconEl.outerHTML;
+    }
 
-    const html = box.innerHTML.trim();
-    return html.replace(/\s+/g, '') ? html : '';
+    return '';
   };
 
   /* The currency used to be scraped from the cart-summary total. That text is
