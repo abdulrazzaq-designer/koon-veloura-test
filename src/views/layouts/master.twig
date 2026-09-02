@@ -2485,95 +2485,51 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
        The blur is also a notch stronger than the site's, for the same reason:
        a full-screen sheet needs more blur than a small pill to read as glass. */
-    /* GLASS, TAKE THREE — the pane is the CONTENT PANEL, not the whole screen.
+    /* GLASS — the whole screen, no panel.
 
-       The two earlier attempts glazed the entire viewport, and measurement on
-       the live store showed why that can never look like glass there: the
-       veil composited to about #272B2C over a #1B1A1F page — roughly 8%
-       lighter than the page it covers. A full-bleed sheet has no edge, no
-       corner and no surrounding contrast, so 8% is all the eye gets, and it
-       reads as a slightly different flat colour no matter how much blur or
-       sheen is piled on.
-
-       What reads as glass on this store is the header pill: a rounded panel
-       with a clear edge, sitting over content. So the loader now does the
-       same. The full screen only gets a calm tint plus blur, and the logo and
-       text sit on a real glass panel — theme glass tokens, sheen, hairline
-       edge and a soft shadow. That panel matches the header by construction,
-       which is what "the same glass as the site" actually means.
-       -------------------------------------------------------------------- */
+       The earlier attempts put the glass on a rounded panel because a
+       full-screen sheet refused to look like glass. That was never the
+       screen's fault: the loader root carried an opacity animation and
+       will-change, which made it a backdrop root and left backdrop-filter
+       with nothing to sample. With that fixed (see the note on the root
+       rule), a full-bleed sheet blurs the store properly, so the panel is
+       gone and the glass covers the page edge to edge — no border, no corner,
+       no rectangle. */
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-      background-color:rgba(248,250,252,.28)!important;
-      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(248,250,252,.72)) 34%, transparent)!important;
+      background-color:rgba(248,250,252,.34)!important;
+      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(248,250,252,.72)) 42%, transparent)!important;
       background-image:none!important;
-      backdrop-filter:blur(18px) saturate(120%)!important;
-      -webkit-backdrop-filter:blur(18px) saturate(120%)!important;
+      backdrop-filter:blur(28px) saturate(140%)!important;
+      -webkit-backdrop-filter:blur(28px) saturate(140%)!important;
+      /* The blur has to ease out with everything else — see the hide rules. */
+      transition:
+        backdrop-filter var(--vl-fade) ease,
+        -webkit-backdrop-filter var(--vl-fade) ease,
+        background-color var(--vl-fade) ease!important;
     }
 
     html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg,
     body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-      background-color:rgba(10,12,18,.34)!important;
-      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 40%, transparent)!important;
+      background-color:rgba(10,12,18,.40)!important;
+      background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 48%, transparent)!important;
     }
 
     @media (prefers-color-scheme: dark){
       #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-        background-color:rgba(10,12,18,.34)!important;
-        background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 40%, transparent)!important;
+        background-color:rgba(10,12,18,.40)!important;
+        background-color:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 48%, transparent)!important;
       }
     }
 
-    /* The panel. This is the piece that has to look like glass, so it gets
-       everything glass needs: its own blur, a tint LIGHTER than the page
-       behind it, a sheen falling from the top, a bright hairline on the top
-       edge and a soft shadow underneath to lift it off the page. */
+    /* No panel: the content sits directly on the glass. */
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content{
-      border-radius:28px!important;
-      padding:34px 30px!important;
-      background-color:rgba(255,255,255,.58)!important;
-      background-image:linear-gradient(
-        160deg,
-        rgba(255,255,255,.55) 0%,
-        rgba(255,255,255,.18) 38%,
-        rgba(255,255,255,.06) 100%
-      )!important;
-      border:1px solid rgba(255,255,255,.55)!important;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.80),
-        0 24px 60px rgba(15,23,42,.18)!important;
-      backdrop-filter:blur(26px) saturate(150%)!important;
-      -webkit-backdrop-filter:blur(26px) saturate(150%)!important;
-    }
-
-    html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content,
-    body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content{
-      background-color:rgba(88,86,102,.34)!important;
-      background-image:linear-gradient(
-        160deg,
-        rgba(255,255,255,.20) 0%,
-        rgba(255,255,255,.07) 38%,
-        rgba(255,255,255,.02) 100%
-      )!important;
-      border:1px solid rgba(255,255,255,.16)!important;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.24),
-        0 26px 70px rgba(0,0,0,.45)!important;
-    }
-
-    @media (prefers-color-scheme: dark){
-      #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-content{
-        background-color:rgba(88,86,102,.34)!important;
-        background-image:linear-gradient(
-          160deg,
-          rgba(255,255,255,.20) 0%,
-          rgba(255,255,255,.07) 38%,
-          rgba(255,255,255,.02) 100%
-        )!important;
-        border:1px solid rgba(255,255,255,.16)!important;
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,.24),
-          0 26px 70px rgba(0,0,0,.45)!important;
-      }
+      background:none!important;
+      border:0!important;
+      border-radius:0!important;
+      box-shadow:none!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+      transition:opacity var(--vl-fade) ease, transform var(--vl-fade) ease!important;
     }
 
     /* On glass the background follows light/dark by itself, so a fixed text
@@ -2632,8 +2588,44 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       display:none!important;opacity:0!important;visibility:hidden!important;animation:none!important;
     }
 
+    /* HIDING WITHOUT SNAPPING THE BLUR OFF.
+
+       Fading the root's opacity looks wrong here, and for the same reason the
+       glass was broken in the first place: the moment opacity drops below 1
+       the element becomes a backdrop root, so the blur vanishes instantly on
+       frame one while the tint and the text carry on fading. That is exactly
+       the "blur disappears suddenly, the rest fades" behaviour.
+
+       So the root keeps opacity: 1 throughout. What fades is the blur itself
+       (backdrop-filter easing to blur(0)), the tint, and the content — each on
+       its own transition, all over the same duration. visibility flips only
+       after the fade has finished. */
     #veloura-loader-2026.veloura-loader-is-hidden{
-      opacity:0!important;visibility:hidden!important;animation:none!important;pointer-events:none!important;
+      opacity:1!important;
+      animation:none!important;
+      pointer-events:none!important;
+      visibility:hidden!important;
+      transition:visibility 0s linear var(--vl-fade)!important;
+    }
+
+    /* The dark-mode tint above is written as html.dark #id.class .class, so
+       the hide state has to out-rank that, not just come after it — hence the
+       html body prefix and both state classes on the root. */
+    html body #veloura-loader-2026.veloura-loader-bg-glass.veloura-loader-is-hidden .veloura-loader-bg,
+    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-bg{
+      background-color:transparent!important;
+      backdrop-filter:blur(0px) saturate(100%)!important;
+      -webkit-backdrop-filter:blur(0px) saturate(100%)!important;
+    }
+
+    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-content{
+      opacity:0!important;
+      transform:translateY(-6px)!important;
+    }
+
+    #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-skip-label,
+    .veloura-loader-skip-check:checked ~ .veloura-loader-skip-label{
+      opacity:0!important;
     }
 
     @keyframes velouraLoaderStableFadeOut{
