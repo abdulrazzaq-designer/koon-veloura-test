@@ -2316,7 +2316,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% else %}
     {% set vl_bg_type = vl_bg_type_raw %}
   {% endif %}
-  {% if vl_bg_type not in ['solid','gradient','image'] %}{% set vl_bg_type = 'solid' %}{% endif %}
+  {# 'glass' was missing from this whitelist, so picking "شفاف / زجاجي" was
+     silently rewritten to 'solid' right here: the loader got the class
+     veloura-loader-bg-solid and was painted with the flat background colour,
+     which is why the glass option looked like it did nothing at all. The
+     setting offers four values, so all four belong in this list. #}
+  {% if vl_bg_type not in ['solid','gradient','image','glass'] %}{% set vl_bg_type = 'solid' %}{% endif %}
 
   {% set vl_bg_color = theme.settings.get('veloura_loader_bg_color_2026', '#ffffff') %}
   {% if vl_bg_color.value is defined %}{% set vl_bg_color = vl_bg_color.value %}{% endif %}
@@ -2469,6 +2474,28 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
         background:var(--veloura-glass-surface, rgba(17,24,39,.76))!important;
       }
+    }
+
+    /* On glass the background follows light/dark by itself, so a fixed text
+       colour would be unreadable in one of the two modes. The text follows the
+       theme here for the same reason the background does. The colour setting
+       still applies to solid, gradient and image. */
+    #veloura-loader-2026.veloura-loader-bg-glass,
+    #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-store-name,
+    #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts h2,
+    #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts p{
+      color:var(--veloura-primary-text, #111827)!important;
+    }
+
+    html.dark #veloura-loader-2026.veloura-loader-bg-glass,
+    html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-store-name,
+    html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts h2,
+    html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts p,
+    body.dark #veloura-loader-2026.veloura-loader-bg-glass,
+    body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-store-name,
+    body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts h2,
+    body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-texts p{
+      color:var(--veloura-dark-primary-text, #ffffff)!important;
     }
 
     #veloura-loader-2026 .veloura-loader-content{
