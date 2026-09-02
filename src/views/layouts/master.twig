@@ -2430,14 +2430,31 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   <style>
     .veloura-loader-skip-check{position:fixed!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;z-index:-1!important}
 
+    /* THIS ELEMENT MUST NOT ANIMATE ITS OWN OPACITY, AND MUST NOT DECLARE
+       will-change. Both were here, and both silently destroyed the glass.
+
+       An element that animates opacity, or declares will-change:opacity,
+       becomes a BACKDROP ROOT. Everything inside it can then only sample what
+       is painted inside that root when it applies backdrop-filter — the page
+       behind the loader is out of reach. The blur was applied, supported and
+       measurable the whole time; it simply had nothing to blur, which is why
+       the store's own content stayed perfectly sharp through the panel.
+
+       Measured both ways on this markup: with will-change or a keyframe fade
+       the text behind the panel is fully readable; with neither, and the fade
+       driven by the transition below instead, it is completely blurred.
+
+       So the fade now runs as a TRANSITION, switched on by adding the class
+       .veloura-loader-is-hidden (the script under this block does that on
+       schedule, and the auto-hide script does it on page load). The keyframe
+       version survives only inside <noscript>, where blur does not matter
+       because the loader has to disappear without JavaScript. */
     #veloura-loader-2026.veloura-loader-stable{
       position:fixed!important;inset:0!important;z-index:2147483000!important;
       display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;
       color:var(--vl-text)!important;font-family:inherit!important;
       opacity:1;visibility:visible;pointer-events:none!important;
-      animation:velouraLoaderStableFadeOut var(--vl-fade) ease var(--vl-duration) 1 forwards!important;
       transition:opacity var(--vl-fade) ease, visibility var(--vl-fade) ease!important;
-      will-change:opacity,visibility;
     }
 
     #veloura-loader-2026 .veloura-loader-bg{position:absolute!important;inset:0!important;z-index:0!important;background:var(--vl-bg)!important}
@@ -2634,10 +2651,55 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     }
 
     @media (prefers-reduced-motion: reduce){
-      #veloura-loader-2026.veloura-loader-stable{animation:velouraLoaderStableFadeOut var(--vl-fade) linear var(--vl-duration) 1 forwards!important}
+      /* No fade-out animation here either — see the note on the root rule:
+         animating this element's opacity turns it into a backdrop root and
+         flattens the glass. Reduced motion instead gets an instant hide, which
+         is more in the spirit of the setting anyway. */
+      #veloura-loader-2026.veloura-loader-stable{transition:none!important}
       #veloura-loader-2026 .veloura-loader-logo,#veloura-loader-2026 .veloura-loader-bar span{animation:none!important}
+      #veloura-loader-2026 .veloura-loader-content{animation:none!important}
     }
   </style>
+
+  {# Without JavaScript nothing can add the hide class, so the keyframe fade
+     is kept as a no-script fallback. It flattens the glass, but a loader that
+     never goes away is far worse than one that is not glassy. #}
+  <noscript>
+    <style>
+      #veloura-loader-2026.veloura-loader-stable{
+        animation:velouraLoaderStableFadeOut var(--vl-fade) ease var(--vl-duration) 1 forwards!important;
+      }
+    </style>
+  </noscript>
+
+  {% if not vl_auto_hide %}
+    {# The timed mode used to rely on the CSS animation to hide the loader.
+       That animation is gone, so the same schedule now runs here and the
+       transition on the root does the fading. #}
+    <script data-cfasync="false">
+      (function () {
+        var loader = document.getElementById('veloura-loader-2026');
+        var checkbox = document.getElementById('veloura-loader-skip-2026');
+        if (!loader) return;
+
+        var duration = {{ vl_duration|round(0, 'ceil') }};
+        var fade = {{ vl_fade|round(0, 'ceil') }};
+        var done = false;
+
+        function hideLoader() {
+          if (done) return;
+          done = true;
+          loader.classList.add('veloura-loader-is-hidden');
+          setTimeout(function () {
+            if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+            if (checkbox && checkbox.parentNode) checkbox.parentNode.removeChild(checkbox);
+          }, fade + 120);
+        }
+
+        setTimeout(hideLoader, duration);
+      })();
+    </script>
+  {% endif %}
 
   {% if vl_auto_hide %}
     <script data-cfasync="false">
