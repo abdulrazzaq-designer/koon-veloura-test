@@ -537,24 +537,6 @@
       ]
     },
     {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل عرض كامل للأقسام الأساسية",
-      "description": "عند التفعيل يتم السماح لبعض الأقسام بالخروج من حاوية الموقع",
-      "id": "veloura_site_sections_full_width_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "type": "static",
       "format": "title",
       "id": "veloura_general_subtitle_classes_2026",

@@ -311,7 +311,6 @@
     {% set veloura_index_body_classes = is_page('index') ? theme.settings.get('veloura_index_body_classes_2026') : '' %}
     {% set veloura_product_body_classes = is_page('product.single') ? theme.settings.get('veloura_product_body_classes_2026') : '' %}
 
-    {% set veloura_full_width_sections = theme.settings.get('veloura_site_sections_full_width_2026', false) %}
 
     {# Normalize the global glass switch; Salla may return a scalar or a setting object. #}
     {% set veloura_glass_effect_setting = theme.settings.get('veloura_general_glass_effect_2026', false) %}
@@ -2249,7 +2248,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {{ vpc_enabled and vpc_glass ? ' veloura-pc-glass' : '' }}
   {{ veloura_should_show_bg_image ? ' veloura-site-has-bg-image' : '' }}
   {{ veloura_site_bg_fixed ? ' veloura-site-bg-fixed' : '' }}
-  {{ veloura_full_width_sections ? ' veloura-sections-full-width' : '' }}
   {{ veloura_glass_effect ? ' veloura-glass-effect' : '' }}
   {{ veloura_clean_borders ? ' veloura-clean-borders' : '' }}
   {{ is_page('index') ? ' veloura-page-index' : '' }}
