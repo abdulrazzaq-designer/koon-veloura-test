@@ -4393,6 +4393,48 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     }
   };
 
+  /* THE PILL MUST BE RE-RENDERED ONCE SALLA HAS HYDRATED.
+
+     salla.money() and salla.config are not ready during the first paint, so
+     the very first render falls through to the last-resort code and the pill
+     can end up showing SAR on a store whose real currency is AED. It then
+     stayed wrong for the rest of the visit, because nothing asked again.
+
+     Re-rendering is cheap and self-limiting: renderLocalizationPill compares
+     a language|currency signature and only touches the DOM when the value
+     actually changed, so these retries are no-ops as soon as the currency
+     resolves. */
+  const refreshLocalizationPill = () => {
+    const header = document.querySelector('.store-header.veloura-top-enabled');
+    if (header) renderLocalizationPill(header);
+  };
+
+  const scheduleLocalizationRefresh = () => {
+    [0, 300, 1000, 2500, 5000].forEach((delay) => {
+      window.setTimeout(refreshLocalizationPill, delay);
+    });
+
+    try {
+      if (window.salla && typeof salla.onReady === 'function') {
+        salla.onReady(refreshLocalizationPill);
+      }
+    } catch (e) { /* Salla not ready to take callbacks */ }
+
+    try {
+      if (window.salla && salla.event && typeof salla.event.on === 'function') {
+        ['currency::changed', 'language::changed', 'salla::hydrated'].forEach((name) => {
+          try { salla.event.on(name, refreshLocalizationPill); } catch (e) { /* unknown event */ }
+        });
+      }
+    } catch (e) { /* no event bus */ }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleLocalizationRefresh, { once: true });
+  } else {
+    scheduleLocalizationRefresh();
+  }
+
   /* Kept scoped to the legacy .veloura-header__actions wrapper ON PURPOSE.
      header.twig no longer contains it, so this never runs — and it must not.
      Its order is [account, cart, language]; pointing it at the current
