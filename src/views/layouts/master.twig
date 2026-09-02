@@ -1161,11 +1161,22 @@
         background-color: transparent !important;
       }
 
+      /* The store background TILES across the whole site.
+
+         It used to be cover + no-repeat, which stretches one copy of the
+         image over the first screen and leaves the rest of the page on the
+         plain colour — that is why a patterned background never repeated.
+         Tiling needs the image at its natural size (background-size: auto)
+         with repeat, anchored at the start corner so the pattern lines up.
+
+         It stays on <body>, so it is edge to edge by construction and is
+         never clipped to the container. The "fixed while scrolling" setting
+         still works: background-attachment is set separately below. */
       body.veloura-general-enabled.veloura-site-has-bg-image {
         background-image: var(--veloura-site-bg-image) !important;
-        background-size: cover !important;
-        background-position: center top !important;
-        background-repeat: no-repeat !important;
+        background-size: auto !important;
+        background-position: top left !important;
+        background-repeat: repeat !important;
       }
 
       body.veloura-general-enabled.veloura-site-bg-fixed {
