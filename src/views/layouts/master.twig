@@ -2458,21 +2458,34 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
        matter: this block runs before app.css has loaded — which is the whole
        reason the loader is styled inline — so the tokens can be missing for
        the first frame. */
+    /* The tint is the theme's glass colour thinned down. The site's own token
+       is about 72% opaque, which reads as glass on a small header pill but as
+       a nearly solid sheet when it is stretched over the whole viewport — the
+       page behind stops showing through and the blur has nothing visible to
+       act on. Diluting the SAME colour keeps the loader in the theme's palette
+       while letting the page read through it. The first background line is the
+       fallback for browsers without color-mix.
+
+       The blur is also a notch stronger than the site's, for the same reason:
+       a full-screen sheet needs more blur than a small pill to read as glass. */
     #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-      background:var(--veloura-glass-surface, rgba(248,250,252,.72))!important;
+      background:rgba(248,250,252,.42)!important;
+      background:color-mix(in srgb, var(--veloura-glass-surface, rgba(248,250,252,.72)) 52%, transparent)!important;
       background-image:var(--veloura-glass-layer, none)!important;
-      backdrop-filter:var(--veloura-glass-filter, blur(20px) saturate(124%) brightness(101%))!important;
-      -webkit-backdrop-filter:var(--veloura-glass-filter, blur(20px) saturate(124%) brightness(101%))!important;
+      backdrop-filter:blur(26px) saturate(135%)!important;
+      -webkit-backdrop-filter:blur(26px) saturate(135%)!important;
     }
 
     html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg,
     body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-      background:var(--veloura-glass-surface, rgba(17,24,39,.76))!important;
+      background:rgba(17,24,39,.46)!important;
+      background:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 56%, transparent)!important;
     }
 
     @media (prefers-color-scheme: dark){
       #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
-        background:var(--veloura-glass-surface, rgba(17,24,39,.76))!important;
+        background:rgba(17,24,39,.46)!important;
+        background:color-mix(in srgb, var(--veloura-glass-surface, rgba(17,24,39,.76)) 56%, transparent)!important;
       }
     }
 
