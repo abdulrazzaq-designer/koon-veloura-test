@@ -2441,6 +2441,36 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     #veloura-loader-2026.veloura-loader-bg-image .veloura-loader-bg{background-image:var(--vl-bg-img)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
     #veloura-loader-2026.veloura-loader-bg-image .veloura-loader-bg:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.28)}
 
+    /* GLASS — the same glass the rest of the store uses.
+
+       This rule did not exist here at all, which is why choosing "زجاجي" kept
+       painting a flat colour: the base rule above sets background:var(--vl-bg)
+       with !important on an id selector, and the only glass rule in the theme
+       lived in veloura-loader.scss under class names this markup never uses.
+
+       It reads the theme's own glass tokens, so it follows light and dark by
+       itself and needs no colour or blur setting of its own. The fallbacks
+       matter: this block runs before app.css has loaded — which is the whole
+       reason the loader is styled inline — so the tokens can be missing for
+       the first frame. */
+    #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
+      background:var(--veloura-glass-surface, rgba(248,250,252,.72))!important;
+      background-image:var(--veloura-glass-layer, none)!important;
+      backdrop-filter:var(--veloura-glass-filter, blur(20px) saturate(124%) brightness(101%))!important;
+      -webkit-backdrop-filter:var(--veloura-glass-filter, blur(20px) saturate(124%) brightness(101%))!important;
+    }
+
+    html.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg,
+    body.dark #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
+      background:var(--veloura-glass-surface, rgba(17,24,39,.76))!important;
+    }
+
+    @media (prefers-color-scheme: dark){
+      #veloura-loader-2026.veloura-loader-bg-glass .veloura-loader-bg{
+        background:var(--veloura-glass-surface, rgba(17,24,39,.76))!important;
+      }
+    }
+
     #veloura-loader-2026 .veloura-loader-content{
       position:relative!important;z-index:2!important;display:flex!important;flex-direction:column!important;
       align-items:center!important;justify-content:center!important;gap:16px!important;text-align:center!important;

@@ -934,6 +934,11 @@
           "id": "veloura_loader_enable_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_loader_bg_type_2026",
+          "operation": "=",
+          "value": "solid"
         }
       ]
     },
@@ -996,32 +1001,6 @@
           "id": "veloura_loader_bg_type_2026",
           "operation": "=",
           "value": "image"
-        }
-      ]
-    },
-    {
-      "id": "veloura_loader_bg_blur_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "قوة البلور للخلفية الزجاجية",
-      "description": "يظهر فقط عند اختيار الخلفية الزجاجية",
-      "icon": "sicon-magic",
-      "value": "16",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "40",
-      "conditions": [
-        {
-          "id": "veloura_loader_enable_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_loader_bg_type_2026",
-          "operation": "=",
-          "value": "glass"
         }
       ]
     },
@@ -16352,7 +16331,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل111111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
