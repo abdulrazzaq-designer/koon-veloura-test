@@ -4298,15 +4298,37 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
     const texts = [];
     while (walker.nextNode()) texts.push(walker.currentNode);
+    /* Strip the digits, then trim leftover separators from the ENDS only.
+       Collapsing every separator used to corrupt the symbol itself: "د.إ" is
+       written with a dot, so "٠٫٠٠ د.إ" came out as "د إ". Only the grouping
+       and decimal marks left stranded around the number are removed. */
     texts.forEach((node) => {
       node.nodeValue = node.nodeValue
         .replace(/[0-9٠-٩]/g, '')
-        .replace(/[\s.,،٬٫]+/g, ' ');
+        .replace(/\s+/g, ' ')
+        .replace(/^[\s.,،٬٫]+|[\s.,،٬٫]+$/g, '');
     });
 
+    /* TEXT WINS OVER AN ICON ELEMENT, ON PURPOSE.
+
+       This used to return the markup whenever it contained any element at
+       all, so an icon-only symbol (Salla ships SAR as <i class="sicon-sar">)
+       was accepted as the currency. If that glyph is missing from the icon
+       font the theme actually loads, the element renders as blank space and
+       the pill shows a language label, a divider, and nothing after it.
+
+       So the text form is preferred: "د.إ", "ر.س", "$" all survive here and
+       always render. Only when the symbol is purely an icon element do we
+       return '' and let the caller fall back to the currency CODE (AED, SAR),
+       which is text and therefore always visible. */
+    const symbolText = box.textContent.replace(/\s+/g, ' ').trim();
+    if (symbolText) return symbolText;
+
+    const iconOnly = box.querySelector('i[class*="sicon-"], i[class*="icon-"]');
+    if (iconOnly) return '';
+
     const html = box.innerHTML.trim();
-    const hasSymbolElement = !!box.querySelector('i, svg, img, span');
-    return (hasSymbolElement || html.replace(/\s+/g, '')) ? html : '';
+    return html.replace(/\s+/g, '') ? html : '';
   };
 
   /* The currency used to be scraped from the cart-summary total. That text is
