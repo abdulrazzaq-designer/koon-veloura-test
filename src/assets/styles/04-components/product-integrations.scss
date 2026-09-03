@@ -1,0 +1,163 @@
+/* ==========================================================================
+   Veloura — Salla add-on blocks on the product page
+
+   These are the components a merchant switches on from Salla's own apps and
+   features: loyalty points, cashback, instalments, payment methods, gifting,
+   "bought together", offers and quick order. The theme never rendered them,
+   so they arrived with Salla's default look — their own beige panels, their
+   own 6px corners — sitting next to blocks that follow the store's settings.
+
+   The component list below is not guesswork: it was read off a live store
+   that has all of these enabled.
+
+     salla-loyalty-points-banner   اكسب +55 نقطة ولاء
+     salla-cashback-banner         اكسب +0.14 كاش باك
+     salla-loyalty-banner
+     salla-installment             التقسيط
+     tamara-widget                 ودجت تمارا
+     salla-payments                طرق الدفع            (.s-payments-list-wrap)
+     salla-gifting                 أهدِ من تحب          (.s-gifting-widget)
+     salla-bought-together         كمِّل طلبك           (.s-bought-together-entry)
+     salla-offer                   العروض
+     salla-quick-order             الطلب السريع
+     salla-verified-review
+
+   There is deliberately NO setting for this. A merchant who enables a Salla
+   app expects it to look like the rest of their store; an opt-in switch per
+   component would mean every new app starts out looking foreign until someone
+   remembers to go and turn it on.
+
+   Two tokens do all the work, and both already exist:
+     --veloura-product-secondary-bg  the product page's secondary surface
+     --veloura-product-radius-final  the corner setting, which is derived
+                                     from the GENERAL radius setting
+   ========================================================================== */
+
+$veloura-integration-blocks:
+  'salla-loyalty-points-banner',
+  'salla-loyalty-banner',
+  'salla-cashback-banner',
+  'salla-installment',
+  'tamara-widget',
+  'salla-payments',
+  'salla-gifting',
+  'salla-bought-together',
+  'salla-offer',
+  'salla-quick-order',
+  '.s-payments-list-wrap',
+  '.s-gifting-widget',
+  '.s-bought-together-entry';
+
+.veloura-product-page {
+  /* One definition, reused by every block below. */
+  --veloura-integration-bg: var(--veloura-product-secondary-bg, #f8fafc);
+  --veloura-integration-radius: var(--veloura-product-radius-final, 16px);
+  --veloura-integration-border: color-mix(
+    in srgb,
+    var(--veloura-product-secondary-bg, #f8fafc) 82%,
+    #000
+  );
+}
+
+@each $sel in $veloura-integration-blocks {
+  html body .veloura-product-page #{$sel} {
+    display: block;
+    box-sizing: border-box;
+    background: var(--veloura-integration-bg) !important;
+    background-color: var(--veloura-integration-bg) !important;
+    background-image: none !important;
+    border-radius: var(--veloura-integration-radius) !important;
+    border: 1px solid var(--veloura-integration-border) !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    color: inherit !important;
+  }
+
+  /* Several of these paint their surface on an inner wrapper rather than on
+     the component itself, so the inner box has to be cleared or the store
+     ends up with a panel inside a panel — the same doubled-surface problem
+     the detached search had. */
+  html body .veloura-product-page #{$sel} > *,
+  html body .veloura-product-page #{$sel} > * > * {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+/* The blocks that carry their own padding already look right; the ones that
+   do not would otherwise have text sitting on the panel edge. */
+html body .veloura-product-page :is(
+  salla-loyalty-points-banner,
+  salla-loyalty-banner,
+  salla-cashback-banner
+) {
+  padding: 12px 14px !important;
+}
+
+/* Images and media inside these blocks (payment logos, product thumbnails in
+   "bought together") must not inherit the panel's rounding. */
+html body .veloura-product-page :is(
+  salla-payments,
+  salla-bought-together,
+  salla-gifting
+) :is(img, svg) {
+  border-radius: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   THE "اشترِ الآن" BUTTON
+
+   This is a separate component from the add-to-cart button:
+
+     <salla-mini-checkout-widget
+        class="s-add-product-button-mini-checkout s-mini-checkout">
+
+   Every radius rule in the theme targeted salla-add-product-button and its
+   inner .s-button-element, so the mini-checkout widget was never covered and
+   kept Salla's own corners whatever the general radius setting said. That is
+   why setting the corners to sharp left this one button rounded.
+   -------------------------------------------------------------------------- */
+html body .veloura-product-page :is(
+  salla-mini-checkout-widget,
+  .s-mini-checkout,
+  .s-add-product-button-mini-checkout
+),
+html body .veloura-product-page :is(
+  salla-mini-checkout-widget,
+  .s-mini-checkout,
+  .s-add-product-button-mini-checkout
+) :is(button, a, .s-button-element, .s-button-btn) {
+  border-radius: var(--veloura-product-radius-final, 16px) !important;
+}
+
+/* Salla exposes the mini checkout's inner button as a part on some builds,
+   which is the only way in when it renders inside shadow DOM. */
+html body .veloura-product-page salla-mini-checkout-widget::part(button),
+html body .veloura-product-page salla-mini-checkout-widget::part(base),
+html body .veloura-product-page salla-mini-checkout-widget::part(container) {
+  border-radius: var(--veloura-product-radius-final, 16px) !important;
+}
+
+/* And the same for the add-to-cart component's own exposed parts, so both
+   buttons in the purchase row agree. */
+html body .veloura-product-page salla-add-product-button::part(button),
+html body .veloura-product-page salla-add-product-button::part(base) {
+  border-radius: var(--veloura-product-radius-final, 16px) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dark mode: the tokens above already switch, because
+   --veloura-product-secondary-bg resolves to the dark secondary surface. The
+   only thing that needs saying here is the border, which has to lighten
+   rather than darken against a dark panel.
+   -------------------------------------------------------------------------- */
+html.dark body .veloura-product-page,
+html body.dark .veloura-product-page {
+  --veloura-integration-border: color-mix(
+    in srgb,
+    var(--veloura-product-secondary-bg, #111827) 84%,
+    #fff
+  );
+}

@@ -67,6 +67,10 @@
 
 @import './05-utilities/veloura-global-overlays';
 @import './05-utilities/veloura-cart-banners';
+/* Salla add-on blocks on the product page (loyalty, cashback, instalments,
+   payments, gifting, bought-together) follow the store's own settings. */
+@import './04-components/product-integrations';
+
 @import './04-components/header-glass';
 
 /* Desktop header element order — must stay LAST so it always wins. */
