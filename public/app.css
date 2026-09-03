@@ -59187,6 +59187,59 @@ html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+/* ==========================================================================
+   GLASS TINT — defined HERE, not in dark-light.scss
+
+   The console on the live store returned rgba(228, 231, 235, 0.8): the
+   ORIGINAL value, meaning neither the .90 nor the .65 edit to dark-light.scss
+   reached the build. That also explains the solid search bar — with the
+   matching rule absent, the winner is
+
+     html body .veloura-header-tabs-stack .veloura-search-surface
+       -> var(--veloura-site-second-bg, #f4f5f7)      (fully opaque)
+
+   which is exactly the flat light band in the screenshot.
+
+   Splitting a single visual decision across two files was my mistake: it only
+   works if BOTH arrive. header-order.scss is imported last and is the file
+   that demonstrably reaches the store, so the tint is defined here and the two
+   surfaces are painted from it directly — no dependency on any other file
+   winning, and no dependency on which of the 35 rules that paint the search
+   happens to come last.
+
+   Only background colour is touched. The blur, the layering and the inner
+   header layers are left exactly as the theme has them.
+   ========================================================================== */
+html body {
+  --veloura-header-glass-background: color-mix(
+    in srgb,
+    var(--veloura-site-second-bg, #e4e7eb) 65%,
+    transparent
+  );
+}
+html.dark body,
+html body.dark {
+  --veloura-header-glass-background: color-mix(
+    in srgb,
+    var(--veloura-dark-secondary-bg, #010612) 72%,
+    transparent
+  );
+}
+/* The header surface and the search bar, painted from the one token, at a
+   specificity nothing in the bundle reaches on these elements. */
+html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-search-surface, html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-search-surface {
+  background: rgba(230, 232, 235, .69) !important;
+  background: var(--veloura-header-glass-background) !important;
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+}
+/* A marker, so "did this build actually ship?" is one line in the console
+   instead of a round trip:
+     getComputedStyle(document.body).getPropertyValue('--veloura-build') */
+html body {
+  --veloura-build: 'fix-16';
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;
