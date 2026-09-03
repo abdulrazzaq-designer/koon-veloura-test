@@ -207,3 +207,103 @@ html body .veloura-product-page .veloura-product-calories-badge {
   border-radius: 9999px !important;
   border: 0 !important;
 }
+
+/* ==========================================================================
+   PRODUCT DESCRIPTION + ITS "عرض المزيد" BUTTON
+
+   The description had padding and a collapse gradient but no surface of its
+   own, so it read as loose text between two panels. It now takes the same
+   secondary surface as every other block on the page.
+
+   The button was already pinned to the bottom edge and centred; what it was
+   missing is the thing that makes that shape read — a WIDE ring in the page
+   background colour. Two pixels of the panel colour is invisible against the
+   panel it sits on. A thick ring in the colour BEHIND the panel cuts the
+   button out of the edge instead, which is the effect being asked for.
+
+   Both colours come from tokens, so dark mode needs no separate rule.
+   ========================================================================== */
+html body .veloura-product-page .product__description {
+  background: var(--veloura-product-secondary-bg, #f8fafc) !important;
+  border: 0 !important;
+  border-radius: var(--veloura-integration-radius) !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-product-page #btn-show-more.veloura-product-read-more {
+  /* CENTRED ON THE EDGE, not near it.
+
+     product.scss contains two rules for this button with the same selector:
+     an earlier one that pins it to the edge, and a later one that puts it
+     back into normal flow and pulls it down with a negative margin. The later
+     one wins, and a negative margin can only approximate the edge — it has to
+     guess the button's height, so the button ends up sitting just inside the
+     panel instead of straddling its edge.
+
+     Anchoring to the bottom of the panel and shifting by half its own height
+     puts the centre exactly on the edge, whatever the button measures. */
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 0 !important;
+  margin: 0 !important;
+  transform: translate(-50%, 50%) !important;
+  z-index: 6 !important;
+
+  /* Fill matches the panel, ring matches the page: the top half melts into
+     the description, the bottom half floats clear of it. */
+  background: var(--veloura-product-secondary-bg, #f8fafc) !important;
+  border: 6px solid var(--veloura-product-basic-bg, #ffffff) !important;
+  box-shadow: none !important;
+}
+
+/* The panel is the anchor, and the half that hangs below must not be clipped
+   or overlap whatever follows. */
+html body .veloura-product-page .product__description {
+  position: relative !important;
+  overflow: visible !important;
+  margin-bottom: 42px !important;
+}
+
+/* The collapse fade has to end on the panel colour, or it fades to the wrong
+   surface and leaves a visible band above the button. */
+html body .veloura-product-page .product__description.is-collapsed article::after {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--veloura-product-secondary-bg, #f8fafc)
+  ) !important;
+}
+
+/* ==========================================================================
+   BREADCRUMB ARROWS
+
+   The separators are drawn as SVG, and an SVG with a hardcoded fill stays
+   that colour in both themes — which is why they went black on a dark page.
+   Binding fill and stroke to currentColor makes them follow the text they
+   sit between, so they switch with the theme by themselves.
+   ========================================================================== */
+html body .veloura-product-page salla-breadcrumb,
+html body .veloura-product-page .breadcrumbs,
+html body salla-breadcrumb,
+html body .breadcrumbs {
+  color: var(--veloura-primary-text, currentColor);
+}
+
+html body :is(salla-breadcrumb, .breadcrumbs) :is(svg, svg *) {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Icon-font separators (sicon-*) take the same colour, so both renderings of
+   the arrow behave the same. */
+html body :is(salla-breadcrumb, .breadcrumbs) :is(i, [class*="sicon-"], [class*="arrow"]) {
+  color: inherit !important;
+}
+
+html.dark body :is(salla-breadcrumb, .breadcrumbs),
+html body.dark :is(salla-breadcrumb, .breadcrumbs) {
+  color: var(--veloura-dark-primary-text, #ffffff);
+}
