@@ -42563,7 +42563,7 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
 :root,
 html body {
   /* Canonical header glass material. */
-  --veloura-header-glass-background: rgba(228, 231, 235, .80);
+  --veloura-header-glass-background: rgba(228, 231, 235, .90);
   --veloura-header-glass-solid: #e6e8eb;
   --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
   --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);
@@ -59026,6 +59026,71 @@ html body .veloura-header-tabs-stack.veloura-submenu-open .veloura-menu-links-wr
 /* The dropdown has to sit above the header surface and anything under it. */
 html body .veloura-header-tabs-stack .sub-menu, html body .veloura-header-tabs-stack .veloura-submenu-surface {
   z-index: 400 !important;
+}
+/* ==========================================================================
+   TWO FIXES, LIGHT MODE — deliberately small, and the header itself is not
+   restyled here. Only the search is brought into line with it.
+
+   A. THE SEARCH WAS MORE TRANSPARENT THAN THE HEADER.
+      header-glass-search.scss says, in its own comment, "Glass search has
+      exactly the same paint and opacity as the header" — and then paints it
+      from a different token:
+          header : --veloura-header-glass-background   (.80, now .90)
+          search : --veloura-glass-surface             (.72)
+      Two tokens, two opacities, so the search always read lighter. It now
+      takes the header's own token, so they cannot drift apart again — and any
+      future change to the header tint moves the search with it.
+
+      The light tint itself went .80 -> .90 in dark-light.scss (one number).
+      Dark mode is untouched; it was reported as fine.
+
+   B. THE DROPDOWNS ARE NOW SOLID, NOT GLASS.
+      Asked for directly: full secondary background, no transparency, no blur,
+      no frame, both themes. This also removes the nested-dropdown blur problem
+      at the root rather than working around it — a panel with no
+      backdrop-filter is not a backdrop root, so a submenu inside a submenu has
+      nothing to fight. The bug we chased for several rounds cannot occur in a
+      solid panel.
+   ========================================================================== */
+/* A. search == header, exactly */
+html body .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-search-surface {
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+}
+html body .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-search-surface {
+  --veloura-search-bg: var(--veloura-header-glass-background);
+}
+/* B. solid dropdowns */
+html body .veloura-header-tabs-stack .sub-menu, html body .veloura-header-tabs-stack .veloura-submenu-surface, html body .store-header .sub-menu, html body .store-header .veloura-submenu-surface {
+  background: #f4f5f7 !important;
+  background: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-color: #f4f5f7 !important;
+  background-color: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-image: none !important;
+  border: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html.dark body .veloura-header-tabs-stack .sub-menu, html.dark body .veloura-header-tabs-stack .veloura-submenu-surface, html body.dark .veloura-header-tabs-stack .sub-menu, html body.dark .veloura-header-tabs-stack .veloura-submenu-surface, html.dark body .store-header .sub-menu, html.dark body .store-header .veloura-submenu-surface, html body.dark .store-header .sub-menu, html body.dark .store-header .veloura-submenu-surface {
+  background: #010612 !important;
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: #010612 !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+}
+/* Dark mode paints the header from a DIFFERENT token than light mode does:
+     light : --veloura-header-glass-background   (.90)
+     dark  : --veloura-glass-surface             (72% of the dark secondary)
+   Pointing the search at the light token alone would have made it pale in
+   dark mode — breaking the one theme that was reported as correct. Each
+   theme matches the header through the token that theme actually uses. */
+html.dark body .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-search-surface,
+html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-search-surface {
+  background-color: rgba(244, 245, 247, 0.72) !important;
+  background-color: var(--veloura-glass-surface) !important;
+}
+html.dark body .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-search-surface,
+html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-search-surface {
+  --veloura-search-bg: var(--veloura-glass-surface);
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);
