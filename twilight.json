@@ -16313,7 +16313,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,

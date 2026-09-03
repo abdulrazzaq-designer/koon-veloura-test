@@ -85,26 +85,23 @@ import AppHelpers from "./app-helpers";
       surface.style.setProperty('background-image', 'none', 'important');
     }
 
-    /* The dropdowns must be the SAME material as the header.
-       Measured on the live store while the header read 0.4 dark, the
-       dropdown was still rgba(228,231,235,.8) — a light grey card hanging
-       off a dark glass header. The stylesheet rule for it works out stronger
-       on paper than everything it competes with, and still lost, so this
-       stops arguing about the cascade.
+    /* THE DROPDOWNS: strip, never stamp.
 
-       The VALUES are not hardcoded here: they are read back from the same
-       CSS variables the stylesheet defines, so retuning stays a CSS edit. */
-    var cs = window.getComputedStyle(stack);
-    var tint = cs.getPropertyValue('--veloura-header-glass-tint').trim();
-    var material = cs.getPropertyValue('--veloura-header-glass-material').trim();
-    if (!tint || !material) return;
+       An earlier version of this runtime stamped backdrop-filter onto every
+       .sub-menu it found. That fixed the first level and BROKE the second:
+       a dropdown carrying the filter is a backdrop root, so a dropdown nested
+       inside it could only sample its parent's flat tint and came out with
+       hard, unblurred edges.
 
+       The glass is painted by ::before in the stylesheet, at every depth. All
+       this has to do is make sure no dropdown paints or filters on its own
+       box, whatever a cross-origin sheet says. */
     var menus = stack.querySelectorAll('.sub-menu, .veloura-submenu-surface');
     for (var i = 0; i < menus.length; i++) {
-      menus[i].style.setProperty('background-color', tint, 'important');
+      menus[i].style.setProperty('background-color', 'transparent', 'important');
       menus[i].style.setProperty('background-image', 'none', 'important');
-      menus[i].style.setProperty('backdrop-filter', material, 'important');
-      menus[i].style.setProperty('-webkit-backdrop-filter', material, 'important');
+      menus[i].style.setProperty('backdrop-filter', 'none', 'important');
+      menus[i].style.setProperty('-webkit-backdrop-filter', 'none', 'important');
     }
   }
 

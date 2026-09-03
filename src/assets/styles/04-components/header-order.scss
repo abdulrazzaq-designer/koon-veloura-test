@@ -677,17 +677,53 @@ html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.velou
   background-image: none !important;
 }
 
-/* 4. The dropdown is the same material, so it reads as part of the header
-      instead of a solid card hanging off it. */
+/* 4. THE DROPDOWNS — every level, same material, and NONE of them a ceiling.
+
+      A first-level dropdown that carries backdrop-filter becomes a backdrop
+      root, exactly like the surface did. A second-level dropdown nested
+      inside it can then only sample its parent's flat tint, so it renders
+      with hard unblurred edges while its parent looks correct. Measured in a
+      fixture: filter on the element -> child shows crisp stripes; filter on
+      ::before -> both levels smooth.
+
+      So no dropdown carries the filter itself. Each paints through ::before,
+      which is a backdrop root for nothing, and the rule is written once for
+      all depths — a third level would work the same way with no new code. */
 html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
 :is(.sub-menu, .veloura-submenu-surface),
 html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
 :is(.sub-menu, .veloura-submenu-surface) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  /* position is NOT touched here: these are absolutely positioned by the
+     menu layout, and absolute already anchors ::before and establishes the
+     stacking context that keeps z-index:-1 inside the panel. */
+}
+
+html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+:is(.sub-menu, .veloura-submenu-surface)::before,
+html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+:is(.sub-menu, .veloura-submenu-surface)::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
   background-color: var(--veloura-header-glass-tint) !important;
   background-image: none !important;
   -webkit-backdrop-filter: var(--veloura-header-glass-material) !important;
   backdrop-filter: var(--veloura-header-glass-material) !important;
+  filter: none !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, var(--veloura-header-glass-edge)) !important;
+}
+
+/* A dropdown that itself holds a dropdown must not clip it. */
+html body .veloura-header-tabs-stack--blur :is(.sub-menu, .veloura-submenu-surface) {
+  overflow: visible !important;
 }
 
 /* The original glass layer on .store-header is dead — measured as
