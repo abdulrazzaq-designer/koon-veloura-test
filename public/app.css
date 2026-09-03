@@ -58250,6 +58250,49 @@ html body .veloura-product-page .veloura-integration-surface-inner {
   border: 0 !important;
   box-shadow: none !important;
 }
+/* ==========================================================================
+   THE THEME'S OWN PRODUCT CARDS
+
+   These are not Salla components — they are this theme's markup, and they
+   were carrying Tailwind's bg-white and rounded-md straight in the template:
+
+     .veloura-product-sku-card                رقم الموديل
+     .veloura-product-original-purchase-count عدد المشتريات
+     .veloura-product-availability-card       التوفر
+     .veloura-product-calories-badge          شارة السعرات
+
+   bg-white is a literal white, so in dark mode the SKU row stayed a white
+   slab in the middle of a dark page. The purchase-count card happened to
+   look right only because a later rule overrode it with !important; the SKU
+   card had no such rule, so nothing stopped the white.
+
+   The classes are now gone from the markup and the surface is defined here,
+   from the same tokens as everything else — so light, dark and the corner
+   setting all follow by themselves, with no !important arms race.
+   ========================================================================== */
+html body .veloura-product-page .veloura-product-sku-card,
+html body .veloura-product-page .veloura-product-availability-card {
+  background: var(--veloura-integration-bg) !important;
+  background-color: var(--veloura-integration-bg) !important;
+  border: 0 !important;
+  border-radius: var(--veloura-integration-radius) !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+/* The purchase-count card already had its own background rule; it only needs
+   the frame removing so it matches the two above. */
+html body .veloura-product-page .veloura-product-original-purchase-count {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+/* The calories badge keeps its circle — that shape is the design, not the
+   general corner setting — but it takes the store's surface colour instead
+   of a hardcoded white disc. */
+html body .veloura-product-page .veloura-product-calories-badge {
+  background: var(--veloura-integration-bg) !important;
+  border-radius: 9999px !important;
+  border: 0 !important;
+}
 :root {
   --veloura-header-glass-background: rgba(230, 232, 235, .69);
   --veloura-header-glass-filter: blur(20px) saturate(200%);
