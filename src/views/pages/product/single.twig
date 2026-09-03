@@ -554,7 +554,7 @@
 
                     {# Calories Badge #}
                     {% if product.calories %}
-                        <div class="absolute z-[2] top-4 rtl:left-4 ltr:right-4 bg-white shadow-sm flex flex-col justify-center items-center rounded-full w-20 h-20 md:w-24 md:h-24">
+                        <div class="absolute z-[2] top-4 rtl:left-4 ltr:right-4 shadow-sm flex flex-col justify-center items-center rounded-full w-20 h-20 md:w-24 md:h-24 veloura-product-calories-badge">
                             <span class="text-red-500 text-xl leading-none font-bold">{{ product.calories }}</span>
                             <span class="text-xs text-gray-500">{{ trans('pages.products.calories') }}</span>
                         </div>
@@ -770,7 +770,7 @@
                     </div>
                 {% elseif (not vpp_enabled or not vpp_purchase_count_enabled)
                     and (product.sold_quantity or product.can_show_remained_quantity) %}
-                    <div class="bg-white py-2.5 mb-5 rounded-md inline-flex text-sm veloura-product-original-purchase-count" data-v42-group="data">
+                    <div class="py-2.5 mb-5 inline-flex text-sm veloura-product-original-purchase-count" data-v42-group="data">
                         {% if product.sold_quantity %}
                             <div class="px-4 !text-red-800">
                                 <i class="sicon-fire rtl:ml-1.5 ltr:mr-1.5"></i>
@@ -788,7 +788,7 @@
                     </div>
                 {% endif %}
                 {% if product.sku %}
-                    <div class="veloura-product-sku-card mb-4 bg-white rounded-md px-4 py-3" data-v42-group="data">
+                    <div class="veloura-product-sku-card mb-4 px-4 py-3" data-v42-group="data">
                         <div class="veloura-product-sku-card__label">
                             <i class="sicon-barcode"></i>
                             <span>{{ trans('pages.products.sku') }}</span>
@@ -805,7 +805,7 @@
                 {% endif %}
 
                 {% if (not vpp_enabled or vpp_show_availability) and product.show_availability %}
-                    <section class="bg-white p-5 rounded-md mb-5 last:mb-0 veloura-product-availability-card" data-v42-group="extras">
+                    <section class="p-5 mb-5 last:mb-0 veloura-product-availability-card" data-v42-group="extras">
                         <div class="center-between">
                             <label class="flex items-center text-base">
                                 <span class="sicon-location rtl:ml-1 ltr:mr-1"></span>
