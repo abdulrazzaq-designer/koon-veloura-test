@@ -6,6 +6,180 @@ import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
 
+/* The block below is placed immediately after the imports ON PURPOSE.
+
+   Appended at the end of this file it would be the LAST thing to run, so any
+   earlier failure anywhere in the bundle would take it down with it. The
+   product-page integration styling should not depend on the rest of the file
+   surviving, so it registers first and then waits for the DOM by itself. */
+/* ==========================================================================
+   VELOURA — Salla add-on blocks on the product page follow the store colours
+
+   CSS alone is not enough here, for two reasons that only show up on a real
+   store:
+
+   1. These components hydrate AFTER the product data arrives. A stylesheet
+      does apply to them when they appear, so that part is fine — but the
+      list of components is not knowable in advance. A merchant can install a
+      Salla app tomorrow that renders a block this theme has never heard of.
+
+   2. Some of them paint their surface INSIDE shadow DOM, where a page
+      stylesheet cannot reach at all. Only a style sheet injected into that
+      shadow root can touch it.
+
+   So instead of matching names, this looks for what is actually PAINTED: any
+   Salla block inside the product page carrying a background of its own gets
+   the store's secondary colour and loses its frame. New apps are covered the
+   day they are installed, with no list to maintain.
+   ========================================================================== */
+(function velouraProductIntegrations() {
+  const PAGE = '.veloura-product-page';
+
+  /* Controls and media own their appearance — they are not surfaces. */
+  const SKIP_TAGS = new Set([
+    'salla-add-product-button', 'salla-mini-checkout-widget', 'salla-button',
+    'salla-quantity-input', 'salla-slider', 'salla-product-options',
+    'salla-social-share', 'salla-search', 'salla-cart-summary',
+    'salla-breadcrumb', 'salla-modal', 'salla-tooltip', 'salla-loader',
+    'salla-tabs', 'salla-tab-header', 'salla-rating-stars', 'salla-price',
+    'salla-conditional-fields', 'salla-count-down', 'salla-progress-bar',
+  ]);
+
+  const TRANSPARENT = /^(transparent|rgba\(0,\s*0,\s*0,\s*0\)|color\(srgb 0 0 0 \/ 0\))$/i;
+
+  const isPainted = (cs) => {
+    const bg = (cs.backgroundColor || '').trim();
+    if (!bg || TRANSPARENT.test(bg)) return false;
+    /* rgba(...,0) in any notation means nothing is drawn. */
+    const m = bg.match(/\/\s*(0?\.\d+|0|1)\s*\)$/) || bg.match(/,\s*(0?\.\d+|0|1)\s*\)$/);
+    if (m && parseFloat(m[1]) === 0) return false;
+    return true;
+  };
+
+  const hasContent = (el) => {
+    /* Content can live in three places, and all three count: a shadow root,
+       plain text on the component itself, or child elements. Checking only
+       for child elements missed both the components that render entirely
+       inside shadow DOM and the ones whose whole body is a line of text. */
+    if (el.shadowRoot && el.shadowRoot.childElementCount) return true;
+    if ((el.textContent || '').trim()) return true;
+    if (!el.children.length) return false;
+    for (const c of el.children) {
+      if (c.children.length || (c.textContent || '').trim()) return true;
+    }
+    return false;
+  };
+
+  /* A component that paints inside its shadow root looks transparent from
+     the outside, so the shadow content has to be inspected as well. */
+  const shadowPaints = (el) => {
+    if (!el.shadowRoot) return false;
+    for (const c of el.shadowRoot.querySelectorAll('*')) {
+      const cs = getComputedStyle(c);
+      if (isPainted(cs)) return true;
+      if (cs.borderTopWidth !== '0px' && cs.borderTopStyle !== 'none') return true;
+    }
+    return false;
+  };
+
+  /* A style sheet dropped into an open shadow root — the only way past the
+     boundary. It reads the same custom properties, which inherit through the
+     shadow boundary, so light and dark keep working by themselves. */
+  const SHADOW_CSS = `
+    :host{
+      background: var(--veloura-integration-bg) !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      border-radius: var(--veloura-integration-radius, 0) !important;
+      overflow: hidden !important;
+    }
+    [class*="wrapper"], [class*="container"], [class*="banner"],
+    [class*="entry"], [class*="card"], [class*="box"], [class*="content"]{
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+  `;
+
+  const dressShadow = (host) => {
+    const root = host.shadowRoot;
+    if (!root || root.querySelector('style[data-veloura-integration]')) return;
+    const style = document.createElement('style');
+    style.setAttribute('data-veloura-integration', '');
+    style.textContent = SHADOW_CSS;
+    root.appendChild(style);
+  };
+
+  const dress = (el) => {
+    const tag = el.tagName.toLowerCase();
+    if (SKIP_TAGS.has(tag)) return;
+    if (el.closest('salla-add-product-button, salla-slider, salla-product-options')) return;
+    if (!hasContent(el)) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.height < 24 || rect.width < 120) return;
+
+    const cs = getComputedStyle(el);
+    const painted = isPainted(cs)
+      || (cs.borderTopWidth !== '0px' && cs.borderTopStyle !== 'none')
+      || (cs.boxShadow && cs.boxShadow !== 'none')
+      || shadowPaints(el);
+
+    if (!painted && !el.classList.contains('veloura-integration-surface')) return;
+
+    el.classList.add('veloura-integration-surface');
+
+    /* Clear any surface the component painted on its own wrappers, so the
+       store never ends up with a panel drawn inside another panel. */
+    [...el.children].forEach((child) => {
+      const ccs = getComputedStyle(child);
+      if (isPainted(ccs) || (ccs.borderTopWidth !== '0px' && ccs.borderTopStyle !== 'none')) {
+        child.classList.add('veloura-integration-surface-inner');
+      }
+    });
+
+    dressShadow(el);
+  };
+
+  const sweep = () => {
+    const page = document.querySelector(PAGE);
+    if (!page) return;
+    page.querySelectorAll('*').forEach((el) => {
+      const tag = el.tagName.toLowerCase();
+      const cls = String(el.className || '');
+      /* Salla's own building blocks only: custom elements, or s- classes. */
+      if (!tag.startsWith('salla-') && !tag.includes('-') && !/(^|\s)s-/.test(cls)) return;
+      dress(el);
+    });
+  };
+
+  const start = () => {
+    if (!document.querySelector(PAGE)) return;
+    sweep();
+
+    /* These components arrive late and in waves, so the page is watched
+       rather than swept once. */
+    const observer = new MutationObserver(() => {
+      window.clearTimeout(start._t);
+      start._t = window.setTimeout(sweep, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    /* Salla hydration finishes at its own pace; a few spaced passes cover
+       anything that settles after the observer has gone quiet. */
+    [400, 1200, 2500, 5000].forEach((d) => window.setTimeout(sweep, d));
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
+
+
 // Veloura: avoid no-op writes to body.class. Chromium still delivers an
 // attribute mutation for some DOMTokenList.remove() calls even when the token
 // is already absent. Bottom-nav observers watch body.class, so repeated no-op
