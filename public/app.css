@@ -58323,8 +58323,9 @@ html body .veloura-product-page #btn-show-more.veloura-product-read-more {
   margin: 0 !important;
   transform: translate(-50%, 50%) !important;
   z-index: 6 !important;
-  background: #f8fafc !important;
-  background: var(--veloura-product-secondary-bg, #f8fafc) !important;
+  background: #414042 !important;
+  background: var(--veloura-product-primary, var(--color-primary, #004d65)) !important;
+  color: #ffffff !important;
   border: 6px solid #ffffff !important;
   border: 6px solid var(--veloura-product-basic-bg, #ffffff) !important;
   box-shadow: none !important;
@@ -58341,8 +58342,30 @@ html body .veloura-product-page #btn-show-more.veloura-product-read-more {
 
      Anchoring to the bottom of the panel and shifting by half its own height
      puts the centre exactly on the edge, whatever the button measures. */
-  /* Fill matches the panel, ring matches the page: the top half melts into
-     the description, the bottom half floats clear of it. */
+  /* THE STORE'S PRIMARY COLOUR, IN BOTH STATES.
+
+     Measured before this change: collapsed the button was painted with the
+     panel colour but its text was already white — white on a light panel,
+     which is why the label was so hard to read. Expanded, a different rule
+     switched it to the primary colour. So the two states disagreed, and one
+     of them was unreadable.
+
+     One colour for both states fixes the contrast and matches the store's
+     identity: primary fill, white label, and the ring in the page colour so
+     the button still reads as cut out of the panel edge. */
+}
+html body .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+html body .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+html body .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+html body .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  background: #414042 !important;
+  background: var(--veloura-product-primary, var(--color-primary, #004d65)) !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  border-color: var(--veloura-product-basic-bg, #ffffff) !important;
+}
+html body .veloura-product-page #btn-show-more.veloura-product-read-more .veloura-product-read-more__text {
+  color: inherit !important;
 }
 /* The panel is the anchor, and the half that hangs below must not be clipped
    or overlap whatever follows. */
