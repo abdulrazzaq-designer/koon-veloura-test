@@ -554,3 +554,90 @@ html body .veloura-header-tabs-stack.veloura-submenu-open :is(
 html body .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface) {
   z-index: 400 !important;
 }
+
+/* ==========================================================================
+   NESTED GLASS — the submenu must be able to blur the PAGE, not the header
+
+   MEASURED on the live store, submenu open:
+
+     .sub-menu               backdrop-filter = blur(20px) saturate(2)   ✓
+     nearest backdrop root   .veloura-header-tabs-stack__surface
+                             reason: OWN backdrop-filter
+     what it can sample      the surface's flat rgba(228,231,235,.8)
+
+   An element that carries backdrop-filter becomes a BACKDROP ROOT: every
+   descendant's own backdrop-filter can then only sample what is painted
+   INSIDE it. The submenu is a descendant of the surface, so its blur was
+   sampling a flat colour — and blurring a flat colour is a no-op. That is
+   why the dropdown came out as plain grey tint with no glass, and why the
+   part of it hanging below the header showed hard, unblurred edges.
+
+   THE FIX IS NOT TO REMOVE THE HEADER'S GLASS.
+
+   A pseudo-element that carries the filter is a backdrop root only for its
+   own descendants — and ::before has none. So moving the filter from the
+   surface ELEMENT onto surface::before keeps the header looking identical
+   while the surface stops being a ceiling, and the submenu is free to
+   sample the page behind it.
+
+   Verified in an isolated fixture: same markup, filter on the element →
+   submenu shows hard unblurred edges; filter on ::before → submenu blurs
+   smoothly. Nothing else changed between the two.
+
+   WHY THIS RULE HAS TO LIVE HERE:
+
+   dark-light.scss already does exactly this split at line ~522 — and then
+   undoes it at line ~640, where a second rule with the SAME selector and
+   the same !important re-applies backdrop-filter and the background to the
+   surface element. Same specificity, later in the file, so the second one
+   wins and the surface is a backdrop root again. header-order.scss is
+   imported last, so restating the split here is what makes it stick.
+   ========================================================================== */
+
+/* The surface keeps its shape, frame and shadow — none of those create a
+   backdrop root. It gives up only the two properties that do. */
+html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface {
+  position: relative !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* …and the glass moves here, one layer down, behind the header's content.
+   The surface is position:relative with z-index:30, so z-index:-1 stays
+   inside it and cannot slip behind the page. */
+html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  background: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
+  background-color: var(--veloura-glass-surface, var(--veloura-header-glass-background)) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--veloura-filter, var(--veloura-header-glass-filter)) !important;
+  backdrop-filter: var(--veloura-filter, var(--veloura-header-glass-filter)) !important;
+  filter: none !important;
+}
+
+html.dark body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface::before,
+html body.dark .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface::before {
+  background: var(--veloura-glass-surface, var(--veloura-header-glass-background-dark)) !important;
+  background-color: var(--veloura-glass-surface, var(--veloura-header-glass-background-dark)) !important;
+}
+
+/* The dead ::before on .store-header was the ORIGINAL glass layer, from back
+   when the header painted its own. The stack surface paints it now, and the
+   diagnostic confirmed this one resolves to backdrop-filter:none on a
+   transparent background — it draws nothing. Retiring it explicitly stops a
+   future rule from waking it up and double-tinting the header. */
+html body .veloura-header-tabs-stack--blur .store-header.veloura-top-blur::before {
+  display: none !important;
+}
