@@ -487,3 +487,70 @@ html body .veloura-localization-pill__currency .veloura-localization-pill__curre
   color: inherit !important;
   vertical-align: middle !important;
 }
+
+/* ==========================================================================
+   SUBMENUS MUST NOT BE CLIPPED BY THE HEADER
+
+   Measured on the real header: hovering a category that has children opens
+   .sub-menu, but two ancestors clip it —
+
+     .veloura-menu-links-wrap            overflow: hidden
+     .veloura-header-tabs-stack__surface overflow: hidden
+
+   — so the dropdown is cut off at the header's edge and appears to open
+   INSIDE the header instead of hanging below it.
+
+   Both clips exist for a reason: the surface is a rounded shell and hides
+   whatever its children paint past the corners, and the links wrap keeps a
+   long menu from spilling sideways. So they are not removed — they are
+   opened only for as long as a submenu is actually open, and closed again
+   the moment the pointer leaves.
+
+   Two triggers, on purpose. :has() reacts instantly with no script at all;
+   the .veloura-submenu-open class is set by app.js and covers browsers
+   without :has() as well as keyboard users tabbing through the menu.
+   ========================================================================== */
+html body .veloura-header-tabs-stack:has(li.has-children:hover),
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within),
+html body .veloura-header-tabs-stack:has(.root-level:hover > .sub-menu),
+html body .veloura-header-tabs-stack.veloura-submenu-open {
+  overflow: visible !important;
+}
+
+html body .veloura-header-tabs-stack:has(li.has-children:hover) :is(
+  .veloura-header-tabs-stack__container,
+  .veloura-header-tabs-stack__surface,
+  .store-header,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid,
+  .veloura-menu-links-wrap
+),
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) :is(
+  .veloura-header-tabs-stack__container,
+  .veloura-header-tabs-stack__surface,
+  .store-header,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid,
+  .veloura-menu-links-wrap
+),
+html body .veloura-header-tabs-stack.veloura-submenu-open :is(
+  .veloura-header-tabs-stack__container,
+  .veloura-header-tabs-stack__surface,
+  .store-header,
+  .main-nav-container,
+  .main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid,
+  .veloura-menu-links-wrap
+) {
+  overflow: visible !important;
+}
+
+/* The dropdown has to sit above the header surface and anything under it. */
+html body .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface) {
+  z-index: 400 !important;
+}

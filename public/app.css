@@ -58935,6 +58935,98 @@ html body .veloura-localization-pill__currency .veloura-localization-pill__curre
   color: inherit !important;
   vertical-align: middle !important;
 }
+/* ==========================================================================
+   SUBMENUS MUST NOT BE CLIPPED BY THE HEADER
+
+   Measured on the real header: hovering a category that has children opens
+   .sub-menu, but two ancestors clip it —
+
+     .veloura-menu-links-wrap            overflow: hidden
+     .veloura-header-tabs-stack__surface overflow: hidden
+
+   — so the dropdown is cut off at the header's edge and appears to open
+   INSIDE the header instead of hanging below it.
+
+   Both clips exist for a reason: the surface is a rounded shell and hides
+   whatever its children paint past the corners, and the links wrap keeps a
+   long menu from spilling sideways. So they are not removed — they are
+   opened only for as long as a submenu is actually open, and closed again
+   the moment the pointer leaves.
+
+   Two triggers, on purpose. :has() reacts instantly with no script at all;
+   the .veloura-submenu-open class is set by app.js and covers browsers
+   without :has() as well as keyboard users tabbing through the menu.
+   ========================================================================== */
+html body .veloura-header-tabs-stack:has(li.has-children:hover),
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within),
+html body .veloura-header-tabs-stack:has(.root-level:hover > .sub-menu),
+html body .veloura-header-tabs-stack.veloura-submenu-open {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .veloura-header-tabs-stack__container:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .veloura-header-tabs-stack__surface:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .store-header:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .main-nav-container:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) :is(.main-nav-container > .inner) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .veloura-header-container:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .veloura-header-grid:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:hover) .veloura-menu-links-wrap:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .veloura-header-tabs-stack__container:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .veloura-header-tabs-stack__surface:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .store-header:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .main-nav-container:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) :is(.main-nav-container > .inner) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .veloura-header-container:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .veloura-header-grid:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack:has(li.has-children:focus-within) .veloura-menu-links-wrap:not(.does-not-exist) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack.veloura-submenu-open :is(.main-nav-container > .inner) {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack.veloura-submenu-open .veloura-header-tabs-stack__container:not(.does-not-exist),
+html body .veloura-header-tabs-stack.veloura-submenu-open .veloura-header-tabs-stack__surface:not(.does-not-exist),
+html body .veloura-header-tabs-stack.veloura-submenu-open .store-header:not(.does-not-exist),
+html body .veloura-header-tabs-stack.veloura-submenu-open .main-nav-container:not(.does-not-exist),
+html body .veloura-header-tabs-stack.veloura-submenu-open .veloura-header-container:not(.does-not-exist),
+html body .veloura-header-tabs-stack.veloura-submenu-open .veloura-header-grid:not(.does-not-exist),
+html body .veloura-header-tabs-stack.veloura-submenu-open .veloura-menu-links-wrap:not(.does-not-exist) {
+  overflow: visible !important;
+}
+/* The dropdown has to sit above the header surface and anything under it. */
+html body .veloura-header-tabs-stack .sub-menu, html body .veloura-header-tabs-stack .veloura-submenu-surface {
+  z-index: 400 !important;
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;

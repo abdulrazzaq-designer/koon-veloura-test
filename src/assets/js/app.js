@@ -32,6 +32,66 @@ import AppHelpers from "./app-helpers";
    the store's secondary colour and loses its frame. New apps are covered the
    day they are installed, with no list to maintain.
    ========================================================================== */
+/* ==========================================================================
+   VELOURA — the header must not clip an open submenu
+
+   The header surface and the menu wrapper both use overflow:hidden (the
+   surface is a rounded shell, the wrapper stops a long menu spilling
+   sideways). Measured on the real header, those two clip .sub-menu, so a
+   category with children opened INSIDE the header instead of below it.
+
+   The CSS in header-order.scss opens the clip with :has() while a submenu is
+   hovered. This does the same with a class, which covers browsers without
+   :has() and — more importantly — keyboard users, who never trigger :hover
+   at all. Both paths close again the moment the menu is left, so the rounded
+   shell keeps clipping the rest of the time.
+   ========================================================================== */
+(function velouraHeaderSubmenuClip() {
+  const OPEN = 'veloura-submenu-open';
+
+  const stackOf = (el) => el.closest('.veloura-header-tabs-stack');
+
+  const open = (el) => {
+    const stack = stackOf(el);
+    if (stack) stack.classList.add(OPEN);
+  };
+
+  const close = (el) => {
+    const stack = stackOf(el);
+    if (!stack) return;
+    /* Only close once nothing in the menu is hovered or focused any more, so
+       moving the pointer between a parent and its own submenu never flickers. */
+    if (stack.querySelector('li.has-children:hover, li.has-children:focus-within')) return;
+    stack.classList.remove(OPEN);
+  };
+
+  const bind = () => {
+    document.querySelectorAll('li.has-children, li.root-level').forEach((li) => {
+      if (li.dataset.velouraSubmenuBound === '1') return;
+      li.dataset.velouraSubmenuBound = '1';
+      li.addEventListener('mouseenter', () => open(li));
+      li.addEventListener('mouseleave', () => window.setTimeout(() => close(li), 60));
+      li.addEventListener('focusin', () => open(li));
+      li.addEventListener('focusout', () => window.setTimeout(() => close(li), 60));
+    });
+  };
+
+  const start = () => {
+    bind();
+    /* The menu is rendered by a web component, so it can arrive late and be
+       replaced; watching the header keeps the bindings correct. */
+    const host = document.querySelector('.veloura-header-tabs-stack') || document.body;
+    new MutationObserver(bind).observe(host, { childList: true, subtree: true });
+    [500, 1500, 3000].forEach((d) => window.setTimeout(bind, d));
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
+
 (function velouraProductIntegrations() {
   const PAGE = '.veloura-product-page';
 
