@@ -641,3 +641,89 @@ html body.dark .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
 html body .veloura-header-tabs-stack--blur .store-header.veloura-top-blur::before {
   display: none !important;
 }
+
+/* ==========================================================================
+   NESTED GLASS, ROUND 2 — winning against a stylesheet I cannot read
+
+   The verify run said: the rule above IS in the loaded CSS, its ::before half
+   DID apply, and the element half did NOT. Same block, same specificity — so
+   the element is being overridden by something that is not in app.css.
+
+   I checked: in the compiled bundle NOTHING after my rule re-applies
+   backdrop-filter to the surface. But the page reported 3 stylesheets whose
+   contents the browser refused to expose (cross-origin), and Salla's preview
+   injects its own CSS. I cannot read those, so I stop competing on source
+   order — which depends on load order I do not control — and win on the two
+   things that do not:
+
+     1. SPECIFICITY. body carries id="app" in this theme, so adding it takes
+        the selector to (1,5,2). The strongest rule anywhere in the bundle
+        that touches this element is (1,4,2), and those target its children.
+        The plain-class variant is kept as well, in case #app ever changes.
+
+     2. An inline style, applied by the runtime (velouraHeaderGlassRoot in
+        app.js). Inline !important outranks every stylesheet, readable or
+        not. That is the guarantee.
+
+   THE TINT — and why the glass looked flat even where the blur worked.
+
+   The header's own blur was never broken: it has no backdrop root above it.
+   What hid it is opacity. The tint computes to rgba(228,231,235,.80), so
+   only 20% of the blurred backdrop reaches the eye — the other 80% is a flat
+   panel painted on top of it. Raising the blur cannot fix that; the blur was
+   already at its ceiling.
+
+   55% keeps it clearly a tinted panel while letting the blur read. It is
+   derived from --veloura-glass-source, so dark mode follows on its own.
+   ========================================================================== */
+
+html body .veloura-header-tabs-stack--blur {
+  --veloura-header-glass-tint: color-mix(
+    in srgb,
+    var(--veloura-glass-source, var(--veloura-site-second-bg, #e4e7eb)) 55%,
+    transparent
+  );
+}
+
+/* 1. The element gives up the filter — now at a specificity nothing beats. */
+html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface,
+html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface {
+  position: relative !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* 2. The glass layer, one level down, with a tint you can see through. */
+html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface::before,
+html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+.veloura-header-tabs-stack__surface::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  background: var(--veloura-header-glass-tint) !important;
+  background-color: var(--veloura-header-glass-tint) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--veloura-filter, var(--veloura-header-glass-filter)) !important;
+  backdrop-filter: var(--veloura-filter, var(--veloura-header-glass-filter)) !important;
+  filter: none !important;
+}
+
+/* 3. The dropdown gets the same tint, so it reads as the same material as the
+      header instead of a solid grey card hanging off it. */
+html body .veloura-header-tabs-stack--blur
+:is(.sub-menu, .veloura-submenu-surface) {
+  background: var(--veloura-header-glass-tint) !important;
+  background-color: var(--veloura-header-glass-tint) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--veloura-filter, var(--veloura-header-glass-filter)) !important;
+  backdrop-filter: var(--veloura-filter, var(--veloura-header-glass-filter)) !important;
+}
