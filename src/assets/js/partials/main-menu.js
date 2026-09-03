@@ -1,5 +1,11 @@
 class NavigationMenu extends HTMLElement {
     connectedCallback() {
+        // Whether category images appear beside category names in the desktop
+        // dropdown. Read from the attribute header.twig writes, because this
+        // element renders itself from JS and never sees the Twig context.
+        // Read once here, before any render, so every code path agrees.
+        this.showMenuIcons = this.getAttribute('data-veloura-menu-icons') === 'true';
+
         // Seed a skeleton placeholder shown until the menu data is fetched
         // and render() replaces this innerHTML with the real menu.
         this.innerHTML = `
@@ -118,14 +124,50 @@ class NavigationMenu extends HTMLElement {
     * @param {String} additionalClasses
     * @returns {String}
     */
+    /**
+    * How many columns a dropdown should use.
+    *
+    * A single column is right until the list gets long. Past that it runs off
+    * the bottom of the screen with no scroll, so the only way to reach the last
+    * category is to scroll the whole page — the "40 categories" problem.
+    *
+    * Columns beat an inner scrollbar here: nothing is hidden behind a gesture,
+    * and the eye scans columns faster than it scrolls. Only past 30 items is a
+    * height cap plus internal scrolling added on top (see the stylesheet).
+    */
+    getSubmenuColumns(menu) {
+        const n = (menu.children || []).length;
+        if (n <= 12) return 1;
+        if (n <= 20) return 2;
+        return 3;
+    }
+
+    /**
+    * The category image, for the desktop dropdown.
+    *
+    * This is Salla's own category image — the same menu.image the mobile menu
+    * has always rendered — so nothing extra is uploaded and there is no second
+    * list for a merchant to keep in sync.
+    *
+    * Fixed HEIGHT, automatic width: a tall image shrinks to fit the row instead
+    * of stretching it, and a square one stays square. Fixing both dimensions
+    * would distort every image that is not already square.
+    */
+    getDesktopIcon(menu) {
+        if (!this.showMenuIcons || !menu.image) return '';
+        return `<img src="${menu.image}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
+    }
+
     getDesktopMenu(menu, isRootMenu, additionalClasses = '') {
+        const cols = this.hasChildren(menu) ? this.getSubmenuColumns(menu) : 1;
         return `
         <li class="${this.getDesktopClasses(menu, isRootMenu)} ${additionalClasses}" ${menu.attrs} data-menu-item>
             <a href="${menu.url}" aria-label="${menu.title || 'category'}" ${menu.link_attrs}>
+                ${this.getDesktopIcon(menu)}
                 <span>${menu.title}</span>
             </a>
             ${this.hasChildren(menu) ? `
-                <div class="sub-menu veloura-submenu-surface ${this.hasProducts(menu) ? 'w-full left-0 flex' : 'w-56'}">
+                <div class="sub-menu veloura-submenu-surface ${this.hasProducts(menu) ? 'w-full left-0 flex' : 'w-56'} veloura-submenu--cols-${cols}" data-veloura-count="${(menu.children || []).length}">
                     <ul class="${this.hasProducts(menu) ? 'w-56 shrink-0 m-8 rtl:ml-0 ltr:mr-0' : ''}">
                         ${menu.children.map((subMenu) => this.getDesktopMenu(subMenu, false)).join('\n')}
                     </ul>

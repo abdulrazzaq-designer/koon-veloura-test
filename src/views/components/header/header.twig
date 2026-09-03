@@ -46,6 +46,17 @@
 {% endif %}
 {% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
 
+{# Category icons in the desktop dropdown. Same tolerant unwrapping as the
+   settings above: Salla returns a bare value, {value}, or {selected}. #}
+{% set menu_icons_setting = theme.settings.get('veloura_menu_desktop_icons_2026', false) %}
+{% set menu_icons_raw = menu_icons_setting %}
+{% if menu_icons_setting.value is defined %}
+  {% set menu_icons_raw = menu_icons_setting.value %}
+{% elseif menu_icons_setting.selected is defined %}
+  {% set menu_icons_raw = menu_icons_setting.selected %}
+{% endif %}
+{% set menu_desktop_icons = menu_icons_raw == true or menu_icons_raw == 'true' or menu_icons_raw == 1 or menu_icons_raw == '1' or menu_icons_raw == 'on' %}
+
 {% set top_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v6_2026', false) %}
 {% set top_hide_on_scroll_raw = top_hide_setting %}
 {% if top_hide_setting.selected is defined %}
@@ -492,7 +503,9 @@
           </a>
 
           <div class="veloura-menu-links-wrap" data-veloura-desktop-menu-links>
-            <custom-main-menu></custom-main-menu>
+            {# The menu is a web component rendered by JS, so the setting is
+               handed to it as an attribute rather than baked into markup. #}
+            <custom-main-menu data-veloura-menu-icons="{{ menu_desktop_icons ? 'true' : 'false' }}"></custom-main-menu>
           </div>
 
           {% if not search_detached %}

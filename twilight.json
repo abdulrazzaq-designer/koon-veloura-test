@@ -1862,6 +1862,17 @@
       ]
     },
     {
+      "type": "boolean",
+      "label": "إظهار أيقونات التصنيفات في قائمة اللابتوب",
+      "description": "يعرض صورة التصنيف المرفوعة في سلة بجانب اسم التصنيف داخل القائمة المنسدلة على اللابتوب. نفس الصور الظاهرة في قائمة الجوال، فلا حاجة لرفعها مرة أخرى.",
+      "id": "veloura_menu_desktop_icons_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "default": false
+    },
+    {
       "id": "veloura_top_border_style_2026",
       "type": "items",
       "format": "dropdown-list",

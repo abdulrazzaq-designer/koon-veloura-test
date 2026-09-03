@@ -20,7 +20,13 @@
 :root,
 html body {
   /* Canonical header glass material. */
-  --veloura-header-glass-background: rgba(228, 231, 235, .90);
+  /* Light glass: 65% of the store's own secondary colour.
+     Was a fixed rgba at .80, then .90 — .90 left only 10% of the blurred
+     backdrop visible, which is why the header and the search both read as
+     solid slabs. 65% shows 35% through. Mixing from --veloura-site-second-bg
+     instead of a hardcoded grey also makes it follow the store's palette.
+     The search paints from this same token, so the two cannot drift. */
+  --veloura-header-glass-background: color-mix(in srgb, var(--veloura-site-second-bg, #e4e7eb) 65%, transparent);
   --veloura-header-glass-solid: #e6e8eb;
   --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
   --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);

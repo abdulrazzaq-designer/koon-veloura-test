@@ -617,3 +617,95 @@ html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface.veloura-
   --veloura-search-bg: var(--veloura-glass-surface);
   background-color: var(--veloura-glass-surface) !important;
 }
+
+/* ==========================================================================
+   DESKTOP DROPDOWN — category icons, and columns for long lists
+   ========================================================================== */
+
+/* THE ICONS.
+
+   Salla's own category image, the same one the mobile menu has always shown.
+   Fixed HEIGHT and automatic width: a tall image shrinks to fit the row rather
+   than stretching it, and a square one stays square. Fixing both dimensions
+   distorts every image that is not already square — which is why the width is
+   deliberately left alone.
+
+   max-width is a guard, not a size: without it one very wide image could push
+   the label out of the panel. */
+html body .veloura-header-tabs-stack .sub-menu .veloura-menu-icon,
+html body .store-header .sub-menu .veloura-menu-icon {
+  display: inline-block;
+  height: 20px;
+  width: auto;
+  max-width: 34px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-inline-end: 8px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+}
+
+/* The row becomes icon + label, so it has to lay out as a row. */
+html body .veloura-header-tabs-stack .sub-menu li > a,
+html body .store-header .sub-menu li > a {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* THE COLUMNS.
+
+   The count is decided at render time in main-menu.js, where the children are
+   already in hand — no counting elements afterwards, and no flash of a
+   one-column list before a script reflows it.
+
+     <= 12 items : 1 column   (unchanged)
+     13 - 20     : 2 columns
+     > 20        : 3 columns
+
+   The panel is sized by its CONTENT, as chosen: it grows only as wide as the
+   columns need, instead of stretching to the header or the viewport. */
+/* Sized by the COLUMNS, not by the header or the viewport — content width, as
+   chosen. width:max-content was tried first and is wrong here: a multicolumn
+   box does not report the width of N columns as its max-content, so the
+   2-column panel measured 176px, NARROWER than the 224px single column. An
+   explicit column width and a panel width derived from it are predictable and
+   measurable. */
+html body .veloura-header-tabs-stack .sub-menu {
+  --veloura-submenu-col: 210px;
+  --veloura-submenu-gap: 26px;
+}
+
+html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-2:not([data-veloura-mega]) {
+  width: calc(var(--veloura-submenu-col) * 2 + var(--veloura-submenu-gap)) !important;
+  max-width: 92vw !important;
+}
+
+html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3:not([data-veloura-mega]) {
+  width: calc(var(--veloura-submenu-col) * 3 + var(--veloura-submenu-gap) * 2) !important;
+  max-width: 92vw !important;
+}
+
+html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-2 > ul {
+  column-count: 2 !important;
+  column-gap: var(--veloura-submenu-gap) !important;
+}
+
+html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
+  column-count: 3 !important;
+  column-gap: var(--veloura-submenu-gap) !important;
+}
+
+/* A row must never be split down the middle of a column break. */
+html body .veloura-header-tabs-stack .sub-menu > ul > li {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
+/* Past 30 items even three columns run tall, so the panel gets a ceiling and
+   scrolls internally — columns first, scrolling only as the last resort. */
+html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
+  max-height: min(70vh, 620px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
