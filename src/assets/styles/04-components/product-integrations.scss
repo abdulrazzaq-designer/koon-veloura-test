@@ -59,8 +59,19 @@ $veloura-integration-blocks:
   );
 }
 
+/* THE PANEL IS ONLY PAINTED WHEN THE COMPONENT ACTUALLY HAS CONTENT.
+
+   Measured on a store where most of these apps are switched off: the
+   components are still in the page, rendered 1px tall and empty
+   (salla-offer 1600x1, salla-installment 736x1, salla-bought-together 768x1).
+   Painting them unconditionally turned every disabled app into a thin empty
+   bar with a border, stacked down the product page.
+
+   :has(> *:not(:empty)) requires at least one child that itself holds
+   something, which the empty placeholders do not have. It is live, so the
+   moment Salla fills a component in, the panel appears with it. */
 @each $sel in $veloura-integration-blocks {
-  html body .veloura-product-page #{$sel} {
+  html body .veloura-product-page #{$sel}:has(> *:not(:empty)) {
     display: block;
     box-sizing: border-box;
     background: var(--veloura-integration-bg) !important;
@@ -77,8 +88,8 @@ $veloura-integration-blocks:
      the component itself, so the inner box has to be cleared or the store
      ends up with a panel inside a panel — the same doubled-surface problem
      the detached search had. */
-  html body .veloura-product-page #{$sel} > *,
-  html body .veloura-product-page #{$sel} > * > * {
+  html body .veloura-product-page #{$sel}:has(> *:not(:empty)) > *,
+  html body .veloura-product-page #{$sel}:has(> *:not(:empty)) > * > * {
     background-color: transparent !important;
     background-image: none !important;
     border-color: transparent !important;
@@ -92,8 +103,14 @@ html body .veloura-product-page :is(
   salla-loyalty-points-banner,
   salla-loyalty-banner,
   salla-cashback-banner
-) {
+):has(> *:not(:empty)) {
   padding: 12px 14px !important;
+}
+
+/* Belt and braces for browsers without :has() — an empty component keeps no
+   border and no background, so it cannot draw a bar on its own. */
+html body .veloura-product-page :is(#{$veloura-integration-blocks}):empty {
+  display: none !important;
 }
 
 /* Images and media inside these blocks (payment logos, product thumbnails in

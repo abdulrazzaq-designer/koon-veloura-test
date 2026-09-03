@@ -57798,7 +57798,18 @@ html body:not(.veloura-glass-effect) .s-modal-content {
     #000
   );
 }
-html body .veloura-product-page salla-loyalty-points-banner {
+/* THE PANEL IS ONLY PAINTED WHEN THE COMPONENT ACTUALLY HAS CONTENT.
+
+   Measured on a store where most of these apps are switched off: the
+   components are still in the page, rendered 1px tall and empty
+   (salla-offer 1600x1, salla-installment 736x1, salla-bought-together 768x1).
+   Painting them unconditionally turned every disabled app into a thin empty
+   bar with a border, stacked down the product page.
+
+   :has(> *:not(:empty)) requires at least one child that itself holds
+   something, which the empty placeholders do not have. It is live, so the
+   moment Salla fills a component in, the panel appears with it. */
+html body .veloura-product-page salla-loyalty-points-banner:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57808,7 +57819,7 @@ html body .veloura-product-page salla-loyalty-points-banner {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-loyalty-points-banner {
+html body .veloura-product-page salla-loyalty-points-banner:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57816,14 +57827,14 @@ html body .veloura-product-page salla-loyalty-points-banner {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-loyalty-points-banner > *,
-html body .veloura-product-page salla-loyalty-points-banner > * > * {
+html body .veloura-product-page salla-loyalty-points-banner:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-loyalty-points-banner:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-loyalty-banner {
+html body .veloura-product-page salla-loyalty-banner:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57833,7 +57844,7 @@ html body .veloura-product-page salla-loyalty-banner {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-loyalty-banner {
+html body .veloura-product-page salla-loyalty-banner:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57841,14 +57852,14 @@ html body .veloura-product-page salla-loyalty-banner {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-loyalty-banner > *,
-html body .veloura-product-page salla-loyalty-banner > * > * {
+html body .veloura-product-page salla-loyalty-banner:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-loyalty-banner:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-cashback-banner {
+html body .veloura-product-page salla-cashback-banner:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57858,7 +57869,7 @@ html body .veloura-product-page salla-cashback-banner {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-cashback-banner {
+html body .veloura-product-page salla-cashback-banner:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57866,14 +57877,14 @@ html body .veloura-product-page salla-cashback-banner {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-cashback-banner > *,
-html body .veloura-product-page salla-cashback-banner > * > * {
+html body .veloura-product-page salla-cashback-banner:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-cashback-banner:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-installment {
+html body .veloura-product-page salla-installment:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57883,7 +57894,7 @@ html body .veloura-product-page salla-installment {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-installment {
+html body .veloura-product-page salla-installment:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57891,14 +57902,14 @@ html body .veloura-product-page salla-installment {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-installment > *,
-html body .veloura-product-page salla-installment > * > * {
+html body .veloura-product-page salla-installment:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-installment:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page tamara-widget {
+html body .veloura-product-page tamara-widget:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57908,7 +57919,7 @@ html body .veloura-product-page tamara-widget {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page tamara-widget {
+html body .veloura-product-page tamara-widget:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57916,14 +57927,14 @@ html body .veloura-product-page tamara-widget {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page tamara-widget > *,
-html body .veloura-product-page tamara-widget > * > * {
+html body .veloura-product-page tamara-widget:has(> *:not(:empty)) > *,
+html body .veloura-product-page tamara-widget:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-payments {
+html body .veloura-product-page salla-payments:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57933,7 +57944,7 @@ html body .veloura-product-page salla-payments {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-payments {
+html body .veloura-product-page salla-payments:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57941,14 +57952,14 @@ html body .veloura-product-page salla-payments {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-payments > *,
-html body .veloura-product-page salla-payments > * > * {
+html body .veloura-product-page salla-payments:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-payments:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-gifting {
+html body .veloura-product-page salla-gifting:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57958,7 +57969,7 @@ html body .veloura-product-page salla-gifting {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-gifting {
+html body .veloura-product-page salla-gifting:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57966,14 +57977,14 @@ html body .veloura-product-page salla-gifting {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-gifting > *,
-html body .veloura-product-page salla-gifting > * > * {
+html body .veloura-product-page salla-gifting:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-gifting:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-bought-together {
+html body .veloura-product-page salla-bought-together:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -57983,7 +57994,7 @@ html body .veloura-product-page salla-bought-together {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-bought-together {
+html body .veloura-product-page salla-bought-together:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -57991,14 +58002,14 @@ html body .veloura-product-page salla-bought-together {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-bought-together > *,
-html body .veloura-product-page salla-bought-together > * > * {
+html body .veloura-product-page salla-bought-together:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-bought-together:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-offer {
+html body .veloura-product-page salla-offer:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -58008,7 +58019,7 @@ html body .veloura-product-page salla-offer {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-offer {
+html body .veloura-product-page salla-offer:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -58016,14 +58027,14 @@ html body .veloura-product-page salla-offer {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-offer > *,
-html body .veloura-product-page salla-offer > * > * {
+html body .veloura-product-page salla-offer:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-offer:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page salla-quick-order {
+html body .veloura-product-page salla-quick-order:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -58033,7 +58044,7 @@ html body .veloura-product-page salla-quick-order {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page salla-quick-order {
+html body .veloura-product-page salla-quick-order:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -58041,14 +58052,14 @@ html body .veloura-product-page salla-quick-order {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page salla-quick-order > *,
-html body .veloura-product-page salla-quick-order > * > * {
+html body .veloura-product-page salla-quick-order:has(> *:not(:empty)) > *,
+html body .veloura-product-page salla-quick-order:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page .s-payments-list-wrap {
+html body .veloura-product-page .s-payments-list-wrap:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -58058,7 +58069,7 @@ html body .veloura-product-page .s-payments-list-wrap {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page .s-payments-list-wrap {
+html body .veloura-product-page .s-payments-list-wrap:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -58066,14 +58077,14 @@ html body .veloura-product-page .s-payments-list-wrap {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page .s-payments-list-wrap > *,
-html body .veloura-product-page .s-payments-list-wrap > * > * {
+html body .veloura-product-page .s-payments-list-wrap:has(> *:not(:empty)) > *,
+html body .veloura-product-page .s-payments-list-wrap:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page .s-gifting-widget {
+html body .veloura-product-page .s-gifting-widget:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -58083,7 +58094,7 @@ html body .veloura-product-page .s-gifting-widget {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page .s-gifting-widget {
+html body .veloura-product-page .s-gifting-widget:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -58091,14 +58102,14 @@ html body .veloura-product-page .s-gifting-widget {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page .s-gifting-widget > *,
-html body .veloura-product-page .s-gifting-widget > * > * {
+html body .veloura-product-page .s-gifting-widget:has(> *:not(:empty)) > *,
+html body .veloura-product-page .s-gifting-widget:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
-html body .veloura-product-page .s-bought-together-entry {
+html body .veloura-product-page .s-bought-together-entry:has(> *:not(:empty)) {
   background: var(--veloura-integration-bg) !important;
   background-color: var(--veloura-integration-bg) !important;
   background-image: none !important;
@@ -58108,7 +58119,7 @@ html body .veloura-product-page .s-bought-together-entry {
   overflow: hidden !important;
   color: inherit !important;
 }
-html body .veloura-product-page .s-bought-together-entry {
+html body .veloura-product-page .s-bought-together-entry:has(> *:not(:empty)) {
   display: block;
   box-sizing: border-box;
 }
@@ -58116,8 +58127,8 @@ html body .veloura-product-page .s-bought-together-entry {
    the component itself, so the inner box has to be cleared or the store
    ends up with a panel inside a panel — the same doubled-surface problem
    the detached search had. */
-html body .veloura-product-page .s-bought-together-entry > *,
-html body .veloura-product-page .s-bought-together-entry > * > * {
+html body .veloura-product-page .s-bought-together-entry:has(> *:not(:empty)) > *,
+html body .veloura-product-page .s-bought-together-entry:has(> *:not(:empty)) > * > * {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
@@ -58125,10 +58136,55 @@ html body .veloura-product-page .s-bought-together-entry > * > * {
 }
 /* The blocks that carry their own padding already look right; the ones that
    do not would otherwise have text sitting on the panel edge. */
-html body .veloura-product-page salla-loyalty-points-banner,
-html body .veloura-product-page salla-loyalty-banner,
-html body .veloura-product-page salla-cashback-banner {
+html body .veloura-product-page salla-loyalty-points-banner:has(> :not(:empty)) {
   padding: 12px 14px !important;
+}
+html body .veloura-product-page salla-loyalty-banner:has(> :not(:empty)) {
+  padding: 12px 14px !important;
+}
+html body .veloura-product-page salla-cashback-banner:has(> :not(:empty)) {
+  padding: 12px 14px !important;
+}
+/* Belt and braces for browsers without :has() — an empty component keeps no
+   border and no background, so it cannot draw a bar on its own. */
+html body .veloura-product-page salla-loyalty-points-banner:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-loyalty-banner:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-cashback-banner:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-installment:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page tamara-widget:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-payments:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-gifting:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-bought-together:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-offer:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page salla-quick-order:not(.does-not-exist):empty {
+  display: none !important;
+}
+html body .veloura-product-page .s-payments-list-wrap:empty {
+  display: none !important;
+}
+html body .veloura-product-page .s-gifting-widget:empty {
+  display: none !important;
+}
+html body .veloura-product-page .s-bought-together-entry:empty {
+  display: none !important;
 }
 /* Images and media inside these blocks (payment logos, product thumbnails in
    "bought together") must not inherit the panel's rounding. */
