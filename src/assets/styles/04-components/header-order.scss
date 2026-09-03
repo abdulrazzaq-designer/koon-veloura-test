@@ -677,10 +677,27 @@ html body .veloura-header-tabs-stack--blur .store-header.veloura-top-blur::befor
    derived from --veloura-glass-source, so dark mode follows on its own.
    ========================================================================== */
 
+/* ONE NUMBER CONTROLS HOW SOLID THE HEADER LOOKS.
+
+   72% is not a guess: it is the constant the site's own glass already uses
+   (--veloura-glass-surface is defined as color-mix(... 72%, transparent) in
+   veloura-glass.scss), so the header is literally the same material as the
+   rest of the store — which is what was asked for originally.
+
+   The range that matters:
+     80%  what it was — only 20% of the blur gets through, reads as a solid
+          panel, and no amount of blur can rescue it
+     72%  the site's glass. Solid enough to sit on, blur still visible
+     55%  too see-through (the last build)
+
+   To retune, change this one value; light and dark both follow, because the
+   colour is mixed from --veloura-glass-source, which dark mode redefines. */
 html body .veloura-header-tabs-stack--blur {
+  --veloura-header-glass-strength: 72%;
   --veloura-header-glass-tint: color-mix(
     in srgb,
-    var(--veloura-glass-source, var(--veloura-site-second-bg, #e4e7eb)) 55%,
+    var(--veloura-glass-source, var(--veloura-site-second-bg, #e4e7eb))
+      var(--veloura-header-glass-strength),
     transparent
   );
 }
