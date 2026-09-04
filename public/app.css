@@ -59319,6 +59319,26 @@ html body .store-header .sub-menu > ul > li > a {
   padding-top: 7px !important;
   padding-bottom: 7px !important;
 }
+html body {
+  --veloura-build: 'paste-2';
+}
+/* القوائم الصلبة — specificity يغلب أقوى منافس مقيس: (1,3,0) و (0,7,3) */
+html body#app .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html body#app .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu.sub-menu, html body#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu, html body .veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface {
+  background: #f4f5f7 !important;
+  background: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-color: #f4f5f7 !important;
+  background-color: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-image: none !important;
+  border: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html.dark body#app .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu.sub-menu, html body#app.dark .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html body#app.dark .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu.sub-menu, html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html body.dark#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html.dark body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu, html body.dark .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu {
+  background: #010612 !important;
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: #010612 !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;

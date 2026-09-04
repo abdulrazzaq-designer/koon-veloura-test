@@ -848,3 +848,29 @@ html body .veloura-header-tabs-stack .sub-menu > ul > li:last-child,
 html body .store-header .sub-menu > ul > li:last-child { border-bottom: 0 !important; }
 html body .veloura-header-tabs-stack .sub-menu > ul > li > a,
 html body .store-header .sub-menu > ul > li > a { padding-block: 7px !important; }
+
+
+html body { --veloura-build: 'paste-2'; }
+
+/* القوائم الصلبة — specificity يغلب أقوى منافس مقيس: (1,3,0) و (0,7,3) */
+html body#app .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface).sub-menu.sub-menu,
+html body#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface,
+html body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu,
+html body .veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface {
+  background: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-color: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-image: none !important;
+  border: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.dark body#app .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface).sub-menu.sub-menu,
+html body.dark#app .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface).sub-menu.sub-menu,
+html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface,
+html body.dark#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface,
+html.dark body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu,
+html body.dark .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+}
