@@ -59354,6 +59354,38 @@ html body#app .veloura-header-tabs-stack .sub-menu .sub-menu,
 html body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu .sub-menu {
   z-index: 500 !important;
 }
+html body {
+  --veloura-build: 'paste-4';
+}
+/* لا شيء جوّه شريط البحث يرسم خلفية — الخلفية على الغلاف وبس */
+html body#app .veloura-search-surface.veloura-search-surface *,
+html body .veloura-search-surface.veloura-search-surface.veloura-search-surface * {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* أجزاء الشادو DOM بتاعة مكوّن سلة — الستايل العادي ما بيوصلهاش */
+html body#app .veloura-search-surface salla-search::part(container),
+html body#app .veloura-search-surface salla-search::part(form),
+html body#app .veloura-search-surface salla-search::part(wrapper),
+html body#app .veloura-search-surface salla-search::part(input),
+html body#app .veloura-search-surface salla-search::part(base) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* الطبقة الوحيدة: نفس اللون ونفس البلور للاتنين، في الوضعين */
+html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-search-surface, html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-search-surface {
+  background: var(--vl-tint) !important;
+  background-color: var(--vl-tint) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;
