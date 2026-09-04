@@ -59412,6 +59412,19 @@ html body .veloura-search-surface.veloura-search-surface input.s-search-input.s-
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
+html body {
+  --veloura-build: 'paste-6';
+}
+/* الدارك فقط: البحث ياخد نفس معاملة حواف الهيدر بالظبط */
+html.dark body#app .veloura-search-surface.veloura-search-surface.veloura-search-surface,
+html body.dark#app .veloura-search-surface.veloura-search-surface.veloura-search-surface,
+html.dark body .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface,
+html body.dark .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface {
+  border: 0 !important;
+  border-top: 1px solid rgba(100, 116, 139, .10) !important;
+  border-top: 1px solid var(--veloura-edge-top, rgba(100, 116, 139, 0.1)) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1) !important;
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;
