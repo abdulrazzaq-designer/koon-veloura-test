@@ -767,5 +767,39 @@ html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.velou
    instead of a round trip:
      getComputedStyle(document.body).getPropertyValue('--veloura-build') */
 html body {
-  --veloura-build: 'fix-16';
+  --veloura-build: 'fix-17-dividers';
+}
+
+
+/* ==========================================================================
+   DIVIDERS BETWEEN CATEGORIES IN THE DROPDOWN
+
+   A hairline, not a rule: it should separate without being noticed. Drawn from
+   currentColor rather than a fixed grey, so it takes the panel's own text
+   colour — a dark hairline on the light panel, a light one on the dark panel,
+   with no second rule for dark mode and nothing to keep in sync.
+
+   12% is the point where the eye reads "these are separate rows" without
+   reading "there is a line here".
+
+   The last row has none: a line under the final item draws a border on the
+   panel edge rather than a separator between two things. With columns, the
+   last row of columns 1 and 2 keeps its line, which is correct — it is
+   separating that row from nothing only at the very end of the list.
+   ========================================================================== */
+html body .veloura-header-tabs-stack .sub-menu > ul > li,
+html body .store-header .sub-menu > ul > li {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent) !important;
+}
+
+html body .veloura-header-tabs-stack .sub-menu > ul > li:last-child,
+html body .store-header .sub-menu > ul > li:last-child {
+  border-bottom: 0 !important;
+}
+
+/* The rows need a little air, or the hairlines sit tight against the text and
+   read as a table instead of a menu. */
+html body .veloura-header-tabs-stack .sub-menu > ul > li > a,
+html body .store-header .sub-menu > ul > li > a {
+  padding-block: 7px !important;
 }
