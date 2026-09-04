@@ -803,3 +803,48 @@ html body .veloura-header-tabs-stack .sub-menu > ul > li > a,
 html body .store-header .sub-menu > ul > li > a {
   padding-block: 7px !important;
 }
+
+/* ===== VELOURA — الهيدر والقوائم ===== */
+html body { --veloura-build: 'paste-1'; }
+
+/* لون الزجاج: 65% فاتح، 72% داكن — من لون المتجر الثانوي */
+html body { --vl-tint: color-mix(in srgb, var(--veloura-site-second-bg, #e4e7eb) 65%, transparent); }
+html.dark body, html body.dark { --vl-tint: color-mix(in srgb, var(--veloura-dark-secondary-bg, #010612) 72%, transparent); }
+
+/* الهيدر والبحث من نفس اللون بالظبط */
+html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+:is(.veloura-header-tabs-stack__surface, .veloura-search-surface),
+html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur
+:is(.veloura-header-tabs-stack__surface, .veloura-search-surface) {
+  background: var(--vl-tint) !important;
+  background-color: var(--vl-tint) !important;
+  background-image: none !important;
+}
+
+/* القوائم المنسدلة: صلبة، بدون بلور ولا إطار */
+html body .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface),
+html body .store-header :is(.sub-menu, .veloura-submenu-surface) {
+  background: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-color: var(--veloura-site-second-bg, #f4f5f7) !important;
+  background-image: none !important;
+  border: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html.dark body .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface),
+html body.dark .veloura-header-tabs-stack :is(.sub-menu, .veloura-submenu-surface),
+html.dark body .store-header :is(.sub-menu, .veloura-submenu-surface),
+html body.dark .store-header :is(.sub-menu, .veloura-submenu-surface) {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+}
+
+/* فواصل شعرة بين التصنيفات — من لون النص، فتتبع الوضعين تلقائياً */
+html body .veloura-header-tabs-stack .sub-menu > ul > li,
+html body .store-header .sub-menu > ul > li {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent) !important;
+}
+html body .veloura-header-tabs-stack .sub-menu > ul > li:last-child,
+html body .store-header .sub-menu > ul > li:last-child { border-bottom: 0 !important; }
+html body .veloura-header-tabs-stack .sub-menu > ul > li > a,
+html body .store-header .sub-menu > ul > li > a { padding-block: 7px !important; }
