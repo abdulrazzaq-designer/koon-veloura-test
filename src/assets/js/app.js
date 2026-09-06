@@ -5485,8 +5485,28 @@ const initVelouraBottomNavOverlaysV13 = () => {
      exact panel — same rounded card, same backdrop, same radius synced from
      the bottom nav — instead of only the bottom-nav button reaching it. See
      header.twig's search buttons for the caller side, which fall back to the
-     plain dispatch when the bottom nav (and this panel) don't exist at all. */
-  window.__velouraOpenSearch = openSearch;
+     plain dispatch when the bottom nav (and this panel) don't exist at all.
+
+     V25: that fallback also has to cover the case where the bottom nav DOES
+     exist in the DOM but is not the mobile bottom bar right now — every
+     style this whole controller writes for the panel/backdrop above lives
+     inside `@media (max-width: 767px)`, exactly mirroring
+     `.veloura-bottom-nav`'s own default `display: none` in
+     mobile-floating-menu.scss (only turned on under that same 767px query).
+     header.twig's search icon is visible on desktop too and used to call
+     this same window.__velouraOpenSearch() unconditionally, so on a wider
+     viewport openSearch() ran its full logic — toggling classes/attributes
+     on the (invisible) bottom-nav search icon and un-hiding a plain <div>
+     appended at the end of <body> — none of which has any positioning or
+     visual styling above 767px. The only visible effect was the header
+     button's own hover/active state, exactly the "changes shape but never
+     opens" report. Below that width nothing changes: the bottom nav is the
+     real mobile UI and openSearch() is exactly right for it. */
+  const velouraMobilePanelQuery = window.matchMedia('(max-width: 767px)');
+  window.__velouraOpenSearch = () => {
+    if (velouraMobilePanelQuery.matches) openSearch();
+    else salla.event.dispatch('search::open');
+  };
 
   /* V24: the actual double-panel bug. Tapping the pill only ever showed the
      DECOY input (readOnly — see salla-search's own renderInlineTrigger()).
