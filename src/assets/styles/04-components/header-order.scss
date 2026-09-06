@@ -882,7 +882,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-20';
+  --veloura-build: 'clean-22';
 }
 
 
@@ -1312,4 +1312,68 @@ html body :is(
   background-image: none !important;
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: blur(20px) saturate(200%) !important;
+}
+
+
+/* ==========================================================================
+   THE CONNECTED DESKTOP HEADER IS ONE FLAT RAIL
+
+   Measured on the store, two different layout models:
+
+     detached  : .veloura-header-left / -right  display:flex   x=89 / x=354
+     connected : .veloura-header-left / -right  display:contents   x=0 / x=0
+
+   display:contents DISSOLVES the cluster — its children become direct flex
+   items of the tools row. So in the connected header there is no left group
+   and no right group; there is ONE row, and position is decided purely by
+   `order` across the whole rail. The theme already orders it:
+
+     login 1 · cart/wishlist/dark 2 · search 3 · language 4 · logo 5
+
+   and the row is RTL, so a LOWER order sits further RIGHT.
+
+   That is why every attempt to place the icon "by cluster" failed here: the
+   cluster it lives in is not a box and has no side. Both copies dissolve into
+   the same rail at the same order, which is why one of them appeared stranded.
+
+   So in this header the setting is expressed as an order, not as a cluster:
+
+     icon on the LEFT  -> order 3: between the cart group and the language
+                          pill, i.e. immediately to the RIGHT of the currency —
+                          which is exactly where it was asked to go.
+     icon on the RIGHT -> order 0: ahead of everything, at the right end.
+
+   Only one copy is shown, because in a dissolved rail two copies are two
+   icons in the same row. The detached header keeps the cluster-based rules
+   above; there the clusters are real boxes and those rules are correct.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  /* one icon only in the flat rail */
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
+  .veloura-search-toggle--left {
+    display: none !important;
+  }
+
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached):is(.veloura-desktop-search-icon_left, .veloura-desktop-search-icon_right)
+  .veloura-search-toggle--right {
+    display: inline-flex !important;
+  }
+
+  /* "left" — beside the language pill, on its right */
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_left
+  .veloura-search-toggle--right {
+    order: 3 !important;
+  }
+
+  /* "right" — the right end of the rail.
+
+     Measured, not assumed: in this rail a LOWER order renders further LEFT
+     (login=1 draws leftmost), the opposite of what the row's rtl direction
+     suggests. order:0 was tried first and put the icon at the far LEFT. 7
+     places it past the language pill (4) and before the menu links (8), at
+     the right end of the icons. */
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
+  .veloura-search-toggle--right {
+    order: 7 !important;
+  }
 }
