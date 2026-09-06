@@ -59352,7 +59352,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-15';
+  --veloura-build: 'clean-16';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59531,9 +59531,17 @@ html body .sub-menu li > a::after {
    already on the correct side; applying the same order there moved it to the
    wrong one. A rule written for one breakpoint gets scoped to it. */
 @media (min-width: 1024px) {
+  /* LAST inside its cluster, not first.
+
+     order:-1 was tried first and put the icon at the far end of the row, past
+     the login pill — measured and reported as "it goes to the left of
+     everything". The cluster renders its first item leftmost, so first is the
+     outer edge and last is the one next to the other controls. A high order
+     puts the icon beside the language/currency pill, which is where it
+     belongs: part of the group, not floating off the end of it. */
   html body#app .store-header .veloura-header-left .veloura-search-toggle--left,
   html body .store-header .veloura-header-left .veloura-search-toggle--left {
-    order: -1 !important;
+    order: 99 !important;
   }
 }
 /* ==========================================================================
@@ -59708,6 +59716,51 @@ html body.veloura-general-enabled::before {
      re-centres it on the screen rather than on body. So the layer reaches both
      screen edges whatever body measures. body already carries overflow-x
      hidden in this theme, so a 100vw layer cannot add a horizontal scrollbar. */
+}
+/* ==========================================================================
+   ONE GLASS FOR THE WHOLE STORE
+
+   The header and the search were matched to each other, but nothing else was.
+   The mobile bottom bar alone carried FOUR different recipes:
+
+     blur(18px) saturate(122%) contrast(200%)
+     blur(18px) saturate(116%)
+     blur(22px) saturate(130%) contrast(200%)
+     blur(22px) saturate(116%)
+
+   against the header's blur(20px) saturate(200%). Different blur radii and a
+   contrast() that the header does not use — so the same "glass" reads as a
+   different material in every component, which is exactly what was noticed on
+   the light theme.
+
+   Every panel now draws from the SAME token and the SAME filter as the header.
+   Change --veloura-header-glass-background once and the whole store follows.
+
+   SCRIMS ARE NOT PANELS: the *__overlay and *-backdrop layers are excluded on
+   purpose. Their job is to dim what is behind a dialog, so giving them the
+   panel's tint would make the dialog and its backdrop the same surface and the
+   dialog would stop reading as being on top.
+
+   Pills and buttons are excluded too — the language pill is a solid control by
+   design, not a glass surface.
+   ========================================================================== */
+html body .veloura-bottom-nav__surface,
+html body .veloura-bottom-search-panel,
+html body .veloura-popup__box,
+html body .veloura-quick-view-modal__dialog,
+html body .veloura-qv-full__dialog,
+html body .veloura-product-sticky-bar,
+html body .sticky-product-bar,
+html body .veloura-category-children,
+html body .veloura-home-tabs--header-blur,
+html body .veloura-glass,
+html body .veloura-glass-surface,
+html body .mm-ocd__content {
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);
