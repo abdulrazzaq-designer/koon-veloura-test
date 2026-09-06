@@ -882,7 +882,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-26';
+  --veloura-build: 'clean-28';
 }
 
 
@@ -1370,5 +1370,58 @@ html body :is(
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
   .veloura-search-toggle {
     order: 6 !important;
+  }
+}
+
+
+/* ==========================================================================
+   ONE SEARCH BUTTON, AND THE LANGUAGE PILL ANCHORED BY MARGIN
+
+   THE SECOND BUTTON IS GONE.
+
+   Rendering the search icon twice — once per cluster — was my idea for making
+   the left/right setting work, and it caused three separate faults: an icon
+   stranded on its own line, a wrap when it was ordered last, and finally two
+   search dialogs opening from one click, because both copies carry
+   salla.event.dispatch('search::open') and both were in the DOM.
+
+   The flat-rail map made the duplicate unnecessary: in this header the
+   clusters dissolve, so ONE button placed by `order` can sit anywhere in the
+   row. The side setting never needed a second element.
+
+   THE LANGUAGE PILL IS ANCHORED WITH A MARGIN, NOT AN ORDER.
+
+   The rail is justify-content:flex-start, so every item packs to the start and
+   the free space collects at the end — which is why the icons sit together on
+   the left and nothing reaches the right edge. order cannot move an item into
+   that free space; it only decides sequence. An auto margin can: it absorbs
+   the free space before the pill and pushes it to the end of the line.
+
+   This is also why order:9 failed — it put the pill last in sequence, past the
+   wrap point, instead of moving it into the empty space.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  /* The auto margin goes on the FIRST item of the trailing group, not on the
+     language pill alone.
+
+     An auto margin absorbs the free space that sits before it, so whichever
+     item carries it becomes the start of the right-hand group and everything
+     after it follows. Putting it on the pill alone pushed only the pill to the
+     edge and left the dark toggle stranded in the middle — the pair has to
+     travel together.
+
+     The dark toggle comes first in the right cluster, so it carries the
+     margin. If the merchant moves the dark toggle to the left cluster with its
+     own setting, the pill is then the first trailing item and carries it
+     instead — :has() picks whichever case is true, so neither arrangement
+     needs a separate rule to be remembered later. */
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
+  .veloura-header-right .veloura-dark-toggle {
+    margin-inline-start: auto !important;
+  }
+
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
+  .veloura-header-right:not(:has(.veloura-dark-toggle)) .veloura-lang-desktop {
+    margin-inline-start: auto !important;
   }
 }

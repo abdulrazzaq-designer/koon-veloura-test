@@ -450,12 +450,6 @@
                 <span class="veloura-login-btn__label">تسجيل الدخول</span>
               </button>
 
-              {# The left-hand copy of the search icon. Hidden unless the
-                 setting asks for the icon on this side. #}
-              <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle--left" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
-                <i class="sicon-search"></i>
-              </button>
-
               {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
                 <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
                   <i class="sicon-moon veloura-dark-toggle__icon"></i>
