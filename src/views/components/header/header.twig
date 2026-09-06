@@ -436,6 +436,12 @@
                 <span class="veloura-login-btn__label">تسجيل الدخول</span>
               </button>
 
+              {# The left-hand copy of the search icon. Hidden unless the
+                 setting asks for the icon on this side. #}
+              <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle--left" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                <i class="sicon-search"></i>
+              </button>
+
               {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
                 <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
                   <i class="sicon-moon veloura-dark-toggle__icon"></i>
@@ -468,7 +474,17 @@
                  scroll (the search bar always collapses to an icon then —
                  see header.scss / header-tabs.scss). CSS hides it whenever
                  the full bar is visible. #}
-              <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+              {# The search icon exists TWICE, once in each cluster, and CSS shows
+                 the one the "search position" setting asks for.
+
+                 It has to be rendered twice: the two clusters are different
+                 parent elements, and no CSS property moves a node from one
+                 parent to another. order/float only reorder siblings. That is
+                 why choosing "icon on the left" never did anything before —
+                 the icon_left and icon_right rules in header.scss are byte
+                 identical and only toggle display, so there was never a copy
+                 on the left to show. #}
+              <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle--right" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
                 <i class="sicon-search"></i>
               </button>
 

@@ -861,7 +861,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-6';
+  --veloura-build: 'clean-7';
 }
 
 
@@ -903,4 +903,83 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface.v
   background-image: none !important;
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: blur(20px) saturate(200%) !important;
+}
+
+
+/* ==========================================================================
+   WHICH SIDE THE SEARCH ICON SITS ON
+
+   The setting had never moved anything. header.scss defines
+   .veloura-desktop-search-icon_right and .veloura-desktop-search-icon_left as
+   BYTE-IDENTICAL blocks — both only toggle display — and the same for the two
+   mobile ones. So "icon on the left" and "icon on the right" produced exactly
+   the same header, and the icon stayed wherever the template happened to put
+   it: inside .veloura-header-right.
+
+   No CSS property can move a node between two different parents. order and
+   float only reorder siblings, so the fix has to be structural: header.twig
+   now renders the icon in BOTH clusters, and these rules show exactly one.
+
+   Every rule below pairs a "show" with a "hide", because the two copies are
+   real elements — leaving both visible would give the header two search icons.
+
+   The default when no side is chosen is the right-hand copy, matching the
+   setting's own default (icon_right).
+   ========================================================================== */
+
+/* Never two at once.
+
+   The SEARCH VISIBILITY CONTRACT earlier in this file decides WHETHER an icon
+   is shown, and it targets .veloura-search-toggle generically at (0,8,2) —
+   written when only one copy existed, so it now shows both. Rather than
+   rewrite the contract (it is correct about whether, and it is the one place
+   all 32 mode/breakpoint cases are stated), these rules decide WHICH COPY,
+   and use body#app so a single id outranks (0,8,2) outright — no counting
+   classes, and no risk of the contract growing a class and silently winning.
+
+   Division of labour: contract = whether. This block = which side. */
+html body#app .store-header .veloura-search-toggle--left {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  html body#app .store-header.veloura-desktop-search-icon_left .veloura-search-toggle--left {
+    display: inline-flex !important;
+  }
+  html body#app .store-header.veloura-desktop-search-icon_left .veloura-search-toggle--right {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  html body#app .store-header.veloura-mobile-search-icon_left .veloura-search-toggle--left {
+    display: inline-flex !important;
+  }
+  html body#app .store-header.veloura-mobile-search-icon_left .veloura-search-toggle--right {
+    display: none !important;
+  }
+}
+
+/* The left copy takes the same place in its cluster's order as the right one
+   does in its own, so the row reads the same whichever side is chosen. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack .store-header .veloura-header-left .veloura-search-toggle--left {
+    order: 3 !important;
+  }
+}
+
+/* The header must not grow past its container just because an icon moved.
+   Reported when switching sides: the whole header escaped the container. A
+   cluster with no width limit pushes the row wider than the grid column it
+   sits in, and the header follows it out. */
+html body .store-header .veloura-header-left,
+html body .store-header .veloura-header-right {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+html body .store-header .veloura-header__tools {
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
