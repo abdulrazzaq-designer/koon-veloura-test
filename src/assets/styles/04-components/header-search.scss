@@ -239,3 +239,34 @@ html body .veloura-desktop-search-bar {
     0 1px 5px rgba(0,0,0,.04) !important;
 
 }
+/* ========================================================================
+   V22 — the parking bay for the single shared <salla-search>.
+
+   Exactly one <salla-search> exists per page (see master.twig). When no search
+   BAR is on screen — icon-only modes, or a breakpoint where the bar is hidden —
+   the component still has to stay in the document, because it is the only
+   listener for salla.event.dispatch('search::open') and its <salla-modal> lives
+   in its own shadow root.
+
+   So it is parked off-screen instead of being hidden: `display:none` or
+   `visibility:hidden` would inherit into the shadow modal and the dialog would
+   open invisibly. The modal itself is position:fixed, so the parked offset does
+   not follow it onto the screen.
+   ======================================================================== */
+html body #veloura-search-park {
+  position: fixed !important;
+  top: 0 !important;
+  inset-inline-start: -99999px !important;
+  width: 320px !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  z-index: 0 !important;
+  contain: layout style;
+}
+
+html body #veloura-search-park > salla-search {
+  border: 0 !important;
+  box-shadow: none !important;
+}

@@ -1190,6 +1190,189 @@ const initVelouraAdaptiveHeaderLayout = (() => {
   };
 })();
 
+/* ========================================================================
+   Veloura V22 — ONE <salla-search> for the whole document.
+
+   The bug this replaces: every <salla-search> element binds its own
+   `salla.event.on('search::open', () => this.open())` inside its constructor,
+   and every element — `inline` ones included — renders its own <salla-modal>
+   (twilight-components: salla-search.render() returns the inline trigger PLUS
+   renderModal()). The theme used to ship five of them on the home page:
+
+     header mobile bar, header desktop bar, detached mobile, detached desktop,
+     the page-level modal, plus one more created by the bottom-nav controller.
+
+   So a single click on the search icon dispatched one event that five
+   components answered, and five identical empty dialogs opened on top of each
+   other. `open()` is NOT a public @Method on the component, so the only way to
+   open exactly one is for exactly one to exist.
+
+   This controller keeps that single element (#veloura-shared-search, parked in
+   #veloura-search-park) and moves it into whichever [data-veloura-search-slot]
+   is currently visible. Wrapper classes stay exactly as they were, so all the
+   existing header/detached layout rules keep matching; only the component
+   inside them is now shared.
+   ======================================================================== */
+const initVelouraSharedSearch = (() => {
+  let initialized = false;
+
+  const SLOT_SELECTOR = '[data-veloura-search-slot]';
+
+  /* Highest priority first. The bottom-nav panel wins while it is open because
+     it is the surface the customer just asked for; the detached row outranks
+     the in-header bars because the two are mutually exclusive in Twig anyway. */
+  const PRIORITY = [
+    'bottom-nav',
+    'detached-mobile',
+    'detached-desktop',
+    'header-mobile',
+    'header-desktop'
+  ];
+
+  /* Size is irrelevant here: an EMPTY slot legitimately has zero height until
+     the component lands in it, so measuring rectangles would reject every
+     candidate. Only the CSS display/visibility chain decides. */
+  const isDisplayed = (el) => {
+    if (!(el instanceof Element) || !el.isConnected) return false;
+    let node = el;
+    while (node && node.nodeType === 1) {
+      if (node.hidden) return false;
+      const cs = getComputedStyle(node);
+      if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+      if (node === document.documentElement) break;
+      node = node.parentElement;
+    }
+    return true;
+  };
+
+  const pickSlot = () => {
+    const slots = Array.from(document.querySelectorAll(SLOT_SELECTOR));
+    if (!slots.length) return null;
+
+    const byName = new Map();
+    slots.forEach((slot) => {
+      const name = slot.dataset.velouraSearchSlot;
+      if (name && !byName.has(name)) byName.set(name, slot);
+    });
+
+    for (const name of PRIORITY) {
+      const slot = byName.get(name);
+      if (slot && isDisplayed(slot)) return slot;
+    }
+
+    return slots.find(isDisplayed) || null;
+  };
+
+  return () => {
+    if (initialized) return;
+
+    const park = document.getElementById('veloura-search-park');
+    const search = document.getElementById('veloura-shared-search');
+    if (!park || !search) return;
+
+    initialized = true;
+
+    let frame = 0;
+    let currentHost = search.parentElement || park;
+
+    const place = () => {
+      frame = 0;
+
+      const target = pickSlot() || park;
+      const height = target === park
+        ? '36'
+        : (target.dataset.velouraSearchHeight || '36');
+
+      if (search.getAttribute('height') !== height) {
+        search.setAttribute('height', height);
+      }
+
+      if (search.parentElement === target) return;
+
+      target.appendChild(search);
+      currentHost = target;
+
+      document.dispatchEvent(new CustomEvent('veloura:search:placed', {
+        detail: { slot: target === park ? 'park' : target.dataset.velouraSearchSlot }
+      }));
+    };
+
+    const schedule = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(place);
+    };
+
+    place();
+
+    /* Anything that can flip a slot's visibility re-runs the placement:
+       breakpoint changes, the sticky "bar collapses to icon" scroll state, the
+       adaptive header re-layout, and the bottom-nav panel opening. */
+    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('orientationchange', schedule, { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('load', () => setTimeout(schedule, 80), { once: true });
+    document.addEventListener('veloura:header:layout', schedule);
+    document.addEventListener('veloura:search:relayout', schedule);
+    document.fonts?.ready?.then(schedule).catch(() => {});
+
+    if (typeof MutationObserver === 'function') {
+      /* Mode classes (.veloura-top-scrolled, .veloura-desktop-search-*) and the
+         bottom-nav panel's `hidden` flag are what actually toggle the slots. */
+      const attributeObserver = new MutationObserver(schedule);
+      const watch = (node) => {
+        if (node) attributeObserver.observe(node, {
+          attributes: true,
+          attributeFilter: ['class', 'hidden', 'style', 'aria-hidden']
+        });
+      };
+
+      /* Mode classes live on several hosts depending on the switch: `html` for
+         dark mode, `body` for the bottom-nav/menu open states, and the header
+         itself for the search/scroll modes. Missing `body` left the component
+         stranded in a slot that had just been hidden. */
+      watch(document.documentElement);
+      watch(document.body);
+      watch(document.querySelector('.store-header'));
+      watch(document.querySelector('[data-veloura-header-tabs-stack]'));
+      document.querySelectorAll(SLOT_SELECTOR).forEach(watch);
+
+      /* The bottom-nav search slot is created by JS after this runs. */
+      const treeObserver = new MutationObserver((mutations) => {
+        let touched = false;
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (!(node instanceof Element)) return;
+            if (node.matches?.(SLOT_SELECTOR)) { watch(node); touched = true; }
+            node.querySelectorAll?.(SLOT_SELECTOR).forEach((slot) => {
+              watch(slot);
+              touched = true;
+            });
+          });
+          mutation.removedNodes.forEach((node) => {
+            if (node instanceof Element && node.contains?.(search)) touched = true;
+          });
+        });
+        if (touched) schedule();
+      });
+      treeObserver.observe(document.body, { childList: true, subtree: true });
+    }
+
+    /* If anything ever detaches the shared component (a slot being removed with
+       the search still inside it), bring it home rather than lose the only
+       search on the page. */
+    document.addEventListener('veloura:search:rescue', () => {
+      if (!search.isConnected) park.appendChild(search);
+      schedule();
+    });
+
+    window.__velouraSharedSearch = {
+      element: search,
+      relayout: schedule,
+      get host() { return currentHost; }
+    };
+  };
+})();
+
 class App extends AppHelpers {
   constructor() {
     super();
@@ -1202,6 +1385,7 @@ class App extends AppHelpers {
     // V85: legacy Shadow DOM glass runtime disabled; V85 owns this bridge.
     initVelouraHeaderControls();
     initVelouraAdaptiveHeaderLayout();
+    initVelouraSharedSearch();
     this.initiateNotifier();
     this.initiateMobileMenu();
     // V4: initialize the whole header system even when sticky is disabled,
@@ -5100,7 +5284,14 @@ const initVelouraBottomNavOverlaysV13 = () => {
   document.body.appendChild(searchBackdrop);
 
   let searchPanel = null;
-  let search = null;
+
+  /* V22: this panel used to create its OWN <salla-search>. That was the sixth
+     instance on the page, and every instance answers salla.event's global
+     'search::open' with its own dialog — the stack of empty search panels.
+     The panel is now just a placement slot; initVelouraSharedSearch() moves the
+     one shared component in while the panel is open and back out when it
+     closes, so `#<SEARCH_PANEL_ID> > salla-search` below still matches. */
+  const getSearch = () => searchPanel?.querySelector('salla-search') || null;
 
   if (searchItem) {
     searchPanel = document.createElement('div');
@@ -5108,20 +5299,19 @@ const initVelouraBottomNavOverlaysV13 = () => {
     searchPanel.hidden = true;
     searchPanel.setAttribute('aria-hidden', 'true');
     searchPanel.setAttribute('data-vbn-search-panel', 'v12');
+    searchPanel.setAttribute('data-veloura-search-slot', 'bottom-nav');
+    searchPanel.setAttribute('data-veloura-search-height', '56');
 
-    search = document.createElement('salla-search');
-    search.setAttribute('inline', '');
-    search.setAttribute('height', '56');
-    search.setAttribute('data-vbn-inline-search', 'v12');
-    search.setAttribute('data-vbn-native', '');
-
-    searchPanel.appendChild(search);
     document.body.appendChild(searchPanel);
 
     searchItem.removeAttribute('onclick');
     searchItem.setAttribute('aria-controls', SEARCH_PANEL_ID);
     searchItem.setAttribute('aria-expanded', 'false');
   }
+
+  const relayoutSharedSearch = () => {
+    document.dispatchEvent(new CustomEvent('veloura:search:relayout'));
+  };
 
   // V13: leave Login 100% native. The bottom-nav account button uses the same
   // login::open action as the original Twig, and this controller never blocks it.
@@ -5179,6 +5369,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
     // Salla Search officially supports `oval`. Use it when the nav itself is a
     // pill; otherwise leave Salla's normal shape and let our outer panel carry
     // the exact radius.
+    const search = getSearch();
     if (search) {
       const radiusPx = parseRadius(radius);
       if (radiusPx >= 24) search.setAttribute('oval', '');
@@ -5204,6 +5395,9 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (restore && !isLoginOpen()) restoreRouteActive();
+
+    // Hand the shared component back to the header / park.
+    relayoutSharedSearch();
   };
 
   const openSearch = () => {
@@ -5224,7 +5418,12 @@ const initVelouraBottomNavOverlaysV13 = () => {
     document.body.classList.add('veloura-bottom-nav-search-open');
     setActive(searchItem);
 
-    requestAnimationFrame(() => search?.focus?.({ preventScroll: true }));
+    // The panel is visible now, so the shared component can move in.
+    relayoutSharedSearch();
+    requestAnimationFrame(() => {
+      syncRadius();
+      getSearch()?.focus?.({ preventScroll: true });
+    });
   };
 
   const isNearWhite = color => {

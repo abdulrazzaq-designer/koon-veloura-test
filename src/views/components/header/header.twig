@@ -548,14 +548,32 @@
             <custom-main-menu data-veloura-menu-icons="{{ menu_desktop_icons ? 'true' : 'false' }}"></custom-main-menu>
           </div>
 
-          {% if not search_detached %}
-            <div class="veloura-mobile-search-bar veloura-search-surface">
-              <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
-            </div>
+          {# SINGLE-SEARCH CONTRACT (see master.twig #veloura-search-park).
 
-            <div class="veloura-desktop-search-bar veloura-search-surface">
-              <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
-            </div>
+             Every <salla-search> instance registers its OWN
+             salla.event.on('search::open') listener in its constructor, and
+             every instance — `inline` ones included — renders its own
+             <salla-modal>. Rendering a mobile bar and a desktop bar here (plus
+             the page modal and the bottom-nav panel) therefore meant one click
+             on the search icon opened FOUR or FIVE stacked dialogs.
+
+             These wrappers are now empty placement slots. app.js keeps exactly
+             one <salla-search> in the document and moves it into whichever slot
+             is currently visible, so the layout rules below (which are keyed on
+             .veloura-mobile-search-bar / .veloura-desktop-search-bar) are
+             untouched while only one dialog can ever open. #}
+          {% if not search_detached %}
+            <div
+              class="veloura-mobile-search-bar veloura-search-surface"
+              data-veloura-search-slot="header-mobile"
+              data-veloura-search-height="36"
+            ></div>
+
+            <div
+              class="veloura-desktop-search-bar veloura-search-surface"
+              data-veloura-search-slot="header-desktop"
+              data-veloura-search-height="36"
+            ></div>
           {% endif %}
 
         </div>

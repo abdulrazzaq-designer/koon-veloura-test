@@ -2990,12 +2990,19 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         class="veloura-detached-search-shell veloura-detached-mobile-{{ vht_mobile_search }} veloura-detached-desktop-{{ vht_desktop_search }}"
         data-veloura-detached-search
       >
-        <div class="veloura-detached-search veloura-detached-search--mobile veloura-search-surface">
-          <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
-        </div>
-        <div class="veloura-detached-search veloura-detached-search--desktop veloura-search-surface">
-          <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
-        </div>
+        {# Placement slots only — the one shared <salla-search> lives in
+           #veloura-search-park and is moved here by app.js. See the note in
+           header.twig for why duplicated instances stacked five dialogs. #}
+        <div
+          class="veloura-detached-search veloura-detached-search--mobile veloura-search-surface"
+          data-veloura-search-slot="detached-mobile"
+          data-veloura-search-height="36"
+        ></div>
+        <div
+          class="veloura-detached-search veloura-detached-search--desktop veloura-search-surface"
+          data-veloura-search-slot="detached-desktop"
+          data-veloura-search-height="36"
+        ></div>
       </div>
     {% endif %}
   </div>
@@ -3270,7 +3277,23 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {# Twilight Components #}
 <salla-offer-modal></salla-offer-modal>
-<salla-search data-testid="store-search-modal"></salla-search>
+{# THE one and only <salla-search> in the document.
+
+   It is declared `inline` so it can act as a real search BAR when app.js moves
+   it into a visible slot, and it still answers salla.event.dispatch('search::open')
+   with its modal when it is parked here (icon-only modes). Never add a second
+   <salla-search> anywhere: each instance binds its own 'search::open' listener
+   and renders its own dialog, which is what produced the stack of empty panels. #}
+<div id="veloura-search-park" data-veloura-search-park aria-hidden="true">
+  <salla-search
+    id="veloura-shared-search"
+    class="veloura-header-search-component"
+    data-veloura-shared-search
+    data-testid="store-search-modal"
+    inline
+    height="36"
+  ></salla-search>
+</div>
 <salla-login-modal data-testid="store-login-modal"></salla-login-modal>
 
 
@@ -3305,15 +3328,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     <div
       id="veloura-bottom-search-panel"
       class="veloura-bottom-search-panel"
+      data-veloura-search-slot="bottom-nav"
+      data-veloura-search-height="56"
       data-vbn-search-panel
       hidden
       aria-hidden="true"
     >
-      <salla-search
-        inline
-        height="44"
-        data-vbn-inline-search
-      ></salla-search>
+
     </div>
 
     <div class="veloura-bottom-nav__surface">
