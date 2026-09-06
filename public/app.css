@@ -59267,6 +59267,15 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 html body {
   --veloura-build: 'clean-1';
 }
+html body#app.veloura-general-enabled.veloura-site-has-bg-image,
+html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
+  background-size: 100% auto !important;
+  background-repeat: repeat-y !important;
+  background-position: top center !important;
+}
+html body {
+  --veloura-build: 'clean-2';
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;

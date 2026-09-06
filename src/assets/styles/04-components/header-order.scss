@@ -805,3 +805,12 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 html body {
   --veloura-build: 'clean-1';
 }
+
+html body#app.veloura-general-enabled.veloura-site-has-bg-image,
+html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
+  background-size: 100% auto !important;
+  background-repeat: repeat-y !important;
+  background-position: top center !important;
+}
+
+html body { --veloura-build: 'clean-2'; }
