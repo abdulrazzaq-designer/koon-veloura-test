@@ -1298,53 +1298,47 @@ html body :is(
 
 
 /* ==========================================================================
-   ONE SEARCH BUTTON, AND THE LANGUAGE PILL ANCHORED BY MARGIN
+   THE RIGHT-HAND GROUP TRAVELS TOGETHER
 
-   THE SECOND BUTTON IS GONE.
+   The rail is justify-content:flex-start, so items pack to the start and all
+   the free space collects at the end. `order` only decides sequence — it
+   cannot move anything into that free space. An auto margin can: it absorbs
+   the free space that sits before it, so the item carrying it becomes the
+   START of the right-hand group and EVERYTHING AFTER IT comes along.
 
-   Rendering the search icon twice — once per cluster — was my idea for making
-   the left/right setting work, and it caused three separate faults: an icon
-   stranded on its own line, a wrap when it was ordered last, and finally two
-   search dialogs opening from one click, because both copies carry
-   salla.event.dispatch('search::open') and both were in the DOM.
+   That last part is what I got wrong twice:
 
-   The flat-rail map made the duplicate unnecessary: in this header the
-   clusters dissolve, so ONE button placed by `order` can sit anywhere in the
-   row. The side setting never needed a second element.
+     margin on the dark toggle  -> only the dark toggle moved, and it ended up
+                                   alone at the far right while the language
+                                   pill stayed with the left group. Measured on
+                                   the store: the language pill comes BEFORE the
+                                   dark toggle in this row, so it was never
+                                   going to be carried along.
+     order:9 on the pill        -> put it last in sequence, past the wrap point,
+                                   and it dropped onto a line of its own.
 
-   THE LANGUAGE PILL IS ANCHORED WITH A MARGIN, NOT AN ORDER.
+   So the margin goes on the FIRST item that should be on the right, which is
+   the language pill — and the dark toggle, coming after it, follows.
 
-   The rail is justify-content:flex-start, so every item packs to the start and
-   the free space collects at the end — which is why the icons sit together on
-   the left and nothing reaches the right edge. order cannot move an item into
-   that free space; it only decides sequence. An auto margin can: it absorbs
-   the free space before the pill and pushes it to the end of the line.
-
-   This is also why order:9 failed — it put the pill last in sequence, past the
-   wrap point, instead of moving it into the empty space.
+   When the search is set to the right it becomes the first of that group, so
+   it carries the margin instead and travels with them; the pill then keeps a
+   zero margin so the group is not split in two.
    ========================================================================== */
 @media (min-width: 1024px) {
-  /* The auto margin goes on the FIRST item of the trailing group, not on the
-     language pill alone.
-
-     An auto margin absorbs the free space that sits before it, so whichever
-     item carries it becomes the start of the right-hand group and everything
-     after it follows. Putting it on the pill alone pushed only the pill to the
-     edge and left the dark toggle stranded in the middle — the pair has to
-     travel together.
-
-     The dark toggle comes first in the right cluster, so it carries the
-     margin. If the merchant moves the dark toggle to the left cluster with its
-     own setting, the pill is then the first trailing item and carries it
-     instead — :has() picks whichever case is true, so neither arrangement
-     needs a separate rule to be remembered later. */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
-  .veloura-header-right .veloura-dark-toggle {
+  .veloura-lang-desktop {
     margin-inline-start: auto !important;
   }
 
-  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
-  .veloura-header-right:not(:has(.veloura-dark-toggle)) .veloura-lang-desktop {
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
+  .veloura-search-toggle {
     margin-inline-start: auto !important;
+  }
+
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
+  .veloura-lang-desktop {
+    margin-inline-start: 0 !important;
   }
 }
+
+html body { --veloura-build: 'clean-30'; }
