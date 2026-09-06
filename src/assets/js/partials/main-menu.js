@@ -153,9 +153,86 @@ class NavigationMenu extends HTMLElement {
     * of stretching it, and a square one stays square. Fixing both dimensions
     * would distort every image that is not already square.
     */
+    /**
+    * Where a category icon actually comes from.
+    *
+    * There are TWO separate image systems in this theme and they are easy to
+    * confuse — this method reading the wrong one is why the icons never
+    * appeared even with the setting switched on:
+    *
+    *   1. menu.image
+    *      Salla's own category image, set in the dashboard's category screen.
+    *      Empty on most stores, because most merchants never set it.
+    *
+    *   2. veloura_category_images_map_v7_2026
+    *      The theme's own "صور التصنيفات المرتبطة": upload an image, pick the
+    *      categories it belongs to. This is where merchants actually put their
+    *      images, and it is what the side menu already uses.
+    *
+    * The map is handed to the browser by master.twig as
+    * window.velouraSideCategoriesSettings.categoryImagesMap, so nothing new
+    * has to be passed in. The map wins when it has an entry; menu.image is the
+    * fallback, so a store that only uses Salla's images still works.
+    *
+    * Matching mirrors what app.js already does for the side menu: compare
+    * normalised tokens (id, name, title, slug) rather than one fixed field,
+    * because the picker stores different shapes depending on how it was set.
+    */
+    getMappedCategoryImage(menu) {
+        if (this._catImageMap === undefined) {
+            var settings = window.velouraSideCategoriesSettings || {};
+            var raw = settings.categoryImagesMap;
+            if (raw && !Array.isArray(raw) && typeof raw === 'object') {
+                raw = raw.value || raw.selected || Object.values(raw);
+            }
+            this._catImageMap = Array.isArray(raw) ? raw : [];
+        }
+        if (!this._catImageMap.length) return '';
+
+        var norm = function (v) {
+            if (v === null || v === undefined) return '';
+            return String(typeof v === 'object' ? (v.label || v.name || v.title || v.value || v.id || '') : v)
+                .trim().toLowerCase();
+        };
+        var tokensOf = function (v, out) {
+            out = out || [];
+            if (v === null || v === undefined) return out;
+            if (Array.isArray(v)) { v.forEach(function (x) { tokensOf(x, out); }); return out; }
+            var k = norm(v);
+            if (k && out.indexOf(k) === -1) out.push(k);
+            if (typeof v === 'object') {
+                ['id', 'value', 'name', 'label', 'title', 'slug'].forEach(function (f) {
+                    var t = norm(v[f]);
+                    if (t && out.indexOf(t) === -1) out.push(t);
+                });
+            }
+            return out;
+        };
+
+        var mine = tokensOf([menu.id, menu.title, menu.name, menu.slug]);
+        if (!mine.length) return '';
+
+        for (var i = 0; i < this._catImageMap.length; i++) {
+            var entry = this._catImageMap[i] || {};
+            var img = entry.veloura_map_image || entry.image || entry.img || '';
+            if (img && typeof img === 'object') img = img.url || img.src || img.path || img.value || '';
+            if (!img) continue;
+
+            var theirs = tokensOf(entry.veloura_map_categories || entry.categories || entry.category || []);
+            for (var j = 0; j < theirs.length; j++) {
+                for (var k2 = 0; k2 < mine.length; k2++) {
+                    if (theirs[j] === mine[k2]) return img;
+                }
+            }
+        }
+        return '';
+    }
+
     getDesktopIcon(menu) {
-        if (!this.showMenuIcons || !menu.image) return '';
-        return `<img src="${menu.image}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
+        if (!this.showMenuIcons) return '';
+        var src = this.getMappedCategoryImage(menu) || menu.image;
+        if (!src) return '';
+        return `<img src="${src}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
     }
 
     getDesktopMenu(menu, isRootMenu, additionalClasses = '') {
