@@ -59330,7 +59330,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-7';
+  --veloura-build: 'clean-8';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59444,6 +59444,52 @@ html body .store-header .veloura-header-right {
 html body .store-header .veloura-header__tools {
   max-width: 100% !important;
   min-width: 0 !important;
+}
+/* ==========================================================================
+   THE DROPDOWN CARET SITS ON THE TEXT'S CENTRE LINE
+
+   Reported after the icons went in: the little arrow beside a category with
+   children dropped below the label. Adding a 26px image made the row taller,
+   and an inline caret aligned on the text BASELINE no longer lands on the
+   row's centre — the taller the icon, the further it drops.
+
+   The caret comes from Salla's own markup, so it may be an <i>, an <svg>, an
+   icon font span, or a pseudo-element. All four are covered rather than
+   guessing which: line-height:1 removes the inherited leading that pushes it
+   down, and align-self centres it whether or not it is a flex item.
+   ========================================================================== */
+html body a:has(> .veloura-menu-icon) i:not(.does-not-exist) {
+  line-height: 1 !important;
+  align-self: center !important;
+  vertical-align: middle !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+html body a:has(> .veloura-menu-icon) svg:not(.does-not-exist) {
+  line-height: 1 !important;
+  align-self: center !important;
+  vertical-align: middle !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+html body a:has(> .veloura-menu-icon) span[class*=sicon-] {
+  line-height: 1 !important;
+  align-self: center !important;
+  vertical-align: middle !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+html body .veloura-main-menu-desktop li > a i:not(.does-not-exist), html body .veloura-main-menu-desktop li > a svg:not(.does-not-exist), html body .veloura-main-menu-desktop li > a span[class*=sicon-], html body .veloura-main-menu-desktop li > a [class*=arrow]:not(does-not-exist), html body .veloura-main-menu-desktop li > a [class*=caret]:not(does-not-exist), html body .sub-menu li > a i:not(.does-not-exist), html body .sub-menu li > a svg:not(.does-not-exist), html body .sub-menu li > a span[class*=sicon-], html body .sub-menu li > a [class*=arrow]:not(does-not-exist), html body .sub-menu li > a [class*=caret]:not(does-not-exist) {
+  line-height: 1 !important;
+  align-self: center !important;
+  vertical-align: middle !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+html body .veloura-main-menu-desktop li > a::after,
+html body .sub-menu li > a::after {
+  align-self: center !important;
+  line-height: 1 !important;
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);
