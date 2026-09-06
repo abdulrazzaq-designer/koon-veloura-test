@@ -59818,8 +59818,36 @@ html body .mm-ocd__content {
     margin-left: 0 !important;
   }
 }
+/* THE CART KEEPS ITS TOTAL.
+
+   An auto margin absorbs ALL the free space in the row. Before it there was
+   slack and every item drew at its natural width; afterwards there is none, so
+   any item that CAN shrink does — and the first casualty is the cart's total,
+   because the price text is the flexible part of that control.
+
+   flex-shrink:0 says this control is not where the row gives way. The total is
+   information the shopper needs; whitespace elsewhere is not. */
+html body#app .store-header.veloura-top-enabled .veloura-header__cart,
+html body#app .store-header.veloura-top-enabled salla-cart-summary:not(.does-not-exist),
+html body#app .store-header.veloura-top-enabled .veloura-cart-summary {
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  min-width: -moz-max-content !important;
+  min-width: max-content !important;
+}
+html body#app .store-header.veloura-top-enabled .veloura-header__cart .s-cart-summary-total,
+html body#app .store-header.veloura-top-enabled .veloura-header__cart .s-cart-summary-content,
+html body#app .store-header.veloura-top-enabled .veloura-header__cart .veloura-cart-total,
+html body#app .store-header.veloura-top-enabled salla-cart-summary:not(.does-not-exist) .s-cart-summary-total,
+html body#app .store-header.veloura-top-enabled salla-cart-summary:not(.does-not-exist) .s-cart-summary-content,
+html body#app .store-header.veloura-top-enabled salla-cart-summary:not(.does-not-exist) .veloura-cart-total {
+  flex-shrink: 0 !important;
+  min-width: -moz-max-content !important;
+  min-width: max-content !important;
+  overflow: visible !important;
+}
 html body {
-  --veloura-build: 'clean-30';
+  --veloura-build: 'clean-31';
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);

@@ -1341,4 +1341,32 @@ html body :is(
   }
 }
 
-html body { --veloura-build: 'clean-30'; }
+/* THE CART KEEPS ITS TOTAL.
+
+   An auto margin absorbs ALL the free space in the row. Before it there was
+   slack and every item drew at its natural width; afterwards there is none, so
+   any item that CAN shrink does — and the first casualty is the cart's total,
+   because the price text is the flexible part of that control.
+
+   flex-shrink:0 says this control is not where the row gives way. The total is
+   information the shopper needs; whitespace elsewhere is not. */
+html body#app .store-header.veloura-top-enabled :is(
+  .veloura-header__cart,
+  salla-cart-summary,
+  .veloura-cart-summary
+) {
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  min-width: max-content !important;
+}
+
+html body#app .store-header.veloura-top-enabled :is(
+  .veloura-header__cart,
+  salla-cart-summary
+) :is(.s-cart-summary-total, .s-cart-summary-content, .veloura-cart-total) {
+  flex-shrink: 0 !important;
+  min-width: max-content !important;
+  overflow: visible !important;
+}
+
+html body { --veloura-build: 'clean-31'; }
