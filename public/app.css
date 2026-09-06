@@ -59185,6 +59185,14 @@ html body .store-header .sub-menu > ul > li > a {
    HEIGHT, automatic width: a tall image shrinks to the row instead of
    stretching it, a square one stays square. Fixing both distorts everything
    that is not already square. max-width is a guard, not a size. */
+/* Sized WHEREVER it renders, not only inside .sub-menu.
+
+   The first version scoped this to .sub-menu, and the icon was also being
+   emitted on top-bar items — which matched no size rule at all and rendered
+   at the image's natural size, roughly 450px tall, filling the header. An
+   element that can appear in more than one place must carry its size with it;
+   scoping the size to one container is a bug waiting for the second place. */
+html body .veloura-menu-icon,
 html body .veloura-header-tabs-stack .sub-menu .veloura-menu-icon,
 html body .store-header .sub-menu .veloura-menu-icon {
   display: inline-block;
@@ -59273,7 +59281,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-3';
+  --veloura-build: 'clean-4';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES

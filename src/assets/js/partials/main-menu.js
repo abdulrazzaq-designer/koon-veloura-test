@@ -228,8 +228,10 @@ class NavigationMenu extends HTMLElement {
         return '';
     }
 
-    getDesktopIcon(menu) {
-        if (!this.showMenuIcons) return '';
+    getDesktopIcon(menu, isRootMenu) {
+        // Dropdown items only. A root item lives in the top bar, where the
+        // setting does not promise an icon and where one crowds the row.
+        if (isRootMenu || !this.showMenuIcons) return '';
         var src = this.getMappedCategoryImage(menu) || menu.image;
         if (!src) return '';
         return `<img src="${src}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
@@ -240,7 +242,7 @@ class NavigationMenu extends HTMLElement {
         return `
         <li class="${this.getDesktopClasses(menu, isRootMenu)} ${additionalClasses}" ${menu.attrs} data-menu-item>
             <a href="${menu.url}" aria-label="${menu.title || 'category'}" ${menu.link_attrs}>
-                ${this.getDesktopIcon(menu)}
+                ${this.getDesktopIcon(menu, isRootMenu)}
                 <span>${menu.title}</span>
             </a>
             ${this.hasChildren(menu) ? `
