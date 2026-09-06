@@ -837,9 +837,13 @@ html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
                           other" on laptop.
      size:cover           one copy stretched over everything. No seam, but no
                           repetition either, and it distorts on a long page.
-     size:100% auto
-       + repeat-y         ONE column the full width of the screen, repeating
-                          downwards as the page grows. This is the one.
+     size:100% auto       full width, but the height then follows the width, so
+       + repeat-y         a wide image becomes far taller than intended.
+     size:contain
+       + repeat           the WHOLE image always fits, nothing is cropped, and
+                          the repeat fills the rest of the page. This is the
+                          one — it is the only sizing of the four where the
+                          complete image is always visible.
 
    100% is the width of the viewport, not of the container, so it reaches both
    edges on a phone and on a laptop. The height stays proportional (auto), so
@@ -853,15 +857,15 @@ html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
    ------------------------------------------------------------------------- */
 html body#app.veloura-general-enabled.veloura-site-has-bg-image,
 html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
-  background-size: 100% auto !important;
-  background-repeat: repeat-y !important;
+  background-size: contain !important;
+  background-repeat: repeat !important;
   background-position: top center !important;
 }
 
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-9';
+  --veloura-build: 'clean-10';
 }
 
 
@@ -1029,9 +1033,14 @@ html body .sub-menu li > a::after {
    right in RTL and on the cart's left in LTR — the correct side in both,
    without a mirrored rule.
    ========================================================================== */
-html body#app .store-header .veloura-header-left .veloura-search-toggle--left,
-html body .store-header .veloura-header-left .veloura-search-toggle--left {
-  order: -1 !important;
+/* Desktop only. On mobile the cluster lays out differently and the icon was
+   already on the correct side; applying the same order there moved it to the
+   wrong one. A rule written for one breakpoint gets scoped to it. */
+@media (min-width: 1024px) {
+  html body#app .store-header .veloura-header-left .veloura-search-toggle--left,
+  html body .store-header .veloura-header-left .veloura-search-toggle--left {
+    order: -1 !important;
+  }
 }
 
 /* ==========================================================================
@@ -1054,8 +1063,8 @@ html body .store-header .veloura-header-left .veloura-search-toggle--left {
   html body#app.veloura-general-enabled.veloura-site-bg-fixed,
   html body.veloura-general-enabled.veloura-general-enabled.veloura-site-bg-fixed.veloura-site-bg-fixed {
     background-attachment: scroll !important;
-    background-size: 100% auto !important;
-    background-repeat: repeat-y !important;
+    background-size: contain !important;
+    background-repeat: repeat !important;
     background-position: top center !important;
   }
 }
