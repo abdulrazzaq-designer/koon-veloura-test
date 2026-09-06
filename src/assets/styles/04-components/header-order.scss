@@ -865,7 +865,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-13';
+  --veloura-build: 'clean-14';
 }
 
 
@@ -1160,4 +1160,45 @@ html body#app .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
 html body#app .veloura-header-tabs-stack .veloura-detached-search-shell {
   padding-inline: var(--veloura-header-inset) !important;
   box-sizing: border-box !important;
+}
+
+
+/* ==========================================================================
+   THE SITE BACKGROUND IS PAINTED BY body::before — NOT BY body
+
+   Scanning all 1227 elements on the page, plus every ::before and ::after,
+   found exactly ONE layer drawing the image:
+
+     body::before
+       box    : 335x3684   (full width)
+       image  : …-original.webp
+       size   : cover      repeat: no-repeat
+       position: absolute  z-index: -1
+
+   That is why five rounds of changing background-size on `body` changed
+   nothing at all: body's own background is not the layer you see. The pseudo
+   element sits on top of it at z-index:-1 and paints the image with `cover`,
+   which scales one copy until it fills and CROPS the rest — so the image is
+   never shown whole, and on a narrow screen the visible slice is the middle
+   of it, which reads as "the background is inside a container".
+
+   A pseudo-element cannot be found by any ordinary element inspection, which
+   is why the earlier reports missed it — they walked elements, and this is
+   not one.
+
+   The sizing goes where the painting actually happens. 100% auto ties the
+   width to the layer's own width (full screen) and lets the height follow the
+   image's proportions, so nothing is cropped and nothing is stretched;
+   repeat-y continues it down a long page.
+
+   The rule does NOT recreate the layer — no content, no position, no z-index —
+   so whatever creates it keeps owning it, and this only corrects the sizing.
+   ========================================================================== */
+html body#app::before,
+html body::before,
+html body#app.veloura-general-enabled::before,
+html body.veloura-general-enabled::before {
+  background-size: 100% auto !important;
+  background-repeat: repeat-y !important;
+  background-position: top center !important;
 }
