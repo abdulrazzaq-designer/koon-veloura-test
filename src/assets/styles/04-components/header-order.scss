@@ -882,7 +882,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-23';
+  --veloura-build: 'clean-25';
 }
 
 
@@ -1316,82 +1316,52 @@ html body :is(
 
 
 /* ==========================================================================
-   THE CONNECTED DESKTOP HEADER IS ONE FLAT RAIL
+   THE HEADER RAIL — anchors stay, only the search moves
 
-   Measured on the store, two different layout models:
+   Mapped on the live store (connected desktop, tools display:contents so the
+   clusters dissolve into ONE flat row). Ascending order draws left to right:
 
-     detached  : .veloura-header-left / -right  display:flex   x=89 / x=354
-     connected : .veloura-header-left / -right  display:contents   x=0 / x=0
+     x=89   order 1   login
+     x=251  order 2   cart
+     x=291  order 3   icon
+     x=347  order 3   icon
+     x=403  order 7   dark toggle
+     x=459  order 7   language pill      <- already the rightmost
 
-   display:contents DISSOLVES the cluster — its children become direct flex
-   items of the tools row. So in the connected header there is no left group
-   and no right group; there is ONE row, and position is decided purely by
-   `order` across the whole rail. The theme already orders it:
+   Two facts this map settled, both of which I had wrong before:
+     • a LOWER order renders further LEFT (the rtl direction does not flip it)
+     • the dark toggle and the language pill share order 7, so there is no
+       integer between them to place anything into
 
-     login 1 · cart/wishlist/dark 2 · search 3 · language 4 · logo 5
+   The model asked for: language always at the edge, cart and login fixed, the
+   dark toggle keeps its own setting, and the SEARCH is the only thing that
+   moves. That maps onto the rail as:
 
-   and the row is RTL, so a LOWER order sits further RIGHT.
+     language  -> 9   always outermost, so it can never be displaced
+     search    -> 3   "left":  immediately right of the cart
+               -> 8   "right": past the dark toggle, still inside the language
 
-   That is why every attempt to place the icon "by cluster" failed here: the
-   cluster it lives in is not a box and has no side. Both copies dissolve into
-   the same rail at the same order, which is why one of them appeared stranded.
+   Nothing else is touched: login, cart and the dark toggle keep the orders the
+   theme gives them, so no anchor moves when the search setting changes.
 
-   So in this header the setting is expressed as an order, not as a cluster:
-
-     icon on the LEFT  -> order 3: between the cart group and the language
-                          pill, i.e. immediately to the RIGHT of the currency —
-                          which is exactly where it was asked to go.
-     icon on the RIGHT -> order 0: ahead of everything, at the right end.
-
-   Only one copy is shown, because in a dissolved rail two copies are two
-   icons in the same row. The detached header keeps the cluster-based rules
-   above; there the clusters are real boxes and those rules are correct.
+   The rule targets .veloura-search-toggle itself rather than one of the two
+   copies, so it applies to whichever copy the visibility rules show — the
+   placement no longer depends on which cluster the icon happens to live in,
+   which is what made every earlier attempt fragile.
    ========================================================================== */
 @media (min-width: 1024px) {
-  /* one icon only in the flat rail */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
-  .veloura-search-toggle--left {
-    display: none !important;
+  .veloura-lang-desktop {
+    order: 9 !important;
   }
 
-  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached):is(.veloura-desktop-search-icon_left, .veloura-desktop-search-icon_right)
-  .veloura-search-toggle--right {
-    display: inline-flex !important;
-  }
-
-  /* "left" — beside the language pill, on its right */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_left
-  .veloura-search-toggle--right {
+  .veloura-search-toggle {
     order: 3 !important;
   }
 
-  /* "right" — the right end of the rail.
-
-     Measured, not assumed: in this rail a LOWER order renders further LEFT
-     (login=1 draws leftmost), the opposite of what the row's rtl direction
-     suggests. order:0 was tried first and put the icon at the far LEFT. 7
-     places it past the language pill (4) and before the menu links (8), at
-     the right end of the icons. */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
-  .veloura-search-toggle--right {
-    order: 6 !important;
-  }
-
-  /* THE LANGUAGE PILL KEEPS THE EDGE.
-
-     It is a site-wide setting, not a shopping action, and a global control
-     belongs on a stable edge — its value is that you find it without looking.
-     If it moved whenever an unrelated setting (how search is displayed)
-     changed, the header would feel unstable.
-
-     So the pill takes the outermost order among the icons and the search icon
-     sits just inside it. Both cannot be outermost; the anchor wins and "right"
-     means the right-hand side, next to the anchor rather than past it.
-
-     Scoped to the icon modes only — where the search icon competes for that
-     edge — so the ordering the theme uses everywhere else is untouched. */
-  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached):is(.veloura-desktop-search-icon_left, .veloura-desktop-search-icon_right)
-  .veloura-lang-desktop {
-    order: 7 !important;
+  .veloura-search-toggle {
+    order: 8 !important;
   }
 }
