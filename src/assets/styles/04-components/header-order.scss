@@ -861,7 +861,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-8';
+  --veloura-build: 'clean-9';
 }
 
 
@@ -1012,4 +1012,50 @@ html body .veloura-main-menu-desktop li > a::after,
 html body .sub-menu li > a::after {
   align-self: center !important;
   line-height: 1 !important;
+}
+
+
+/* ==========================================================================
+   THE SEARCH ICON SITS BESIDE THE CART, NOT PAST THE LOGIN BUTTON
+
+   Reported: with the icon set to the left and the search NOT detached, the
+   icon landed beyond the login button, at the far edge of its cluster. It
+   belongs next to the cart.
+
+   The left cluster's DOM order is cart -> login -> [search copy], because the
+   copy was appended at the end of the group. In an RTL row the last child
+   renders leftmost, which is exactly where it was showing up. order:-1 makes
+   it the first item of that cluster instead, so it renders on the cart's
+   right in RTL and on the cart's left in LTR — the correct side in both,
+   without a mirrored rule.
+   ========================================================================== */
+html body#app .store-header .veloura-header-left .veloura-search-toggle--left,
+html body .store-header .veloura-header-left .veloura-search-toggle--left {
+  order: -1 !important;
+}
+
+/* ==========================================================================
+   THE SITE BACKGROUND ON MOBILE
+
+   background-attachment:fixed is the setting's "ثابتة أثناء التمرير" option,
+   and on phones it is the one property here that browsers treat differently:
+   with a fixed attachment the positioning area becomes the viewport, and with
+   a dynamically resizing toolbar the result is unreliable — commonly the image
+   is drawn at the wrong scale and stops short of the edges, which reads as the
+   background sitting inside the container.
+
+   Below 1024px the attachment falls back to scroll. The image still covers the
+   full width and still tiles downwards; only the parallax effect is dropped,
+   on the one class of device where it does not work reliably anyway.
+   ========================================================================== */
+@media (max-width: 1023px) {
+  html body#app.veloura-general-enabled.veloura-site-has-bg-image,
+  html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image,
+  html body#app.veloura-general-enabled.veloura-site-bg-fixed,
+  html body.veloura-general-enabled.veloura-general-enabled.veloura-site-bg-fixed.veloura-site-bg-fixed {
+    background-attachment: scroll !important;
+    background-size: 100% auto !important;
+    background-repeat: repeat-y !important;
+    background-position: top center !important;
+  }
 }

@@ -2290,7 +2290,7 @@
       "type": "boolean",
       "icon": "sicon-search",
       "label": "فصل شريط البحث المستطيل عن الهيدر",
-      "description": "يعمل مع نمط شريط البحث المستطيل أو الشريط الذي يتحول إلى أيقونة عند النزول. عند التفعيل يظهر حقل البحث أسفل الهيدر بمسافة 10px.",
+      "description": "يظهر شريط البحث كصف مستقل أسفل الهيدر بدل أن يكون بداخله. لا يظهر هذا الخيار إلا عند اختيار شريط بحث مستطيل للابتوب، لأنه لا يوجد شريط ليُفصل في وضع الأيقونة.",
       "id": "veloura_top_search_detached_2026",
       "format": "switch",
       "required": false,
@@ -2301,6 +2301,16 @@
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_top_desktop_search_display_2026",
+          "operation": "!=",
+          "value": "icon_right"
+        },
+        {
+          "id": "veloura_top_desktop_search_display_2026",
+          "operation": "!=",
+          "value": "icon_left"
         }
       ]
     },
@@ -16324,7 +16334,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
