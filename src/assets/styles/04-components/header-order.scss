@@ -771,6 +771,25 @@ html body a:has(> .veloura-menu-icon) {
   display: flex !important;
   align-items: center !important;
   gap: var(--veloura-menu-icon-gap) !important;
+
+  /* justify-content is pinned, not just the gap.
+
+     Menu rows inherit space-between from the theme in places, which pushes the
+     icon to one edge and the label to the other — the icon then reads as
+     floating at the end of the row rather than belonging to the name, and the
+     gap becomes meaningless because the two are already as far apart as the
+     row allows. flex-start keeps them together so the gap is what separates
+     them. */
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  text-align: start !important;
+}
+
+/* The label takes the leftover space instead of being stretched away from the
+   icon, and long names ellipsize rather than wrapping under it. */
+html body a:has(> .veloura-menu-icon) > span {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
 }
 
 /* ---- 6. COLUMNS FOR LONG LISTS --------------------------------------------
@@ -842,7 +861,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-5';
+  --veloura-build: 'clean-6';
 }
 
 
