@@ -228,10 +228,17 @@ class NavigationMenu extends HTMLElement {
         return '';
     }
 
-    getDesktopIcon(menu, isRootMenu) {
-        // Dropdown items only. A root item lives in the top bar, where the
-        // setting does not promise an icon and where one crowds the row.
-        if (isRootMenu || !this.showMenuIcons) return '';
+    getDesktopIcon(menu) {
+        // EVERY level, root categories included.
+        //
+        // A previous version suppressed root items on the theory that the top
+        // bar should stay clean. That removed the only case the merchant had
+        // actually configured — the image was mapped to a top-level category —
+        // so the icon vanished entirely. The real defect was never where the
+        // icon rendered; it was that the size rule was scoped to .sub-menu, so
+        // a root icon matched no size at all and drew at 450px. The size is
+        // unscoped now, so there is no reason left to hide anything.
+        if (!this.showMenuIcons) return '';
         var src = this.getMappedCategoryImage(menu) || menu.image;
         if (!src) return '';
         return `<img src="${src}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
@@ -242,7 +249,7 @@ class NavigationMenu extends HTMLElement {
         return `
         <li class="${this.getDesktopClasses(menu, isRootMenu)} ${additionalClasses}" ${menu.attrs} data-menu-item>
             <a href="${menu.url}" aria-label="${menu.title || 'category'}" ${menu.link_attrs}>
-                ${this.getDesktopIcon(menu, isRootMenu)}
+                ${this.getDesktopIcon(menu)}
                 <span>${menu.title}</span>
             </a>
             ${this.hasChildren(menu) ? `
