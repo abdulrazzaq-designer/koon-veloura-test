@@ -59352,7 +59352,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-12';
+  --veloura-build: 'clean-13';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59601,6 +59601,51 @@ html body#app .veloura-header-tabs-stack--container-desktop > .veloura-header-ta
 html body#app .veloura-header-tabs-stack--full-width-desktop > .veloura-header-tabs-stack__container.container,
 html body#app .veloura-header-tabs-stack--full-width-desktop > .veloura-header-tabs-stack__container {
   max-width: none !important;
+}
+/* ==========================================================================
+   AIR INSIDE THE HEADER PANEL
+
+   Now that the header sits inside the container, its controls run right up to
+   the rounded edge — the login pill touches the left edge and the dark-mode
+   icon the right. A rounded panel needs its content inset, or the corner cuts
+   into whatever sits in it.
+
+   The padding goes on .veloura-header__tools, the row that holds both
+   clusters, rather than on the container: padding on the container would
+   shrink the painted surface and leave a gap between the glass and the page,
+   which is a different look. Here the surface still spans the full container
+   and only the contents move inwards.
+
+   Existing rules set padding:0 on this row at (0,3,2); body#app clears that
+   without an !important arms race.
+
+   One number to tune, and it scales with the viewport so the inset is
+   proportional on a laptop and modest on a phone.
+   ========================================================================== */
+html body {
+  --veloura-header-inset: max(12px, min(1.6vw, 28px));
+}
+/* The inset lives on the PAINTED SURFACE, not on an inner row.
+
+   Two inner rows were tried first — the grid and the tools row — and both
+   depend on the layout inside them: on the desktop layout the tools row
+   measured 12px wide in isolation, so padding on it insets nothing. The
+   surface is the box that is actually drawn, and padding it moves everything
+   it contains inwards regardless of how the rows inside arrange themselves.
+
+   The surface keeps its full width; only its contents move in, so the glass
+   still spans the whole container. */
+html body#app .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+  padding-left: var(--veloura-header-inset) !important;
+  padding-right: var(--veloura-header-inset) !important;
+  box-sizing: border-box !important;
+}
+/* The detached search row lines up with the header's contents, so the bar
+   starts and ends on the same vertical line as the icons above it. */
+html body#app .veloura-header-tabs-stack .veloura-detached-search-shell {
+  padding-left: var(--veloura-header-inset) !important;
+  padding-right: var(--veloura-header-inset) !important;
+  box-sizing: border-box !important;
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);
