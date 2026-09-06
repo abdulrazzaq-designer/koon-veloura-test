@@ -450,6 +450,12 @@
                 <span class="veloura-login-btn__label">تسجيل الدخول</span>
               </button>
 
+              {% if mobile_search == 'icon_left' %}
+                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                  <i class="sicon-search"></i>
+                </button>
+              {% endif %}
+
               {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
                 <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
                   <i class="sicon-moon veloura-dark-toggle__icon"></i>
@@ -482,19 +488,29 @@
                  scroll (the search bar always collapses to an icon then —
                  see header.scss / header-tabs.scss). CSS hides it whenever
                  the full bar is visible. #}
-              {# The search icon exists TWICE, once in each cluster, and CSS shows
-                 the one the "search position" setting asks for.
+              {# ONE search button, rendered into the cluster the MOBILE setting
+                 asks for. Never two: two buttons both carrying
+                 salla.event.dispatch('search::open') opened two dialogs.
 
-                 It has to be rendered twice: the two clusters are different
-                 parent elements, and no CSS property moves a node from one
-                 parent to another. order/float only reorder siblings. That is
-                 why choosing "icon on the left" never did anything before —
-                 the icon_left and icon_right rules in header.scss are byte
-                 identical and only toggle display, so there was never a copy
-                 on the left to show. #}
-              <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle--right" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
-                <i class="sicon-search"></i>
-              </button>
+                 Why the mobile setting decides the markup, and the laptop
+                 setting does not:
+
+                   mobile  — .veloura-header-left / -right are real boxes
+                             (measured: x=27 and x=181, display:flex), and every
+                             order is 0. Nothing but the DOM decides the side,
+                             and no CSS property moves a node between parents.
+                   laptop  — the same two elements are display:contents, so they
+                             dissolve into one flat row and `order` alone
+                             decides position, whichever cluster the button was
+                             printed into.
+
+                 So the template answers mobile and the stylesheet answers the
+                 laptop, and neither has to fight the other. #}
+              {% if mobile_search != 'icon_left' %}
+                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                  <i class="sicon-search"></i>
+                </button>
+              {% endif %}
 
               {% if show_wishlist %}
                 <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">
