@@ -59367,7 +59367,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-18';
+  --veloura-build: 'clean-19';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59794,6 +59794,55 @@ html body .mm-ocd__content {
   background-image: none !important;
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: blur(20px) saturate(200%) !important;
+}
+/* ==========================================================================
+   THE SEARCH ICON: A ROW, AND THE RIGHT SIDE
+
+   Two separate defects, both measured.
+
+   A. IT SAT ON A LINE OF ITS OWN.
+      .veloura-header-left computes to display:block in the connected desktop
+      layout — it is not a flex row. A button added to a block container flows
+      like text and wraps to a new line as soon as the line is full, which is
+      why the icon appeared under the header instead of beside the others.
+      order and flex-wrap could not fix that: they only apply to flex
+      containers, and this one was not.
+
+   B. THE CLUSTER NAMES ARE MIRRORED.
+      Reported: choosing "icon on the right" puts it with the LEFT-hand icons.
+      That is consistent — the language pill lives in .veloura-header-right in
+      the markup and renders on the visual left. So the DOM clusters are named
+      for their DOM order, not for the side they land on, and each mode has to
+      show the copy in the OTHER cluster.
+
+      This was measured on the store, not inferred from a fixture: two of my
+      fixtures disagreed with the real header here and both were wrong.
+   ========================================================================== */
+/* A — the cluster becomes a real row wherever the icon lives in it. */
+html body#app .store-header .veloura-header-left:has(> .veloura-search-toggle),
+html body#app .store-header .veloura-header-right:has(> .veloura-search-toggle),
+html body .store-header .veloura-header-left:has(> .veloura-search-toggle),
+html body .store-header .veloura-header-right:has(> .veloura-search-toggle) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+}
+/* B — each mode shows the copy that actually lands on the requested side. */
+@media (min-width: 1024px) {
+  html body#app .store-header.veloura-desktop-search-icon_left .veloura-search-toggle--right {
+    display: inline-flex !important;
+  }
+  html body#app .store-header.veloura-desktop-search-icon_left .veloura-search-toggle--left {
+    display: none !important;
+  }
+  html body#app .store-header.veloura-desktop-search-icon_right .veloura-search-toggle--left {
+    display: inline-flex !important;
+  }
+  html body#app .store-header.veloura-desktop-search-icon_right .veloura-search-toggle--right {
+    display: none !important;
+  }
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);
