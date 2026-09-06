@@ -59367,7 +59367,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-26';
+  --veloura-build: 'clean-29';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59411,63 +59411,8 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface.v
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: blur(20px) saturate(200%) !important;
 }
-/* ==========================================================================
-   WHICH SIDE THE SEARCH ICON SITS ON
-
-   The setting had never moved anything. header.scss defines
-   .veloura-desktop-search-icon_right and .veloura-desktop-search-icon_left as
-   BYTE-IDENTICAL blocks — both only toggle display — and the same for the two
-   mobile ones. So "icon on the left" and "icon on the right" produced exactly
-   the same header, and the icon stayed wherever the template happened to put
-   it: inside .veloura-header-right.
-
-   No CSS property can move a node between two different parents. order and
-   float only reorder siblings, so the fix has to be structural: header.twig
-   now renders the icon in BOTH clusters, and these rules show exactly one.
-
-   Every rule below pairs a "show" with a "hide", because the two copies are
-   real elements — leaving both visible would give the header two search icons.
-
-   The default when no side is chosen is the right-hand copy, matching the
-   setting's own default (icon_right).
-   ========================================================================== */
-/* Never two at once.
-
-   The SEARCH VISIBILITY CONTRACT earlier in this file decides WHETHER an icon
-   is shown, and it targets .veloura-search-toggle generically at (0,8,2) —
-   written when only one copy existed, so it now shows both. Rather than
-   rewrite the contract (it is correct about whether, and it is the one place
-   all 32 mode/breakpoint cases are stated), these rules decide WHICH COPY,
-   and use body#app so a single id outranks (0,8,2) outright — no counting
-   classes, and no risk of the contract growing a class and silently winning.
-
-   Division of labour: contract = whether. This block = which side. */
-html body#app .store-header .veloura-search-toggle--left {
-  display: none !important;
-}
-@media (min-width: 1024px) {
-  html body#app .store-header.veloura-desktop-search-icon_left .veloura-search-toggle--left {
-    display: inline-flex !important;
-  }
-  html body#app .store-header.veloura-desktop-search-icon_left .veloura-search-toggle--right {
-    display: none !important;
-  }
-}
-@media (max-width: 1023px) {
-  html body#app .store-header.veloura-mobile-search-icon_left .veloura-search-toggle--left {
-    display: inline-flex !important;
-  }
-  html body#app .store-header.veloura-mobile-search-icon_left .veloura-search-toggle--right {
-    display: none !important;
-  }
-}
 /* The left copy takes the same place in its cluster's order as the right one
-   does in its own, so the row reads the same whichever side is chosen. */
-@media (min-width: 1024px) {
-  html body .veloura-header-tabs-stack .store-header .veloura-header-left .veloura-search-toggle--left {
-    order: 3 !important;
-  }
-}
+  does in its own, so the row reads the same whichever side is chosen. */
 /* The header must not grow past its container just because an icon moved.
    Reported when switching sides: the whole header escaped the container. A
    cluster with no width limit pushes the row wider than the grid column it
@@ -59545,30 +59490,17 @@ html body .sub-menu li > a::after {
 /* Desktop only. On mobile the cluster lays out differently and the icon was
    already on the correct side; applying the same order there moved it to the
    wrong one. A rule written for one breakpoint gets scoped to it. */
-@media (min-width: 1024px) {
-  /* LAST inside its cluster, not first.
+@media (min-width: 1024px) { /* The cluster must not WRAP.
 
-     order:-1 was tried first and put the icon at the far end of the row, past
-     the login pill — measured and reported as "it goes to the left of
-     everything". The cluster renders its first item leftmost, so first is the
-     outer edge and last is the one next to the other controls. A high order
-     puts the icon beside the language/currency pill, which is where it
-     belongs: part of the group, not floating off the end of it. */
-  html body#app .store-header .veloura-header-left .veloura-search-toggle--left,
-  html body .store-header .veloura-header-left .veloura-search-toggle--left {
-    order: 9 !important;
-  }
-  /* The cluster must not WRAP.
+With the icon ordered last the row was allowed to break, and the icon fell
+onto a line of its own underneath the header — the order was right, the
+wrapping was not. A row of header controls is a single line by definition;
+if it runs out of room the controls should compress, never stack.
 
-     With the icon ordered last the row was allowed to break, and the icon fell
-     onto a line of its own underneath the header — the order was right, the
-     wrapping was not. A row of header controls is a single line by definition;
-     if it runs out of room the controls should compress, never stack.
-
-     order:9 rather than 99 for the same reason: a very large order is fine in
-     principle, but it puts the item far past its siblings and any layout that
-     can break will break there first. 9 is last among real items without
-     being an outlier. */
+order:9 rather than 99 for the same reason: a very large order is fine in
+principle, but it puts the item far past its siblings and any layout that
+can break will break there first. 9 is last among real items without
+being an outlier. */
   html body#app .store-header .veloura-header-left,
   html body#app .store-header .veloura-header-right,
   html body#app .store-header .veloura-header__tools,
@@ -59846,6 +59778,54 @@ html body .mm-ocd__content {
      which is past the anchor rather than inside it, and risks the same wrap. */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right .veloura-search-toggle {
     order: 6 !important;
+  }
+}
+/* ==========================================================================
+   ONE SEARCH BUTTON, AND THE LANGUAGE PILL ANCHORED BY MARGIN
+
+   THE SECOND BUTTON IS GONE.
+
+   Rendering the search icon twice — once per cluster — was my idea for making
+   the left/right setting work, and it caused three separate faults: an icon
+   stranded on its own line, a wrap when it was ordered last, and finally two
+   search dialogs opening from one click, because both copies carry
+   salla.event.dispatch('search::open') and both were in the DOM.
+
+   The flat-rail map made the duplicate unnecessary: in this header the
+   clusters dissolve, so ONE button placed by `order` can sit anywhere in the
+   row. The side setting never needed a second element.
+
+   THE LANGUAGE PILL IS ANCHORED WITH A MARGIN, NOT AN ORDER.
+
+   The rail is justify-content:flex-start, so every item packs to the start and
+   the free space collects at the end — which is why the icons sit together on
+   the left and nothing reaches the right edge. order cannot move an item into
+   that free space; it only decides sequence. An auto margin can: it absorbs
+   the free space before the pill and pushes it to the end of the line.
+
+   This is also why order:9 failed — it put the pill last in sequence, past the
+   wrap point, instead of moving it into the empty space.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  /* The auto margin goes on the FIRST item of the trailing group, not on the
+     language pill alone.
+
+     An auto margin absorbs the free space that sits before it, so whichever
+     item carries it becomes the start of the right-hand group and everything
+     after it follows. Putting it on the pill alone pushed only the pill to the
+     edge and left the dark toggle stranded in the middle — the pair has to
+     travel together.
+
+     The dark toggle comes first in the right cluster, so it carries the
+     margin. If the merchant moves the dark toggle to the left cluster with its
+     own setting, the pill is then the first trailing item and carries it
+     instead — :has() picks whichever case is true, so neither arrangement
+     needs a separate rule to be remembered later. */
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached) .veloura-header-right .veloura-dark-toggle {
+    margin-left: auto !important;
+  }
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached) .veloura-header-right:not(:has(.veloura-dark-toggle)) .veloura-lang-desktop {
+    margin-left: auto !important;
   }
 }
 .before\:text-orange-300::before{
