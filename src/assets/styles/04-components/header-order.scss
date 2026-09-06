@@ -882,7 +882,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-25';
+  --veloura-build: 'clean-26';
 }
 
 
@@ -1350,18 +1350,25 @@ html body :is(
    which is what made every earlier attempt fragile.
    ========================================================================== */
 @media (min-width: 1024px) {
-  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached)
-  .veloura-lang-desktop {
-    order: 9 !important;
-  }
+  /* THE LANGUAGE PILL IS NOT TOUCHED.
+
+     It was already the rightmost item in the mapped rail (order 7, x=459), so
+     "language always on the right" needs no rule at all. Giving it order:9 to
+     "make sure" pushed it past the row's wrap point and it dropped onto a line
+     of its own — the same failure as order:99 on the search icon earlier.
+
+     An anchor that is already correct is protected by leaving it alone. */
 
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_left
   .veloura-search-toggle {
     order: 3 !important;
   }
 
+  /* "right": order 6 — after the wishlist (3) and immediately before the dark
+     toggle and the language pill (both 7). 8 was tried and sits beyond them,
+     which is past the anchor rather than inside it, and risks the same wrap. */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
   .veloura-search-toggle {
-    order: 8 !important;
+    order: 6 !important;
   }
 }
