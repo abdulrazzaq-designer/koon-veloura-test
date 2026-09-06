@@ -2902,6 +2902,17 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vht_active_color = theme.settings.get('veloura_home_tabs_active_bg_2026', '#003848') %}
   {% if vht_active_color.value is defined %}{% set vht_active_color = vht_active_color.value %}{% endif %}
 
+  {# V24: pre-filter to the tabs that will actually render (first 10, name
+     required) BEFORE looping, so `loop.last` below tells us the last tab that
+     is really on screen. The old loop tested that condition WHILE looping
+     over the raw, unfiltered list, so there was no way to know "is another
+     visible tab coming after this one" — which is exactly what a divider
+     placed only BETWEEN tabs needs to know. Filtering first also fixes
+     `loop.first` for aria-selected/tabindex: previously that was the first
+     RAW item, so if item 1 had no name (skipped), no rendered button ever
+     got marked selected/focusable. #}
+  {% set vht_valid_tabs = vht_items|slice(0, 10)|filter(tab => tab.name|default('') != '') %}
+
   {% set vht_tabs_markup %}
     <nav
       id="veloura-home-tabs"
@@ -2914,48 +2925,56 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     >
       <div class="container">
         <div class="veloura-home-tabs__track" role="tablist" aria-orientation="horizontal">
-          {% for tab in vht_items %}
-            {% if loop.index <= 10 and tab.name|default('') %}
-              {% set vht_tab_name = tab.name|default('تبويب ' ~ loop.index) %}
+          {% for tab in vht_valid_tabs %}
+            {% set vht_tab_name = tab.name|default('تبويب ' ~ loop.index) %}
 
-              {% set vht_show_icon_raw = tab.show_icon is defined ? tab.show_icon : false %}
-              {% if vht_show_icon_raw.value is defined %}
-                {% set vht_show_icon_raw = vht_show_icon_raw.value %}
-              {% elseif vht_show_icon_raw.selected is defined %}
-                {% if vht_show_icon_raw.selected.value is defined %}
-                  {% set vht_show_icon_raw = vht_show_icon_raw.selected.value %}
-                {% elseif vht_show_icon_raw.selected is iterable and vht_show_icon_raw.selected[0] is defined and vht_show_icon_raw.selected[0].value is defined %}
-                  {% set vht_show_icon_raw = vht_show_icon_raw.selected[0].value %}
-                {% else %}
-                  {% set vht_show_icon_raw = vht_show_icon_raw.selected %}
-                {% endif %}
-              {% endif %}
-              {% set vht_show_icon = vht_show_icon_raw == true or vht_show_icon_raw == 'true' or vht_show_icon_raw == 1 or vht_show_icon_raw == '1' or vht_show_icon_raw == 'on' %}
-
-              {% set vht_tab_icon_raw = tab.icon|default('') %}
-              {% if vht_tab_icon_raw.selected is defined and vht_tab_icon_raw.selected.value is defined %}
-                {% set vht_tab_icon = vht_tab_icon_raw.selected.value %}
-              {% elseif vht_tab_icon_raw.selected is defined and vht_tab_icon_raw.selected is iterable and vht_tab_icon_raw.selected[0] is defined and vht_tab_icon_raw.selected[0].value is defined %}
-                {% set vht_tab_icon = vht_tab_icon_raw.selected[0].value %}
-              {% elseif vht_tab_icon_raw is iterable and vht_tab_icon_raw[0] is defined and vht_tab_icon_raw[0].value is defined %}
-                {% set vht_tab_icon = vht_tab_icon_raw[0].value %}
-              {% elseif vht_tab_icon_raw.value is defined %}
-                {% set vht_tab_icon = vht_tab_icon_raw.value %}
+            {% set vht_show_icon_raw = tab.show_icon is defined ? tab.show_icon : false %}
+            {% if vht_show_icon_raw.value is defined %}
+              {% set vht_show_icon_raw = vht_show_icon_raw.value %}
+            {% elseif vht_show_icon_raw.selected is defined %}
+              {% if vht_show_icon_raw.selected.value is defined %}
+                {% set vht_show_icon_raw = vht_show_icon_raw.selected.value %}
+              {% elseif vht_show_icon_raw.selected is iterable and vht_show_icon_raw.selected[0] is defined and vht_show_icon_raw.selected[0].value is defined %}
+                {% set vht_show_icon_raw = vht_show_icon_raw.selected[0].value %}
               {% else %}
-                {% set vht_tab_icon = vht_tab_icon_raw %}
+                {% set vht_show_icon_raw = vht_show_icon_raw.selected %}
               {% endif %}
+            {% endif %}
+            {% set vht_show_icon = vht_show_icon_raw == true or vht_show_icon_raw == 'true' or vht_show_icon_raw == 1 or vht_show_icon_raw == '1' or vht_show_icon_raw == 'on' %}
 
-              <button
-                type="button"
-                class="veloura-home-tabs__button"
-                role="tab"
-                aria-selected="{{ loop.first ? 'true' : 'false' }}"
-                tabindex="{{ loop.first ? '0' : '-1' }}"
-                data-veloura-tab-target="{{ vht_tab_name|e }}"
-              >
-                {% if vht_show_icon and vht_tab_icon %}<i class="{{ vht_tab_icon|e('html_attr') }}" aria-hidden="true"></i>{% endif %}
-                <span>{{ vht_tab_name }}</span>
-              </button>
+            {% set vht_tab_icon_raw = tab.icon|default('') %}
+            {% if vht_tab_icon_raw.selected is defined and vht_tab_icon_raw.selected.value is defined %}
+              {% set vht_tab_icon = vht_tab_icon_raw.selected.value %}
+            {% elseif vht_tab_icon_raw.selected is defined and vht_tab_icon_raw.selected is iterable and vht_tab_icon_raw.selected[0] is defined and vht_tab_icon_raw.selected[0].value is defined %}
+              {% set vht_tab_icon = vht_tab_icon_raw.selected[0].value %}
+            {% elseif vht_tab_icon_raw is iterable and vht_tab_icon_raw[0] is defined and vht_tab_icon_raw[0].value is defined %}
+              {% set vht_tab_icon = vht_tab_icon_raw[0].value %}
+            {% elseif vht_tab_icon_raw.value is defined %}
+              {% set vht_tab_icon = vht_tab_icon_raw.value %}
+            {% else %}
+              {% set vht_tab_icon = vht_tab_icon_raw %}
+            {% endif %}
+
+            <button
+              type="button"
+              class="veloura-home-tabs__button"
+              role="tab"
+              aria-selected="{{ loop.first ? 'true' : 'false' }}"
+              tabindex="{{ loop.first ? '0' : '-1' }}"
+              data-veloura-tab-target="{{ vht_tab_name|e }}"
+            >
+              {% if vht_show_icon and vht_tab_icon %}<i class="{{ vht_tab_icon|e('html_attr') }}" aria-hidden="true"></i>{% endif %}
+              <span>{{ vht_tab_name }}</span>
+            </button>
+            {% if not loop.last %}
+              {# A real element between tabs, not a pseudo-element on the button.
+                 That is what makes it sit exactly at the midpoint: it is a flex
+                 item like the buttons themselves, so it always gets an equal
+                 share of the gap on both sides, however the track distributes
+                 space (see .veloura-home-tabs__track in home-tabs.scss). One of
+                 these renders after every tab except the last — so it starts
+                 counting from the first tab and never appears past the end. #}
+              <span class="veloura-home-tabs__divider" aria-hidden="true"></span>
             {% endif %}
           {% endfor %}
         </div>

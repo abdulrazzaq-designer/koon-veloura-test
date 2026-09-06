@@ -5426,6 +5426,20 @@ const initVelouraBottomNavOverlaysV13 = () => {
     });
   };
 
+  /* V24: the header's search icons used to call salla.event.dispatch('search::open')
+     directly, which only opens the shared component's own bare internal
+     <salla-modal> — Salla's plain default dialog, none of the rounded glass
+     card this panel gives it. That is why search looked completely different
+     depending on which icon opened it: same shared search element, two
+     different open paths.
+
+     Exposing openSearch() here lets ANY trigger in the document reuse this
+     exact panel — same rounded card, same backdrop, same radius synced from
+     the bottom nav — instead of only the bottom-nav button reaching it. See
+     header.twig's search buttons for the caller side, which fall back to the
+     plain dispatch when the bottom nav (and this panel) don't exist at all. */
+  window.__velouraOpenSearch = openSearch;
+
   const isNearWhite = color => {
     const m = String(color || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i);
     if (!m) return false;

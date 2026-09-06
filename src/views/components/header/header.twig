@@ -451,7 +451,7 @@
               </button>
 
               {% if mobile_search == 'icon_left' %}
-                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="window.__velouraOpenSearch ? window.__velouraOpenSearch() : salla.event.dispatch('search::open')" aria-label="بحث">
                   <i class="sicon-search"></i>
                 </button>
               {% endif %}
@@ -505,9 +505,17 @@
                              printed into.
 
                  So the template answers mobile and the stylesheet answers the
-                 laptop, and neither has to fight the other. #}
+                 laptop, and neither has to fight the other.
+
+                 V24: the onclick now calls window.__velouraOpenSearch() when it
+                 exists — that is the bottom-nav's rounded glass search panel,
+                 exposed globally in app.js so every trigger in the document
+                 opens the SAME styled panel instead of the shared component's
+                 own bare default modal. It only exists when the bottom nav
+                 feature is on; otherwise this falls back to the plain
+                 dispatch, same as before. #}
               {% if mobile_search != 'icon_left' %}
-                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="window.__velouraOpenSearch ? window.__velouraOpenSearch() : salla.event.dispatch('search::open')" aria-label="بحث">
                   <i class="sicon-search"></i>
                 </button>
               {% endif %}

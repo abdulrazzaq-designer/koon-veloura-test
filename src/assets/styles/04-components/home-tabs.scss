@@ -14,7 +14,14 @@
   --veloura-radius: 24px;
   --veloura-top-gap: var(--veloura-global-spacing, 12px);
   --veloura-border: rgba(255, 255, 255, .68);
-  --veloura-separator: rgba(15, 23, 42, .11);
+  /* V24: darkened slightly on request — this is the 1px line between the
+     header and the tabs bar (used at both border-top and the ::before layer
+     drawn near the bottom of this file). Was rgba(15, 23, 42, .11). This file
+     is imported after header-tabs.scss in app.scss, so this :root
+     declaration is the one that wins for the custom property's actual value;
+     header-tabs.scss's copy is left untouched to avoid editing a file this
+     change doesn't otherwise need. */
+  --veloura-separator: rgba(15, 23, 42, .22);
   --veloura-glass-fallback: rgba(248, 250, 252, .72);
   --veloura-glass-dark-fallback: rgba(17, 24, 39, .76);
   --veloura-filter: blur(22px) saturate(138%);
@@ -630,7 +637,7 @@ html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs
   }
 }
 /* ========================================================================
-   V23 — home tabs: free-floating text, distributed across the bar, with
+   V24 — home tabs: free-floating text, distributed across the bar, with
    thin line separators between them (no pill, no box, no button chrome).
 
    These rules did not exist at all originally. The Twig block renders
@@ -640,10 +647,26 @@ html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs
    .veloura-home-tabs__track in the solid/glass sections above — so the
    buttons rendered as bare browser <button> chrome.
 
-   V22 first pass gave each tab a pill background. This revision removes that
-   entirely per instruction: tabs are plain text, spread across the full width
-   of the bar (space-evenly) instead of clustered together, and separated by a
-   short vertical line rather than a background/border box.
+   V22 first pass gave each tab a pill background; V23 removed that. This
+   revision (V24) fixes the divider centring and swaps the active state's
+   visual cue:
+
+   - The divider is now a real element (.veloura-home-tabs__divider, one
+     rendered between every pair of tabs in master.twig's loop — see the note
+     there) instead of an absolutely-positioned ::after tied to a fixed
+     `--veloura-tabs-gap/2` offset. That offset assumed the gap between every
+     pair of buttons equalled the CSS `gap` value exactly, which is false
+     under `justify-content: space-evenly`: it distributes extra free space
+     into the gaps too, unevenly depending on how much slack is left over, so
+     the fixed offset landed off-centre. A real flex-item divider does not
+     have this problem: `gap` applies between it and BOTH neighbours equally,
+     whatever the track distributes, so it is always exactly centred between
+     the two tabs on either side of it, and never appears before the first
+     tab or after the last (the Twig loop only emits one when a next tab
+     exists).
+   - The active tab no longer gets a background at all (V23 already had none,
+     kept here) — only its text/icon colour changes, plus a small pulsing dot
+     next to it so the active state reads at a glance even with no fill.
 
    The three CSS variables come from the inline style on the <nav>:
      --veloura-tabs-bar-bg, --veloura-tabs-text-color, --veloura-tabs-active-color
@@ -739,18 +762,37 @@ html body .veloura-header-tabs-stack .veloura-home-tabs__button > span {
   min-width: 0 !important;
 }
 
-/* Thin vertical line between adjacent tabs — not a border on the tab itself
-   (that would run the tab's full height), a short centred divider that sits
-   in the middle of the gap so it reads as a separator between two free-
-   floating items, not as a box edge. None after the last tab. */
-html body .veloura-header-tabs-stack .veloura-home-tabs__button:not(:last-child)::after {
+/* The active dot — a small circle appended after the icon/label, inside the
+   button's own flex row (gap: 6px already spaces it from the text). Static,
+   not absolutely positioned, so it just takes its natural place "next to"
+   the active tab rather than overlapping anything. */
+html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active::after,
+html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"]::after {
   content: '' !important;
-  position: absolute !important;
-  inset-inline-end: calc(var(--veloura-tabs-gap) / -2) !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
+  flex: 0 0 auto !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: var(--veloura-tabs-active-color, #003848) !important;
+  animation: veloura-home-tabs-pulse 1.6s ease-in-out infinite !important;
+}
+
+@keyframes veloura-home-tabs-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: .5; }
+}
+
+/* Real flex-item divider between tabs — see master.twig's loop for why it is
+   a DOM element and not a pseudo-element, and the V24 note above for why that
+   is what keeps it centred under `justify-content: space-evenly`. Vertically
+   centred via the track's own `align-items: center`. */
+html body .veloura-header-tabs-stack .veloura-home-tabs__divider {
+  flex: 0 0 auto !important;
+  align-self: center !important;
   width: 1px !important;
   height: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
   background: var(--veloura-tabs-divider) !important;
 }
 
@@ -765,7 +807,9 @@ html body .veloura-header-tabs-stack .veloura-home-tabs__button:focus-visible {
 }
 
 /* app.js sets BOTH .is-active and aria-selected; match either so a tab is never
-   left looking inactive if one of the two is out of sync. */
+   left looking inactive if one of the two is out of sync. No background here
+   by design — only the text/icon colour (inherited from color:currentColor on
+   the icon) marks the active tab, plus the pulsing dot above. */
 html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active,
 html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"] {
   color: var(--veloura-tabs-active-color, #003848) !important;
@@ -781,8 +825,8 @@ html body.dark .veloura-header-tabs-stack .veloura-home-tabs__button:not(.is-act
   color: rgba(255, 255, 255, .82) !important;
 }
 
-html.dark body .veloura-header-tabs-stack .veloura-home-tabs__button:not(:last-child)::after,
-html body.dark .veloura-header-tabs-stack .veloura-home-tabs__button:not(:last-child)::after {
+html.dark body .veloura-header-tabs-stack .veloura-home-tabs__divider,
+html body.dark .veloura-header-tabs-stack .veloura-home-tabs__divider {
   background: rgba(255, 255, 255, .22) !important;
 }
 
@@ -800,7 +844,7 @@ html body.dark .veloura-header-tabs-stack .veloura-home-tabs__button:not(:last-c
     font-size: 13px !important;
   }
 
-  html body .veloura-header-tabs-stack .veloura-home-tabs__button:not(:last-child)::after {
+  html body .veloura-header-tabs-stack .veloura-home-tabs__divider {
     height: 12px !important;
   }
 }
@@ -812,5 +856,10 @@ html body.dark .veloura-header-tabs-stack .veloura-home-tabs__button:not(:last-c
 
   html body .veloura-header-tabs-stack .veloura-home-tabs__button {
     transition: none !important;
+  }
+
+  html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active::after,
+  html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"]::after {
+    animation: none !important;
   }
 }
