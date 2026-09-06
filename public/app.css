@@ -59352,7 +59352,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-16';
+  --veloura-build: 'clean-17';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59541,7 +59541,25 @@ html body .sub-menu li > a::after {
      belongs: part of the group, not floating off the end of it. */
   html body#app .store-header .veloura-header-left .veloura-search-toggle--left,
   html body .store-header .veloura-header-left .veloura-search-toggle--left {
-    order: 99 !important;
+    order: 9 !important;
+  }
+  /* The cluster must not WRAP.
+
+     With the icon ordered last the row was allowed to break, and the icon fell
+     onto a line of its own underneath the header — the order was right, the
+     wrapping was not. A row of header controls is a single line by definition;
+     if it runs out of room the controls should compress, never stack.
+
+     order:9 rather than 99 for the same reason: a very large order is fine in
+     principle, but it puts the item far past its siblings and any layout that
+     can break will break there first. 9 is last among real items without
+     being an outlier. */
+  html body#app .store-header .veloura-header-left,
+  html body#app .store-header .veloura-header-right,
+  html body#app .store-header .veloura-header__tools,
+  html body .store-header .veloura-header-left,
+  html body .store-header .veloura-header-right {
+    flex-wrap: nowrap !important;
   }
 }
 /* ==========================================================================
