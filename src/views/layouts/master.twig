@@ -2829,6 +2829,17 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vht_desktop_search = vht_desktop_search[0].value %}
 {% endif %}
 
+
+{# فصل شريط البحث لا معنى له بدون شريط.
+
+   الزر يبقى ظاهراً دائماً في لوحة الإعدادات — إخفاؤه كان قراراً خاطئاً مني،
+   لأن التاجر يفقد الخيار من أمامه بدل أن يراه بلا أثر. بدلاً من ذلك يُلغى
+   مفعوله هنا: الفصل يسري فقط إن كان أحد الوضعين (الجوال أو اللابتوب) يعرض
+   شريط بحث. في وضع الأيقونة لا يوجد شريط ليُفصل، وتركه فعّالاً كان يغيّر
+   تخطيط الهيدر ويحرّك الأيقونة إلى الجهة الخطأ. #}
+{% set vht_search_has_bar = vht_mobile_search in ['bar', 'bar_sticky_icon'] or vht_desktop_search in ['bar', 'bar_sticky_icon'] %}
+{% set vht_search_detached = vht_search_detached and vht_search_has_bar %}
+
 {# V13: tabs background is always independent from the header in solid mode. #}
 {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
 {% if vht_bar_bg.value is defined %}{% set vht_bar_bg = vht_bar_bg.value %}{% endif %}

@@ -270,6 +270,16 @@
 {% endif %}
 {% set search_detached = search_detached_raw == true or search_detached_raw == 'true' or search_detached_raw == 1 or search_detached_raw == '1' or search_detached_raw == 'on' %}
 
+{# فصل شريط البحث لا معنى له بدون شريط.
+
+   الزر يبقى ظاهراً دائماً في لوحة الإعدادات — إخفاؤه كان قراراً خاطئاً مني،
+   لأن التاجر يفقد الخيار من أمامه بدل أن يراه بلا أثر. بدلاً من ذلك يُلغى
+   مفعوله هنا: الفصل يسري فقط إن كان أحد الوضعين (الجوال أو اللابتوب) يعرض
+   شريط بحث. في وضع الأيقونة لا يوجد شريط ليُفصل، وتركه فعّالاً كان يغيّر
+   تخطيط الهيدر ويحرّك الأيقونة إلى الجهة الخطأ. #}
+{% set search_has_bar = mobile_search in ['bar', 'bar_sticky_icon'] or desktop_search in ['bar', 'bar_sticky_icon'] %}
+{% set search_detached = search_detached and search_has_bar %}
+
 {% set show_wishlist = theme.settings.get('veloura_top_show_wishlist_2026', false) %}
 {% if show_wishlist.value is defined %}{% set show_wishlist = show_wishlist.value %}{% endif %}
 

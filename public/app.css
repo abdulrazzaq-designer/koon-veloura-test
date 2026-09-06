@@ -59352,7 +59352,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-14';
+  --veloura-build: 'clean-15';
 }
 /* ==========================================================================
    THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
@@ -59685,6 +59685,29 @@ html body.veloura-general-enabled::before {
   background-size: 100% auto !important;
   background-repeat: repeat-y !important;
   background-position: top center !important;
+  left: 50% !important;
+  right: auto !important;
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: -50vw !important;
+  margin-right: 0 !important;
+  transform: none !important;
+}
+html body#app::before,
+html body::before,
+html body#app.veloura-general-enabled::before,
+html body.veloura-general-enabled::before {
+  /* EDGE TO EDGE, escaping body's own box.
+
+     Measured: viewport 350, the layer 335 — 15px short, and inset from both
+     sides. The layer is absolutely positioned inside <body>, so it can only
+     be as wide as body is; any margin, scrollbar gutter or centering on body
+     becomes a gap in the background.
+
+     100vw is the viewport, not the parent, and left:50% with margin-left:-50vw
+     re-centres it on the screen rather than on body. So the layer reaches both
+     screen edges whatever body measures. body already carries overflow-x
+     hidden in this theme, so a 100vw layer cannot add a horizontal scrollbar. */
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);

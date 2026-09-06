@@ -1862,17 +1862,6 @@
       ]
     },
     {
-      "type": "boolean",
-      "label": "إظهار أيقونات التصنيفات في قائمة اللابتوب",
-      "description": "يعرض صورة التصنيف المرفوعة في سلة بجانب اسم التصنيف داخل القائمة المنسدلة على اللابتوب. نفس الصور الظاهرة في قائمة الجوال، فلا حاجة لرفعها مرة أخرى.",
-      "id": "veloura_menu_desktop_icons_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "default": false
-    },
-    {
       "id": "veloura_top_border_style_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -2290,7 +2279,7 @@
       "type": "boolean",
       "icon": "sicon-search",
       "label": "فصل شريط البحث المستطيل عن الهيدر",
-      "description": "يظهر شريط البحث كصف مستقل أسفل الهيدر بدل أن يكون بداخله. لا يظهر هذا الخيار إلا عند اختيار شريط بحث مستطيل للابتوب، لأنه لا يوجد شريط ليُفصل في وضع الأيقونة.",
+      "description": "يعرض شريط البحث كصف مستقل أسفل الهيدر بدل أن يكون بداخله. يسري فقط عند اختيار شريط بحث مستطيل (للجوال أو للابتوب)؛ في وضع الأيقونة لا يوجد شريط ليُفصل فلا يكون له أثر.",
       "id": "veloura_top_search_detached_2026",
       "format": "switch",
       "required": false,
@@ -2301,16 +2290,6 @@
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_top_desktop_search_display_2026",
-          "operation": "!=",
-          "value": "icon_right"
-        },
-        {
-          "id": "veloura_top_desktop_search_display_2026",
-          "operation": "!=",
-          "value": "icon_left"
         }
       ]
     },
@@ -4144,6 +4123,24 @@
       "id": "veloura_category_subtitle_images_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.07);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>صور صفحات التصنيفات</span></div>",
       "variant": "h6",
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "label": "إظهار أيقونات التصنيفات في قائمة اللابتوب",
+      "description": "يعرض صورة التصنيف المرفوعة في سلة بجانب اسم التصنيف داخل القائمة المنسدلة على اللابتوب. نفس الصور الظاهرة في قائمة الجوال، فلا حاجة لرفعها مرة أخرى.",
+      "id": "veloura_menu_desktop_icons_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "default": false,
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",
