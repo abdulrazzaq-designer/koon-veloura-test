@@ -5162,6 +5162,45 @@ const initVelouraBottomNavOverlaysV13 = () => {
         --color-muted: #64748b !important;
       }
 
+      /* V24: filter, backdrop-filter and transform on an ancestor EACH
+         independently create a containing block for any position:fixed
+         DESCENDANT — verified with minimal repros before shipping this (a
+         fixed child inside such a parent is positioned relative to that
+         parent's box, not the viewport; confirmed for all three properties,
+         backdrop-filter included, which is easy to miss since it doesn't
+         visually look like a transform). Salla's real search dialog
+         (<salla-modal>) renders INSIDE this host's own closed shadow root —
+         a descendant, not a sibling — and is internally position:fixed. So
+         the instant you focus the decoy input above and Salla opens its real
+         modal, it was being trapped by THREE ancestors at once: this host's
+         own filter a few lines up, and this panel's own transform
+         (translateX(-50%), used to centre the closed-state pill) AND
+         backdrop-filter (the frosted-glass look), both below. The modal
+         ended up positioned relative to this tiny 56px-tall pill instead of
+         covering the viewport: exactly the "second panel in the wrong shape
+         appears below the first" bug — found by reproducing it in a harness
+         and measuring the trapped rect, one property at a time, until none
+         of the three were left creating a containing block.
+
+         All three are released together the moment the real modal takes
+         over (see the focusin handoff below, which stamps this attribute on
+         the panel). The extra html/body prefix below is only there to
+         outrank the dark-mode backdrop-filter rule further down this
+         stylesheet, which would otherwise win on specificity and keep
+         trapping the modal in dark mode specifically. None of these
+         properties do anything useful once the pill itself is no longer
+         what's showing. */
+      html body #${SEARCH_PANEL_ID}[data-veloura-search-handed-off="true"] > salla-search {
+        filter: none !important;
+        -webkit-filter: none !important;
+      }
+
+      html body #${SEARCH_PANEL_ID}[data-veloura-search-handed-off="true"] {
+        transform: none !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+      }
+
       /* Salla officially exposes an oval property. V12 toggles it from the
          actual bottom-nav radius in JS; these rules cover exposed parts too. */
       #${SEARCH_PANEL_ID} > salla-search::part(form),
@@ -5378,6 +5417,13 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
   };
 
+  /* True from the moment the decoy input inside the shared search is
+     focused (handing real typing over to Salla's own internal modal) until
+     that modal reports closed. See the CSS note above `[data-veloura-search-
+     handed-off]` for why this exists, and the focusin/`modalClosed` wiring
+     right after openSearch() below for how it is set and cleared. */
+  let handedOffToModal = false;
+
   const closeSearch = ({ restore = true } = {}) => {
     if (!searchPanel) return;
     searchPanel.hidden = true;
@@ -5385,6 +5431,8 @@ const initVelouraBottomNavOverlaysV13 = () => {
     searchPanel.setAttribute('aria-hidden', 'true');
     searchBackdrop.setAttribute('aria-hidden', 'true');
     searchItem?.setAttribute('aria-expanded', 'false');
+    searchPanel.removeAttribute('data-veloura-search-handed-off');
+    handedOffToModal = false;
 
     // IMPORTANT: body.class is observed below. Chromium can still enqueue an
     // attribute mutation when DOMTokenList.remove() is called for a token that
@@ -5439,6 +5487,46 @@ const initVelouraBottomNavOverlaysV13 = () => {
      header.twig's search buttons for the caller side, which fall back to the
      plain dispatch when the bottom nav (and this panel) don't exist at all. */
   window.__velouraOpenSearch = openSearch;
+
+  /* V24: the actual double-panel bug. Tapping the pill only ever showed the
+     DECOY input (readOnly — see salla-search's own renderInlineTrigger()).
+     Tapping it to actually type focuses that decoy, which is what makes
+     salla-search open its real internal <salla-modal> — a SEPARATE dialog,
+     always rendered by Salla itself, that this theme cannot restyle (closed
+     shadow root, and salla-search exposes ::part() only for the decoy's own
+     pieces, none for the modal). Before this fix that real modal opened
+     trapped inside this panel's `filter`-created containing block (see the
+     CSS note above), so it appeared as a second, wrongly-positioned panel
+     stacked below the first. This does not restyle Salla's modal — it can't
+     be restyled — it stops trapping it, so it opens where Salla actually
+     positions it.
+
+     focusin is composed, so it bubbles out of even a CLOSED shadow root
+     retargeted to the host element — confirmed with a minimal closed-shadow
+     repro before shipping this, since it is the one thing this whole fix
+     depends on. */
+  document.addEventListener('focusin', event => {
+    if (!searchPanel || searchPanel.hidden) return;
+    if (event.target !== getSearch()) return;
+    if (handedOffToModal) return;
+
+    handedOffToModal = true;
+    searchPanel.setAttribute('data-veloura-search-handed-off', 'true');
+    // Our own backdrop would otherwise double up with Salla's own modal
+    // overlay. This div is a sibling of the search host, not an ancestor of
+    // it, so hiding it cannot hide the modal nested inside that host.
+    searchBackdrop.hidden = true;
+  });
+
+  /* salla-search itself listens for this exact global event to reset its own
+     state (see its constructor: salla.event.on('modalClosed', ...)) — it is
+     Salla's own broadcast that A modal just closed, not something invented
+     for this fix. Guarded by handedOffToModal so an unrelated modal closing
+     elsewhere (login, quick view) does not tear this panel down. */
+  salla.event.on('modalClosed', () => {
+    if (!handedOffToModal) return;
+    closeSearch({ restore: true });
+  });
 
   const isNearWhite = color => {
     const m = String(color || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i);
