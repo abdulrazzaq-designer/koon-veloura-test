@@ -865,7 +865,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-11';
+  --veloura-build: 'clean-12';
 }
 
 
@@ -1067,4 +1067,50 @@ html body .sub-menu li > a::after {
     background-repeat: repeat-y !important;
     background-position: top center !important;
   }
+}
+
+
+/* ==========================================================================
+   THE HEADER OBEYS THE CONTAINER SETTING
+
+   Measured on the live store:
+     stack classes  ... veloura-header-tabs-stack--container-desktop ...
+     container      maxWidth = 2280px, box = 1692 wide on a 1707 viewport
+
+   So the setting reads correctly and the right class is applied — and the
+   header still ran the full width, because two rules tie and the wrong one is
+   later in the file:
+
+     html body .veloura-header-tabs-stack--container-desktop
+       > .…__container.container          -> var(--veloura-global-container)   (0,3,2)
+     html body .veloura-header-tabs-stack
+       > .…__container.container          -> 2280px !important                 (0,3,2)
+
+   Identical specificity, so source order decides, and the 2280px rule — meant
+   for the advertisement/comments variants that share this class — comes last.
+   2280px on any normal screen is "no limit", which is exactly what full width
+   looks like.
+
+   --veloura-global-container is capped at 1800px by master.twig (1100 + at
+   most 700), so 2280px could never have come from the setting. That number is
+   the tell: it is a literal, not a computed width.
+
+   body#app puts one id on the selector, so it wins on specificity rather than
+   on being later — nothing can quietly overtake it by being appended below.
+   ========================================================================== */
+html body#app .veloura-header-tabs-stack--container-desktop
+> .veloura-header-tabs-stack__container.container,
+html body#app .veloura-header-tabs-stack--container-desktop
+> .veloura-header-tabs-stack__container {
+  max-width: var(--veloura-global-container, 1280px) !important;
+  margin-inline: auto !important;
+}
+
+/* Full width stays full width — the same pin, so neither mode can be
+   overtaken independently of the other. */
+html body#app .veloura-header-tabs-stack--full-width-desktop
+> .veloura-header-tabs-stack__container.container,
+html body#app .veloura-header-tabs-stack--full-width-desktop
+> .veloura-header-tabs-stack__container {
+  max-width: none !important;
 }
