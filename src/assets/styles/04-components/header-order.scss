@@ -882,7 +882,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-22';
+  --veloura-build: 'clean-23';
 }
 
 
@@ -1374,6 +1374,24 @@ html body :is(
      the right end of the icons. */
   html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-icon_right
   .veloura-search-toggle--right {
+    order: 6 !important;
+  }
+
+  /* THE LANGUAGE PILL KEEPS THE EDGE.
+
+     It is a site-wide setting, not a shopping action, and a global control
+     belongs on a stable edge — its value is that you find it without looking.
+     If it moved whenever an unrelated setting (how search is displayed)
+     changed, the header would feel unstable.
+
+     So the pill takes the outermost order among the icons and the search icon
+     sits just inside it. Both cannot be outermost; the anchor wins and "right"
+     means the right-hand side, next to the anchor rather than past it.
+
+     Scoped to the icon modes only — where the search icon competes for that
+     edge — so the ordering the theme uses everywhere else is untouched. */
+  html body#app .store-header.veloura-top-enabled:not(.veloura-top-search-detached):is(.veloura-desktop-search-icon_left, .veloura-desktop-search-icon_right)
+  .veloura-lang-desktop {
     order: 7 !important;
   }
 }
