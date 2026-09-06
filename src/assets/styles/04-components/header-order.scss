@@ -724,30 +724,53 @@ html body .store-header .sub-menu > ul > li > a {
    that is not already square. max-width is a guard, not a size. */
 /* Sized WHEREVER it renders, not only inside .sub-menu.
 
-   The first version scoped this to .sub-menu, and the icon was also being
-   emitted on top-bar items — which matched no size rule at all and rendered
-   at the image's natural size, roughly 450px tall, filling the header. An
-   element that can appear in more than one place must carry its size with it;
-   scoping the size to one container is a bug waiting for the second place. */
+   The first version scoped this to .sub-menu while the icon was also emitted
+   on top-bar items, which matched no size rule at all and drew at the image's
+   natural size — about 450px, filling the header. An element that can appear
+   in more than one place carries its own size; scoping the size to one
+   container is a bug waiting for the second place.
+
+   TWO NUMBERS TO TUNE, both here:
+     --veloura-menu-icon-size  how tall the icon is
+     --veloura-menu-icon-gap   the space between it and the category name
+
+   Height is fixed and width is automatic, so a tall image shrinks to the row
+   instead of stretching it and a square one stays square. Fixing both
+   dimensions distorts every image that is not already square.
+
+   The gap is set with flex `gap` on the row rather than a margin on the image:
+   the theme sets margins on menu images elsewhere, and a margin there would be
+   a race between two rules. gap belongs to the row, so nothing competes for
+   it, and it is direction-agnostic — correct in RTL and LTR without a mirror
+   rule. !important because the earlier row rule set gap:0. */
+html body {
+  --veloura-menu-icon-size: 26px;
+  --veloura-menu-icon-gap: 10px;
+}
+
 html body .veloura-menu-icon,
 html body .veloura-header-tabs-stack .sub-menu .veloura-menu-icon,
 html body .store-header .sub-menu .veloura-menu-icon {
   display: inline-block;
-  height: 20px;
-  width: auto;
-  max-width: 34px;
+  height: var(--veloura-menu-icon-size) !important;
+  width: auto !important;
+  max-width: calc(var(--veloura-menu-icon-size) * 1.7) !important;
   object-fit: contain;
   vertical-align: middle;
-  margin-inline-end: 8px;
+  margin: 0 !important;
   flex: 0 0 auto;
   border-radius: 4px;
 }
 
+/* The row is icon + label, so it lays out as a row and the gap lives here. */
 html body .veloura-header-tabs-stack .sub-menu li > a,
-html body .store-header .sub-menu li > a {
-  display: flex;
-  align-items: center;
-  gap: 0;
+html body .store-header .sub-menu li > a,
+html body .veloura-header-tabs-stack .main-menu li > a,
+html body .store-header .main-menu li > a,
+html body a:has(> .veloura-menu-icon) {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--veloura-menu-icon-gap) !important;
 }
 
 /* ---- 6. COLUMNS FOR LONG LISTS --------------------------------------------
@@ -819,7 +842,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-4';
+  --veloura-build: 'clean-5';
 }
 
 
