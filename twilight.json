@@ -1861,17 +1861,7 @@
         }
       ]
     },
-    {
-      "type": "boolean",
-      "label": "إظهار أيقونات التصنيفات في قائمة اللابتوب",
-      "description": "يعرض صورة التصنيف المرفوعة في سلة بجانب اسم التصنيف داخل القائمة المنسدلة على اللابتوب. نفس الصور الظاهرة في قائمة الجوال، فلا حاجة لرفعها مرة أخرى.",
-      "id": "veloura_menu_desktop_icons_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "default": false
-    },
+  
     {
       "id": "veloura_top_border_style_2026",
       "type": "items",
@@ -4134,6 +4124,24 @@
       "id": "veloura_category_subtitle_images_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.07);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>صور صفحات التصنيفات</span></div>",
       "variant": "h6",
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "label": "إظهار أيقونات التصنيفات في قائمة اللابتوب",
+      "description": "يعرض صورة التصنيف المرفوعة في سلة بجانب اسم التصنيف داخل القائمة المنسدلة على اللابتوب. نفس الصور الظاهرة في قائمة الجوال، فلا حاجة لرفعها مرة أخرى.",
+      "id": "veloura_menu_desktop_icons_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "default": false,
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",
@@ -16324,7 +16332,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,

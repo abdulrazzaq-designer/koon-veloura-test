@@ -59276,6 +59276,29 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 html body {
   --veloura-build: 'clean-2';
 }
+html body#app .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface,
+html body .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface {
+  background: rgba(230, 232, 235, .69) !important;
+  background: var(--veloura-header-glass-background) !important;
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+}
+html body#app .veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface,
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface {
+  background: rgba(230, 232, 235, .69) !important;
+  background: var(--veloura-header-glass-background) !important;
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+}
+html body {
+  --veloura-build: 'clean-3';
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;
