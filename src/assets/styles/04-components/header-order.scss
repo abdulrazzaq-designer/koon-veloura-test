@@ -30,10 +30,27 @@
    Mobile (< 1024px) is not touched here; header-layout.scss owns it.
    ======================================================================== */
 
+/* The detached DESKTOP layout applies only when the desktop search is a BAR.
+
+   "Detached" means the search bar moves to its own row under the header. In
+   icon mode there is no bar, so there is nothing to detach — and yet the
+   setting still rewrote the whole desktop layout, which is what moved the
+   search icon to the wrong side whenever detach was toggled.
+
+   Gating it in Twig was tried first and was too coarse: the flag was computed
+   as "mobile OR desktop uses a bar", so a store with a bar on mobile and an
+   icon on the laptop still ran the detached desktop layout. The two
+   breakpoints need separate answers, and the desktop answer belongs on the
+   desktop selector.
+
+   The two :not() guards are that answer: this layout cannot match while the
+   desktop search is an icon, whatever the detach switch says. */
 $order-detached:
   'html body .veloura-header-tabs-stack .store-header.veloura-top-enabled'
   + '.veloura-top-search-detached[data-veloura-header]'
-  + '[data-veloura-search-detached="true"]';
+  + '[data-veloura-search-detached="true"]'
+  + ':not(.veloura-desktop-search-icon_right)'
+  + ':not(.veloura-desktop-search-icon_left)';
 
 @media (min-width: 1024px) {
   #{$order-detached} .veloura-header-grid {
@@ -865,7 +882,7 @@ html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-im
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-17';
+  --veloura-build: 'clean-18';
 }
 
 

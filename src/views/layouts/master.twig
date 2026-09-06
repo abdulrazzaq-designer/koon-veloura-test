@@ -2837,8 +2837,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    مفعوله هنا: الفصل يسري فقط إن كان أحد الوضعين (الجوال أو اللابتوب) يعرض
    شريط بحث. في وضع الأيقونة لا يوجد شريط ليُفصل، وتركه فعّالاً كان يغيّر
    تخطيط الهيدر ويحرّك الأيقونة إلى الجهة الخطأ. #}
-{% set vht_search_has_bar = vht_mobile_search in ['bar', 'bar_sticky_icon'] or vht_desktop_search in ['bar', 'bar_sticky_icon'] %}
-{% set vht_search_detached = vht_search_detached and vht_search_has_bar %}
+{# لكل مقاس إجابته: الفصل يسري على الجوال إن كان الجوال شريطاً، وعلى
+   اللابتوب إن كان اللابتوب شريطاً. الشرط المشترك ("أحدهما") كان يجعل
+   شريطَ الجوال يُفعّل الفصل على اللابتوب وهو في وضع الأيقونة. #}
+{% set vht_search_detached_mobile = vht_search_detached and vht_mobile_search in ['bar', 'bar_sticky_icon'] %}
+{% set vht_search_detached_desktop = vht_search_detached and vht_desktop_search in ['bar', 'bar_sticky_icon'] %}
+{% set vht_search_detached = vht_search_detached_mobile or vht_search_detached_desktop %}
 
 {# V13: tabs background is always independent from the header in solid mode. #}
 {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}

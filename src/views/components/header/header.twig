@@ -277,8 +277,12 @@
    مفعوله هنا: الفصل يسري فقط إن كان أحد الوضعين (الجوال أو اللابتوب) يعرض
    شريط بحث. في وضع الأيقونة لا يوجد شريط ليُفصل، وتركه فعّالاً كان يغيّر
    تخطيط الهيدر ويحرّك الأيقونة إلى الجهة الخطأ. #}
-{% set search_has_bar = mobile_search in ['bar', 'bar_sticky_icon'] or desktop_search in ['bar', 'bar_sticky_icon'] %}
-{% set search_detached = search_detached and search_has_bar %}
+{# لكل مقاس إجابته: الفصل يسري على الجوال إن كان الجوال شريطاً، وعلى
+   اللابتوب إن كان اللابتوب شريطاً. الشرط المشترك ("أحدهما") كان يجعل
+   شريطَ الجوال يُفعّل الفصل على اللابتوب وهو في وضع الأيقونة. #}
+{% set search_detached_mobile = search_detached and mobile_search in ['bar', 'bar_sticky_icon'] %}
+{% set search_detached_desktop = search_detached and desktop_search in ['bar', 'bar_sticky_icon'] %}
+{% set search_detached = search_detached_mobile or search_detached_desktop %}
 
 {% set show_wishlist = theme.settings.get('veloura_top_show_wishlist_2026', false) %}
 {% if show_wishlist.value is defined %}{% set show_wishlist = show_wishlist.value %}{% endif %}
