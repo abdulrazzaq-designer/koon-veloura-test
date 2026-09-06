@@ -59241,41 +59241,60 @@ html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-/* ---- 7. THE SITE BACKGROUND FILLS, IT DOES NOT TILE -----------------------
-   master.twig sets background-size:auto with repeat, which draws the image at
-   its natural size and tiles it. An image narrower than the viewport then
-   appears as two copies with a visible seam down the middle — the "two
-   backgrounds side by side" on laptop.
+/* ---- 7. THE SITE BACKGROUND: FULL WIDTH, TILED DOWNWARDS -----------------
+   Three attempts, and the difference matters:
 
-   cover draws ONE copy over the whole area: no seam, and on a phone it reaches
-   both edges at any width. The background lives on <body>, so it was never
-   inside the container — it only looked that way because it was painted at its
-   own size rather than the screen's.
+     size:auto + repeat   the image at its natural size, tiled BOTH ways. If it
+                          is narrower than the screen you get two copies side
+                          by side with a seam — "two backgrounds next to each
+                          other" on laptop.
+     size:cover           one copy stretched over everything. No seam, but no
+                          repetition either, and it distorts on a long page.
+     size:100% auto
+       + repeat-y         ONE column the full width of the screen, repeating
+                          downwards as the page grows. This is the one.
 
-   The fixed / scroll setting is untouched; background-attachment is separate.
+   100% is the width of the viewport, not of the container, so it reaches both
+   edges on a phone and on a laptop. The height stays proportional (auto), so
+   the image is never squashed. repeat-y continues it down a long page and
+   never sideways, so no vertical seam can appear.
 
-   For a genuinely seamless pattern, swap these two lines for
-   background-size:auto and background-repeat:repeat. */
-html body#app.veloura-general-enabled.veloura-site-has-bg-image,
-html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-}
-/* Build marker — one console line answers "did this ship?":
-     getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
-html body {
-  --veloura-build: 'clean-1';
-}
+   The background is on <body>, so it was never inside the container — it only
+   looked that way when it was painted at its own size instead of the screen's.
+
+   background-attachment is untouched; the fixed / scroll setting still works.
+   ------------------------------------------------------------------------- */
 html body#app.veloura-general-enabled.veloura-site-has-bg-image,
 html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
   background-size: 100% auto !important;
   background-repeat: repeat-y !important;
   background-position: top center !important;
 }
+/* Build marker — one console line answers "did this ship?":
+     getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-2';
+  --veloura-build: 'clean-3';
 }
+/* ==========================================================================
+   THE SEARCH IS PINNED TO THE HEADER'S EXACT VALUES
+
+   Measured live, side by side:
+     header : srgb .200 .196 .224 / 0.72   blur(20px) saturate(2)
+     search : srgb .248 .244 .270 / 0.40   blur(18px) saturate(2)
+   Different colour, different opacity, different blur — the search was still
+   on values from an older block, so the two were never going to match.
+
+   The rule above scopes the search INSIDE .veloura-header-tabs-stack--blur.
+   That assumption is the only weak link — if the detached search shell is not
+   under the stack on some page, the rule silently does not apply and there is
+   no error to see. So this pins the search by its own class alone, with no
+   assumption about where it sits in the tree, at (1,6,2): higher than anything
+   in the bundle and higher than any older patch, so source order stops
+   mattering too.
+
+   The value is the SAME custom property the header uses, so the two cannot
+   drift apart again: change the token and both move together.
+   ========================================================================== */
 html body#app .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface,
 html body .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface {
   background: rgba(230, 232, 235, .69) !important;
@@ -59286,6 +59305,8 @@ html body .veloura-search-surface.veloura-search-surface.veloura-search-surface.
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: blur(20px) saturate(200%) !important;
 }
+/* The header surface is pinned at the same strength, so neither side can be
+   overtaken independently and drift from the other. */
 html body#app .veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface,
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface {
   background: rgba(230, 232, 235, .69) !important;
@@ -59295,9 +59316,6 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface.v
   background-image: none !important;
   -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: blur(20px) saturate(200%) !important;
-}
-html body {
-  --veloura-build: 'clean-3';
 }
 .before\:text-orange-300::before{
     content: var(--tw-content);
