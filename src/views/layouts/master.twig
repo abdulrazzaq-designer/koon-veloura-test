@@ -2772,7 +2772,17 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% elseif vht_full_width_setting.value is defined %}
   {% set vht_full_width_raw = vht_full_width_setting.value %}
 {% endif %}
-{% set vht_full_width = vht_full_width_raw == true or vht_full_width_raw == 'true' or vht_full_width_raw == 1 or vht_full_width_raw == '1' or vht_full_width_raw == 'on' %}
+{# A switch that is OFF was still reading as ON.
+
+   The unwrapping above falls through to `vht_full_width_setting.selected`,
+   which Salla can return as an array or object rather than a boolean. Twig's
+   loose `==` then compares that structure to true — and a non-empty array is
+   loosely equal to true — so an untouched switch evaluated to "full width on".
+   That is why the header ran the whole viewport width with the option off.
+
+   Requiring a scalar first means only a real true/'true'/1/'1'/'on' counts;
+   any structure Salla hands back is treated as "not set", i.e. false. #}
+{% set vht_full_width = vht_full_width_raw is not iterable and (vht_full_width_raw == true or vht_full_width_raw == 'true' or vht_full_width_raw == 1 or vht_full_width_raw == '1' or vht_full_width_raw == 'on') %}
 
 {% set vht_search_detached_setting = theme.settings.get('veloura_top_search_detached_2026', false) %}
 {% set vht_search_detached_raw = vht_search_detached_setting %}

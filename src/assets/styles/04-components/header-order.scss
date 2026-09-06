@@ -857,15 +857,15 @@ html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
    ------------------------------------------------------------------------- */
 html body#app.veloura-general-enabled.veloura-site-has-bg-image,
 html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
-  background-size: contain !important;
-  background-repeat: repeat !important;
+  background-size: 100% auto !important;
+  background-repeat: repeat-y !important;
   background-position: top center !important;
 }
 
 /* Build marker — one console line answers "did this ship?":
      getComputedStyle(document.body).getPropertyValue('--veloura-build')   */
 html body {
-  --veloura-build: 'clean-10';
+  --veloura-build: 'clean-11';
 }
 
 
@@ -1063,8 +1063,8 @@ html body .sub-menu li > a::after {
   html body#app.veloura-general-enabled.veloura-site-bg-fixed,
   html body.veloura-general-enabled.veloura-general-enabled.veloura-site-bg-fixed.veloura-site-bg-fixed {
     background-attachment: scroll !important;
-    background-size: contain !important;
-    background-repeat: repeat !important;
+    background-size: 100% auto !important;
+    background-repeat: repeat-y !important;
     background-position: top center !important;
   }
 }
