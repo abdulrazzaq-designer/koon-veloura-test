@@ -5042,7 +5042,11 @@ const initVelouraBottomNavOverlaysV13 = () => {
   const LOGIN_OPEN_CLASS = 'veloura-bottom-nav-login-open';
 
   // V13 never owns the Login modal. Clear any stale class left by V12/HMR.
-  removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
+  // V26 adds the search class here too, at the very top and before anything
+  // else can throw: that class is what locks <body> scrolling and disables
+  // the bottom bar's pointer events, so clearing it first guarantees a page
+  // load always starts interactive, whatever an earlier build left behind.
+  removeBodyClassesIfPresent(LOGIN_OPEN_CLASS, 'veloura-bottom-nav-search-open');
 
   // Clean all previous bottom-nav experiments. V12 owns search only; login goes
   // back to Salla's native login modal and is styled from the light DOM.
@@ -5160,37 +5164,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
         --color-text: #334155 !important;
         --color-muted: #64748b !important;
-      }
-
-      /* V25 (corrected root cause): Salla's real search dialog is a
-         <salla-modal>, and that component's OWN source
-         (salla-modal.js componentDidLoad) does
-         document.body.append(this.host) UNCONDITIONALLY the first time it
-         renders — it relocates itself to be a direct child of <body>, not a
-         nested descendant of whatever rendered it. So it was never actually
-         trapped inside this pill's filter/transform/backdrop-filter (V24's
-         theory) — it always was a plain, viewport-covering overlay, sitting
-         at its own place in <body>.
-
-         The real bug: once relocated, that overlay sits BEHIND this pill,
-         because this panel is deliberately given an enormous z-index
-         (2147483300, see above) to always float above everything else on
-         the page, and closing only the backdrop (further down) left the
-         pill itself — silver background, border, shadow, frosted blur —
-         fully visible and on top of Salla's dialog. That is exactly what was
-         reported: the real search opening "behind" the pill, still showing
-         this pill's own blur.
-
-         Fix: make the pill itself invisible the instant the real modal takes
-         over, WITHOUT hiding it (no display/visibility/[hidden] change) —
-         initVelouraSharedSearch's MutationObserver watches exactly those
-         properties on every slot and would otherwise read "not displayed"
-         and yank the shared <salla-search> into a different slot mid-typing.
-         opacity does not affect that check, so the pill disappears from view
-         and stops intercepting clicks while staying put in the DOM. */
-      html body #${SEARCH_PANEL_ID}[data-veloura-search-handed-off="true"] {
-        opacity: 0 !important;
-        pointer-events: none !important;
       }
 
       /* Salla officially exposes an oval property. V12 toggles it from the
@@ -5409,13 +5382,10 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
   };
 
-  /* True from the moment the decoy input inside the shared search is
-     focused (handing real typing over to Salla's own internal modal) until
-     that modal reports closed. See the CSS note above `[data-veloura-search-
-     handed-off]` for why this exists, and the focusin/`modalClosed` wiring
-     right after openSearch() below for how it is set and cleared. */
-  let handedOffToModal = false;
-
+  /* Also the recovery path: any leftover open-state from an older build (the
+     body class below, the panel, the handoff attribute) is cleared the first
+     time this runs on a page, so a customer already stuck in the locked state
+     is freed by the next page load rather than staying stuck. */
   const closeSearch = ({ restore = true } = {}) => {
     if (!searchPanel) return;
     searchPanel.hidden = true;
@@ -5424,7 +5394,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
     searchBackdrop.setAttribute('aria-hidden', 'true');
     searchItem?.setAttribute('aria-expanded', 'false');
     searchPanel.removeAttribute('data-veloura-search-handed-off');
-    handedOffToModal = false;
 
     // IMPORTANT: body.class is observed below. Chromium can still enqueue an
     // attribute mutation when DOMTokenList.remove() is called for a token that
@@ -5440,8 +5409,28 @@ const initVelouraBottomNavOverlaysV13 = () => {
     relayoutSharedSearch();
   };
 
+  /* V26: open Salla's OWN search dialog and nothing else.
+
+     This used to show a decoy pill of our own (panel + backdrop + body
+     class), wait for the customer to focus it, and then hand over to Salla's
+     real dialog. That handover is what broke the page. The teardown of our
+     half only ran from a `modalClosed` broadcast, so any close path that did
+     not produce one — and Salla's own close() simply drops the `visible`
+     attribute — left the page in the open state for good:
+     `body.veloura-bottom-nav-search-open` stays, which this controller's own
+     stylesheet turns into `overflow: hidden` on <body> plus
+     `pointer-events: none` on the bottom nav, and the invisible panel stays
+     mounted on top. That is the "nothing opens any more, from the header or
+     the floating bar" report: the page was still in search-open mode with
+     scrolling locked, on every page the customer visited afterwards.
+
+     Salla's dialog needs none of it. It relocates itself to <body>, brings
+     its own overlay and its own close handling, and it is styled from
+     header-search.scss. So there is no second panel to keep in sync, no
+     handoff, no `modalClosed` dependency, and no state of ours that can be
+     left behind — which is also exactly what was asked for: just call
+     Salla's search and restyle it. */
   const openSearch = () => {
-    if (!searchPanel) return;
     closeNativeLogin({ restore: false });
 
     if (document.body.classList.contains('menu-opened')) {
@@ -5449,96 +5438,21 @@ const initVelouraBottomNavOverlaysV13 = () => {
       removeBodyClassesIfPresent('menu-opened', 'veloura-bottom-nav-categories-open');
     }
 
-    syncRadius();
-    searchPanel.hidden = false;
-    searchBackdrop.hidden = false;
-    searchPanel.setAttribute('aria-hidden', 'false');
-    searchBackdrop.setAttribute('aria-hidden', 'false');
-    searchItem.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('veloura-bottom-nav-search-open');
-    setActive(searchItem);
+    // Belt and braces: drop any panel state (including one left by an older
+    // build) before handing over, so nothing of ours can outlive the dialog.
+    closeSearch({ restore: false });
 
-    // The panel is visible now, so the shared component can move in.
-    relayoutSharedSearch();
-    requestAnimationFrame(() => {
-      syncRadius();
-      getSearch()?.focus?.({ preventScroll: true });
-    });
+    try {
+      salla.event.dispatch('search::open');
+    } catch (_) {}
   };
 
-  /* V24: the header's search icons used to call salla.event.dispatch('search::open')
-     directly, which only opens the shared component's own bare internal
-     <salla-modal> — Salla's plain default dialog, none of the rounded glass
-     card this panel gives it. That is why search looked completely different
-     depending on which icon opened it: same shared search element, two
-     different open paths.
-
-     Exposing openSearch() here lets ANY trigger in the document reuse this
-     exact panel — same rounded card, same backdrop, same radius synced from
-     the bottom nav — instead of only the bottom-nav button reaching it. See
-     header.twig's search buttons for the caller side, which fall back to the
-     plain dispatch when the bottom nav (and this panel) don't exist at all.
-
-     V25: that fallback also has to cover the case where the bottom nav DOES
-     exist in the DOM but is not the mobile bottom bar right now — every
-     style this whole controller writes for the panel/backdrop above lives
-     inside `@media (max-width: 767px)`, exactly mirroring
-     `.veloura-bottom-nav`'s own default `display: none` in
-     mobile-floating-menu.scss (only turned on under that same 767px query).
-     header.twig's search icon is visible on desktop too and used to call
-     this same window.__velouraOpenSearch() unconditionally, so on a wider
-     viewport openSearch() ran its full logic — toggling classes/attributes
-     on the (invisible) bottom-nav search icon and un-hiding a plain <div>
-     appended at the end of <body> — none of which has any positioning or
-     visual styling above 767px. The only visible effect was the header
-     button's own hover/active state, exactly the "changes shape but never
-     opens" report. Below that width nothing changes: the bottom nav is the
-     real mobile UI and openSearch() is exactly right for it. */
-  const velouraMobilePanelQuery = window.matchMedia('(max-width: 767px)');
-  window.__velouraOpenSearch = () => {
-    if (velouraMobilePanelQuery.matches) openSearch();
-    else salla.event.dispatch('search::open');
-  };
-
-  /* V24: the actual double-panel bug. Tapping the pill only ever showed the
-     DECOY input (readOnly — see salla-search's own renderInlineTrigger()).
-     Tapping it to actually type focuses that decoy, which is what makes
-     salla-search open its real internal <salla-modal> — a SEPARATE dialog,
-     always rendered by Salla itself, that this theme cannot restyle (closed
-     shadow root, and salla-search exposes ::part() only for the decoy's own
-     pieces, none for the modal). Before this fix that real modal opened
-     trapped inside this panel's `filter`-created containing block (see the
-     CSS note above), so it appeared as a second, wrongly-positioned panel
-     stacked below the first. This does not restyle Salla's modal — it can't
-     be restyled — it stops trapping it, so it opens where Salla actually
-     positions it.
-
-     focusin is composed, so it bubbles out of even a CLOSED shadow root
-     retargeted to the host element — confirmed with a minimal closed-shadow
-     repro before shipping this, since it is the one thing this whole fix
-     depends on. */
-  document.addEventListener('focusin', event => {
-    if (!searchPanel || searchPanel.hidden) return;
-    if (event.target !== getSearch()) return;
-    if (handedOffToModal) return;
-
-    handedOffToModal = true;
-    searchPanel.setAttribute('data-veloura-search-handed-off', 'true');
-    // Our own backdrop would otherwise double up with Salla's own modal
-    // overlay. This div is a sibling of the search host, not an ancestor of
-    // it, so hiding it cannot hide the modal nested inside that host.
-    searchBackdrop.hidden = true;
-  });
-
-  /* salla-search itself listens for this exact global event to reset its own
-     state (see its constructor: salla.event.on('modalClosed', ...)) — it is
-     Salla's own broadcast that A modal just closed, not something invented
-     for this fix. Guarded by handedOffToModal so an unrelated modal closing
-     elsewhere (login, quick view) does not tear this panel down. */
-  salla.event.on('modalClosed', () => {
-    if (!handedOffToModal) return;
-    closeSearch({ restore: true });
-  });
+  /* Every search trigger in the document — the bottom bar's own icon and
+     header.twig's search buttons — goes through this one entry point, so
+     there is exactly one way search can open and no path can leave a
+     different kind of state behind. See openSearch() above for why it is now
+     a straight handover to Salla's dialog. */
+  window.__velouraOpenSearch = openSearch;
 
   const isNearWhite = color => {
     const m = String(color || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i);
