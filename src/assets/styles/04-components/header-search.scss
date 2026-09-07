@@ -270,3 +270,29 @@ html body #veloura-search-park > salla-search {
   border: 0 !important;
   box-shadow: none !important;
 }
+
+/* ========================================================================
+   V25 — compact mobile search dialog.
+
+   Salla's own <salla-modal> relocates itself to a direct child of <body>
+   the instant it first renders (see app.js's V25 note), so it is NOT stuck
+   behind a shadow boundary — it is reachable by plain selectors exactly
+   like the login dialog already is elsewhere in this theme (.s-modal-body,
+   .s-modal-overlay — see dark-light.scss / veloura-global-overlays.scss).
+
+   Salla's own stylesheet forces `.s-search-modal-new .s-modal-body` to
+   `height: 100dvh` below 640px. That is fine once there are enough results
+   to fill the screen, but trendingCategories/mostSearchedTerms are empty
+   until wired to a live endpoint, so the idle panel renders almost nothing
+   — and the dialog still stretched to fill the full screen height under
+   it, showing as a mostly blank sheet with the input pinned at the top and
+   a large empty gap below. Sizing the dialog to its own content (capped,
+   not fixed) turns it back into "a field to type in, with results directly
+   under it" instead of a near-empty full-screen takeover.
+   ======================================================================== */
+@media (max-width: 639px) {
+  html body .s-search-modal.s-search-modal-new .s-modal-body {
+    height: auto !important;
+    max-height: min(78vh, 620px) !important;
+  }
+}

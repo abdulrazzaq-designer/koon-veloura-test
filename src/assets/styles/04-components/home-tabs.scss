@@ -762,19 +762,35 @@ html body .veloura-header-tabs-stack .veloura-home-tabs__button > span {
   min-width: 0 !important;
 }
 
-/* The active dot — a small circle appended after the icon/label, inside the
-   button's own flex row (gap: 6px already spaces it from the text). Static,
-   not absolutely positioned, so it just takes its natural place "next to"
-   the active tab rather than overlapping anything. */
-html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active::after,
-html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"]::after {
+/* V25: the dot must sit right beside the ICON, not trailing after the whole
+   label. It was a ::after on the BUTTON, which in this RTL flex row (icon
+   first, label second) is the LAST flex item — it landed past the text, at
+   the far end of the tab, instead of next to the icon. Attaching it to the
+   icon's own ::after puts it immediately after the icon instead; the small
+   gap comes from margin-inline-start on the dot itself (a logical property,
+   so it is the correct physical side in both RTL and LTR without a separate
+   rule). Tabs configured with show_icon off have no <i> to attach to, so
+   they fall back to ::before on the label so the dot still renders. */
+html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active > i,
+html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"] > i {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active > i::after,
+html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"] > i::after,
+html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active:not(:has(> i)) > span::before,
+html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"]:not(:has(> i)) > span::before {
   content: '' !important;
+  display: inline-block !important;
   flex: 0 0 auto !important;
   width: 6px !important;
   height: 6px !important;
+  margin-inline-start: 6px !important;
   border-radius: 50% !important;
   background: var(--veloura-tabs-active-color, #003848) !important;
   animation: veloura-home-tabs-pulse 1.6s ease-in-out infinite !important;
+  vertical-align: middle !important;
 }
 
 @keyframes veloura-home-tabs-pulse {
@@ -798,6 +814,14 @@ html body .veloura-header-tabs-stack .veloura-home-tabs__divider {
 
 html body .veloura-header-tabs-stack .veloura-home-tabs__button:hover {
   opacity: 1 !important;
+  /* Belt and braces on top of the base rule above: no browser/user-agent
+     default (hover underline, tap highlight, etc.) is allowed to paint
+     anything resembling a fill or a bar behind the label on hover either. */
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
 }
 
 html body .veloura-header-tabs-stack .veloura-home-tabs__button:focus-visible {
@@ -815,6 +839,12 @@ html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="t
   color: var(--veloura-tabs-active-color, #003848) !important;
   font-weight: 700 !important;
   opacity: 1 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
 }
 
 /* Dark mode: the merchant's text colour is chosen against the LIGHT bar, so it
@@ -858,8 +888,10 @@ html body.dark .veloura-header-tabs-stack .veloura-home-tabs__divider {
     transition: none !important;
   }
 
-  html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active::after,
-  html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"]::after {
+  html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active > i::after,
+  html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"] > i::after,
+  html body .veloura-header-tabs-stack .veloura-home-tabs__button.is-active:not(:has(> i)) > span::before,
+  html body .veloura-header-tabs-stack .veloura-home-tabs__button[aria-selected="true"]:not(:has(> i)) > span::before {
     animation: none !important;
   }
 }
