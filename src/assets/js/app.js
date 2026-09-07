@@ -5165,7 +5165,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
       /* V25 (corrected root cause): Salla's real search dialog is a
          <salla-modal>, and that component's OWN source
          (salla-modal.js componentDidLoad) does
-         `document.body.append(this.host)` UNCONDITIONALLY the first time it
+         document.body.append(this.host) UNCONDITIONALLY the first time it
          renders — it relocates itself to be a direct child of <body>, not a
          nested descendant of whatever rendered it. So it was never actually
          trapped inside this pill's filter/transform/backdrop-filter (V24's
