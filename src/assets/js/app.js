@@ -5162,43 +5162,35 @@ const initVelouraBottomNavOverlaysV13 = () => {
         --color-muted: #64748b !important;
       }
 
-      /* V24: filter, backdrop-filter and transform on an ancestor EACH
-         independently create a containing block for any position:fixed
-         DESCENDANT — verified with minimal repros before shipping this (a
-         fixed child inside such a parent is positioned relative to that
-         parent's box, not the viewport; confirmed for all three properties,
-         backdrop-filter included, which is easy to miss since it doesn't
-         visually look like a transform). Salla's real search dialog
-         (<salla-modal>) renders INSIDE this host's own closed shadow root —
-         a descendant, not a sibling — and is internally position:fixed. So
-         the instant you focus the decoy input above and Salla opens its real
-         modal, it was being trapped by THREE ancestors at once: this host's
-         own filter a few lines up, and this panel's own transform
-         (translateX(-50%), used to centre the closed-state pill) AND
-         backdrop-filter (the frosted-glass look), both below. The modal
-         ended up positioned relative to this tiny 56px-tall pill instead of
-         covering the viewport: exactly the "second panel in the wrong shape
-         appears below the first" bug — found by reproducing it in a harness
-         and measuring the trapped rect, one property at a time, until none
-         of the three were left creating a containing block.
+      /* V25 (corrected root cause): Salla's real search dialog is a
+         <salla-modal>, and that component's OWN source
+         (salla-modal.js componentDidLoad) does
+         `document.body.append(this.host)` UNCONDITIONALLY the first time it
+         renders — it relocates itself to be a direct child of <body>, not a
+         nested descendant of whatever rendered it. So it was never actually
+         trapped inside this pill's filter/transform/backdrop-filter (V24's
+         theory) — it always was a plain, viewport-covering overlay, sitting
+         at its own place in <body>.
 
-         All three are released together the moment the real modal takes
-         over (see the focusin handoff below, which stamps this attribute on
-         the panel). The extra html/body prefix below is only there to
-         outrank the dark-mode backdrop-filter rule further down this
-         stylesheet, which would otherwise win on specificity and keep
-         trapping the modal in dark mode specifically. None of these
-         properties do anything useful once the pill itself is no longer
-         what's showing. */
-      html body #${SEARCH_PANEL_ID}[data-veloura-search-handed-off="true"] > salla-search {
-        filter: none !important;
-        -webkit-filter: none !important;
-      }
+         The real bug: once relocated, that overlay sits BEHIND this pill,
+         because this panel is deliberately given an enormous z-index
+         (2147483300, see above) to always float above everything else on
+         the page, and closing only the backdrop (further down) left the
+         pill itself — silver background, border, shadow, frosted blur —
+         fully visible and on top of Salla's dialog. That is exactly what was
+         reported: the real search opening "behind" the pill, still showing
+         this pill's own blur.
 
+         Fix: make the pill itself invisible the instant the real modal takes
+         over, WITHOUT hiding it (no display/visibility/[hidden] change) —
+         initVelouraSharedSearch's MutationObserver watches exactly those
+         properties on every slot and would otherwise read "not displayed"
+         and yank the shared <salla-search> into a different slot mid-typing.
+         opacity does not affect that check, so the pill disappears from view
+         and stops intercepting clicks while staying put in the DOM. */
       html body #${SEARCH_PANEL_ID}[data-veloura-search-handed-off="true"] {
-        transform: none !important;
-        -webkit-backdrop-filter: none !important;
-        backdrop-filter: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
 
       /* Salla officially exposes an oval property. V12 toggles it from the
