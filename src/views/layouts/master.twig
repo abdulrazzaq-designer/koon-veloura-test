@@ -345,7 +345,27 @@
     ================================ #}
 
     {# Veloura Final: V35/V54 card mutation runtimes removed; card contract lives in product-card.js. #}
-    {% set vpc_enabled_raw = theme.settings.get('veloura_product_card_enabled_2026', false) %}
+
+    {# This master switch is deliberately INVISIBLE in the dashboard: its only
+       condition in twilight.json compares veloura_product_card_panel_open_2026
+       against the sentinel "__veloura_internal_never__", which nothing can ever
+       equal, and the field itself declares value/selected = true. In other
+       words it is meant to be permanently ON and never shown.
+
+       The fallback here was `false`, which turned that intent upside down:
+       a merchant can never switch a hidden field on, so the moment
+       theme.settings.get() came back with nothing for it, vpc_enabled went
+       false — and vpc_enabled gates EVERYTHING below (the CSS custom
+       properties, ~190 rules, and every veloura-product-card-* class on
+       <body>). Changing any product-card setting in the dashboard then did
+       precisely nothing, because the block that consumes those settings was
+       never emitted.
+
+       The fallback now matches the declared value, and matches how the
+       identically-hidden veloura_product_page_enabled_2026 is already read in
+       pages/product/single.twig. A stored true still reads as true; a missing
+       value now also reads as true, which is the documented intent. #}
+    {% set vpc_enabled_raw = theme.settings.get('veloura_product_card_enabled_2026', true) %}
     {% if vpc_enabled_raw.value is defined %}
       {% set vpc_enabled_raw = vpc_enabled_raw.value %}
     {% elseif vpc_enabled_raw.selected is defined %}
