@@ -2294,7 +2294,22 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    الخصائص الآمنة فقط: تفعيل، شعار، خلفية، نص، شريط، تخطي، إخفاء تلقائي، توقيت يدوي
    الخصائص المتجاهلة عمدًا: circle / glass blur
 ================================ #}
-{% set vl_enable_raw = theme.settings.get('veloura_loader_enable_2026', true) %}
+{# veloura_loader_enable_2026 used to do two jobs at once: it revealed the 28
+   loading-page settings in the dashboard (every one of them is conditioned on
+   it) AND it was what this theme read to decide whether to show the loading
+   page at all. So collapsing the section to tidy the settings list also
+   switched the loading page off — the "if I close them their effect
+   disappears" report.
+
+   Those two jobs are now separate:
+     veloura_loader_enable_2026  -> shows/hides the section's settings only.
+                                    The theme no longer reads it.
+     veloura_loader_active_2026  -> turns the loading page on or off. It is
+                                    deliberately NOT conditioned on the one
+                                    above, so it keeps being delivered (and the
+                                    loading page keeps working) while the
+                                    section is collapsed. #}
+{% set vl_enable_raw = theme.settings.get('veloura_loader_active_2026', false) %}
 {% if vl_enable_raw.value is defined %}
   {% set vl_enable_raw = vl_enable_raw.value %}
 {% elseif vl_enable_raw.selected is defined %}

@@ -267,8 +267,8 @@
       "format": "switch",
       "label": " ",
       "required": false,
-      "value": true,
-      "selected": true
+      "value": false,
+      "selected": false
     },
     {
       "type": "static",
@@ -643,7 +643,17 @@
       "type": "boolean",
       "id": "veloura_loader_enable_2026",
       "format": "switch",
-      "label": " ",
+      "label": "إظهار إعدادات صفحة التحميل",
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_loader_active_2026",
+      "label": "تفعيل صفحة التحميل",
+      "icon": "sicon-timer",
       "required": false,
       "value": false,
       "selected": false
