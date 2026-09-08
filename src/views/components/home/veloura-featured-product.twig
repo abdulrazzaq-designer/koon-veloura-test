@@ -20,7 +20,9 @@
 {% if not component.veloura_fp_hide %}
 
   {# Dropdowns arrive as a bare value, {value: …}, or a one-item list. #}
-  {% set fp_layout = component.veloura_fp_layout|default('split') %}
+  {# Defaults to the centred spotlight: a component saved before this
+     option existed has no stored value, so the fallback is what it gets. #}
+  {% set fp_layout = component.veloura_fp_layout|default('center') %}
   {% if fp_layout is iterable and fp_layout[0].value is defined %}{% set fp_layout = fp_layout[0].value %}
   {% elseif fp_layout.value is defined %}{% set fp_layout = fp_layout.value %}{% endif %}
 
@@ -107,11 +109,22 @@
         </div>
       {% endif %}
 
+      {# One DOM for all three layouts.
+
+         Every block below is a named grid area, and each layout only redraws
+         grid-template-areas — no duplicated markup, and nothing moves in the
+         document order that a screen reader follows. .vfp__panel is
+         display:contents in the two grid layouts so its children ARE the grid
+         items; only the full-bleed layout turns it back into a real box, the
+         glass panel floating over the photo. #}
       <div class="vfp__card" data-vfp-card>
 
         <div class="vfp__media">
-          <span class="vfp__badge" data-vfp-discount hidden></span>
+          {# The badge lives INSIDE the image frame, not beside it: anchored to
+             .vfp__media it hung over the photo's top edge, because that box also
+             contains the thumbnail strip and is taller than the picture. #}
           <a class="vfp__image-wrap" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
+            <span class="vfp__badge" data-vfp-discount hidden></span>
             <img class="vfp__image" data-vfp-image src="" alt="" loading="lazy" decoding="async">
           </a>
           {% if component.veloura_fp_show_gallery %}
@@ -119,52 +132,24 @@
           {% endif %}
         </div>
 
-        {# Two groups, not one column of text.
+        <div class="vfp__panel">
 
-           In the centred layout the card is a three-column grid — main, media,
-           aside — and .vfp__content is display:contents there, so these two
-           groups become grid items themselves and sit on either side of the
-           image. In the split layout they simply stack, which is the original
-           look. The actions row is a sibling so the buy button can span the
-           full width under all three columns. #}
-        <div class="vfp__content">
-          <div class="vfp__col vfp__col--main">
-          {% if component.veloura_fp_eyebrow %}
-            <span class="vfp__eyebrow">{{ component.veloura_fp_eyebrow }}</span>
-          {% endif %}
+          <div class="vfp__top">
+            {% if component.veloura_fp_eyebrow %}
+              <span class="vfp__eyebrow">{{ component.veloura_fp_eyebrow }}</span>
+            {% endif %}
 
-          <h3 class="vfp__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
+            <h3 class="vfp__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
 
-          {% if component.veloura_fp_show_rating %}
-            <div class="vfp__rating" data-vfp-rating hidden></div>
-          {% endif %}
+            {% if component.veloura_fp_show_rating %}
+              <div class="vfp__rating" data-vfp-rating hidden></div>
+            {% endif %}
 
-          {% if component.veloura_fp_show_excerpt %}
-            <p class="vfp__excerpt" data-vfp-excerpt hidden></p>
-          {% endif %}
-
-          {% if component.veloura_fp_show_price %}
-            <div class="vfp__prices">
-              <span class="vfp__price" data-vfp-price></span>
-              <del class="vfp__old-price" data-vfp-old hidden></del>
-            </div>
-          {% endif %}
-
-          {% if component.veloura_fp_countdown_enabled %}
-            <div class="vfp__countdown" data-vfp-countdown hidden>
-              <span class="vfp__countdown-label">{{ component.veloura_fp_countdown_label|default('ينتهي العرض خلال') }}</span>
-              <div class="vfp__countdown-units">
-                <span class="vfp__unit"><b data-vfp-days>0</b><small>يوم</small></span>
-                <span class="vfp__unit"><b data-vfp-hours>0</b><small>ساعة</small></span>
-                <span class="vfp__unit"><b data-vfp-minutes>0</b><small>دقيقة</small></span>
-                <span class="vfp__unit"><b data-vfp-seconds>0</b><small>ثانية</small></span>
-              </div>
-            </div>
-          {% endif %}
-
+            {% if component.veloura_fp_show_excerpt %}
+              <p class="vfp__excerpt" data-vfp-excerpt hidden></p>
+            {% endif %}
           </div>
 
-          <div class="vfp__col vfp__col--aside">
           {% if component.veloura_fp_features %}
             <ul class="vfp__features">
               {% for feature in component.veloura_fp_features %}
@@ -178,6 +163,41 @@
             </ul>
           {% endif %}
 
+          {% if component.veloura_fp_trust %}
+            <ul class="vfp__trust">
+              {% for chip in component.veloura_fp_trust %}
+                {% if chip.title %}
+                  <li>
+                    <i class="{{ chip.icon|default('sicon-shipping-fast') }}" aria-hidden="true"></i>
+                    <span>
+                      <b>{{ chip.title }}</b>
+                      {% if chip.subtitle %}<small>{{ chip.subtitle }}</small>{% endif %}
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          <div class="vfp__bottom">
+            {% if component.veloura_fp_show_price %}
+              <div class="vfp__prices">
+                <span class="vfp__price" data-vfp-price></span>
+                <del class="vfp__old-price" data-vfp-old hidden></del>
+              </div>
+            {% endif %}
+
+            {% if component.veloura_fp_countdown_enabled %}
+              <div class="vfp__countdown" data-vfp-countdown hidden>
+                <span class="vfp__countdown-label">{{ component.veloura_fp_countdown_label|default('ينتهي العرض خلال') }}</span>
+                <div class="vfp__countdown-units">
+                  <span class="vfp__unit"><b data-vfp-days>0</b><small>يوم</small></span>
+                  <span class="vfp__unit"><b data-vfp-hours>0</b><small>ساعة</small></span>
+                  <span class="vfp__unit"><b data-vfp-minutes>0</b><small>دقيقة</small></span>
+                  <span class="vfp__unit"><b data-vfp-seconds>0</b><small>ثانية</small></span>
+                </div>
+              </div>
+            {% endif %}
           </div>
 
           <div class="vfp__actions">
@@ -197,22 +217,6 @@
               </a>
             {% endif %}
           </div>
-
-          {% if component.veloura_fp_trust %}
-            <ul class="vfp__trust">
-              {% for chip in component.veloura_fp_trust %}
-                {% if chip.title %}
-                  <li>
-                    <i class="{{ chip.icon|default('sicon-shipping-fast') }}" aria-hidden="true"></i>
-                    <span>
-                      <b>{{ chip.title }}</b>
-                      {% if chip.subtitle %}<small>{{ chip.subtitle }}</small>{% endif %}
-                    </span>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          {% endif %}
         </div>
       </div>
     </div>

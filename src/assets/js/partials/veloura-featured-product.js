@@ -110,7 +110,7 @@ const paint = (section, product) => {
   });
 
   set('data-vfp-discount', el => {
-    el.textContent = product.discount ? `-${product.discount}%` : '';
+    el.textContent = product.discount ? `خصم ${product.discount}%` : '';
     el.hidden = !product.discount;
   });
 

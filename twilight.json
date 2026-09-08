@@ -16471,11 +16471,11 @@
           ],
           "selected": [
             {
-              "label": "صورة بجانب التفاصيل",
-              "value": "split"
+              "label": "صورة في المنتصف والتفاصيل يمينها ويسارها",
+              "value": "center"
             }
           ],
-          "value": "split",
+          "value": "center",
           "required": false
         },
         {
@@ -16541,7 +16541,7 @@
           "type": "boolean",
           "format": "switch",
           "label": "توسيط عنوان القسم",
-          "value": false,
+          "value": true,
           "required": false
         },
         {
