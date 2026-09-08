@@ -902,29 +902,69 @@ const initVelouraHeaderControls = (() => {
       return;
     }
 
+    /* A trigger inside the offcanvas drawer hands over to the dialog instead
+       of sitting behind it: close the drawer, let its transition finish, then
+       open. The dialog is a bottom sheet on phones and a full-height drawer
+       left standing behind it is what made the currency row look dead. */
+    if (trigger?.closest?.('.mm-ocd')) {
+      try { window.__velouraNativeMobileMenuDrawer?.close?.(); } catch (_) {}
+      document.body.classList.remove('menu-opened');
+      await new Promise(resolve => setTimeout(resolve, 340));
+    }
+
     try {
       if (window.customElements?.whenDefined) {
         await window.customElements.whenDefined('salla-localization-modal');
       }
 
-      if (typeof modal.open === 'function') {
+      /* 'localization::open' is the component's OWN entry point: its
+         componentWillLoad registers salla.event.on('localization::open', () =>
+         this.open()). Going through the event means the component decides when
+         it is ready, which the direct open() call did not — open() reaches for
+         this.modal, a ref that only exists after the first render, so a click
+         landing before that render threw and nothing opened. The direct call
+         stays as a fallback for the case where the event bus is not up yet. */
+      let opened = false;
+
+      try {
+        salla.event.dispatch('localization::open');
+        opened = true;
+      } catch (_) {}
+
+      if (!opened && typeof modal.open === 'function') {
         await modal.open();
-        return;
       }
-
-      const nativeTrigger = modal.shadowRoot?.querySelector(
-        'button, [role="button"], [part~="trigger"]'
-      );
-
-      nativeTrigger?.click();
     } catch (error) {
       salla.logger?.error?.('veloura-header::localization-open', error);
     }
   };
 
+  /* While any salla-modal is open the document carries .veloura-modal-open, and
+     the stylesheet drops the offcanvas layers out of the way for exactly that
+     long (see side-menu.scss). salla-modal moves its host to <body> and marks
+     it with a `visible` attribute while open, so one observer on <body> covers
+     every dialog in the theme without knowing which one opened. */
+  const watchModalStacking = () => {
+    const sync = () => {
+      const open = !!document.querySelector('body > salla-modal[visible]');
+      document.body.classList.toggle('veloura-modal-open', open);
+    };
+
+    new MutationObserver(sync).observe(document.body, {
+      childList: true,
+      subtree: false,
+      attributes: true,
+      attributeFilter: ['visible'],
+    });
+
+    sync();
+  };
+
   return () => {
     if (eventsBound) return;
     eventsBound = true;
+
+    watchModalStacking();
 
     document.addEventListener('click', event => {
       const trigger = event.target.closest('[data-veloura-localization-trigger]');
@@ -1615,23 +1655,11 @@ isElementLoaded(selector){
            built. Once moved the holder is gone, so this is a no-op after. */
         document.addEventListener('veloura:mobile-menu:opening', placeSideMenuExtras);
 
-        /* Close the drawer when the currency row is used.
+        /* The currency row's own handoff (closing this drawer before the
+           language/currency dialog opens) now lives in openLocalization, so
+           the dialog behaves the same whether it is opened from the header or
+           from here, and there is no second listener racing the first. */
 
-           The row keeps [data-veloura-localization-trigger], so the header's
-           own handler still opens the language/currency dialog — this only
-           gets the drawer out of the way first. Salla's dialog is a bottom
-           sheet on phones, and leaving a full-height drawer sitting behind it
-           left the two fighting for the screen; opened on its own it renders
-           exactly as it does from the header.
-
-           Capture phase on purpose: the localization handler is also a capture
-           listener on document and calls stopPropagation(), which would skip a
-           bubble listener. It uses stopPropagation and not the Immediate
-           variant, so both listeners on this same node still run. */
-        document.addEventListener('click', event => {
-          if (!event.target.closest?.('[data-veloura-side-row="currency"]')) return;
-          try { drawer?.close?.(); } catch (_) {}
-        }, true);
 
         window.__velouraNativeMobileMenuDrawer = drawer;
         window.__velouraNativeMobileMenuRoot = drawerRoot;

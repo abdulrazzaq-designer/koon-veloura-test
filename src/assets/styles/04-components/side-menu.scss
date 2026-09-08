@@ -71,19 +71,46 @@
    scoped to .veloura-side-menu-drawer so the filters drawer — a separate
    mmenu instance — is never touched.
    ======================================================================== */
+/* No background of its own. The drawer can be glass (backdrop-filter on
+   .mm-ocd__content), and any colour painted here — even one inherited from the
+   drawer's own solid fallback — sits ON TOP of that blur and shows as a flat
+   patch. So the logo, the pinned block and the rows are all transparent and
+   carry nothing but their separator lines. */
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  /* Symmetric padding, stated in physical values, so the centre of this box is
+     the centre of the panel whatever direction the drawer inherits. */
+  padding: 18px 16px 14px;
+  background: transparent;
+  border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, .10));
+  text-align: center;
+}
+
+/* The anchor used to be the only centred thing, via justify-content on the
+   parent. That leaves the image centred inside the ANCHOR's shrink-to-fit box
+   rather than inside the panel, and any inline whitespace or inherited
+   text-indent shifted it off the middle. Making the anchor a full-width flex
+   box that centres its own child removes both. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo > a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 16px 14px;
-  border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, .10));
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
 }
 
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo img {
+  display: block;
   max-width: min(180px, 62%);
   max-height: 56px;
   width: auto;
   height: auto;
+  margin-left: auto;
+  margin-right: auto;
   object-fit: contain;
 }
 
@@ -93,7 +120,10 @@
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-pinned {
   margin-top: auto;
   border-top: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, .10));
-  background: inherit;
+  /* transparent, never `inherit`: `background: inherit` copies the drawer's
+     COMPUTED background, which the theme forces to a solid colour, so in glass
+     mode this block was repainting that solid over the blur. */
+  background: transparent;
 }
 
 /* mmenu's own scroller is the flex parent that makes margin-top:auto work. */
@@ -115,6 +145,8 @@
   border: 0;
   border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, .08));
   background: transparent;
+  background-color: transparent;
+  box-shadow: none;
   font: inherit;
   text-align: start;
 
@@ -220,6 +252,13 @@ html[dir="ltr"] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
   transform: rotate(-90deg);
 }
 
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel :is(salla-menu, salla-contacts, ul, ol, li, a, div, p) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel {
   padding: 2px 18px 14px;
   /* Same reasoning as the row heads: state the direction here instead of
@@ -295,6 +334,24 @@ html body salla-modal.s-modal[visible],
 html body salla-modal[visible] > .s-modal-overlay,
 html body salla-modal[visible] > .s-modal-wrapper {
   z-index: 2147483647 !important;
+}
+
+/* Raising the dialog was not enough on its own.
+
+   The drawer is pinned at 2147483646 and mmenu's own .mm-ocd at 999999, both
+   with !important, and the two layers ended up trading places depending on
+   which stylesheet the store loaded last — the dialog kept coming up behind
+   the menu. So rather than winning a z-index race, the drawer steps aside:
+   app.js marks the document while ANY salla-modal is open, and for as long as
+   that mark is there the offcanvas layers drop back to an ordinary value.
+
+   Nothing else depends on the drawer's z-index while a dialog is up, and the
+   mark is removed the moment the dialog closes, so the drawer returns to its
+   normal stacking on its own. */
+html body.veloura-modal-open .mm-ocd,
+html body.veloura-modal-open .mm-ocd.veloura-side-menu-drawer,
+html body.veloura-modal-open .mm-ocd.veloura-filters-drawer {
+  z-index: 1000 !important;
 }
 
 /* The host is .s-modal-container (position: fixed), so raising it is enough on
