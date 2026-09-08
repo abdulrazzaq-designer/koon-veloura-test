@@ -145,7 +145,7 @@
       "id": "title",
       "type": "static",
       "format": "title",
-      "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><div class=\"ml-1 mr-2 text-center\"><strong class=\"text-lg\">إعدادات عامة للعنصر</strong><div class=\"text-sm opacity-75 mt-1\">تحكم بطريقة عرض الصور والسلايدر</div></div></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم بطريقة عرض الصور والسلايدر</span></span></div>",
       "variant": "h1"
     },
     {
@@ -9842,7 +9842,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم بكل تفاصيل العنصر كما تشاء</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم بكل تفاصيل العنصر كما تشاء</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -9923,7 +9923,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 1",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات سلايدر الصور</strong>     <div class=\"text-sm opacity-75 mt-1\">لا تعمل الخيارات التالية في حال تفعيل \"عرض على شكل شبكة\"</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات سلايدر الصور</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">لا تعمل الخيارات التالية في حال تفعيل \"عرض على شكل شبكة\"</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10013,7 +10013,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 2",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات الصور المربعة</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في تصميم الصور والنصوص بشكل كامل</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات الصور المربعة</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في تصميم الصور والنصوص بشكل كامل</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10160,7 +10160,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 3",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إضافة الصور</strong>     <div class=\"text-sm opacity-75 mt-1\">يمكنك إضافة عدد لانهائي من الصور بأي مقاس تحتاجه</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إضافة الصور</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">يمكنك إضافة عدد لانهائي من الصور بأي مقاس تحتاجه</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10355,7 +10355,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 4",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10465,7 +10465,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم بكل تفاصيل العنصر كما تشاء</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم بكل تفاصيل العنصر كما تشاء</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10576,7 +10576,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 1",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات سلايدر الصور</strong>     <div class=\"text-sm opacity-75 mt-1\">لا تعمل الخيارات التالية في حال تفعيل \"عرض على شكل شبكة\"</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات سلايدر الصور</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">لا تعمل الخيارات التالية في حال تفعيل \"عرض على شكل شبكة\"</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10657,7 +10657,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 2",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات الصور المربعة</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في تصميم الصور والنصوص بشكل كامل</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات الصور المربعة</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في تصميم الصور والنصوص بشكل كامل</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -10875,7 +10875,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 3",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إضافة الصور</strong>     <div class=\"text-sm opacity-75 mt-1\">يمكنك إضافة عدد لانهائي من الصور بأي مقاس تحتاجه</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إضافة الصور</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">يمكنك إضافة عدد لانهائي من الصور بأي مقاس تحتاجه</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -11055,7 +11055,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 4",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -11172,7 +11172,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في خيارات سلايدر البنرات</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في خيارات سلايدر البنرات</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -11353,7 +11353,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 6",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إضافة البنرات</strong>     <div class=\"text-sm opacity-75 mt-1\">أضف عدد لانهائي من البنرات مع خيارات الزر والرابط لكل بانر</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إضافة البنرات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف عدد لانهائي من البنرات مع خيارات الزر والرابط لكل بانر</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -11372,7 +11372,7 @@
               "type": "static",
               "format": "title",
               "label": "Title 1",
-              "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">أضف الصورة أو الفيديو</strong>   </div> </div>",
+              "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">أضف الصورة أو الفيديو</strong></span></div>",
               "variant": "h1",
               "icon": "sicon-format-text"
             },
@@ -11432,7 +11432,7 @@
               "type": "static",
               "format": "title",
               "label": "Title 3",
-              "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات النصوص</strong>   </div> </div>",
+              "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات النصوص</strong></span></div>",
               "variant": "h1",
               "icon": "sicon-format-text"
             },
@@ -11502,7 +11502,7 @@
               "type": "static",
               "format": "title",
               "label": "Title 2",
-              "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">عداد الخصم</strong>   </div> </div>",
+              "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">عداد الخصم</strong></span></div>",
               "variant": "h1",
               "icon": "sicon-format-text"
             },
@@ -11539,7 +11539,7 @@
               "type": "static",
               "format": "title",
               "label": "Title 4",
-              "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات الزر والرابط</strong>   </div> </div>",
+              "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات الزر والرابط</strong></span></div>",
               "variant": "h1",
               "icon": "sicon-format-text"
             },
@@ -11680,7 +11680,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 5",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -11797,7 +11797,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">خصص مميزات المتجر على ذوقك</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">خصص مميزات المتجر على ذوقك</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -12998,7 +12998,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في خيارات عرض المنتجات</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في خيارات عرض المنتجات</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -13227,7 +13227,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إضافة المنتجات</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في خيارات المنتج</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إضافة المنتجات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في خيارات المنتج</span></span></div>",
           "variant": "h1",
           "icon": "sicon-shopping-bag"
         },
@@ -13339,7 +13339,7 @@
           "type": "static",
           "format": "title",
           "label": "Title 5",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -13441,7 +13441,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">يمكنك إضافة عناوين والتحكم في شكل وترتيب الصور</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">يمكنك إضافة عناوين والتحكم في شكل وترتيب الصور</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -13568,7 +13568,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إضافة الروابط</strong>     <div class=\"text-sm opacity-75 mt-1\">أضف روابط سريعة مع صورة أو أيقونة</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إضافة الروابط</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف روابط سريعة مع صورة أو أيقونة</span></span></div>",
           "variant": "h1",
           "icon": "sicon-link"
         },
@@ -13713,7 +13713,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -13806,7 +13806,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في خيارات عرض المقالات</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في خيارات عرض المقالات</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -14009,7 +14009,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -14111,7 +14111,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في عناوين وخريطة الفروع</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في عناوين وخريطة الفروع</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -14211,7 +14211,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -14308,7 +14308,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في عنوان وطريقة عرض الماركات التجارية</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في عنوان وطريقة عرض الماركات التجارية</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -14461,7 +14461,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -14558,7 +14558,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في صور المقارنة قبل وبعد</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في صور المقارنة قبل وبعد</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -14688,7 +14688,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -14785,7 +14785,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">خيارات العنصر</strong>     <div class=\"text-sm opacity-75 mt-1\">تحكم في عناوين وشكل عرض تقييمات العملاء</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات العنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في عناوين وشكل عرض تقييمات العملاء</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -14921,7 +14921,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">قائمة التقييمات</strong>     <div class=\"text-sm opacity-75 mt-1\">أضف آراء العملاء والتقييمات</div>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">قائمة التقييمات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف آراء العملاء والتقييمات</span></span></div>",
           "variant": "h1",
           "icon": "sicon-chat"
         },
@@ -15031,7 +15031,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\">   <div class=\"ml-1 mr-2 text-center\">     <strong class=\"text-lg\">إعدادات عامة للعنصر</strong>   </div> </div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -15128,7 +15128,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><div class=\"ml-1 mr-2 text-center\"><strong class=\"text-lg\">خيارات عنصر من نحن</strong><div class=\"text-sm opacity-75 mt-1\">تحكم في محتوى وتنسيق العنصر</div></div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات عنصر من نحن</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في محتوى وتنسيق العنصر</span></span></div>",
           "variant": "h1",
           "icon": "sicon-format-text"
         },
@@ -15278,7 +15278,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><div class=\"ml-1 mr-2 text-center\"><strong class=\"text-lg\">الألوان والتنسيق</strong><div class=\"text-sm opacity-75 mt-1\">تحكم في ألوان الخلفية والنصوص</div></div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الألوان والتنسيق</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في ألوان الخلفية والنصوص</span></span></div>",
           "variant": "h1",
           "icon": "sicon-paint-bucket"
         },
@@ -15411,7 +15411,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><div class=\"ml-1 mr-2 text-center\"><strong class=\"text-lg\">المميزات</strong><div class=\"text-sm opacity-75 mt-1\">أضف مميزات قصيرة للمتجر</div></div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">المميزات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف مميزات قصيرة للمتجر</span></span></div>",
           "variant": "h1",
           "icon": "sicon-star"
         },
@@ -15463,7 +15463,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><div class=\"ml-1 mr-2 text-center\"><strong class=\"text-lg\">الإحصائيات</strong><div class=\"text-sm opacity-75 mt-1\">أضف أرقاماً تعزز ثقة العميل</div></div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الإحصائيات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف أرقاماً تعزز ثقة العميل</span></span></div>",
           "variant": "h1",
           "icon": "sicon-chart-bar"
         },
@@ -15547,7 +15547,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><div class=\"ml-1 mr-2 text-center\"><strong class=\"text-lg\">إعدادات عامة للعنصر</strong></div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -15649,7 +15649,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">محتوى البوب أب</strong><div class=\"text-sm opacity-75 mt-1\">أضف صورة وعنوان ووصف الإعلان</div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">محتوى البوب أب</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف صورة وعنوان ووصف الإعلان</span></span></div>",
           "variant": "h1",
           "icon": "sicon-megaphone"
         },
@@ -15782,7 +15782,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">التصميم والألوان</strong><div class=\"text-sm opacity-75 mt-1\">تحكم بشكل البوب أب وألوانه</div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">التصميم والألوان</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم بشكل البوب أب وألوانه</span></span></div>",
           "variant": "h1",
           "icon": "sicon-paint-bucket"
         },
@@ -15876,7 +15876,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">إعدادات الظهور</strong><div class=\"text-sm opacity-75 mt-1\">تحكم بوقت ومكان ظهور الإعلان</div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات الظهور</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم بوقت ومكان ظهور الإعلان</span></span></div>",
           "variant": "h1",
           "icon": "sicon-eye"
         },
@@ -15954,7 +15954,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">إعدادات عامة للعنصر</strong></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -16056,7 +16056,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">خيارات عنصر خطوات الشراء</strong><div class=\"text-sm opacity-75 mt-1\">تحكم في العنوان والشكل والخطوات</div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات عنصر خطوات الشراء</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم في العنوان والشكل والخطوات</span></span></div>",
           "variant": "h1",
           "icon": "sicon-list"
         },
@@ -16083,7 +16083,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">التصميم والألوان</strong></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">التصميم والألوان</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-paint-bucket"
         },
@@ -16227,7 +16227,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">إضافة الخطوات</strong><div class=\"text-sm opacity-75 mt-1\">أضف خطوات الشراء أو تنفيذ الطلب</div></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إضافة الخطوات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أضف خطوات الشراء أو تنفيذ الطلب</span></span></div>",
           "variant": "h1",
           "icon": "sicon-list-add"
         },
@@ -16295,7 +16295,7 @@
           "type": "static",
           "format": "title",
           "label": "Title",
-          "value": "<div class=\"text-center p-2 bg-primary text-white rounded\"><strong class=\"text-lg\">إعدادات عامة للعنصر</strong></div>",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong></span></div>",
           "variant": "h1",
           "icon": "sicon-settings"
         },
@@ -16354,7 +16354,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
