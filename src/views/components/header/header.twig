@@ -643,8 +643,14 @@
                         <i class="sicon-keyboard_arrow_left veloura-side-menu-row__chevron" aria-hidden="true"></i>
                       </summary>
                       <div class="veloura-side-menu-row__panel">
-                        {# The store's own contact channels, as in the footer. #}
-                        <salla-contacts></salla-contacts>
+                        {# The store's own contact channels, as in the footer.
+                           hide-title is the component's own prop (see its
+                           hideTitle/"hide-title" definition): the row already
+                           says "خدمة العملاء", so the component's second
+                           "تواصل معنا" heading underneath was pure repetition.
+                           Dropping it through the component rather than hiding
+                           an <h3> with CSS. #}
+                        <salla-contacts hide-title></salla-contacts>
                       </div>
                     </details>
                   {% endif %}

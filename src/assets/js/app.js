@@ -1615,6 +1615,24 @@ isElementLoaded(selector){
            built. Once moved the holder is gone, so this is a no-op after. */
         document.addEventListener('veloura:mobile-menu:opening', placeSideMenuExtras);
 
+        /* Close the drawer when the currency row is used.
+
+           The row keeps [data-veloura-localization-trigger], so the header's
+           own handler still opens the language/currency dialog — this only
+           gets the drawer out of the way first. Salla's dialog is a bottom
+           sheet on phones, and leaving a full-height drawer sitting behind it
+           left the two fighting for the screen; opened on its own it renders
+           exactly as it does from the header.
+
+           Capture phase on purpose: the localization handler is also a capture
+           listener on document and calls stopPropagation(), which would skip a
+           bubble listener. It uses stopPropagation and not the Immediate
+           variant, so both listeners on this same node still run. */
+        document.addEventListener('click', event => {
+          if (!event.target.closest?.('[data-veloura-side-row="currency"]')) return;
+          try { drawer?.close?.(); } catch (_) {}
+        }, true);
+
         window.__velouraNativeMobileMenuDrawer = drawer;
         window.__velouraNativeMobileMenuRoot = drawerRoot;
 

@@ -222,6 +222,30 @@ html[dir="ltr"] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
 
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel {
   padding: 2px 18px 14px;
+  /* Same reasoning as the row heads: state the direction here instead of
+     trusting inheritance, so the links and contact lines Salla renders inside
+     start from the right like everything else in the drawer. */
+  direction: rtl;
+  text-align: right;
+}
+
+/* Salla renders its own lists and rows in these panels. Force the text to the
+   right, and un-stretch the flex rows it uses for the contact lines so the
+   value sits next to its icon rather than being pushed across the panel. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel :is(a, li, p, span, div, h3, h4) {
+  text-align: right;
+}
+
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel :is(ul, ol) {
+  padding-inline: 0;
+  margin-inline: 0;
+  list-style: none;
+}
+
+html[dir="ltr"] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel,
+html[dir="ltr"] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel :is(a, li, p, span, div, h3, h4) {
+  direction: ltr;
+  text-align: left;
 }
 
 /* Salla's own components render their lists inside these panels; keep them
