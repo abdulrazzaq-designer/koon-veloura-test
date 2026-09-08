@@ -132,9 +132,35 @@
   flex-direction: column !important;
 }
 
+/* The category list — and ONLY the category list — scrolls.
+
+   Both mmenu's outer .mm-ocd__content and the panel inside it were scrollable,
+   so the drawer got a second, native scrollbar. In an RTL drawer that bar sits
+   on the LEFT, drawn on top of the panel's own rounded corner, which is the
+   white strip cutting the corner in the screenshot. It also meant the pinned
+   rows could be scrolled away with the list instead of staying under it.
+
+   Giving the outer box overflow:hidden makes it a clean rounded frame: the
+   logo and the pinned rows sit outside the scroller and cannot move, and the
+   list scrolls between them with its own scrollbar hidden. */
+.mm-ocd.veloura-side-menu-drawer.veloura-side-menu-has-extras > .mm-ocd__content {
+  overflow: hidden !important;
+}
+
 .mm-ocd.veloura-side-menu-drawer.veloura-side-menu-has-extras > .mm-ocd__content > .mm-spn {
   flex: 1 1 auto !important;
   min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mm-ocd.veloura-side-menu-drawer.veloura-side-menu-has-extras > .mm-ocd__content > .mm-spn::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
 }
 
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {

@@ -895,11 +895,17 @@ const initVelouraHeaderControls = (() => {
   let eventsBound = false;
 
   const openLocalization = async trigger => {
-    const modal = document.querySelector('salla-localization-modal');
+    let modal = document.querySelector('salla-localization-modal');
 
+    /* The component is normally rendered by header.twig. If it is not there —
+       an older cached header, or a layout that drops it — create it rather
+       than failing silently: it is a plain custom element with no attributes
+       to configure, and Salla registers it globally, so appending one to
+       <body> gives exactly the dialog the header would have rendered. */
     if (!modal) {
-      trigger?.setAttribute('aria-disabled', 'true');
-      return;
+      modal = document.createElement('salla-localization-modal');
+      modal.className = 'veloura-localization-modal-host';
+      document.body.appendChild(modal);
     }
 
     /* A trigger inside the offcanvas drawer hands over to the dialog instead
@@ -924,14 +930,19 @@ const initVelouraHeaderControls = (() => {
          this.modal, a ref that only exists after the first render, so a click
          landing before that render threw and nothing opened. The direct call
          stays as a fallback for the case where the event bus is not up yet. */
-      let opened = false;
+      try { await modal.componentOnReady?.(); } catch (_) {}
 
-      try {
-        salla.event.dispatch('localization::open');
-        opened = true;
-      } catch (_) {}
+      try { salla.event.dispatch('localization::open'); } catch (_) {}
 
-      if (!opened && typeof modal.open === 'function') {
+      /* Then CHECK, rather than assume. A dispatch that nothing is listening
+         for resolves quietly, which is how this looked like it worked while
+         no dialog ever appeared. salla-modal marks its host with `visible` and
+         moves it to <body>, so one query says whether anything actually
+         opened; if not, fall back to the component's own method. */
+      await new Promise(resolve => setTimeout(resolve, 80));
+
+      if (!document.querySelector('body > salla-modal[visible]') &&
+          typeof modal.open === 'function') {
         await modal.open();
       }
     } catch (error) {

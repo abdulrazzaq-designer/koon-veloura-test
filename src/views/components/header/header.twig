@@ -655,9 +655,19 @@
                     </details>
                   {% endif %}
 
-                  {% if vsm_currency and localization_available %}
+                  {% if vsm_currency %}
                     {# No chevron: this opens the language/currency dialog the
-                       header already uses, rather than expanding in place. #}
+                       header already uses, rather than expanding in place.
+
+                       The row no longer waits on `localization_available`.
+                       That flag is store.settings.is_multilingual or
+                       currencies_enabled, and a store with currencies switched
+                       on but a single language read as false — so the row the
+                       merchant had enabled in the theme settings simply never
+                       rendered, which looked like a dead setting. The dialog
+                       host below is rendered on the same condition, and Salla's
+                       own component closes itself when there is genuinely
+                       nothing to choose between. #}
                     <button type="button"
                             class="veloura-side-menu-row veloura-side-menu-row--action"
                             data-veloura-side-row="currency"
@@ -707,7 +717,7 @@
     </div>
   </div>
 
-  {% if localization_available %}
+  {% if localization_available or vsm_currency %}
     <salla-localization-modal class="veloura-localization-modal-host"></salla-localization-modal>
   {% endif %}
 </header>
