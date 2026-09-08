@@ -42782,6 +42782,133 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
   }
 }
 /* ========================================================================
+   Side-menu extras — the store logo at the head of the drawer, and the
+   rows pinned under the categories.
+
+   header.twig renders these hidden and app.js moves them into the drawer
+   once mmenu-light has built it (mmenu rebuilds #mobile-menu into its own
+   panel markup, so they cannot be authored inside it). Everything here is
+   scoped to .veloura-side-menu-drawer so the filters drawer — a separate
+   mmenu instance — is never touched.
+   ======================================================================== */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+  border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, 0.1));
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo img {
+  max-width: min(180px, 62%);
+  max-height: 56px;
+  width: auto;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+/* The rows sit at the bottom of the panel. margin-top:auto pushes them down
+   when the category list is short; when it is long they simply follow it, so
+   they are always reachable and never overlap the list. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-pinned {
+  margin-top: auto;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+  border-top: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, 0.1));
+  background: inherit;
+}
+/* mmenu's own scroller is the flex parent that makes margin-top:auto work. */
+.mm-ocd.veloura-side-menu-drawer.veloura-side-menu-has-extras > .mm-ocd__content {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.mm-ocd.veloura-side-menu-drawer.veloura-side-menu-has-extras > .mm-ocd__content > .mm-spn {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, 0.08));
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row:last-child {
+  border-bottom: 0;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 18px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: inherit;
+}
+/* Safari still paints the default disclosure triangle without this. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head::-webkit-details-marker {
+  display: none;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__icon {
+  flex: 0 0 auto;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0.85;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__chevron {
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0.55;
+  transition: transform 0.2s ease;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row[open] .veloura-side-menu-row__chevron {
+  transform: rotate(-90deg);
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel {
+  padding: 2px 18px 14px;
+}
+/* Salla's own components render their lists inside these panels; keep them
+   flush with the row padding rather than re-styling their internals. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel salla-menu,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel salla-contacts {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__chevron {
+    transition: none;
+  }
+}
+/* Dark mode follows the side-menu tokens the theme already defines. */
+html.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo,
+html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-logo,
+html.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-pinned,
+html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-pinned,
+html.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row,
+html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+html.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row,
+html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
+  color: #ffffff;
+  color: var(--veloura-dark-side-menu-text, #ffffff);
+}
+/* ========================================================================
    Veloura V89 — exact dark secondary + light glass +3%
 
    Architecture:

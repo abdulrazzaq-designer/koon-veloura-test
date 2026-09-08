@@ -1585,9 +1585,10 @@ isElementLoaded(selector){
            This runs once — the block is moved, not copied — and it is
            deliberately tolerant: if the merchant switched all four off,
            header.twig renders nothing and there is simply nothing to move. */
-        const extras = document.getElementById('veloura-side-menu-extras');
-        if (extras && drawerContent && !extras.dataset.velouraSidePlaced) {
-          extras.dataset.velouraSidePlaced = '1';
+        const placeSideMenuExtras = () => {
+          const extras = document.getElementById('veloura-side-menu-extras');
+          if (!extras || !drawerContent) return;
+
           extras.hidden = false;
           extras.removeAttribute('aria-hidden');
 
@@ -1599,12 +1600,20 @@ isElementLoaded(selector){
 
           /* The pinned rows go last inside the drawer's own scroller, so they
              sit under the menu and stay reachable however long the category
-             list gets. CSS gives them the sticky-to-the-bottom treatment. */
+             list gets. CSS drops them to the bottom from there. */
           if (pinned) drawerContent.append(pinned);
 
           extras.remove();
           drawerRoot?.classList.add('veloura-side-menu-has-extras');
-        }
+        };
+
+        placeSideMenuExtras();
+
+        /* Run again on the first open. The block is static markup from
+           header.twig so it is normally already there, but this costs nothing
+           and covers the case where the header renders after the drawer was
+           built. Once moved the holder is gone, so this is a no-op after. */
+        document.addEventListener('veloura:mobile-menu:opening', placeSideMenuExtras);
 
         window.__velouraNativeMobileMenuDrawer = drawer;
         window.__velouraNativeMobileMenuRoot = drawerRoot;

@@ -573,31 +573,34 @@
              them is the browser's own behaviour — no JS, and it keeps
              working even if the script never runs. Content comes from the
              same Salla components the footer already uses. ========== #}
-          {# Same normalisation the rest of this file uses: a switch can come
-             back as a bare value, as {value: …} or wrapped in {selected: …}. #}
-          {% set vsm_flags = {} %}
-          {% for vsm_key in ['logo', 'links', 'support', 'currency'] %}
-            {% set vsm_raw = theme.settings.get('veloura_side_menu_' ~ vsm_key ~ '_2026', true) %}
-            {% if vsm_raw.selected is defined %}
-              {% if vsm_raw.selected.value is defined %}
-                {% set vsm_raw = vsm_raw.selected.value %}
-              {% elseif vsm_raw.selected is iterable and vsm_raw.selected[0] is defined and vsm_raw.selected[0].value is defined %}
-                {% set vsm_raw = vsm_raw.selected[0].value %}
-              {% else %}
-                {% set vsm_raw = vsm_raw.selected %}
-              {% endif %}
-            {% elseif vsm_raw.value is defined %}
-              {% set vsm_raw = vsm_raw.value %}
-            {% endif %}
-            {% set vsm_flags = vsm_flags|merge({
-              (vsm_key): vsm_raw == true or vsm_raw == 'true' or vsm_raw == 1 or vsm_raw == '1' or vsm_raw == 'on'
-            }) %}
-          {% endfor %}
+          {# Normalised one switch at a time, deliberately WITHOUT a {% for %}.
+             Twig scopes a for block: anything {% set %} inside it is local to
+             the loop and is gone after {% endfor %}, so building these flags in
+             a loop left every one of them undefined — the whole block then
+             evaluated as false and nothing rendered at all.
 
-          {% set vsm_logo = vsm_flags.logo %}
-          {% set vsm_links = vsm_flags.links %}
-          {% set vsm_support = vsm_flags.support %}
-          {% set vsm_currency = vsm_flags.currency %}
+             A switch can come back as a bare value, as {value: …}, or wrapped
+             in {selected: …}; the two-step read below covers all three, and is
+             the same shape footer.twig already uses. #}
+          {% set vsm_logo_raw = theme.settings.get('veloura_side_menu_logo_2026', true) %}
+          {% if vsm_logo_raw.value is defined %}{% set vsm_logo_raw = vsm_logo_raw.value %}
+          {% elseif vsm_logo_raw.selected is defined %}{% set vsm_logo_raw = vsm_logo_raw.selected %}{% endif %}
+          {% set vsm_logo = vsm_logo_raw in [true, 1, '1', 'true', 'on'] %}
+
+          {% set vsm_links_raw = theme.settings.get('veloura_side_menu_links_2026', true) %}
+          {% if vsm_links_raw.value is defined %}{% set vsm_links_raw = vsm_links_raw.value %}
+          {% elseif vsm_links_raw.selected is defined %}{% set vsm_links_raw = vsm_links_raw.selected %}{% endif %}
+          {% set vsm_links = vsm_links_raw in [true, 1, '1', 'true', 'on'] %}
+
+          {% set vsm_support_raw = theme.settings.get('veloura_side_menu_support_2026', true) %}
+          {% if vsm_support_raw.value is defined %}{% set vsm_support_raw = vsm_support_raw.value %}
+          {% elseif vsm_support_raw.selected is defined %}{% set vsm_support_raw = vsm_support_raw.selected %}{% endif %}
+          {% set vsm_support = vsm_support_raw in [true, 1, '1', 'true', 'on'] %}
+
+          {% set vsm_currency_raw = theme.settings.get('veloura_side_menu_currency_2026', true) %}
+          {% if vsm_currency_raw.value is defined %}{% set vsm_currency_raw = vsm_currency_raw.value %}
+          {% elseif vsm_currency_raw.selected is defined %}{% set vsm_currency_raw = vsm_currency_raw.selected %}{% endif %}
+          {% set vsm_currency = vsm_currency_raw in [true, 1, '1', 'true', 'on'] %}
 
           {% if vsm_logo or vsm_links or vsm_support or vsm_currency %}
             <div id="veloura-side-menu-extras" data-veloura-side-menu-extras hidden aria-hidden="true">
