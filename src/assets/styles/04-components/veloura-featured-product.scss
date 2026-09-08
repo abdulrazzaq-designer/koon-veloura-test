@@ -291,46 +291,30 @@
    as well as on a desktop. The name, the price and the buy button run the full
    width above and below, because those are the lines that must never wrap into
    a two-word column. */
-/* Phone: the photo sits centred — a real centre, at 72% of the card, not a
-   full-bleed block that only looks centred because it touches both edges — and
-   the two lists share the row under it, one on each side. Three text columns
-   beside a picture on a 390px screen turn every line into one word, which is
-   what the earlier attempt did; this keeps the arrangement and the reading. */
+/* The photo holds the middle column and a list flanks it on each side, at
+   every width — phones included. What changes on a phone is not the
+   arrangement but the shape of the side items: there they are icon chips with
+   a short label underneath, so a 55px column still says something instead of
+   breaking a sentence into one word per line. */
 .veloura-featured-product.vfp--center .vfp__card {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, .62fr) minmax(0, 2fr) minmax(0, .62fr);
   grid-template-areas:
-    "top      top"
-    "media    media"
-    "features trust"
-    "bottom   bottom"
-    "actions  actions";
+    "top      top    top"
+    "features media  trust"
+    "bottom   bottom bottom"
+    "actions  actions actions";
   align-items: center;
-  gap: 16px 12px;
-  padding: 22px 14px;
+  gap: 16px 8px;
+  padding: 22px 12px;
   text-align: center;
 }
 
-.veloura-featured-product.vfp--center .vfp__media {
-  width: 100%;
-  max-width: 72%;
-  margin-inline: auto;
-}
-
-/* From the small-tablet width up there is room for the real spotlight: the
-   photo in the middle column with a list on either side of it. */
 @media (min-width: 640px) {
   .veloura-featured-product.vfp--center .vfp__card {
     grid-template-columns: minmax(0, 1fr) minmax(240px, 400px) minmax(0, 1fr);
-    grid-template-areas:
-      "top      top    top"
-      "features media  trust"
-      "bottom   bottom bottom"
-      "actions  actions actions";
     gap: 20px 22px;
     padding: 28px 20px;
   }
-
-  .veloura-featured-product.vfp--center .vfp__media { max-width: none; }
 }
 
 @media (min-width: 1024px) {
@@ -389,10 +373,29 @@
 .veloura-featured-product.vfp--center .vfp__features li,
 .veloura-featured-product.vfp--center .vfp__trust li {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  line-height: 1.5;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* The chip's second line is the detail ("within 1-3 days"); at this width it
+   is noise beside a 55px column, so only the name is kept on phones. */
+.veloura-featured-product.vfp--center .vfp__trust li small { display: none; }
+
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__features li,
+  .veloura-featured-product.vfp--center .vfp__trust li {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    text-align: start;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust li small { display: block; }
 }
 
 /* An icon chip rather than a bare glyph: at this size a lone icon beside two
@@ -419,6 +422,50 @@
     justify-content: flex-end;
     text-align: end;
   }
+}
+
+/* Both lists hug the photo instead of the card's outer edges: each column is
+   a full grid track, so without this the chips drifted to the far side and the
+   group stopped reading as one composition. `end` and `start` are logical and
+   resolve toward the middle column in either page direction. */
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__features {
+    justify-self: end;
+    max-width: 260px;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust {
+    justify-self: start;
+    max-width: 260px;
+  }
+}
+
+/* --- the arc ---------------------------------------------------------------
+   The middle item of each side steps outwards, so the three chips curve around
+   the photo instead of standing in a straight column. Physical translateX with
+   an explicit direction rule rather than a logical property: the offset has to
+   flip with the page direction, and only the two side columns move. */
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
+    transform: translateX(var(--vfp-arc, 22px));
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
+    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
+  }
+
+  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
+    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
+  }
+
+  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
+    transform: translateX(var(--vfp-arc, 22px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-featured-product.vfp--center .vfp__features li,
+  .veloura-featured-product.vfp--center .vfp__trust li { transition: none; }
 }
 
 @media (min-width: 768px) {
