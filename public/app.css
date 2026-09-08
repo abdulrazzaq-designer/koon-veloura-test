@@ -42931,6 +42931,35 @@ html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
 }
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel {
   padding: 2px 18px 14px;
+  /* Same reasoning as the row heads: state the direction here instead of
+     trusting inheritance, so the links and contact lines Salla renders inside
+     start from the right like everything else in the drawer. */
+  direction: rtl;
+  text-align: right;
+}
+/* Salla renders its own lists and rows in these panels. Force the text to the
+   right, and un-stretch the flex rows it uses for the contact lines so the
+   value sits next to its icon rather than being pushed across the panel. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel a, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel li, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel p, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel span, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel div, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h3, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h4 {
+  text-align: right;
+}
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel ul, .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel ol {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  list-style: none;
+}
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel a,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel li,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel p,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel span,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel div,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h3,
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h4 {
+  direction: ltr;
+  text-align: left;
 }
 /* Salla's own components render their lists inside these panels; keep them
    flush with the row padding rather than re-styling their internals. */
