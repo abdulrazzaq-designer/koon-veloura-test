@@ -1,11 +1,15 @@
 import "lite-youtube-embed";
 import BasePage from "./base-page";
 import Lightbox from "fslightbox";
+import initVelouraFeaturedProduct from "./partials/veloura-featured-product";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
     onReady() {
         this.initFeaturedTabs();
+        /* Waits for salla to be ready: the section is filled from
+           salla.product.api, which does not exist before that. */
+        salla.onReady(() => initVelouraFeaturedProduct());
     }
 
     /**

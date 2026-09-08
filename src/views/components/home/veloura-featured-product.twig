@@ -1,0 +1,219 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{# ==========================================================================
+   المنتج المميز (فيلورا)
+
+   Unlike Salla's own featured-products blocks, a CUSTOM component never
+   receives a Product object server-side — it only gets the values of its own
+   settings. So the section renders its whole shell here (headings, features,
+   countdown, trust chips) and the product itself is filled in by
+   partials/veloura-featured-product.js through salla.product.api.fetch, the
+   same API salla-products-slider uses. The shell is real markup from the
+   first paint; only the product line, image, price and button wait on the
+   request, and they sit inside a skeleton until it lands.
+   ========================================================================== #}
+
+{% if not component.veloura_fp_hide %}
+
+  {# Dropdowns arrive as a bare value, {value: …}, or a one-item list. #}
+  {% set fp_layout = component.veloura_fp_layout|default('split') %}
+  {% if fp_layout is iterable and fp_layout[0].value is defined %}{% set fp_layout = fp_layout[0].value %}
+  {% elseif fp_layout.value is defined %}{% set fp_layout = fp_layout.value %}{% endif %}
+
+  {% set fp_side = component.veloura_fp_image_side|default('right') %}
+  {% if fp_side is iterable and fp_side[0].value is defined %}{% set fp_side = fp_side[0].value %}
+  {% elseif fp_side.value is defined %}{% set fp_side = fp_side.value %}{% endif %}
+
+  {% set fp_fallback = component.veloura_fp_fallback|default('sales') %}
+  {% if fp_fallback is iterable and fp_fallback[0].value is defined %}{% set fp_fallback = fp_fallback[0].value %}
+  {% elseif fp_fallback.value is defined %}{% set fp_fallback = fp_fallback.value %}{% endif %}
+
+  {% set fp_radius_key = component.veloura_fp_radius|default('medium') %}
+  {% if fp_radius_key is iterable and fp_radius_key[0].value is defined %}{% set fp_radius_key = fp_radius_key[0].value %}
+  {% elseif fp_radius_key.value is defined %}{% set fp_radius_key = fp_radius_key.value %}{% endif %}
+
+  {% set fp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'32px'} %}
+  {% set fp_radius = fp_radius_map[fp_radius_key]|default('20px') %}
+
+  {# The chosen product. multichoice is off, so this is a single item, but it
+     still arrives as a list — read the first entry either way. #}
+  {% set fp_product_id = '' %}
+  {% if component.veloura_fp_product %}
+    {% for chosen in component.veloura_fp_product %}
+      {% if loop.first %}{% set fp_product_id = chosen.id ?: chosen.value %}{% endif %}
+    {% endfor %}
+    {% if fp_product_id is empty and component.veloura_fp_product.id is defined %}
+      {% set fp_product_id = component.veloura_fp_product.id %}
+    {% endif %}
+  {% endif %}
+
+  {% set section_classes = [
+    's-block',
+    'veloura-featured-product',
+    'vfp--' ~ fp_layout,
+    'vfp--image-' ~ fp_side,
+    component.veloura_fp_custom_spacing ? 'has-spacing' : '',
+    component.veloura_fp_mobile_only ? 'veloura-mobile-only' : '',
+    component.veloura_fp_desktop_only ? 'veloura-desktop-only' : '',
+    component.veloura_fp_custom_classes ?: ''
+  ]|join(' ') %}
+
+  <section
+    data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    data-veloura-featured-product
+    data-vfp-product-id="{{ fp_product_id }}"
+    data-vfp-fallback="{{ fp_fallback }}"
+    data-vfp-sticky-enabled="{{ component.veloura_fp_sticky_enabled ? '1' : '0' }}"
+    data-vfp-countdown-date="{{ component.veloura_fp_countdown_date }}"
+    data-vfp-countdown-fallback="{{ component.veloura_fp_countdown_use_product_date ? '1' : '0' }}"
+    data-vfp-countdown-hide="{{ component.veloura_fp_countdown_hide_after ? '1' : '0' }}"
+    id="veloura-featured-product-{{ position }}"
+    class="{{ section_classes }}"
+    style="
+      --vfp-radius: {{ fp_radius }};
+      {# The merchant's colours are written as *-light custom properties, never
+         as the properties the component actually paints with. An inline style
+         beats any stylesheet rule, so setting --vfp-title-color here directly
+         would make the dark-mode block below it unable to override it and the
+         product name would stay near-black on a near-black card. The stylesheet
+         maps *-light to the real properties in light mode and substitutes its
+         own values in dark. #}
+      --vfp-accent: {{ component.veloura_fp_accent_color|default('#004956') }};
+      --vfp-title-color-light: {{ component.veloura_fp_title_color|default('#111827') }};
+      --vfp-text-color-light: {{ component.veloura_fp_text_color|default('#4b5563') }};
+      --vfp-card-bg-light: {{ component.veloura_fp_card_bg|default('#ffffff') }};
+      --vfp-dark-card-bg: {{ component.veloura_fp_dark_card_bg|default('#0f172a') }};
+      --vfp-spacing: {{ component.veloura_fp_custom_spacing ? component.veloura_fp_spacing|default(0) : 0 }}px;
+    "
+  >
+    <div class="container vfp__container">
+
+      {% if component.veloura_fp_title or component.veloura_fp_subtitle %}
+        <div class="vfp__heading veloura-component-title" data-veloura-section-heading>
+          <div data-veloura-section-heading-text>
+            {% if component.veloura_fp_title %}<h2>{{ component.veloura_fp_title }}</h2>{% endif %}
+            {% if component.veloura_fp_subtitle %}<p>{{ component.veloura_fp_subtitle|raw }}</p>{% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="vfp__card" data-vfp-card>
+
+        <div class="vfp__media">
+          <span class="vfp__badge" data-vfp-discount hidden></span>
+          <a class="vfp__image-wrap" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
+            <img class="vfp__image" data-vfp-image src="" alt="" loading="lazy" decoding="async">
+          </a>
+          {% if component.veloura_fp_show_gallery %}
+            <div class="vfp__thumbs" data-vfp-thumbs hidden></div>
+          {% endif %}
+        </div>
+
+        <div class="vfp__content">
+          {% if component.veloura_fp_eyebrow %}
+            <span class="vfp__eyebrow">{{ component.veloura_fp_eyebrow }}</span>
+          {% endif %}
+
+          <h3 class="vfp__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
+
+          {% if component.veloura_fp_show_rating %}
+            <div class="vfp__rating" data-vfp-rating hidden></div>
+          {% endif %}
+
+          {% if component.veloura_fp_show_excerpt %}
+            <p class="vfp__excerpt" data-vfp-excerpt hidden></p>
+          {% endif %}
+
+          {% if component.veloura_fp_show_price %}
+            <div class="vfp__prices">
+              <span class="vfp__price" data-vfp-price></span>
+              <del class="vfp__old-price" data-vfp-old hidden></del>
+            </div>
+          {% endif %}
+
+          {% if component.veloura_fp_countdown_enabled %}
+            <div class="vfp__countdown" data-vfp-countdown hidden>
+              <span class="vfp__countdown-label">{{ component.veloura_fp_countdown_label|default('ينتهي العرض خلال') }}</span>
+              <div class="vfp__countdown-units">
+                <span class="vfp__unit"><b data-vfp-days>0</b><small>يوم</small></span>
+                <span class="vfp__unit"><b data-vfp-hours>0</b><small>ساعة</small></span>
+                <span class="vfp__unit"><b data-vfp-minutes>0</b><small>دقيقة</small></span>
+                <span class="vfp__unit"><b data-vfp-seconds>0</b><small>ثانية</small></span>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if component.veloura_fp_features %}
+            <ul class="vfp__features">
+              {% for feature in component.veloura_fp_features %}
+                {% if feature.text %}
+                  <li>
+                    <i class="{{ feature.icon|default('sicon-check') }}" aria-hidden="true"></i>
+                    <span>{{ feature.text }}</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          <div class="vfp__actions">
+            <salla-add-product-button
+              class="vfp__add"
+              data-vfp-add
+              product-id=""
+              product-status="sale"
+              product-type="product"
+              width="wide"
+            >{{ component.veloura_fp_button_text|default('أضف للسلة') }}</salla-add-product-button>
+
+            {% if component.veloura_fp_show_link %}
+              <a class="vfp__details" data-vfp-link href="#">
+                {{ component.veloura_fp_link_text|default('تفاصيل المنتج') }}
+                <i class="sicon-arrow-left" aria-hidden="true"></i>
+              </a>
+            {% endif %}
+          </div>
+
+          {% if component.veloura_fp_trust %}
+            <ul class="vfp__trust">
+              {% for chip in component.veloura_fp_trust %}
+                {% if chip.title %}
+                  <li>
+                    <i class="{{ chip.icon|default('sicon-shipping-fast') }}" aria-hidden="true"></i>
+                    <span>
+                      <b>{{ chip.title }}</b>
+                      {% if chip.subtitle %}<small>{{ chip.subtitle }}</small>{% endif %}
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if component.veloura_fp_sticky_enabled %}
+      {# Rendered here and moved to <body> by the script: a fixed bar inside a
+         section that may sit in a transformed ancestor would be positioned
+         against that ancestor instead of the viewport. #}
+      <div class="vfp__sticky" data-vfp-sticky hidden aria-hidden="true">
+        <div class="vfp__sticky-info">
+          <span class="vfp__sticky-name" data-vfp-name></span>
+          <span class="vfp__sticky-price" data-vfp-price></span>
+        </div>
+        <salla-add-product-button
+          class="vfp__sticky-add"
+          data-vfp-add
+          product-id=""
+          product-status="sale"
+          product-type="product"
+        >{{ component.veloura_fp_button_text|default('أضف للسلة') }}</salla-add-product-button>
+      </div>
+    {% endif %}
+  </section>
+{% endif %}
