@@ -101,6 +101,43 @@ html body.dark .s-product-card-entry :is(
   background-image: none !important;
 }
 
+/* …except when the image sits outside the card.
+
+   In that mode master.twig makes .s-product-card-entry transparent, drops its
+   radius to 0 and sets overflow: visible (the image has to be able to escape
+   upwards), and paints the card's real surface with .s-product-card-entry::before
+   — which is the element that carries the rounded corners.
+
+   The rule above paints the inner boxes opaque, and those boxes have no radius
+   of their own. With nothing clipping them, the square bottom box sits on top of
+   the rounded ::before and squares off the bottom of the card — visible only in
+   dark mode, because in light mode these same children stay transparent. Letting
+   them stay transparent here too makes dark behave exactly like light: the
+   rounded surface underneath shows through, corners included. */
+html.dark body.veloura-product-card-image-outside .s-product-card-entry :is(
+  .s-product-card-image,
+  .s-product-card-image > a,
+  .s-product-card-image-cover,
+  .s-product-card-content,
+  .s-product-card-content-main,
+  .s-product-card-content-sub,
+  .s-product-card-content-footer,
+  .veloura-card-bottom
+),
+html body.dark.veloura-product-card-image-outside .s-product-card-entry :is(
+  .s-product-card-image,
+  .s-product-card-image > a,
+  .s-product-card-image-cover,
+  .s-product-card-content,
+  .s-product-card-content-main,
+  .s-product-card-content-sub,
+  .s-product-card-content-footer,
+  .veloura-card-bottom
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
 html.dark body .s-product-card-entry
   :is(.s-product-card-content-title, .s-product-card-content-title a),
 html body.dark .s-product-card-entry

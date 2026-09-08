@@ -81,14 +81,15 @@
 {% set vdm_toggle_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_toggle_enabled_2026', true), true)|trim %}
 {% set vdm_toggle_enabled = vdm_toggle_raw == true or vdm_toggle_raw == 'true' or vdm_toggle_raw == 1 or vdm_toggle_raw == '1' or vdm_toggle_raw == 'on' %}
 
-{% set vdm_force_product_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_force_product_desc_2026', true), true)|trim %}
-{% set vdm_force_product = vdm_force_product_raw == true or vdm_force_product_raw == 'true' or vdm_force_product_raw == 1 or vdm_force_product_raw == '1' or vdm_force_product_raw == 'on' %}
-
-{% set vdm_force_blog_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_force_blog_desc_2026', true), true)|trim %}
-{% set vdm_force_blog = vdm_force_blog_raw == true or vdm_force_blog_raw == 'true' or vdm_force_blog_raw == 1 or vdm_force_blog_raw == '1' or vdm_force_blog_raw == 'on' %}
-
-{% set vdm_product_sections_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_product_sections_2026', true), true)|trim %}
-{% set vdm_product_sections = vdm_product_sections_raw == true or vdm_product_sections_raw == 'true' or vdm_product_sections_raw == 1 or vdm_product_sections_raw == '1' or vdm_product_sections_raw == 'on' %}
+{# Removed: veloura_dark_force_product_desc_2026, veloura_dark_force_blog_desc_2026
+   and veloura_dark_product_sections_2026. Each one only ever produced a class on
+   <body> (veloura-dark-force-product-desc / -blog-desc / veloura-dark-product-sections)
+   and NOTHING in the theme ever selected on those classes — no stylesheet, no
+   inline block, no script. So all three switches were inert in both positions:
+   the product description, the blog articles and the Tabby/Tamara block already
+   take the secondary text colour straight from the dark palette, which is the
+   behaviour that was wanted anyway. Dropping them removes three switches that
+   could never have changed anything. #}
 
 {% set vdm_initial_dark = vdm_enabled and vdm_mode == 'dark' %}
 
@@ -1105,7 +1106,11 @@
         --veloura-dark-product-card-bg: {{ theme.settings.get('veloura_dark_product_card_bg_2026', '#111111') }};
         --veloura-dark-product-card-text: {{ theme.settings.get('veloura_dark_product_card_text_2026', '#ffffff') }};
         --veloura-dark-product-card-border: {{ theme.settings.get('veloura_dark_product_card_border_2026', '#111111') }};
-        --veloura-dark-glass-tint: {{ theme.settings.get('veloura_dark_glass_tint_2026', '#18181b') }};
+        {# --veloura-dark-glass-tint removed with veloura_dark_glass_tint_2026:
+           nothing in the theme ever read this custom property, so the colour
+           picker could not change anything. Every dark glass surface (header,
+           search, submenus, dialogs, side menu) already draws from
+           --veloura-dark-secondary-bg above. #}
         --veloura-dark-footer-bg: {{ theme.settings.get('veloura_dark_footer_bg_2026', '#010612') }};
         --veloura-dark-side-menu-bg: {{ theme.settings.get('veloura_dark_side_menu_bg_2026', '#18181b') }};
         --veloura-dark-side-menu-text: {{ theme.settings.get('veloura_dark_side_menu_text_2026', '#ffffff') }};
@@ -2242,9 +2247,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {{ theme.settings.get('topnav_is_dark') ? ' topnav-is-dark' : '' }}
   {{ theme.settings.get('sticky_add_to_cart') ? ' is-sticky-product-bar' : '' }}
   {{ vdm_initial_dark ? ' dark' : '' }}
-  {{ vdm_force_product ? ' veloura-dark-force-product-desc' : '' }}
-  {{ vdm_force_blog ? ' veloura-dark-force-blog-desc' : '' }}
-  {{ vdm_product_sections ? ' veloura-dark-product-sections' : '' }}
 
   veloura-general-enabled
   {{ vpc_enabled ? ' veloura-product-card-enabled' : '' }}

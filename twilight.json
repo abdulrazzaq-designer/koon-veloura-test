@@ -1401,24 +1401,6 @@
       ]
     },
     {
-      "id": "veloura_dark_glass_tint_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون الزجاج والتعتيم في الوضع الداكن",
-      "description": "يستخدم للهيدر والبحث والقوائم والنوافذ الزجاجية في الوضع الداكن.",
-      "icon": "sicon-paint-bucket",
-      "value": "#18181b",
-      "default": "#18181b",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_dark_footer_bg_2026",
       "type": "string",
       "format": "color",
@@ -1552,57 +1534,6 @@
       "format": "color",
       "label": "لون إطار بطاقة المنتج في الوضع الداكن",
       "value": "#111111",
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "فرض لون النص الثانوي على وصف المنتجات في صفحة المنتج",
-      "id": "veloura_dark_force_product_desc_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "فرض لون النص الثانوي على مقالات المدونة",
-      "id": "veloura_dark_force_blog_desc_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "الوضع الداكن لقسم ثنائي وتمارا في صفحة المنتج",
-      "id": "veloura_dark_product_sections_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
       "conditions": [
         {
           "id": "veloura_dark_enabled_2026",
@@ -16331,7 +16262,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل111111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
