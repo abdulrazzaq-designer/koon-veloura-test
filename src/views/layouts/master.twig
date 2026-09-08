@@ -347,18 +347,39 @@
 
     {# Veloura Final: V35/V54 card mutation runtimes removed; card contract lives in product-card.js. #}
 
-    {# veloura_product_card_enabled_2026 no longer exists as a setting.
+    {# This master switch is deliberately INVISIBLE in the dashboard: its only
+       condition in twilight.json compares veloura_product_card_panel_open_2026
+       against the sentinel "__veloura_internal_never__", which nothing can ever
+       equal, and the field itself declares value/selected = true. In other
+       words it is meant to be permanently ON and never shown.
 
-       It was a switch the merchant could never reach: its only condition
-       compared a panel toggle against the sentinel "__veloura_internal_never__",
-       so it was permanently hidden while declaring value = true — i.e. meant to
-       be always on. A hidden field is exactly the thing that stops delivering a
-       value, and this one gated EVERYTHING below it (the custom properties, the
-       ~190 rules, and every veloura-product-card-* class on <body>), so the
-       whole feature switched itself off. It has been deleted rather than left
-       as an unlabelled toggle in the dashboard, and the card styling is simply
-       always applied. #}
-    {% set vpc_enabled = true %}
+       The fallback here was `false`, which turned that intent upside down:
+       a merchant can never switch a hidden field on, so the moment
+       theme.settings.get() came back with nothing for it, vpc_enabled went
+       false — and vpc_enabled gates EVERYTHING below (the CSS custom
+       properties, ~190 rules, and every veloura-product-card-* class on
+       <body>). Changing any product-card setting in the dashboard then did
+       precisely nothing, because the block that consumes those settings was
+       never emitted.
+
+       The fallback now matches the declared value, and matches how the
+       identically-hidden veloura_product_page_enabled_2026 is already read in
+       pages/product/single.twig. A stored true still reads as true; a missing
+       value now also reads as true, which is the documented intent. #}
+    {% set vpc_enabled_raw = theme.settings.get('veloura_product_card_enabled_2026', true) %}
+    {% if vpc_enabled_raw.value is defined %}
+      {% set vpc_enabled_raw = vpc_enabled_raw.value %}
+    {% elseif vpc_enabled_raw.selected is defined %}
+      {% set vpc_enabled_raw = vpc_enabled_raw.selected %}
+    {% endif %}
+
+    {% set vpc_enabled =
+      vpc_enabled_raw == true
+      or vpc_enabled_raw == 'true'
+      or vpc_enabled_raw == 1
+      or vpc_enabled_raw == '1'
+      or vpc_enabled_raw == 'on'
+    %}
 
     {% set vpc_radius_map = {
       'sharp': '0px',
