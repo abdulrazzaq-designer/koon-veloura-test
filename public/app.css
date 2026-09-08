@@ -42834,13 +42834,38 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, 0.08));
   background: transparent;
-  color: inherit;
   font: inherit;
   text-align: left;
+  /* Explicit rather than inherited. These rows are children of the drawer's
+     scroller, NOT of #mobile-menu, so the rule that paints the category items
+     (.mm-ocd #mobile-menu.mm-spn li > a) never reaches them and they were
+     picking up whatever colour the drawer happened to carry — which rendered
+     them, and the panels below, in red. Using the same token the category
+     items use keeps the pinned rows and the menu one colour. */
+  color: #111827;
+  color: var(--veloura-side-cats-text, #111827);
+}
+/* The panels hold Salla's own components, whose links otherwise fall back to
+   the store's primary colour and stand out against the rows above them. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel a,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel span,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel p,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h1,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h2,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h3,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h4 {
+  color: #111827 !important;
+  color: var(--veloura-side-cats-text, #111827) !important;
 }
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row:last-child {
   border-bottom: 0;
 }
+/* direction is pinned explicitly rather than left to inheritance. Logical
+   properties inside this drawer did not resolve the way the surrounding RTL
+   page suggests — two attempts put the spare width on the wrong side of the
+   label — so the row states its own direction and then uses PHYSICAL margins,
+   which cannot be misread. The LTR mirror is right below. */
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head {
   display: flex;
   align-items: center;
@@ -42852,7 +42877,8 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
   list-style: none;
   font-size: 15px;
   font-weight: 600;
-  color: inherit;
+  direction: rtl;
+  text-align: right;
 }
 /* Safari still paints the default disclosure triangle without this. */
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head::-webkit-details-marker {
@@ -42864,9 +42890,34 @@ body.dark .veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product
   line-height: 1;
   opacity: 0.85;
 }
+/* The label hugs its icon instead of stretching. It used to be flex:1, which
+   made it fill everything between the icon and the chevron and left the text
+   floating in the middle of the row, away from its own icon. Shrink-to-fit
+   keeps icon and label together at the start edge — the right, in this RTL
+   drawer — and the chevron is pushed to the far side by the auto margin
+   below, which is what the design asks for. */
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  /* Physical on purpose (see the direction note above): with the row set to
+     rtl the icon is first at the right and the label sits against it, so the
+     spare width belongs on the label's LEFT — which is exactly what pushes the
+     chevron out to the far edge. */
+  margin-left: auto;
+}
+/* LTR mirror, so the same rows still read correctly in a left-to-right store. */
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head {
+  direction: ltr;
+  text-align: left;
+}
+html[dir=ltr] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
 }
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__chevron {
   flex: 0 0 auto;
@@ -42908,6 +42959,28 @@ html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
   color: #ffffff;
   color: var(--veloura-dark-side-menu-text, #ffffff);
 }
+/* A dialog opened from inside the drawer has to sit on top of it.
+
+   The language/currency row is reachable from the pinned rows, and
+   <salla-localization-modal> renders its dialog as a <salla-modal> which
+   relocates itself to <body> on first render (salla-modal's own
+   componentDidLoad calls document.body.append(this.host)). That makes it a
+   SIBLING of the drawer rather than a descendant, and the drawer above is
+   pinned near the top of the stacking order — so the dialog opened behind the
+   menu and was unreachable.
+
+   Scoped to [visible], which salla-modal sets on its host only while open, so
+   this lifts a dialog that is actually showing and never a dormant one. */
+html body salla-modal[visible],
+html body salla-modal.s-modal[visible],
+html body salla-modal[visible] > .s-modal-overlay,
+html body salla-modal[visible] > .s-modal-wrapper {
+  z-index: 2147483647 !important;
+}
+/* The host is .s-modal-container (position: fixed), so raising it is enough on
+   its own — but the overlay and wrapper are fixed too, and covering all three
+   means the dialog wins whether the stacking context is created by the host or
+   by one of its layers. */
 /* ========================================================================
    Veloura V89 — exact dark secondary + light glass +3%
 

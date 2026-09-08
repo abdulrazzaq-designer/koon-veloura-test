@@ -115,15 +115,40 @@
   border: 0;
   border-bottom: 1px solid var(--veloura-side-menu-separator, rgba(15, 23, 42, .08));
   background: transparent;
-  color: inherit;
   font: inherit;
   text-align: start;
+
+  /* Explicit rather than inherited. These rows are children of the drawer's
+     scroller, NOT of #mobile-menu, so the rule that paints the category items
+     (.mm-ocd #mobile-menu.mm-spn li > a) never reaches them and they were
+     picking up whatever colour the drawer happened to carry — which rendered
+     them, and the panels below, in red. Using the same token the category
+     items use keeps the pinned rows and the menu one colour. */
+  color: var(--veloura-side-cats-text, #111827);
+}
+
+/* The panels hold Salla's own components, whose links otherwise fall back to
+   the store's primary colour and stand out against the rows above them. */
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel a,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel span,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel p,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h1,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h2,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h3,
+.mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__panel h4 {
+  color: var(--veloura-side-cats-text, #111827) !important;
 }
 
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row:last-child {
   border-bottom: 0;
 }
 
+/* direction is pinned explicitly rather than left to inheritance. Logical
+   properties inside this drawer did not resolve the way the surrounding RTL
+   page suggests — two attempts put the spare width on the wrong side of the
+   label — so the row states its own direction and then uses PHYSICAL margins,
+   which cannot be misread. The LTR mirror is right below. */
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head {
   display: flex;
   align-items: center;
@@ -135,7 +160,8 @@
   list-style: none;
   font-size: 15px;
   font-weight: 600;
-  color: inherit;
+  direction: rtl;
+  text-align: right;
 }
 
 /* Safari still paints the default disclosure triangle without this. */
@@ -162,12 +188,24 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-align: start;
-  /* Claims the row's spare width on the side away from the icon, so the label
-     stays glued to its icon at the right and the chevron is left at the far
-     edge. Measured rather than assumed: inside this drawer these rows resolve
-     inline-start to the LEFT, so this is the gap between label and chevron. */
-  margin-inline-start: auto;
+  text-align: right;
+  /* Physical on purpose (see the direction note above): with the row set to
+     rtl the icon is first at the right and the label sits against it, so the
+     spare width belongs on the label's LEFT — which is exactly what pushes the
+     chevron out to the far edge. */
+  margin-left: auto;
+}
+
+/* LTR mirror, so the same rows still read correctly in a left-to-right store. */
+html[dir="ltr"] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__head {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir="ltr"] .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__chevron {
@@ -229,6 +267,13 @@ html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
    Scoped to [visible], which salla-modal sets on its host only while open, so
    this lifts a dialog that is actually showing and never a dormant one. */
 html body salla-modal[visible],
-html body salla-modal.s-modal[visible] {
+html body salla-modal.s-modal[visible],
+html body salla-modal[visible] > .s-modal-overlay,
+html body salla-modal[visible] > .s-modal-wrapper {
   z-index: 2147483647 !important;
 }
+
+/* The host is .s-modal-container (position: fixed), so raising it is enough on
+   its own — but the overlay and wrapper are fixed too, and covering all three
+   means the dialog wins whether the stacking context is created by the host or
+   by one of its layers. */
