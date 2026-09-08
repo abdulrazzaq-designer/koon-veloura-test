@@ -1576,6 +1576,36 @@ isElementLoaded(selector){
         drawerRoot?.classList.add('veloura-side-menu-drawer');
         menu.dataset.velouraDrawerRole = 'side-menu';
 
+        /* The store logo and the pinned rows are rendered by header.twig into
+           a hidden #veloura-side-menu-extras (see the note there for why they
+           cannot be written into #mobile-menu directly — mmenu rebuilds that
+           markup into its own panels). Now that the drawer exists, move them
+           in: the logo above the menu, the pinned rows after it.
+
+           This runs once — the block is moved, not copied — and it is
+           deliberately tolerant: if the merchant switched all four off,
+           header.twig renders nothing and there is simply nothing to move. */
+        const extras = document.getElementById('veloura-side-menu-extras');
+        if (extras && drawerContent && !extras.dataset.velouraSidePlaced) {
+          extras.dataset.velouraSidePlaced = '1';
+          extras.hidden = false;
+          extras.removeAttribute('aria-hidden');
+
+          const logo = extras.querySelector('[data-veloura-side-menu-logo]');
+          const pinned = extras.querySelector('[data-veloura-side-menu-pinned]');
+
+          // The logo belongs at the top of the panel, above the categories.
+          if (logo) drawerContent.prepend(logo);
+
+          /* The pinned rows go last inside the drawer's own scroller, so they
+             sit under the menu and stay reachable however long the category
+             list gets. CSS gives them the sticky-to-the-bottom treatment. */
+          if (pinned) drawerContent.append(pinned);
+
+          extras.remove();
+          drawerRoot?.classList.add('veloura-side-menu-has-extras');
+        }
+
         window.__velouraNativeMobileMenuDrawer = drawer;
         window.__velouraNativeMobileMenuRoot = drawerRoot;
 

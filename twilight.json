@@ -267,8 +267,8 @@
       "format": "switch",
       "label": " ",
       "required": false,
-      "value": true,
-      "selected": true
+      "value": false,
+      "selected": false
     },
     {
       "type": "static",
@@ -643,7 +643,17 @@
       "type": "boolean",
       "id": "veloura_loader_enable_2026",
       "format": "switch",
-      "label": " ",
+      "label": "إظهار إعدادات صفحة التحميل",
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_loader_active_2026",
+      "label": "تفعيل صفحة التحميل",
+      "icon": "sicon-timer",
       "required": false,
       "value": false,
       "selected": false
@@ -3817,6 +3827,88 @@
           "required": false
         }
       ],
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "static",
+      "format": "title",
+      "id": "veloura_side_menu_extras_subtitle_2026",
+      "label": " ",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>شعار القائمة والعناصر المثبتة أسفلها</span></div>",
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_side_menu_logo_2026",
+      "label": "إظهار شعار المتجر في رأس القائمة",
+      "icon": "sicon-image",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_side_menu_links_2026",
+      "label": "إظهار «روابط تهمك» أسفل القائمة",
+      "icon": "sicon-link",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_side_menu_support_2026",
+      "label": "إظهار «خدمة العملاء» أسفل القائمة",
+      "icon": "sicon-headphone",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_side_menu_currency_2026",
+      "label": "إظهار «العملة» أسفل القائمة",
+      "icon": "sicon-coins",
+      "required": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
