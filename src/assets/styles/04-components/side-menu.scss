@@ -355,10 +355,21 @@ html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
 
    Scoped to [visible], which salla-modal sets on its host only while open, so
    this lifts a dialog that is actually showing and never a dormant one. */
+/* ONLY the host. The overlay and the wrapper are deliberately left alone.
+
+   Raising all three put the dim overlay ON TOP of the dialog: .s-modal-wrapper
+   is a static element (Salla's utility is just `h-full overflow-y-auto
+   text-center`), so a z-index on it does nothing, while .s-modal-overlay is
+   fixed — positioned, and therefore the only one of the two that a z-index
+   actually applies to. Giving both the same value promoted the overlay above
+   the panel instead of levelling them, which is the greyed-out sheet in the
+   screenshot. Measured with elementsFromPoint over the panel: overlay first,
+   panel second.
+
+   The host is .s-modal-container (fixed, z-index 200), so raising it alone
+   lifts the whole dialog and leaves Salla's internal order untouched. */
 html body salla-modal[visible],
-html body salla-modal.s-modal[visible],
-html body salla-modal[visible] > .s-modal-overlay,
-html body salla-modal[visible] > .s-modal-wrapper {
+html body salla-modal.s-modal[visible] {
   z-index: 2147483647 !important;
 }
 
@@ -378,6 +389,25 @@ html body.veloura-modal-open .mm-ocd,
 html body.veloura-modal-open .mm-ocd.veloura-side-menu-drawer,
 html body.veloura-modal-open .mm-ocd.veloura-filters-drawer {
   z-index: 1000 !important;
+}
+
+/* A closed drawer must stop being a layer immediately.
+
+   mmenu collapses the offcanvas by animating `bottom` from 0 to 100%, and its
+   own rule delays that by .45s. For those 450ms a drawer the user has already
+   closed still covers the whole viewport with pointer-events, which is long
+   enough to swallow the first tap on whatever opened next. Dropping the delay
+   while a dialog is up, and never letting a closed drawer take a pointer at
+   all, removes the invisible sheet without touching the opening animation. */
+html body.veloura-modal-open .mm-ocd:not(.mm-ocd--open) {
+  bottom: 100% !important;
+  transition: none !important;
+}
+
+.mm-ocd:not(.mm-ocd--open),
+.mm-ocd:not(.mm-ocd--open) > .mm-ocd__backdrop,
+.mm-ocd:not(.mm-ocd--open) > .mm-ocd__content {
+  pointer-events: none !important;
 }
 
 /* The host is .s-modal-container (position: fixed), so raising it is enough on
