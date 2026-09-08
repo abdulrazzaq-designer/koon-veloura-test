@@ -199,7 +199,11 @@
 {# Veloura V52 text normalizer end #}
 {# Veloura Product Settings Normalizers V37 end #}
 
-    {% set vpp_enabled = _self.veloura_bool(theme.settings.get('veloura_product_page_enabled_2026', true), true)|trim == 'true' %}
+    {# veloura_product_page_enabled_2026 was removed: like the product-card one it
+       was permanently hidden behind a sentinel condition while declaring
+       value = true, so it could only ever be on — and a hidden field is exactly
+       what stops delivering its value. The product-page styling is always on. #}
+    {% set vpp_enabled = true %}
     {% set vpp_is_preview = theme.mode|default('live') == 'preview' %}
     {% set vpp_hide_breadcrumb = _self.veloura_bool(theme.settings.get('veloura_product_hide_breadcrumb_2026', false), false)|trim == 'true' %}
     {% set vpp_hide_thumbnails = _self.veloura_bool(theme.settings.get('veloura_product_hide_thumbnails_2026', false), false)|trim == 'true' %}
