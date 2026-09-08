@@ -16461,6 +16461,10 @@
               "value": "split"
             },
             {
+              "label": "صورة في المنتصف والتفاصيل يمينها ويسارها",
+              "value": "center"
+            },
+            {
               "label": "خلفية كاملة مع بطاقة زجاجية",
               "value": "fullbleed"
             }
@@ -16497,6 +16501,47 @@
             }
           ],
           "value": "right",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_fp_layout",
+              "operation": "!=",
+              "value": "center"
+            }
+          ]
+        },
+        {
+          "id": "veloura_fp_image_fit",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "شكل صورة المنتج",
+          "description": "مربعة تقص الصورة لإطار متساوٍ، وكاملة تعرضها بأبعادها الأصلية بلا قص.",
+          "icon": "sicon-image",
+          "options": [
+            {
+              "label": "مربعة",
+              "value": "square"
+            },
+            {
+              "label": "كاملة بأبعادها",
+              "value": "full"
+            }
+          ],
+          "selected": [
+            {
+              "label": "مربعة",
+              "value": "square"
+            }
+          ],
+          "value": "square",
+          "required": false
+        },
+        {
+          "id": "veloura_fp_center_titles",
+          "type": "boolean",
+          "format": "switch",
+          "label": "توسيط عنوان القسم",
+          "value": false,
           "required": false
         },
         {
@@ -16955,7 +17000,7 @@
           "id": "veloura_fp_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل11111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل111111111",
           "value": false,
           "required": false
         },

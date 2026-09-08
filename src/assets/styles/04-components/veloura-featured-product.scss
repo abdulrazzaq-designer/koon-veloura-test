@@ -61,14 +61,35 @@
   overflow: hidden;
   border-radius: calc(var(--vfp-radius) - 6px);
   background: rgba(15, 23, 42, .04);
-  aspect-ratio: 1 / 1;
 }
 
 .veloura-featured-product .vfp__image {
+  display: block;
   width: 100%;
+  transition: transform .5s ease;
+}
+
+/* Square: a fixed 1:1 frame, the image cropped to fill it — every product
+   lines up whatever shape its photo is. */
+.veloura-featured-product.vfp--img-square .vfp__image-wrap { aspect-ratio: 1 / 1; }
+
+.veloura-featured-product.vfp--img-square .vfp__image {
   height: 100%;
   object-fit: cover;
-  transition: transform .5s ease;
+}
+
+/* Full: the photo's own proportions, nothing cropped. The height is capped so
+   a very tall product image cannot push the section off the screen. */
+.veloura-featured-product.vfp--img-full .vfp__image-wrap {
+  aspect-ratio: auto;
+  background: transparent;
+}
+
+.veloura-featured-product.vfp--img-full .vfp__image {
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  margin-inline: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -278,6 +299,94 @@
 .veloura-featured-product .vfp__trust i { color: var(--vfp-accent); font-size: 20px; flex: 0 0 auto; }
 .veloura-featured-product .vfp__trust b { display: block; font-weight: 700; }
 .veloura-featured-product .vfp__trust small { opacity: .7; }
+
+/* ------------------------------------------------------------- centred --- */
+/* The image takes the middle and the two content groups sit on either side of
+   it. .vfp__content is display:contents so its two children become grid items
+   of the card itself — no extra wrapper, and the split layout keeps using the
+   very same markup. */
+.veloura-featured-product.vfp--center .vfp__content { display: contents; }
+
+.veloura-featured-product.vfp--center .vfp__card {
+  /* minmax(0, …) on both columns, never a bare 1fr: a grid track's automatic
+     minimum is its content's min-content width, so the product name — one long
+     unbreakable line — pushed the first column wide and squeezed the second to
+     a few characters per line on a phone. With the floor at 0 the ratio below
+     is what actually decides the split. */
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas:
+    "media  media"
+    "main   aside"
+    "actions actions"
+    "trust  trust";
+  align-items: start;
+  gap: 14px 12px;
+}
+
+/* Under ~380px two text columns stop being readable at any ratio, so the
+   second group takes the full width instead of shredding into one word a line. */
+@media (max-width: 379px) {
+  .veloura-featured-product.vfp--center .vfp__card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "media" "main" "aside" "actions" "trust";
+  }
+}
+
+.veloura-featured-product.vfp--center .vfp__col--aside .vfp__features li { font-size: 13px; }
+
+.veloura-featured-product.vfp--center .vfp__media { grid-area: media; }
+.veloura-featured-product.vfp--center .vfp__col--main { grid-area: main; }
+.veloura-featured-product.vfp--center .vfp__col--aside { grid-area: aside; }
+.veloura-featured-product.vfp--center .vfp__actions { grid-area: actions; }
+.veloura-featured-product.vfp--center .vfp__trust { grid-area: trust; }
+
+/* The image is the centre column, so it is capped rather than stretched — a
+   full-width photo between two narrow text columns reads as a banner. */
+.veloura-featured-product.vfp--center .vfp__media {
+  max-width: 420px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.veloura-featured-product.vfp--center .vfp__col--main { text-align: start; }
+.veloura-featured-product.vfp--center .vfp__col--aside { text-align: start; }
+
+/* The aside column carries the feature lines; on the far side of the image its
+   own text should hug that side. */
+.veloura-featured-product.vfp--center .vfp__col--aside .vfp__features li {
+  justify-content: flex-start;
+}
+
+.veloura-featured-product.vfp--center .vfp__actions { justify-content: center; }
+
+@media (min-width: 768px) {
+  .veloura-featured-product.vfp--center .vfp__card {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 420px) minmax(0, 1fr);
+    grid-template-areas:
+      "main   media  aside"
+      "actions actions actions"
+      "trust  trust  trust";
+    align-items: center;
+    gap: 28px;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__media { max-width: none; }
+
+  .veloura-featured-product.vfp--center .vfp__col--aside .vfp__features li { font-size: 14px; }
+}
+
+/* The thumbnails belong under the centred image, not against the card edge. */
+.veloura-featured-product.vfp--center .vfp__thumbs { justify-content: center; }
+
+/* --------------------------------------------------------- centred title -- */
+.veloura-featured-product.is-centered .vfp__heading { text-align: center; }
+
+/* The heading component lays its icon and text out in a row; centre that row
+   too, otherwise only the text inside it moves. */
+.veloura-featured-product.is-centered .vfp__heading > * {
+  margin-inline: auto;
+  justify-content: center;
+}
 
 /* ---------------------------------------------------------- fullbleed ---- */
 @media (min-width: 768px) {

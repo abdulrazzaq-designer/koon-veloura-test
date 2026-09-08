@@ -32,6 +32,10 @@
   {% if fp_fallback is iterable and fp_fallback[0].value is defined %}{% set fp_fallback = fp_fallback[0].value %}
   {% elseif fp_fallback.value is defined %}{% set fp_fallback = fp_fallback.value %}{% endif %}
 
+  {% set fp_image_fit = component.veloura_fp_image_fit|default('square') %}
+  {% if fp_image_fit is iterable and fp_image_fit[0].value is defined %}{% set fp_image_fit = fp_image_fit[0].value %}
+  {% elseif fp_image_fit.value is defined %}{% set fp_image_fit = fp_image_fit.value %}{% endif %}
+
   {% set fp_radius_key = component.veloura_fp_radius|default('medium') %}
   {% if fp_radius_key is iterable and fp_radius_key[0].value is defined %}{% set fp_radius_key = fp_radius_key[0].value %}
   {% elseif fp_radius_key.value is defined %}{% set fp_radius_key = fp_radius_key.value %}{% endif %}
@@ -56,6 +60,8 @@
     'veloura-featured-product',
     'vfp--' ~ fp_layout,
     'vfp--image-' ~ fp_side,
+    'vfp--img-' ~ fp_image_fit,
+    component.veloura_fp_center_titles ? 'is-centered' : '',
     component.veloura_fp_custom_spacing ? 'has-spacing' : '',
     component.veloura_fp_mobile_only ? 'veloura-mobile-only' : '',
     component.veloura_fp_desktop_only ? 'veloura-desktop-only' : '',
@@ -113,7 +119,16 @@
           {% endif %}
         </div>
 
+        {# Two groups, not one column of text.
+
+           In the centred layout the card is a three-column grid — main, media,
+           aside — and .vfp__content is display:contents there, so these two
+           groups become grid items themselves and sit on either side of the
+           image. In the split layout they simply stack, which is the original
+           look. The actions row is a sibling so the buy button can span the
+           full width under all three columns. #}
         <div class="vfp__content">
+          <div class="vfp__col vfp__col--main">
           {% if component.veloura_fp_eyebrow %}
             <span class="vfp__eyebrow">{{ component.veloura_fp_eyebrow }}</span>
           {% endif %}
@@ -147,6 +162,9 @@
             </div>
           {% endif %}
 
+          </div>
+
+          <div class="vfp__col vfp__col--aside">
           {% if component.veloura_fp_features %}
             <ul class="vfp__features">
               {% for feature in component.veloura_fp_features %}
@@ -159,6 +177,8 @@
               {% endfor %}
             </ul>
           {% endif %}
+
+          </div>
 
           <div class="vfp__actions">
             <salla-add-product-button

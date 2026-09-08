@@ -92,7 +92,11 @@ const paint = (section, product) => {
 
   set('data-vfp-name', el => { el.textContent = product.name; });
   set('data-vfp-link', el => { if (el.tagName === 'A') el.href = product.url; });
-  set('data-vfp-price', el => { el.textContent = product.price; });
+  /* innerHTML, not textContent: salla.money() returns MARKUP for currencies
+     that have a glyph — SAR comes back as `<i class="sicon-sar"></i>`, which
+     as text rendered the tag itself on the page. The string is Salla's own
+     output, never anything a visitor typed. */
+  set('data-vfp-price', el => { el.innerHTML = product.price; });
 
   set('data-vfp-image', el => {
     if (!product.image) return;
@@ -101,7 +105,7 @@ const paint = (section, product) => {
   });
 
   set('data-vfp-old', el => {
-    el.textContent = product.oldPrice;
+    el.innerHTML = product.oldPrice;
     el.hidden = !product.oldPrice;
   });
 
