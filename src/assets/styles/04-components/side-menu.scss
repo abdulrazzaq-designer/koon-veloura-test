@@ -150,9 +150,24 @@
   opacity: .85;
 }
 
+/* The label hugs its icon instead of stretching. It used to be flex:1, which
+   made it fill everything between the icon and the chevron and left the text
+   floating in the middle of the row, away from its own icon. Shrink-to-fit
+   keeps icon and label together at the start edge — the right, in this RTL
+   drawer — and the chevron is pushed to the far side by the auto margin
+   below, which is what the design asks for. */
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__label {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: start;
+  /* Claims the row's spare width on the side away from the icon, so the label
+     stays glued to its icon at the right and the chevron is left at the far
+     edge. Measured rather than assumed: inside this drawer these rows resolve
+     inline-start to the LEFT, so this is the gap between label and chevron. */
+  margin-inline-start: auto;
 }
 
 .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row__chevron {
@@ -199,4 +214,21 @@ html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
 html.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row,
 html body.dark .mm-ocd.veloura-side-menu-drawer .veloura-side-menu-row {
   color: var(--veloura-dark-side-menu-text, #ffffff);
+}
+
+/* A dialog opened from inside the drawer has to sit on top of it.
+
+   The language/currency row is reachable from the pinned rows, and
+   <salla-localization-modal> renders its dialog as a <salla-modal> which
+   relocates itself to <body> on first render (salla-modal's own
+   componentDidLoad calls document.body.append(this.host)). That makes it a
+   SIBLING of the drawer rather than a descendant, and the drawer above is
+   pinned near the top of the stacking order — so the dialog opened behind the
+   menu and was unreachable.
+
+   Scoped to [visible], which salla-modal sets on its host only while open, so
+   this lifts a dialog that is actually showing and never a dormant one. */
+html body salla-modal[visible],
+html body salla-modal.s-modal[visible] {
+  z-index: 2147483647 !important;
 }
