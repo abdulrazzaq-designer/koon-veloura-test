@@ -234,44 +234,58 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 
 </style>
 
-  {# A dropdown does not come back in one predictable shape.
+  {# A dropdown does not come back in one predictable shape: a plain string,
+     {value: …}, {selected: [{value: …}]}, {selected: {value: …}}, or a
+     one-item list. Unwrapped step by step here, with {% set %} only — the
+     previous attempt used a Twig macro and {% import _self %}, and the whole
+     section stopped rendering, so this file now keeps to the plainest
+     constructs it can. A string is not `iterable` in Twig, so |first is only
+     ever reached for a real list. #}
+  {% set tkr_raw = component.veloura_tkr_layout|default('') %}
+  {% if tkr_raw.selected is defined %}{% set tkr_raw = tkr_raw.selected %}{% endif %}
+  {% if tkr_raw is iterable and tkr_raw.value is not defined %}{% set tkr_raw = tkr_raw|first %}{% endif %}
+  {% if tkr_raw.value is defined %}{% set tkr_raw = tkr_raw.value %}{% endif %}
+  {% set tkr_layout = tkr_raw|default('cross') %}
+  {% if tkr_layout is iterable or tkr_layout == '' %}{% set tkr_layout = 'cross' %}{% endif %}
 
-     Depending on how the value was stored it can be a plain string, {value: …},
-     {selected: [{value: …}]}, {selected: {value: …}}, or a one-item list. The
-     earlier version handled only two of those, so the layout and the separator
-     silently fell back to their defaults no matter what the merchant picked —
-     one straight band and a star, forever. This macro covers every shape, and
-     both dropdowns go through it. #}
-  {% macro option(raw, fallback) %}
-    {%- if raw is null or raw == '' -%}{{ fallback }}
-    {%- elseif raw is not iterable -%}{{ raw }}
-    {%- elseif raw.selected is defined -%}
-      {%- set sel = raw.selected -%}
-      {%- if sel is iterable and sel.value is not defined -%}
-        {%- for one in sel %}{% if loop.first %}{{ one.value|default(fallback) }}{% endif %}{% endfor -%}
-      {%- else -%}{{ sel.value|default(fallback) }}{%- endif -%}
-    {%- elseif raw.value is defined -%}{{ raw.value }}
-    {%- else -%}
-      {%- for one in raw %}{% if loop.first %}{{ one.value|default(one) }}{% endif %}{% endfor -%}
-    {%- endif -%}
-  {% endmacro %}
+  {% set tkr_sraw = component.veloura_tkr_separator|default('') %}
+  {% if tkr_sraw.selected is defined %}{% set tkr_sraw = tkr_sraw.selected %}{% endif %}
+  {% if tkr_sraw is iterable and tkr_sraw.value is not defined %}{% set tkr_sraw = tkr_sraw|first %}{% endif %}
+  {% if tkr_sraw.value is defined %}{% set tkr_sraw = tkr_sraw.value %}{% endif %}
+  {% set tkr_sep_key = tkr_sraw|default('star') %}
+  {% if tkr_sep_key is iterable or tkr_sep_key == '' %}{% set tkr_sep_key = 'star' %}{% endif %}
 
-  {% import _self as tkr_h %}
+  {# Built with {% set %} rather than inside the class attribute: one ternary
+     less in a template that has to be dull to be reliable. #}
+  {% set tkr_is_tilted = tkr_layout == 'cross' or tkr_layout == 'tilt' or tkr_layout == 'triple' %}
+  {% set tkr_two = tkr_layout == 'cross' or tkr_layout == 'triple' %}
 
-  {% set tkr_layout = tkr_h.option(component.veloura_tkr_layout, 'cross')|trim %}
-  {% set tkr_sep_key = tkr_h.option(component.veloura_tkr_separator, 'star')|trim %}
   {% set tkr_sep_map = {'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': ''} %}
   {% set tkr_sep = tkr_sep_map[tkr_sep_key]|default('✦') %}
 
-  {% set tkr_items = component.veloura_tkr_items %}
+  {% set tkr_items = component.veloura_tkr_items|default([]) %}
 
-  {% if tkr_items %}
+  {# A section that renders NOTHING when the collection is empty is
+     indistinguishable from a broken one — and an instance saved before these
+     fields existed carries no items at all. It falls back to a short built-in
+     list instead, so the ribbon is always visible and the merchant can see what
+     they are editing. #}
+  {% if tkr_items is empty %}
+    {% set tkr_items = [
+      { 'icon': 'sicon-medal', 'text': 'ضمان الجودة' },
+      { 'icon': 'sicon-shipping-fast', 'text': 'تسليم سريع' },
+      { 'icon': 'sicon-star', 'text': 'تقييم 5 نجوم' },
+      { 'icon': 'sicon-users', 'text': 'آلاف العملاء' },
+      { 'icon': 'sicon-chat-conversation-alt', 'text': 'دعم 24/7' }
+    ] %}
+  {% endif %}
+
   <section
     data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-ticker-{{ position }}"
     class="s-block veloura-tkr
       tkr--{{ tkr_layout }}
-      {{ tkr_layout in ['cross', 'tilt', 'triple'] ? 'tkr--tilted' : '' }}
+      {{ tkr_is_tilted ? 'tkr--tilted' : '' }}
       {{ component.veloura_tkr_full_width ? 'tkr--bleed' : 'tkr--boxed' }}
       {{ component.veloura_tkr_glass ? 'tkr--glass' : '' }}
       {{ component.veloura_tkr_mobile_only ? 'veloura-mobile-only' : '' }}
@@ -319,7 +333,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
         </div>
       </div>
 
-      {% if tkr_layout == 'cross' or tkr_layout == 'triple' %}
+      {% if tkr_two %}
         <div class="tkr__band tkr__band--b" aria-hidden="true">
           <div class="tkr__track">
             {% for pass in 1..2 %}
@@ -356,5 +370,4 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       {% endif %}
     </div>
   </section>
-  {% endif %}
 {% endif %}
