@@ -38,10 +38,17 @@
 .veloura-tkr [hidden] { display: none !important; }
 
 /* Inside the container is the default; the switch is what leaves it. */
+/* The side spacing is padding on the SECTION, not on the wrap.
+
+   A tilted band is 118% wide with a negative start margin — it overflows any
+   padding put on its own container, so the setting moved nothing at all in the
+   two layouts that use it. Padding the section shrinks the wrap instead, and
+   the wrap is what clips, so the visible ribbon really does narrow. */
+.veloura-tkr.tkr--boxed { padding-inline: var(--tkr-side, 0px); }
+
 .veloura-tkr .tkr__wrap {
   max-width: var(--veloura-container, 1200px);
   margin-inline: auto;
-  padding-inline: var(--tkr-side, 0px);
 }
 
 .veloura-tkr.tkr--boxed .tkr__wrap {
@@ -71,6 +78,10 @@
   background: linear-gradient(90deg, var(--band-from), var(--band-to));
   color: var(--band-text);
   box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
+  /* A hairline along the top and bottom only. It costs nothing when the width
+     is 0, and it is what gives the glass mode an edge to catch the light. */
+  border-top: var(--tkr-edge, 0px) solid var(--tkr-edge-color, transparent);
+  border-bottom: var(--tkr-edge, 0px) solid var(--tkr-edge-color, transparent);
 }
 
 .veloura-tkr.tkr--straight .tkr__band { width: 100%; margin-inline-start: 0; }
@@ -129,6 +140,44 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 }
 
 .veloura-tkr a.tkr__item:hover { text-decoration: underline; }
+
+/* A gradient that travels through the letters instead of a flat colour.
+
+   The gradient is painted on the text itself and clipped to the glyphs, and
+   only the background POSITION animates — no layout, no repaint of anything
+   else. background-clip: text needs the -webkit- prefix to work in Safari and
+   in Chrome, so both are written. The icons keep the plain text colour: a
+   clipped gradient on an icon font renders as a smear. */
+.veloura-tkr.tkr--shine .tkr__item > span {
+  background-image: linear-gradient(
+    100deg,
+    var(--band-text) 0%,
+    var(--tkr-shine-a, #ffffff) 20%,
+    var(--tkr-shine-b, #ffe9a8) 32%,
+    var(--band-text) 50%,
+    var(--band-text) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: veloura-tkr-shine var(--tkr-shine-speed, 4.5s) linear infinite;
+}
+
+@keyframes veloura-tkr-shine {
+  from { background-position: 250% 0; }
+  to { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-tkr.tkr--shine .tkr__item > span {
+    animation: none;
+    background: none;
+    color: var(--band-text);
+    -webkit-text-fill-color: var(--band-text);
+  }
+}
 .veloura-tkr .tkr__item i { font-size: calc(var(--tkr-size) + 3px); opacity: .9; }
 
 .veloura-tkr .tkr__sep {
@@ -192,8 +241,17 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 .veloura-tkr.tkr--cross .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); z-index: 2; }
 .veloura-tkr.tkr--cross .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); z-index: 1; }
 
+/* One copy of the list is what a cycle travels, and on a phone that copy is
+   physically narrower — smaller type, tighter gaps — so the same duration works
+   out to fewer pixels per second and the ribbon crawls. The duration is scaled
+   down to compensate; measured px/s at 1280 and at 390 come out within a few
+   percent of each other with this factor. */
 @media (max-width: 639px) {
   .veloura-tkr { --tkr-height: 40px; --tkr-size: 12.5px; --tkr-gap: 18px; }
+
+  .veloura-tkr .tkr__track {
+    animation-duration: calc(var(--band-speed, var(--tkr-speed)) * var(--tkr-mobile-speed, .75));
+  }
   .veloura-tkr.tkr--cross .tkr__wrap { height: calc(var(--tkr-height) * 2.6); }
 }
 
@@ -224,6 +282,10 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   {% if tkr_sraw.value is defined %}{% set tkr_sraw = tkr_sraw.value %}{% endif %}
   {% set tkr_sep_key = tkr_sraw|default('star') %}
   {% if tkr_sep_key is iterable or tkr_sep_key == '' %}{% set tkr_sep_key = 'star' %}{% endif %}
+  {# Trimmed before the lookup: a key that arrives as "dot " misses the map and
+     falls back to the star, which is indistinguishable from the setting being
+     ignored. #}
+  {% set tkr_sep_key = tkr_sep_key|trim %}
   {% set tkr_sep_map = {'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': ''} %}
   {% set tkr_sep = tkr_sep_map[tkr_sep_key]|default('✦') %}
 
@@ -262,6 +324,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       tkr--{{ tkr_layout }}
       {{ tkr_is_tilted ? 'tkr--tilted' : '' }}
       {{ component.veloura_tkr_full_width ? 'tkr--bleed' : 'tkr--boxed' }}
+      {{ component.veloura_tkr_shine ? 'tkr--shine' : '' }}
       {{ component.veloura_tkr_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_tkr_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_tkr_custom_classes }}"
@@ -272,6 +335,12 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-speed: {{ component.veloura_tkr_speed|default(26) }}s;
       --tkr-angle: {{ component.veloura_tkr_angle|default(3) }}deg;
       --tkr-radius: {{ component.veloura_tkr_radius|default(16) }}px;
+      --tkr-edge: {{ component.veloura_tkr_border ? (component.veloura_tkr_border_width|default(1)) : 0 }}px;
+      --tkr-edge-color: {{ component.veloura_tkr_border_color|default('rgba(255,255,255,.35)') }};
+      --tkr-shine-a: {{ component.veloura_tkr_shine_a|default('#ffffff') }};
+      --tkr-shine-b: {{ component.veloura_tkr_shine_b|default('#ffe9a8') }};
+      --tkr-shine-speed: {{ component.veloura_tkr_shine_speed|default(4.5) }}s;
+      --tkr-mobile-speed: {{ (component.veloura_tkr_mobile_speed|default(75)) / 100 }};
       --tkr-side: {{ component.veloura_tkr_custom_space ? component.veloura_tkr_side_space|default(0) : 0 }}px;
     "
   >

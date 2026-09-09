@@ -17113,6 +17113,50 @@
           "description": "لا تظهر في وضع «عرض الشاشة كاملًا»."
         },
         {
+          "id": "veloura_tkr_border",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إطار علوي وسفلي",
+          "description": "خط رفيع أعلى الشريط وأسفله، يظهر جمال الوضع الزجاجي أكثر.",
+          "value": true,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_border_width",
+          "type": "number",
+          "format": "slider",
+          "label": "سماكة الإطار",
+          "icon": "sicon-border-radius",
+          "value": 1,
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_border",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr_border_color",
+          "type": "string",
+          "format": "color",
+          "label": "لون الإطار",
+          "icon": "sicon-brush",
+          "value": "#ffffff",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_border",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
           "id": "veloura_tkr_full_width",
           "type": "boolean",
           "format": "switch",
@@ -17247,6 +17291,19 @@
           "description": "كلما زادت صار الشريط أبطأ. يتوقف عند مرور المؤشر."
         },
         {
+          "id": "veloura_tkr_mobile_speed",
+          "type": "number",
+          "format": "slider",
+          "label": "سرعة الجوال (% من المدة)",
+          "description": "نسخة القائمة أضيق على الجوال، فنفس المدة تعني حركة أبطأ. 75% تجعلها أسرع بنحو الثلث؛ أقل = أسرع.",
+          "icon": "sicon-clock",
+          "value": 75,
+          "min": 30,
+          "max": 100,
+          "step": 2,
+          "required": false
+        },
+        {
           "id": "veloura_tkr_color_from",
           "type": "string",
           "format": "color",
@@ -17272,6 +17329,66 @@
           "icon": "sicon-brush",
           "value": "#ffffff",
           "required": false
+        },
+        {
+          "id": "veloura_tkr_shine",
+          "type": "boolean",
+          "format": "switch",
+          "label": "نص لامع متدرّج",
+          "description": "تدرّج يعبر داخل الحروف بدل لون ثابت. الأيقونات تبقى بلون النص.",
+          "value": false,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_shine_a",
+          "type": "string",
+          "format": "color",
+          "label": "لون اللمعة الأول",
+          "icon": "sicon-brush",
+          "value": "#ffffff",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_shine",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr_shine_b",
+          "type": "string",
+          "format": "color",
+          "label": "لون اللمعة الثاني",
+          "icon": "sicon-brush",
+          "value": "#ffe9a8",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_shine",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr_shine_speed",
+          "type": "number",
+          "format": "float",
+          "label": "مدة مرور اللمعة (ثانية)",
+          "icon": "sicon-clock",
+          "value": 4.5,
+          "min": 1,
+          "max": 12,
+          "step": 0.5,
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_shine",
+              "operation": "=",
+              "value": true
+            }
+          ]
         },
         {
           "id": "veloura_tkr_glass",
