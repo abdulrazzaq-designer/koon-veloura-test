@@ -16450,63 +16450,6 @@
           "required": false
         },
         {
-          "id": "veloura_fp_layout",
-          "type": "items",
-          "format": "dropdown-list",
-          "label": "شكل العرض",
-          "icon": "sicon-layout",
-          "options": [
-            {
-              "label": "صورة في المنتصف والتفاصيل يمينها ويسارها",
-              "value": "center"
-            },
-            {
-              "label": "صورة بجانب التفاصيل",
-              "value": "split"
-            }
-          ],
-          "selected": [
-            {
-              "label": "صورة في المنتصف والتفاصيل يمينها ويسارها",
-              "value": "center"
-            }
-          ],
-          "value": "center",
-          "required": false
-        },
-        {
-          "id": "veloura_fp_image_side",
-          "type": "items",
-          "format": "dropdown-list",
-          "label": "جهة الصورة",
-          "icon": "sicon-swap",
-          "options": [
-            {
-              "label": "يمين",
-              "value": "right"
-            },
-            {
-              "label": "يسار",
-              "value": "left"
-            }
-          ],
-          "selected": [
-            {
-              "label": "يمين",
-              "value": "right"
-            }
-          ],
-          "value": "right",
-          "required": false,
-          "conditions": [
-            {
-              "id": "veloura_fp_layout",
-              "operation": "!=",
-              "value": "center"
-            }
-          ]
-        },
-        {
           "id": "veloura_fp_image_fit",
           "type": "items",
           "format": "dropdown-list",
@@ -16620,6 +16563,43 @@
           "format": "switch",
           "label": "إظهار رابط تفاصيل المنتج",
           "value": true,
+          "required": false
+        },
+        {
+          "id": "veloura_fp_promo_title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان ترويجي بجانب الصورة",
+          "description": "يظهر في العمود المقابل للمميزات، فوق وصف المنتج.",
+          "icon": "sicon-format-text-alt",
+          "value": "عرض هذا الشهر",
+          "required": false,
+          "maxLength": 80
+        },
+        {
+          "id": "veloura_fp_more_text",
+          "type": "string",
+          "format": "text",
+          "label": "نص رابط الوصف",
+          "icon": "sicon-link",
+          "value": "عرض المزيد",
+          "required": false,
+          "maxLength": 40,
+          "conditions": [
+            {
+              "id": "veloura_fp_show_excerpt",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_fp_show_trust_row",
+          "type": "boolean",
+          "format": "switch",
+          "label": "تكرار شرائط الثقة أسفل زر الشراء",
+          "description": "الشرائط تظهر أصلًا في العمود المقابل للمميزات.",
+          "value": false,
           "required": false
         },
         {
@@ -16996,7 +16976,7 @@
           "id": "veloura_fp_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل11111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "value": false,
           "required": false
         },

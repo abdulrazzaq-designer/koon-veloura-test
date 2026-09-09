@@ -123,8 +123,8 @@ const paint = (section, product) => {
     if (!product.rating) return;
     const stars = Math.round(product.rating.stars);
     el.innerHTML =
-      `<span class="vfp__stars" aria-hidden="true">${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 5 - stars))}</span>` +
-      `<span class="vfp__rating-count">(${product.rating.count || 0})</span>`;
+      `<span class="fp2__stars" aria-hidden="true">${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 5 - stars))}</span>` +
+      `<span class="fp2__rating-count">(${product.rating.count || 0})</span>`;
     el.hidden = false;
   });
 
@@ -137,7 +137,7 @@ const paint = (section, product) => {
   const thumbs = section.querySelector('[data-vfp-thumbs]');
   if (thumbs && product.images.length > 1) {
     thumbs.innerHTML = product.images
-      .map((url, i) => `<button type="button" class="vfp__thumb${i === 0 ? ' is-active' : ''}" data-vfp-thumb="${url}"><img src="${url}" alt="" loading="lazy"></button>`)
+      .map((url, i) => `<button type="button" class="fp2__thumb${i === 0 ? ' is-active' : ''}" data-vfp-thumb="${url}"><img src="${url}" alt="" loading="lazy"></button>`)
       .join('');
     thumbs.hidden = false;
 
@@ -145,7 +145,7 @@ const paint = (section, product) => {
       const button = event.target.closest('[data-vfp-thumb]');
       if (!button) return;
       section.querySelectorAll('[data-vfp-image]').forEach(img => { img.src = button.dataset.vfpThumb; });
-      thumbs.querySelectorAll('.vfp__thumb').forEach(b => b.classList.toggle('is-active', b === button));
+      thumbs.querySelectorAll('.fp2__thumb').forEach(b => b.classList.toggle('is-active', b === button));
     });
   }
 
