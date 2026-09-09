@@ -48,16 +48,18 @@
 .veloura-fp2.is-centered .fp2__heading { text-align: center; }
 .veloura-fp2.is-centered .fp2__heading > * { margin-inline: auto; justify-content: center; }
 
+/* No panel, no border, no shadow: the section sits directly on the page and
+   takes the container's own width, so it reads as floating rather than boxed.
+   The only surfaces left are the glass items themselves. */
 .veloura-fp2 .fp2__card {
   display: flex !important;
   flex-direction: column !important;
   gap: 18px;
-  padding: 18px 14px 20px;
-  border: 1px solid var(--fp2-border);
-  border-radius: var(--fp2-radius);
-  background: var(--fp2-surface);
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--fp2-text);
-  box-shadow: 0 24px 60px rgba(15, 23, 42, .08);
+  box-shadow: none;
 }
 
 /* ------------------------------------------------------------ the stage -- */
@@ -74,7 +76,7 @@
 .veloura-fp2 .fp2__stage > * { grid-area: auto !important; }
 
 @media (min-width: 640px) {
-  .veloura-fp2 .fp2__card { padding: 26px 22px 28px; gap: 22px; }
+  .veloura-fp2 .fp2__card { gap: 24px; }
   .veloura-fp2 .fp2__stage {
     grid-template-columns: minmax(0, 1fr) minmax(240px, 380px) minmax(0, 1fr) !important;
     gap: 26px;
@@ -82,7 +84,6 @@
 }
 
 @media (min-width: 1024px) {
-  .veloura-fp2 .fp2__card { padding: 34px 32px 36px; }
   .veloura-fp2 .fp2__stage {
     grid-template-columns: minmax(0, 1fr) minmax(280px, 420px) minmax(0, 1fr) !important;
     gap: 34px;
@@ -208,7 +209,7 @@
   justify-content: center;
   gap: 8px;
   /* clears the price chip, which hangs 45% of its height below the photo */
-  margin-top: 30px;
+  margin-top: 14px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -240,16 +241,41 @@
   align-content: center;
 }
 
+/* Each item is a glass panel of its own, and the columns are pulled inwards so
+   the panels ride the edges of the picture instead of standing clear of it —
+   the overlap is what makes them read as floating over the product. */
 .veloura-fp2 .fp2__item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--fp2-glass-edge);
+  border-radius: 14px;
+  background: var(--fp2-glass);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, .12);
   text-align: center;
   font-size: 10.5px;
   line-height: 1.45;
   color: var(--fp2-text);
 }
+
+.veloura-fp2 .fp2__item--sale {
+  color: var(--fp2-accent);
+  font-size: 15px;
+  font-weight: 900;
+  unicode-bidi: isolate;
+}
+
+.veloura-fp2 .fp2__side {
+  position: relative;
+  z-index: 2;
+}
+
+.veloura-fp2 .fp2__side--start { margin-inline-end: -22px; }
+.veloura-fp2 .fp2__side--end { margin-inline-start: -22px; }
 
 .veloura-fp2 .fp2__item b { display: block; font-weight: 700; color: var(--fp2-title); }
 .veloura-fp2 .fp2__item small { display: none; }
@@ -269,6 +295,9 @@
 
 @media (min-width: 640px) {
   .veloura-fp2 .fp2__side { gap: 18px; }
+  .veloura-fp2 .fp2__item { padding: 10px 14px; border-radius: 16px; }
+  .veloura-fp2 .fp2__side--start { margin-inline-end: -46px; }
+  .veloura-fp2 .fp2__side--end { margin-inline-start: -46px; }
 
   .veloura-fp2 .fp2__item {
     flex-direction: row;
@@ -294,16 +323,20 @@
   html[dir="ltr"] .veloura-fp2 .fp2__side--end .fp2__item:nth-child(2) { transform: translateX(18px); }
 }
 
-/* The editorial block in the end column: promo line, description, link. */
-.veloura-fp2 .fp2__note { display: grid; gap: 6px; text-align: center; }
-.veloura-fp2 .fp2__note-title { font-size: 12px; font-weight: 800; color: var(--fp2-accent); }
-.veloura-fp2 .fp2__note-text { display: none; font-size: 12.5px; line-height: 1.7; opacity: .85; }
-.veloura-fp2 .fp2__note-link { font-size: 12px; font-weight: 700; color: var(--fp2-accent); }
+/* The promo line and the product's own short description, under the photo. */
+.veloura-fp2 .fp2__promo {
+  display: grid;
+  gap: 6px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+.veloura-fp2 .fp2__promo-title { font-size: 13px; font-weight: 800; color: var(--fp2-accent); }
+.veloura-fp2 .fp2__promo-text { font-size: 12.5px; line-height: 1.7; opacity: .8; }
 
 @media (min-width: 640px) {
-  .veloura-fp2 .fp2__note { text-align: end; gap: 8px; }
-  .veloura-fp2 .fp2__note-title { font-size: 14px; }
-  .veloura-fp2 .fp2__note-text { display: block; }
+  .veloura-fp2 .fp2__promo-title { font-size: 15px; }
+  .veloura-fp2 .fp2__promo-text { font-size: 13.5px; }
 }
 
 /* ---------------------------------------------------------------- foot --- */
@@ -342,7 +375,7 @@
   margin-top: 4px;
 }
 
-.veloura-fp2 .fp2__add { flex: 1 1 260px; max-width: 460px; }
+.veloura-fp2 .fp2__add { flex: 1 1 100%; max-width: 520px; }
 
 .veloura-fp2 .fp2__details {
   display: inline-flex;
@@ -440,8 +473,8 @@ html body.dark .veloura-fp2 {
 
 /* The merchant picks the accent against a white card, so as TEXT on a dark one
    it turns unreadable. Backgrounds keep the real accent; only text is mixed. */
-html.dark .veloura-fp2 :is(.fp2__note-title, .fp2__note-link, .fp2__details, .fp2__unit b, .fp2__item i, .fp2__trust i),
-html body.dark .veloura-fp2 :is(.fp2__note-title, .fp2__note-link, .fp2__details, .fp2__unit b, .fp2__item i, .fp2__trust i) {
+html.dark .veloura-fp2 :is(.fp2__promo-title, .fp2__details, .fp2__unit b, .fp2__item i, .fp2__item--sale, .fp2__trust i),
+html body.dark .veloura-fp2 :is(.fp2__promo-title, .fp2__details, .fp2__unit b, .fp2__item i, .fp2__item--sale, .fp2__trust i) {
   color: var(--fp2-accent-text);
 }
 
@@ -538,43 +571,37 @@ html body.dark .veloura-fp2 .fp2__frame { background: rgba(255, 255, 255, .05); 
 
           <div class="fp2__media">
             {# The chips are positioned against .fp2__shot, which wraps the
-               picture ONLY. Against .fp2__media they were placed relative to a
-               box that also contains the thumbnail strip, so the price chip
-               landed on top of the thumbnails. #}
+               picture ONLY: against .fp2__media they were placed relative to a
+               box that also held the thumbnail strip, and the price chip landed
+               on top of the thumbnails. #}
             <div class="fp2__shot">
-            <a class="fp2__frame" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
-              <img class="fp2__img" data-vfp-image src="" alt="" loading="lazy" decoding="async">
+              <a class="fp2__frame" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
+                <img class="fp2__img" data-vfp-image src="" alt="" loading="lazy" decoding="async">
 
-              {# The glass chips sit INSIDE the frame: their blur is of the photo
-                 behind them, so they have to share its stacking context. #}
-              {% if component.veloura_fp_eyebrow %}
-                <span class="fp2__chip fp2__chip--top">{{ component.veloura_fp_eyebrow }}</span>
+                {% if component.veloura_fp_eyebrow %}
+                  <span class="fp2__chip fp2__chip--top">{{ component.veloura_fp_eyebrow }}</span>
+                {% endif %}
+              </a>
+
+              {# Outside the frame, which clips its overflow: the chip hangs over
+                 the bottom edge of the picture and would be cut in half inside
+                 it. Its blur still takes the photo, which is what is behind it. #}
+              {% if component.veloura_fp_show_price %}
+                <span class="fp2__chip fp2__chip--price">
+                  <span data-vfp-price></span>
+                  <del class="fp2__old" data-vfp-old hidden></del>
+                </span>
               {% endif %}
-
-              <span class="fp2__chip fp2__discount" data-vfp-discount hidden></span>
-
-            </a>
-
-            {# The price chip hangs over the bottom edge of the picture, so it
-               sits OUTSIDE the frame: the frame clips its overflow to keep the
-               photo's rounded corners, and inside it the chip was cut in half.
-               Its blur still takes the photo, which is simply what is behind
-               it. #}
-            {% if component.veloura_fp_show_price %}
-              <span class="fp2__chip fp2__chip--price">
-                <span data-vfp-price></span>
-                <del class="fp2__old" data-vfp-old hidden></del>
-              </span>
-            {% endif %}
             </div>
-
-            {% if component.veloura_fp_show_gallery %}
-              <div class="fp2__thumbs" data-vfp-thumbs hidden></div>
-            {% endif %}
           </div>
 
-          {# end side: the editorial column — promo line, description, link #}
+          {# the second column: the discount, then the store's own chips #}
           <ul class="fp2__side fp2__side--end">
+            {# The discount leads this column as its own panel, and carries the
+               data hook itself so it disappears with the offer: the script sets
+               textContent and hidden on this very element. #}
+            <li class="fp2__item fp2__item--sale" data-vfp-discount hidden></li>
+
             {% for chip in component.veloura_fp_trust %}
               {% if chip.title %}
                 <li class="fp2__item">
@@ -583,20 +610,27 @@ html body.dark .veloura-fp2 .fp2__frame { background: rgba(255, 255, 255, .05); 
                 </li>
               {% endif %}
             {% endfor %}
-
-            {% if component.veloura_fp_promo_title or component.veloura_fp_show_excerpt %}
-              <li class="fp2__note">
-                {% if component.veloura_fp_promo_title %}
-                  <span class="fp2__note-title">{{ component.veloura_fp_promo_title }}</span>
-                {% endif %}
-                {% if component.veloura_fp_show_excerpt %}
-                  <span class="fp2__note-text" data-vfp-excerpt hidden></span>
-                  <a class="fp2__note-link" data-vfp-link href="#">{{ component.veloura_fp_more_text|default('عرض المزيد') }}</a>
-                {% endif %}
-              </li>
-            {% endif %}
           </ul>
         </div>
+
+        {# Rows of their own under the stage, not children of the photo column:
+           the side panels overlap that column on purpose, and while the strip
+           lived inside it those panels covered the thumbnails on a phone. #}
+        {% if component.veloura_fp_show_gallery %}
+          <div class="fp2__thumbs" data-vfp-thumbs hidden></div>
+        {% endif %}
+
+        {% if component.veloura_fp_promo_title or component.veloura_fp_show_excerpt %}
+          <div class="fp2__promo">
+            {% if component.veloura_fp_promo_title %}
+              <span class="fp2__promo-title">{{ component.veloura_fp_promo_title }}</span>
+            {% endif %}
+            {% if component.veloura_fp_show_excerpt %}
+              <span class="fp2__promo-text" data-vfp-excerpt hidden></span>
+            {% endif %}
+          </div>
+        {% endif %}
+
 
         <div class="fp2__foot">
           <h3 class="fp2__name"><a data-vfp-link data-vfp-name href="#"></a></h3>

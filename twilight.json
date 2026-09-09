@@ -16976,7 +16976,7 @@
           "id": "veloura_fp_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل11111",
           "value": false,
           "required": false
         },

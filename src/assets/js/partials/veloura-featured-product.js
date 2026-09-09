@@ -134,9 +134,37 @@ const paint = (section, product) => {
     el.setAttribute('product-type', product.type);
   });
 
+  paintThumbs(section, product.images);
+};
+
+/* The gallery is a second request on purpose.
+
+   salla.product.api.fetch is a LIST endpoint: every product it returns carries
+   a single `image`, never the `images` array — which is why the thumbnail strip
+   stayed empty on the store no matter what the setting said. The details
+   endpoint is the one that has the gallery, so it is asked for separately,
+   after the card is already painted, and its absence costs nothing. */
+const loadGallery = async (section, product) => {
+  if (!section.querySelector('[data-vfp-thumbs]')) return;
+  if (product.images.length > 1) return;
+
+  try {
+    const response = await salla.product.getDetails(product.id, ['images']);
+    const details = response?.data || response;
+    const images = (details?.images || [])
+      .filter(i => (i.type || 'image') === 'image')
+      .map(imageUrl)
+      .filter(Boolean)
+      .slice(0, 5);
+
+    if (images.length > 1) paintThumbs(section, images);
+  } catch (_) {}
+};
+
+const paintThumbs = (section, images) => {
   const thumbs = section.querySelector('[data-vfp-thumbs]');
-  if (thumbs && product.images.length > 1) {
-    thumbs.innerHTML = product.images
+  if (thumbs && images.length > 1) {
+    thumbs.innerHTML = images
       .map((url, i) => `<button type="button" class="fp2__thumb${i === 0 ? ' is-active' : ''}" data-vfp-thumb="${url}"><img src="${url}" alt="" loading="lazy"></button>`)
       .join('');
     thumbs.hidden = false;
@@ -146,10 +174,8 @@ const paint = (section, product) => {
       if (!button) return;
       section.querySelectorAll('[data-vfp-image]').forEach(img => { img.src = button.dataset.vfpThumb; });
       thumbs.querySelectorAll('.fp2__thumb').forEach(b => b.classList.toggle('is-active', b === button));
-    });
+    }, { once: false });
   }
-
-  section.classList.add('is-loaded');
 };
 
 /* The countdown takes the merchant's date, or the product's own discount_ends
@@ -228,8 +254,10 @@ const initSection = async section => {
   }
 
   paint(section, product);
+  section.classList.add('is-loaded');
   startCountdown(section, product);
   setupSticky(section);
+  loadGallery(section, product);
 };
 
 const initVelouraFeaturedProduct = () => {
