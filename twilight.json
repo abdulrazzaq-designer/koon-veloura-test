@@ -16457,16 +16457,12 @@
           "icon": "sicon-layout",
           "options": [
             {
-              "label": "صورة بجانب التفاصيل",
-              "value": "split"
-            },
-            {
               "label": "صورة في المنتصف والتفاصيل يمينها ويسارها",
               "value": "center"
             },
             {
-              "label": "خلفية كاملة مع بطاقة زجاجية",
-              "value": "fullbleed"
+              "label": "صورة بجانب التفاصيل",
+              "value": "split"
             }
           ],
           "selected": [

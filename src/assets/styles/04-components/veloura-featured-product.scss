@@ -27,10 +27,16 @@
   margin-bottom: 18px;
 }
 
+/* The card is a plain column. Nothing here depends on grid-template-areas or
+   on display:contents any more: that pair is what let a stylesheet that did
+   not match the markup drop every block into one cell and print the entire
+   card over the photo. The only grid is .vfp__stage, and if even that rule
+   went missing its three children would simply stack, which still reads. */
 .veloura-featured-product .vfp__card {
-  display: grid;
-  gap: 20px;
-  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 14px;
   border: 1px solid var(--vfp-border);
   border-radius: var(--vfp-radius);
   background: var(--vfp-surface);
@@ -38,17 +44,198 @@
   box-shadow: 0 18px 46px rgba(15, 23, 42, .07);
 }
 
-/* The wrapper exists only so the full-bleed layout has something to float over
-   the photo. Everywhere else its children are the grid items themselves. */
-.veloura-featured-product .vfp__panel { display: contents; }
+@media (min-width: 640px) {
+  .veloura-featured-product .vfp__card { padding: 28px 20px; gap: 20px; }
+}
 
-.veloura-featured-product .vfp__media { grid-area: media; position: relative; }
-.veloura-featured-product .vfp__top { grid-area: top; }
-.veloura-featured-product .vfp__features { grid-area: features; }
-.veloura-featured-product .vfp__trust { grid-area: trust; }
-.veloura-featured-product .vfp__bottom { grid-area: bottom; }
-.veloura-featured-product .vfp__actions { grid-area: actions; }
+@media (min-width: 1024px) {
+  .veloura-featured-product .vfp__card { padding: 34px; }
+}
 
+.veloura-featured-product .vfp__stage {
+  display: grid;
+  gap: 10px;
+  align-items: center;
+}
+
+.veloura-featured-product .vfp__media { position: relative; }
+
+/* ============================ centred spotlight (the default) ============ */
+/* A list, the photo, a list — at every width. What changes on a phone is the
+   SHAPE of the side items, not the arrangement: an icon chip with a short
+   label under it, so a narrow column still says something instead of breaking
+   a sentence into one word per line. */
+.veloura-featured-product.vfp--center .vfp__stage {
+  grid-template-columns: minmax(0, .62fr) minmax(0, 2fr) minmax(0, .62fr);
+  gap: 8px;
+}
+
+.veloura-featured-product.vfp--center .vfp__top,
+.veloura-featured-product.vfp--center .vfp__bottom,
+.veloura-featured-product.vfp--center .vfp__actions { text-align: center; }
+
+.veloura-featured-product.vfp--center .vfp__prices,
+.veloura-featured-product.vfp--center .vfp__actions,
+.veloura-featured-product.vfp--center .vfp__countdown-units,
+.veloura-featured-product.vfp--center .vfp__thumbs { justify-content: center; }
+
+.veloura-featured-product.vfp--center .vfp__add { flex: 0 1 420px; }
+
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__stage {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 400px) minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  /* Both lists hug the photo rather than the card's outer edges: each side is
+     a full grid track, and `end`/`start` are logical, so they resolve toward
+     the middle column in either page direction. */
+  .veloura-featured-product.vfp--center .vfp__features { justify-self: end; max-width: 260px; }
+  .veloura-featured-product.vfp--center .vfp__trust { justify-self: start; max-width: 260px; }
+}
+
+/* A halo behind the photo, the merchant's own accent at low alpha, so it reads
+   as a spotlight and not as a colour of its own. */
+.veloura-featured-product.vfp--center .vfp__media::before {
+  content: "";
+  position: absolute;
+  inset: -8% -6%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--vfp-accent) 22%, transparent),
+    transparent 100%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* The badge is deliberately NOT lifted here: it is absolutely positioned
+   inside the frame, and position:relative on it drops it back into the flow,
+   where centred text parks it in the middle of the picture. */
+.veloura-featured-product.vfp--center .vfp__image-wrap,
+.veloura-featured-product.vfp--center .vfp__thumbs { position: relative; z-index: 1; }
+
+/* --- the side lists ------------------------------------------------------ */
+.veloura-featured-product.vfp--center .vfp__features,
+.veloura-featured-product.vfp--center .vfp__trust {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+
+.veloura-featured-product.vfp--center .vfp__features li,
+.veloura-featured-product.vfp--center .vfp__trust li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* The chip's second line is the detail ("within 1-3 days"); beside a 55px
+   column it is noise, so phones keep only the name. */
+.veloura-featured-product.vfp--center .vfp__trust li small { display: none; }
+
+/* An icon chip rather than a bare glyph: at this size a lone icon beside two
+   words reads as a bullet, while a filled circle reads as a badge. */
+.veloura-featured-product.vfp--center .vfp__features i,
+.veloura-featured-product.vfp--center .vfp__trust i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vfp-accent) 12%, transparent);
+  color: var(--vfp-accent);
+  font-size: 15px;
+}
+
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__features li,
+  .veloura-featured-product.vfp--center .vfp__trust li {
+    flex-direction: row;
+    gap: 10px;
+    font-size: 13px;
+    text-align: start;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust li small { display: block; }
+
+  /* Mirrored, so each list keeps its icons on the outer edge and the two sides
+     read as a pair around the photo instead of both leaning the same way. */
+  .veloura-featured-product.vfp--center .vfp__trust li {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    text-align: end;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__features i,
+  .veloura-featured-product.vfp--center .vfp__trust i { width: 38px; height: 38px; font-size: 18px; }
+
+  /* The middle item of each side steps outwards, so the three curve around the
+     photo. Physical translateX with an explicit direction rule: the offset has
+     to flip with the page direction. */
+  .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
+    transform: translateX(var(--vfp-arc, 22px));
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
+    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
+  }
+
+  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
+    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
+  }
+
+  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
+    transform: translateX(var(--vfp-arc, 22px));
+  }
+}
+
+/* ================================= split ================================= */
+/* Photo on one side, the two lists stacked on the other; the name, the price
+   and the button stay full-width rows above and below. Explicit line numbers,
+   not names — the same reason as above. */
+.veloura-featured-product.vfp--split .vfp__stage {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .veloura-featured-product.vfp--split .vfp__stage {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 14px 28px;
+    align-items: center;
+  }
+
+  .veloura-featured-product.vfp--split .vfp__media {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .veloura-featured-product.vfp--split .vfp__features { grid-column: 2; grid-row: 1; align-self: end; }
+  .veloura-featured-product.vfp--split .vfp__trust { grid-column: 2; grid-row: 2; align-self: start; }
+
+  .veloura-featured-product.vfp--split.vfp--image-left .vfp__media { grid-column: 2; }
+  .veloura-featured-product.vfp--split.vfp--image-left .vfp__features,
+  .veloura-featured-product.vfp--split.vfp--image-left .vfp__trust { grid-column: 1; }
+}
+
+/* --------------------------------------------------------- centred title -- */
+.veloura-featured-product.is-centered .vfp__heading { text-align: center; }
+
+.veloura-featured-product.is-centered .vfp__heading > * {
+  margin-inline: auto;
+  justify-content: center;
+}
 
 /* ------------------------------------------------------- the photo ------- */
 .veloura-featured-product .vfp__image-wrap {
@@ -283,275 +470,6 @@
   color: var(--vfp-accent);
   font-weight: 700;
   font-size: 14px;
-}
-
-/* ============================ centred spotlight (the default) ============ */
-/* The product photo holds the middle column and the short lines flank it —
-   features on one side, the shipping/payment chips on the other — on a phone
-   as well as on a desktop. The name, the price and the buy button run the full
-   width above and below, because those are the lines that must never wrap into
-   a two-word column. */
-/* The photo holds the middle column and a list flanks it on each side, at
-   every width — phones included. What changes on a phone is not the
-   arrangement but the shape of the side items: there they are icon chips with
-   a short label underneath, so a 55px column still says something instead of
-   breaking a sentence into one word per line. */
-.veloura-featured-product.vfp--center .vfp__card {
-  grid-template-columns: minmax(0, .62fr) minmax(0, 2fr) minmax(0, .62fr);
-  grid-template-areas:
-    "top      top    top"
-    "features media  trust"
-    "bottom   bottom bottom"
-    "actions  actions actions";
-  align-items: center;
-  gap: 16px 8px;
-  padding: 22px 12px;
-  text-align: center;
-}
-
-@media (min-width: 640px) {
-  .veloura-featured-product.vfp--center .vfp__card {
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 400px) minmax(0, 1fr);
-    gap: 20px 22px;
-    padding: 28px 20px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .veloura-featured-product.vfp--center .vfp__card { gap: 22px 32px; padding: 34px; }
-}
-
-.veloura-featured-product.vfp--center .vfp__top,
-.veloura-featured-product.vfp--center .vfp__bottom,
-.veloura-featured-product.vfp--center .vfp__actions { text-align: center; }
-
-.veloura-featured-product.vfp--center .vfp__prices,
-.veloura-featured-product.vfp--center .vfp__actions,
-.veloura-featured-product.vfp--center .vfp__countdown-units,
-.veloura-featured-product.vfp--center .vfp__thumbs { justify-content: center; }
-
-.veloura-featured-product.vfp--center .vfp__add {
-  flex: 0 1 420px;
-}
-
-/* A halo behind the photo. It is the merchant's own accent at low alpha, so it
-   reads as a spotlight rather than as a colour of its own. */
-.veloura-featured-product.vfp--center .vfp__media::before {
-  content: "";
-  position: absolute;
-  inset: -8% -6%;
-  z-index: 0;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--vfp-accent) 22%, transparent),
-    transparent 100%
-  );
-  filter: blur(6px);
-  pointer-events: none;
-}
-
-/* The badge is deliberately NOT in this list: it is absolutely positioned
-   inside the frame, and setting position:relative on it here dropped it back
-   into the flow, where the centred text alignment parked it in the middle of
-   the picture instead of its corner. */
-.veloura-featured-product.vfp--center .vfp__image-wrap,
-.veloura-featured-product.vfp--center .vfp__thumbs { position: relative; z-index: 1; }
-
-/* The side columns line their items up against the image. */
-.veloura-featured-product.vfp--center .vfp__features,
-.veloura-featured-product.vfp--center .vfp__trust {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-  text-align: start;
-}
-
-.veloura-featured-product.vfp--center .vfp__features li,
-.veloura-featured-product.vfp--center .vfp__trust li {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  line-height: 1.4;
-  text-align: center;
-}
-
-/* The chip's second line is the detail ("within 1-3 days"); at this width it
-   is noise beside a 55px column, so only the name is kept on phones. */
-.veloura-featured-product.vfp--center .vfp__trust li small { display: none; }
-
-@media (min-width: 640px) {
-  .veloura-featured-product.vfp--center .vfp__features li,
-  .veloura-featured-product.vfp--center .vfp__trust li {
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    text-align: start;
-  }
-
-  .veloura-featured-product.vfp--center .vfp__trust li small { display: block; }
-}
-
-/* An icon chip rather than a bare glyph: at this size a lone icon beside two
-   words looks like a bullet, while a filled circle reads as a badge. */
-.veloura-featured-product.vfp--center .vfp__features i,
-.veloura-featured-product.vfp--center .vfp__trust i {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--vfp-accent) 12%, transparent);
-  color: var(--vfp-accent);
-  font-size: 15px;
-}
-
-/* Mirrored columns: each list keeps its icons on the OUTER edge, so the two
-   sides read as a pair around the photo instead of both leaning the same way. */
-@media (min-width: 640px) {
-  .veloura-featured-product.vfp--center .vfp__trust li {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    text-align: end;
-  }
-}
-
-/* Both lists hug the photo instead of the card's outer edges: each column is
-   a full grid track, so without this the chips drifted to the far side and the
-   group stopped reading as one composition. `end` and `start` are logical and
-   resolve toward the middle column in either page direction. */
-@media (min-width: 640px) {
-  .veloura-featured-product.vfp--center .vfp__features {
-    justify-self: end;
-    max-width: 260px;
-  }
-
-  .veloura-featured-product.vfp--center .vfp__trust {
-    justify-self: start;
-    max-width: 260px;
-  }
-}
-
-/* --- the arc ---------------------------------------------------------------
-   The middle item of each side steps outwards, so the three chips curve around
-   the photo instead of standing in a straight column. Physical translateX with
-   an explicit direction rule rather than a logical property: the offset has to
-   flip with the page direction, and only the two side columns move. */
-@media (min-width: 640px) {
-  .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
-    transform: translateX(var(--vfp-arc, 22px));
-  }
-
-  .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
-    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
-  }
-
-  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
-    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
-  }
-
-  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
-    transform: translateX(var(--vfp-arc, 22px));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .veloura-featured-product.vfp--center .vfp__features li,
-  .veloura-featured-product.vfp--center .vfp__trust li { transition: none; }
-}
-
-@media (min-width: 768px) {
-  .veloura-featured-product.vfp--center .vfp__features li,
-  .veloura-featured-product.vfp--center .vfp__trust li { font-size: 14px; gap: 10px; }
-
-  .veloura-featured-product.vfp--center .vfp__features i,
-  .veloura-featured-product.vfp--center .vfp__trust i { width: 38px; height: 38px; font-size: 18px; }
-}
-
-/* ================================= split ================================= */
-.veloura-featured-product.vfp--split .vfp__card {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "media" "top" "features" "bottom" "actions" "trust";
-}
-
-@media (min-width: 768px) {
-  .veloura-featured-product.vfp--split .vfp__card {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas:
-      "media top"
-      "media features"
-      "media bottom"
-      "media actions"
-      "media trust";
-    grid-template-rows: auto auto auto auto 1fr;
-    padding: 24px;
-    gap: 14px 32px;
-  }
-
-  .veloura-featured-product.vfp--split .vfp__media { align-self: center; }
-
-  .veloura-featured-product.vfp--split.vfp--image-left .vfp__card {
-    grid-template-areas:
-      "top      media"
-      "features media"
-      "bottom   media"
-      "actions  media"
-      "trust    media";
-  }
-}
-
-/* ============================== full bleed =============================== */
-.veloura-featured-product.vfp--fullbleed .vfp__card {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "media" "panel";
-  padding: 0;
-  overflow: hidden;
-}
-
-.veloura-featured-product.vfp--fullbleed .vfp__panel {
-  display: grid;
-  grid-area: panel;
-  gap: 14px;
-  padding: 20px;
-}
-
-@media (min-width: 768px) {
-  .veloura-featured-product.vfp--fullbleed .vfp__card {
-    position: relative;
-    grid-template-areas: "media";
-  }
-
-  .veloura-featured-product.vfp--fullbleed .vfp__image-wrap {
-    aspect-ratio: 21 / 9;
-    border-radius: 0;
-  }
-
-  .veloura-featured-product.vfp--fullbleed .vfp__panel {
-    position: absolute;
-    inset-block: 24px;
-    inset-inline-end: 24px;
-    width: min(440px, 48%);
-    overflow-y: auto;
-    align-content: start;
-    padding: 22px;
-    border-radius: calc(var(--vfp-radius) - 4px);
-    background: color-mix(in srgb, var(--vfp-surface) 82%, transparent);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    backdrop-filter: blur(18px) saturate(140%);
-  }
-
-  .veloura-featured-product.vfp--fullbleed.vfp--image-left .vfp__panel {
-    inset-inline-end: auto;
-    inset-inline-start: 24px;
-  }
 }
 
 /* --------------------------------------------------------- centred title -- */

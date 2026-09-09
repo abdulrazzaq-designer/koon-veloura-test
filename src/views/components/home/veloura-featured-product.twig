@@ -119,21 +119,6 @@
          glass panel floating over the photo. #}
       <div class="vfp__card" data-vfp-card>
 
-        <div class="vfp__media">
-          {# The badge lives INSIDE the image frame, not beside it: anchored to
-             .vfp__media it hung over the photo's top edge, because that box also
-             contains the thumbnail strip and is taller than the picture. #}
-          <a class="vfp__image-wrap" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
-            <span class="vfp__badge" data-vfp-discount hidden></span>
-            <img class="vfp__image" data-vfp-image src="" alt="" loading="lazy" decoding="async">
-          </a>
-          {% if component.veloura_fp_show_gallery %}
-            <div class="vfp__thumbs" data-vfp-thumbs hidden></div>
-          {% endif %}
-        </div>
-
-        <div class="vfp__panel">
-
           <div class="vfp__top">
             {% if component.veloura_fp_eyebrow %}
               <span class="vfp__eyebrow">{{ component.veloura_fp_eyebrow }}</span>
@@ -150,6 +135,14 @@
             {% endif %}
           </div>
 
+          {# The three-column band: a list, the photo, a list.
+
+             This is a plain grid on its own wrapper — no display:contents and
+             no named areas. Those two together are what let a stale stylesheet
+             drop every child into the same cell, printing the whole card on
+             top of the photo. With a real wrapper the worst a missing rule can
+             do is stack the three blocks vertically. #}
+          <div class="vfp__stage">
           {% if component.veloura_fp_features %}
             <ul class="vfp__features">
               {% for feature in component.veloura_fp_features %}
@@ -162,6 +155,19 @@
               {% endfor %}
             </ul>
           {% endif %}
+
+            <div class="vfp__media">
+          {# The badge lives INSIDE the image frame, not beside it: anchored to
+             .vfp__media it hung over the photo's top edge, because that box also
+             contains the thumbnail strip and is taller than the picture. #}
+              <a class="vfp__image-wrap" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
+                <span class="vfp__badge" data-vfp-discount hidden></span>
+                <img class="vfp__image" data-vfp-image src="" alt="" loading="lazy" decoding="async">
+              </a>
+          {% if component.veloura_fp_show_gallery %}
+                <div class="vfp__thumbs" data-vfp-thumbs hidden></div>
+          {% endif %}
+            </div>
 
           {% if component.veloura_fp_trust %}
             <ul class="vfp__trust">
@@ -178,6 +184,8 @@
               {% endfor %}
             </ul>
           {% endif %}
+
+          </div>
 
           <div class="vfp__bottom">
             {% if component.veloura_fp_show_price %}
@@ -217,7 +225,6 @@
               </a>
             {% endif %}
           </div>
-        </div>
       </div>
     </div>
 
