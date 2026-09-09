@@ -40,18 +40,31 @@
 
 .veloura-tkr [hidden] { display: none !important; }
 
-/* Full width means leaving the container: 100vw plus a pull of half the
-   difference on each side, which centres it whatever the container's width or
-   the page's direction. */
-.veloura-tkr.tkr--bleed .tkr__wrap {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+/* Inside the container is the DEFAULT — that is what the switch is for. The
+   section carries the theme's own container width and the merchant's extra
+   side spacing; turning the switch on is what widens it to the viewport. */
+.veloura-tkr .tkr__wrap {
+  max-width: var(--veloura-container, 1200px);
+  margin-inline: auto;
+  padding-inline: var(--tkr-side, 0px);
 }
 
 .veloura-tkr.tkr--boxed .tkr__wrap {
   border-radius: var(--tkr-radius, 16px);
+  /* The clip has to be on the same box that carries the radius, or a tilted
+     band pokes out of the rounded corners. */
   overflow: hidden;
+}
+
+/* Out of the container: 100vw with a pull of half the difference on each side,
+   which centres it whatever the container's width or the page's direction. */
+.veloura-tkr.tkr--bleed .tkr__wrap {
+  max-width: none;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-inline: 0;
+  border-radius: 0;
 }
 
 /* ------------------------------------------------------------- one band -- */
@@ -72,6 +85,13 @@
 .veloura-tkr .tkr__band--b {
   background: linear-gradient(90deg, var(--tkr-to), var(--tkr-from));
 }
+
+.veloura-tkr .tkr__band--c {
+  background: linear-gradient(90deg, var(--tkr-from), var(--tkr-to));
+  opacity: .92;
+}
+
+.veloura-tkr .tkr__band--c .tkr__track { animation-duration: calc(var(--tkr-speed) * 1.35); }
 
 /* The track holds the list TWICE and slides exactly half its own width, which
    is what makes the loop seamless: at -50% the second copy sits precisely
@@ -140,28 +160,69 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 }
 
 /* ------------------------------------------------------------- tilted ---- */
+/* ---------------------------------------------------------------- glass -- */
+/* The same contract as the header, the search panel and the floating bottom
+   menu: the theme's shared tokens, so the ribbon takes whatever surface, blur
+   and edges those already define and follows dark mode with them instead of
+   carrying its own copy of the palette. */
+.veloura-tkr.tkr--glass .tkr__band {
+  background-color: var(--veloura-glass-surface, rgba(248, 250, 252, .72));
+  -webkit-backdrop-filter: var(--veloura-filter, blur(20px) saturate(124%));
+  backdrop-filter: var(--veloura-filter, blur(20px) saturate(124%));
+  border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .20));
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .12));
+  box-shadow: 0 10px 30px var(--veloura-glass-shadow, rgba(15, 23, 42, .10));
+}
+
+/* A tint of the merchant's own colours over the glass, faint enough that the
+   page still shows through. background-image on purpose: it layers over the
+   translucent background-color instead of replacing it. */
+.veloura-tkr.tkr--glass .tkr__band--a {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tkr-from) 22%, transparent), color-mix(in srgb, var(--tkr-to) 22%, transparent));
+}
+
+.veloura-tkr.tkr--glass .tkr__band--b {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tkr-to) 22%, transparent), color-mix(in srgb, var(--tkr-from) 22%, transparent));
+}
+
+.veloura-tkr.tkr--glass .tkr__band--c {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tkr-from) 14%, transparent), color-mix(in srgb, var(--tkr-to) 14%, transparent));
+}
+
 .veloura-tkr.tkr--tilt .tkr__band { transform: rotate(calc(var(--tkr-angle) * -1)); }
 
 /* Two bands crossing. They are stacked in a fixed-height stage and tilted the
    opposite way from each other; the stage is what gives them room to cross
    without either one dragging the page taller. */
-.veloura-tkr.tkr--cross .tkr__wrap {
+.veloura-tkr.tkr--cross .tkr__wrap,
+.veloura-tkr.tkr--triple .tkr__wrap {
   position: relative;
   height: calc(var(--tkr-height) * 2.9);
 }
 
-.veloura-tkr.tkr--cross .tkr__band {
+.veloura-tkr.tkr--triple .tkr__wrap { height: calc(var(--tkr-height) * 3.6); }
+
+.veloura-tkr.tkr--cross .tkr__band,
+.veloura-tkr.tkr--triple .tkr__band {
   position: absolute;
   inset-inline: 0;
   top: 50%;
 }
 
-.veloura-tkr.tkr--cross .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); }
-.veloura-tkr.tkr--cross .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); }
+.veloura-tkr.tkr--cross .tkr__band--a,
+.veloura-tkr.tkr--triple .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); }
+
+.veloura-tkr.tkr--cross .tkr__band--b,
+.veloura-tkr.tkr--triple .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); }
+
+/* The third band lies flat between the other two, so the group reads as a
+   weave rather than as three parallel stripes. */
+.veloura-tkr.tkr--triple .tkr__band--c { transform: translateY(-50%) rotate(0deg); z-index: 2; }
 
 @media (max-width: 639px) {
   .veloura-tkr { --tkr-height: 40px; --tkr-size: 12.5px; --tkr-gap: 18px; }
   .veloura-tkr.tkr--cross .tkr__wrap { height: calc(var(--tkr-height) * 2.6); }
+  .veloura-tkr.tkr--triple .tkr__wrap { height: calc(var(--tkr-height) * 3.2); }
 }
 
 /* Someone who turns motion off in their system gets a readable band, not a
@@ -173,13 +234,32 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 
 </style>
 
-  {% set tkr_layout = component.veloura_tkr_layout|default('cross') %}
-  {% if tkr_layout is iterable and tkr_layout[0].value is defined %}{% set tkr_layout = tkr_layout[0].value %}
-  {% elseif tkr_layout.value is defined %}{% set tkr_layout = tkr_layout.value %}{% endif %}
+  {# A dropdown does not come back in one predictable shape.
 
-  {% set tkr_sep_key = component.veloura_tkr_separator|default('star') %}
-  {% if tkr_sep_key is iterable and tkr_sep_key[0].value is defined %}{% set tkr_sep_key = tkr_sep_key[0].value %}
-  {% elseif tkr_sep_key.value is defined %}{% set tkr_sep_key = tkr_sep_key.value %}{% endif %}
+     Depending on how the value was stored it can be a plain string, {value: …},
+     {selected: [{value: …}]}, {selected: {value: …}}, or a one-item list. The
+     earlier version handled only two of those, so the layout and the separator
+     silently fell back to their defaults no matter what the merchant picked —
+     one straight band and a star, forever. This macro covers every shape, and
+     both dropdowns go through it. #}
+  {% macro option(raw, fallback) %}
+    {%- if raw is null or raw == '' -%}{{ fallback }}
+    {%- elseif raw is not iterable -%}{{ raw }}
+    {%- elseif raw.selected is defined -%}
+      {%- set sel = raw.selected -%}
+      {%- if sel is iterable and sel.value is not defined -%}
+        {%- for one in sel %}{% if loop.first %}{{ one.value|default(fallback) }}{% endif %}{% endfor -%}
+      {%- else -%}{{ sel.value|default(fallback) }}{%- endif -%}
+    {%- elseif raw.value is defined -%}{{ raw.value }}
+    {%- else -%}
+      {%- for one in raw %}{% if loop.first %}{{ one.value|default(one) }}{% endif %}{% endfor -%}
+    {%- endif -%}
+  {% endmacro %}
+
+  {% import _self as tkr_h %}
+
+  {% set tkr_layout = tkr_h.option(component.veloura_tkr_layout, 'cross')|trim %}
+  {% set tkr_sep_key = tkr_h.option(component.veloura_tkr_separator, 'star')|trim %}
   {% set tkr_sep_map = {'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': ''} %}
   {% set tkr_sep = tkr_sep_map[tkr_sep_key]|default('✦') %}
 
@@ -191,8 +271,9 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
     id="veloura-ticker-{{ position }}"
     class="s-block veloura-tkr
       tkr--{{ tkr_layout }}
-      {{ tkr_layout == 'cross' or tkr_layout == 'tilt' ? 'tkr--tilted' : '' }}
+      {{ tkr_layout in ['cross', 'tilt', 'triple'] ? 'tkr--tilted' : '' }}
       {{ component.veloura_tkr_full_width ? 'tkr--bleed' : 'tkr--boxed' }}
+      {{ component.veloura_tkr_glass ? 'tkr--glass' : '' }}
       {{ component.veloura_tkr_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_tkr_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_tkr_custom_classes }}"
@@ -206,6 +287,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-speed: {{ component.veloura_tkr_speed|default(26) }}s;
       --tkr-angle: {{ component.veloura_tkr_angle|default(3) }}deg;
       --tkr-radius: {{ component.veloura_tkr_radius|default(16) }}px;
+      --tkr-side: {{ component.veloura_tkr_side_space|default(0) }}px;
     "
   >
     <div class="tkr__wrap">
@@ -237,7 +319,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
         </div>
       </div>
 
-      {% if tkr_layout == 'cross' %}
+      {% if tkr_layout == 'cross' or tkr_layout == 'triple' %}
         <div class="tkr__band tkr__band--b" aria-hidden="true">
           <div class="tkr__track">
             {% for pass in 1..2 %}
@@ -246,6 +328,24 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
                   <span class="tkr__item">
                     {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
                     <span>{{ item.second_text|default(item.text) }}</span>
+                  </span>
+                  {% if tkr_sep %}<span class="tkr__sep">{{ tkr_sep }}</span>{% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if tkr_layout == 'triple' %}
+        <div class="tkr__band tkr__band--c" aria-hidden="true">
+          <div class="tkr__track">
+            {% for pass in 1..2 %}
+              {% for item in tkr_items %}
+                {% if item.text %}
+                  <span class="tkr__item">
+                    {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
+                    <span>{{ item.text }}</span>
                   </span>
                   {% if tkr_sep %}<span class="tkr__sep">{{ tkr_sep }}</span>{% endif %}
                 {% endif %}

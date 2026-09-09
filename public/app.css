@@ -2220,6 +2220,12 @@ input:where([type='file']):focus{
   text-align: right;
   margin-top: 2px;
 }
+.spinner-loader.reverse{
+    border-right-color: #9f7171 !important;
+}
+.spinner-loader.reverse{
+    background-color: #f98181;
+}
 .has-error .s-form-label{
     color: #ff443a;
 }

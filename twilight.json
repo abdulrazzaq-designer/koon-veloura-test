@@ -17033,6 +17033,10 @@
               "value": "cross"
             },
             {
+              "label": "ثلاثة أشرطة متشابكة",
+              "value": "triple"
+            },
+            {
               "label": "شريط مائل واحد",
               "value": "tilt"
             },
@@ -17055,9 +17059,9 @@
           "type": "boolean",
           "format": "switch",
           "label": "عرض الشاشة كاملًا",
-          "value": true,
+          "value": false,
           "required": false,
-          "description": "يخرج الشريط من الكونتينر من حافة لحافة."
+          "description": "مغلق: الشريط داخل الكونتينر مثل بقية الأقسام. مفتوح: يمتد من حافة الشاشة للحافة."
         },
         {
           "id": "veloura_tkr_angle",
@@ -17266,6 +17270,15 @@
           "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الألوان</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تدرّج من لونين</span></span></div>"
         },
         {
+          "id": "veloura_tkr_glass",
+          "type": "boolean",
+          "format": "switch",
+          "label": "الوضع الزجاجي",
+          "description": "يستعمل نفس زجاج الهيدر والبحث والقائمة السفلية، ويتبع الوضع الداكن معها. ألوانك تبقى كتلوين خفيف فوقه.",
+          "value": false,
+          "required": false
+        },
+        {
           "id": "veloura_tkr_color_from",
           "type": "string",
           "format": "color",
@@ -17299,6 +17312,19 @@
           "label": "Title",
           "variant": "h6",
           "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة</strong></span></div>"
+        },
+        {
+          "id": "veloura_tkr_side_space",
+          "type": "number",
+          "format": "slider",
+          "label": "مسافة يمين ويسار",
+          "description": "تُضاف داخل الكونتينر. لا أثر لها في وضع «عرض الشاشة كاملًا».",
+          "icon": "sicon-move-horizontal",
+          "value": 0,
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "required": false
         },
         {
           "id": "veloura_tkr_mobile_only",
