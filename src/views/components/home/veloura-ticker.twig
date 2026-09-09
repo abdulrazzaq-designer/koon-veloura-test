@@ -9,40 +9,35 @@
 {# ==========================================================================
    شريط إعلاني (فيلورا)
 
-   The stylesheet is inline, in this file, and every class is its own name —
-   the same two rules the featured-product component learned the hard way:
-   Twig publishes instantly while app.css goes through a build and a CDN, and
-   markup under a stylesheet one version older than itself is how a layout
-   breaks without anyone touching it.
+   The stylesheet is inline and every class carries its own name, because on
+   this store the published Twig and the built app.css have repeatedly been a
+   version apart, and new markup under old rules is how a layout breaks with
+   nobody touching it.
 
-   There is no JavaScript. The loop is a CSS animation on transform over a
-   list rendered twice; nothing runs per frame, and the browser can keep the
-   whole thing on the compositor.
+   No JavaScript, and no macros either: the loop is a CSS animation over a list
+   repeated enough times to fill the band, and the settings are unwrapped with
+   {% set %} alone. A macro plus {% import _self %} inside this section's own
+   {% if %} once took the whole component off the page.
    ========================================================================== #}
 <style>
 /* ==========================================================================
    شريط إعلاني (فيلورا) — scoped entirely to .veloura-tkr
    ========================================================================== */
 .veloura-tkr {
-  --tkr-from: #7c3aed;
-  --tkr-to: #ec4899;
-  --tkr-text: #ffffff;
   --tkr-height: 46px;
   --tkr-size: 14px;
   --tkr-gap: 26px;
   --tkr-speed: 26s;
   --tkr-angle: 3deg;
 
-  /* The band is wider than the viewport and tilted, so the section must clip
-     it — without this the page gains a horizontal scrollbar on every screen. */
+  /* A tilted band is wider than the viewport, so the section must clip it —
+     without this every screen gains a horizontal scrollbar. */
   overflow: hidden;
 }
 
 .veloura-tkr [hidden] { display: none !important; }
 
-/* Inside the container is the DEFAULT — that is what the switch is for. The
-   section carries the theme's own container width and the merchant's extra
-   side spacing; turning the switch on is what widens it to the viewport. */
+/* Inside the container is the default; the switch is what leaves it. */
 .veloura-tkr .tkr__wrap {
   max-width: var(--veloura-container, 1200px);
   margin-inline: auto;
@@ -51,13 +46,11 @@
 
 .veloura-tkr.tkr--boxed .tkr__wrap {
   border-radius: var(--tkr-radius, 16px);
-  /* The clip has to be on the same box that carries the radius, or a tilted
-     band pokes out of the rounded corners. */
+  /* The clip belongs on the same box as the radius, or a tilted band pokes out
+     of the rounded corners. */
   overflow: hidden;
 }
 
-/* Out of the container: 100vw with a pull of half the difference on each side,
-   which centres it whatever the container's width or the page's direction. */
 .veloura-tkr.tkr--bleed .tkr__wrap {
   max-width: none;
   width: 100vw;
@@ -67,7 +60,7 @@
   border-radius: 0;
 }
 
-/* ------------------------------------------------------------- one band -- */
+/* ------------------------------------------------------------- the band -- */
 .veloura-tkr .tkr__band {
   display: flex;
   align-items: center;
@@ -75,61 +68,46 @@
   margin-inline-start: -9%;
   min-height: var(--tkr-height);
   overflow: hidden;
-  background: linear-gradient(90deg, var(--tkr-from), var(--tkr-to));
-  color: var(--tkr-text);
+  background: linear-gradient(90deg, var(--band-from), var(--band-to));
+  color: var(--band-text);
   box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
 }
 
 .veloura-tkr.tkr--straight .tkr__band { width: 100%; margin-inline-start: 0; }
 
-.veloura-tkr .tkr__band--b {
-  background: linear-gradient(90deg, var(--tkr-to), var(--tkr-from));
-}
-
-.veloura-tkr .tkr__band--c {
-  background: linear-gradient(90deg, var(--tkr-from), var(--tkr-to));
-  opacity: .92;
-}
-
-.veloura-tkr .tkr__band--c .tkr__track { animation-duration: calc(var(--tkr-speed) * 1.35); }
-
-/* The track holds the list TWICE and slides exactly half its own width, which
-   is what makes the loop seamless: at -50% the second copy sits precisely
-   where the first started, so the jump back is invisible. */
+/* The track carries N copies of the list and slides exactly ONE copy's width,
+   so the moment it resets, copy 2 is standing where copy 1 began and the seam
+   is invisible. The count is decided in the template from how many items the
+   merchant wrote — a short list gets more copies — and arrives as --tkr-shift,
+   which is why the keyframes read it from a variable instead of hard-coding
+   -50%: with two copies and three words, the band ran out of content and the
+   ribbon showed a gap on every pass. */
 .veloura-tkr .tkr__track {
   display: flex;
   align-items: center;
-  /* Stated, not assumed: the track must never wrap. A wrapped track is three
-     stacked rows inside a 40px band, which is how the phone ended up with two
-     coloured wedges and no words in them. */
   flex-wrap: nowrap;
   flex: 0 0 auto;
   width: max-content;
   gap: var(--tkr-gap);
   padding-inline-end: var(--tkr-gap);
-  animation: veloura-tkr-scroll var(--tkr-speed) linear infinite;
+  animation: veloura-tkr-scroll var(--band-speed, var(--tkr-speed)) linear infinite;
 }
 
 .veloura-tkr .tkr__band--b .tkr__track { animation-direction: reverse; }
 .veloura-tkr .tkr__band:hover .tkr__track { animation-play-state: paused; }
 
-/* The slide has to follow the page's direction, and this is not cosmetic.
-
-   In an RTL flex row the first copy of the list is laid out at the RIGHT edge
-   of the track and the second copy sits to its LEFT. Sliding the track further
-   left therefore drags BOTH copies out of the band: measured on a phone, the
-   track ended at x = -827 while the band was at 0…390 — a coloured ribbon with
-   no words in it, which is exactly what the screenshots showed. In RTL the
-   track must move RIGHT, so the second copy slides into the band and lands
-   precisely where the first began. */
 @keyframes veloura-tkr-scroll {
   from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(var(--tkr-shift, -50%), 0, 0); }
 }
 
+/* The slide follows the page direction, and this is not cosmetic: in an RTL
+   flex row the first copy sits at the RIGHT edge and the rest to its left, so
+   sliding further left drags every copy out of the band and leaves a coloured
+   ribbon with no words in it. */
 @keyframes veloura-tkr-scroll-rtl {
   from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(50%, 0, 0); }
+  to { transform: translate3d(var(--tkr-shift-rtl, 50%), 0, 0); }
 }
 
 html[dir="rtl"] .veloura-tkr .tkr__track,
@@ -139,8 +117,8 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 
 .veloura-tkr .tkr__item {
   display: inline-flex;
-  text-decoration: none;
   align-items: center;
+  text-decoration: none;
   gap: 8px;
   flex: 0 0 auto;
   color: inherit;
@@ -159,12 +137,14 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   font-size: calc(var(--tkr-size) - 1px);
 }
 
-/* ------------------------------------------------------------- tilted ---- */
 /* ---------------------------------------------------------------- glass -- */
-/* The same contract as the header, the search panel and the floating bottom
-   menu: the theme's shared tokens, so the ribbon takes whatever surface, blur
-   and edges those already define and follows dark mode with them instead of
-   carrying its own copy of the palette. */
+/* The theme's own tokens — the same ones the header, the search panel and the
+   floating bottom menu use — so the ribbon follows dark mode with them.
+
+   The merchant's colours are laid over that glass at a strength they set, and
+   the default is high: at 22% the ribbon washed out to a pale smear, which is
+   not what "زجاجي" is supposed to look like. The blur still reads because the
+   layer stays translucent — it is the colour that is strong, not opaque. */
 .veloura-tkr.tkr--glass .tkr__band {
   background-color: var(--veloura-glass-surface, rgba(248, 250, 252, .72));
   -webkit-backdrop-filter: var(--veloura-filter, blur(20px) saturate(124%));
@@ -172,61 +152,53 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .20));
   border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .12));
   box-shadow: 0 10px 30px var(--veloura-glass-shadow, rgba(15, 23, 42, .10));
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--band-from) var(--band-tint, 70%), transparent),
+    color-mix(in srgb, var(--band-to) var(--band-tint, 70%), transparent)
+  );
 }
 
-/* A tint of the merchant's own colours over the glass, faint enough that the
-   page still shows through. background-image on purpose: it layers over the
-   translucent background-color instead of replacing it. */
-.veloura-tkr.tkr--glass .tkr__band--a {
-  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tkr-from) 22%, transparent), color-mix(in srgb, var(--tkr-to) 22%, transparent));
+/* Per band, because each one has its own switch. */
+.veloura-tkr .tkr__band.is-glass {
+  background-color: var(--veloura-glass-surface, rgba(248, 250, 252, .72));
+  -webkit-backdrop-filter: var(--veloura-filter, blur(20px) saturate(124%));
+  backdrop-filter: var(--veloura-filter, blur(20px) saturate(124%));
+  border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .20));
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .12));
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--band-from) var(--band-tint, 70%), transparent),
+    color-mix(in srgb, var(--band-to) var(--band-tint, 70%), transparent)
+  );
 }
 
-.veloura-tkr.tkr--glass .tkr__band--b {
-  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tkr-to) 22%, transparent), color-mix(in srgb, var(--tkr-from) 22%, transparent));
-}
-
-.veloura-tkr.tkr--glass .tkr__band--c {
-  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tkr-from) 14%, transparent), color-mix(in srgb, var(--tkr-to) 14%, transparent));
-}
-
+/* -------------------------------------------------------------- tilted --- */
 .veloura-tkr.tkr--tilt .tkr__band { transform: rotate(calc(var(--tkr-angle) * -1)); }
 
-/* Two bands crossing. They are stacked in a fixed-height stage and tilted the
-   opposite way from each other; the stage is what gives them room to cross
-   without either one dragging the page taller. */
-.veloura-tkr.tkr--cross .tkr__wrap,
-.veloura-tkr.tkr--triple .tkr__wrap {
+/* Two bands crossing, in a stage tall enough to hold both without either one
+   dragging the page taller. */
+.veloura-tkr.tkr--cross .tkr__wrap {
   position: relative;
   height: calc(var(--tkr-height) * 2.9);
 }
 
-.veloura-tkr.tkr--triple .tkr__wrap { height: calc(var(--tkr-height) * 3.6); }
-
-.veloura-tkr.tkr--cross .tkr__band,
-.veloura-tkr.tkr--triple .tkr__band {
+.veloura-tkr.tkr--cross .tkr__band {
   position: absolute;
   inset-inline: 0;
   top: 50%;
 }
 
-.veloura-tkr.tkr--cross .tkr__band--a,
-.veloura-tkr.tkr--triple .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); }
-
-.veloura-tkr.tkr--cross .tkr__band--b,
-.veloura-tkr.tkr--triple .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); }
-
-/* The third band lies flat between the other two, so the group reads as a
-   weave rather than as three parallel stripes. */
-.veloura-tkr.tkr--triple .tkr__band--c { transform: translateY(-50%) rotate(0deg); z-index: 2; }
+.veloura-tkr.tkr--cross .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); z-index: 2; }
+.veloura-tkr.tkr--cross .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); z-index: 1; }
 
 @media (max-width: 639px) {
   .veloura-tkr { --tkr-height: 40px; --tkr-size: 12.5px; --tkr-gap: 18px; }
   .veloura-tkr.tkr--cross .tkr__wrap { height: calc(var(--tkr-height) * 2.6); }
-  .veloura-tkr.tkr--triple .tkr__wrap { height: calc(var(--tkr-height) * 3.2); }
 }
 
-/* Someone who turns motion off in their system gets a readable band, not a
-   frozen half-scrolled one: the animation stops at the start. */
+/* Motion off in the system means a readable band, not a frozen half-scrolled
+   one: the animation stops at the start. */
 @media (prefers-reduced-motion: reduce) {
   .veloura-tkr .tkr__track { animation: none; transform: none; }
   .veloura-tkr .tkr__band { justify-content: center; }
@@ -234,13 +206,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 
 </style>
 
-  {# A dropdown does not come back in one predictable shape: a plain string,
-     {value: …}, {selected: [{value: …}]}, {selected: {value: …}}, or a
-     one-item list. Unwrapped step by step here, with {% set %} only — the
-     previous attempt used a Twig macro and {% import _self %}, and the whole
-     section stopped rendering, so this file now keeps to the plainest
-     constructs it can. A string is not `iterable` in Twig, so |first is only
-     ever reached for a real list. #}
+  {# ---- the layout, unwrapped shape by shape ---------------------------- #}
   {% set tkr_raw = component.veloura_tkr_layout|default('') %}
   {% if tkr_raw.selected is defined %}{% set tkr_raw = tkr_raw.selected %}{% endif %}
   {% if tkr_raw is iterable and tkr_raw.value is not defined %}{% set tkr_raw = tkr_raw|first %}{% endif %}
@@ -248,29 +214,24 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   {% set tkr_layout = tkr_raw|default('cross') %}
   {% if tkr_layout is iterable or tkr_layout == '' %}{% set tkr_layout = 'cross' %}{% endif %}
 
+  {% set tkr_is_tilted = tkr_layout == 'cross' or tkr_layout == 'tilt' %}
+  {% set tkr_two = tkr_layout == 'cross' %}
+
+  {# ---- the separator, same treatment ----------------------------------- #}
   {% set tkr_sraw = component.veloura_tkr_separator|default('') %}
   {% if tkr_sraw.selected is defined %}{% set tkr_sraw = tkr_sraw.selected %}{% endif %}
   {% if tkr_sraw is iterable and tkr_sraw.value is not defined %}{% set tkr_sraw = tkr_sraw|first %}{% endif %}
   {% if tkr_sraw.value is defined %}{% set tkr_sraw = tkr_sraw.value %}{% endif %}
   {% set tkr_sep_key = tkr_sraw|default('star') %}
   {% if tkr_sep_key is iterable or tkr_sep_key == '' %}{% set tkr_sep_key = 'star' %}{% endif %}
-
-  {# Built with {% set %} rather than inside the class attribute: one ternary
-     less in a template that has to be dull to be reliable. #}
-  {% set tkr_is_tilted = tkr_layout == 'cross' or tkr_layout == 'tilt' or tkr_layout == 'triple' %}
-  {% set tkr_two = tkr_layout == 'cross' or tkr_layout == 'triple' %}
-
   {% set tkr_sep_map = {'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': ''} %}
   {% set tkr_sep = tkr_sep_map[tkr_sep_key]|default('✦') %}
 
+  {# ---- the items -------------------------------------------------------- #}
   {% set tkr_items = component.veloura_tkr_items|default([]) %}
-
-  {# A section that renders NOTHING when the collection is empty is
-     indistinguishable from a broken one — and an instance saved before these
-     fields existed carries no items at all. It falls back to a short built-in
-     list instead, so the ribbon is always visible and the merchant can see what
-     they are editing. #}
   {% if tkr_items is empty %}
+    {# A section that renders nothing looks exactly like a broken one, and an
+       instance saved before these fields existed carries no items at all. #}
     {% set tkr_items = [
       { 'icon': 'sicon-medal', 'text': 'ضمان الجودة' },
       { 'icon': 'sicon-shipping-fast', 'text': 'تسليم سريع' },
@@ -280,6 +241,20 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
     ] %}
   {% endif %}
 
+  {# The second band writes its own words; empty means "same as the first". #}
+  {% set tkr_items_b = component.veloura_tkr2_items|default([]) %}
+  {% if tkr_items_b is empty %}{% set tkr_items_b = tkr_items %}{% endif %}
+
+  {# ---- how many copies each track needs ---------------------------------
+     One copy is what the animation slides, so the track has to hold enough
+     copies to cover the widest screen with content left over. Three words
+     twice over do not reach across a desktop — that is the gap the ribbon
+     showed on every pass — so the count grows as the list shrinks. #}
+  {% set tkr_copies = max(3, (18 / (tkr_items|length))|round(0, 'ceil')) %}
+  {% set tkr_copies_b = max(3, (18 / (tkr_items_b|length))|round(0, 'ceil')) %}
+  {% set tkr_shift = (100 / tkr_copies)|round(4) %}
+  {% set tkr_shift_b = (100 / tkr_copies_b)|round(4) %}
+
   <section
     data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-ticker-{{ position }}"
@@ -287,32 +262,32 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       tkr--{{ tkr_layout }}
       {{ tkr_is_tilted ? 'tkr--tilted' : '' }}
       {{ component.veloura_tkr_full_width ? 'tkr--bleed' : 'tkr--boxed' }}
-      {{ component.veloura_tkr_glass ? 'tkr--glass' : '' }}
       {{ component.veloura_tkr_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_tkr_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_tkr_custom_classes }}"
     style="
-      --tkr-from: {{ component.veloura_tkr_color_from|default('#7c3aed') }};
-      --tkr-to: {{ component.veloura_tkr_color_to|default('#ec4899') }};
-      --tkr-text: {{ component.veloura_tkr_text_color|default('#ffffff') }};
       --tkr-height: {{ component.veloura_tkr_height|default(46) }}px;
       --tkr-size: {{ component.veloura_tkr_font_size|default(14) }}px;
       --tkr-gap: {{ component.veloura_tkr_gap|default(26) }}px;
       --tkr-speed: {{ component.veloura_tkr_speed|default(26) }}s;
       --tkr-angle: {{ component.veloura_tkr_angle|default(3) }}deg;
       --tkr-radius: {{ component.veloura_tkr_radius|default(16) }}px;
-      --tkr-side: {{ component.veloura_tkr_side_space|default(0) }}px;
+      --tkr-side: {{ component.veloura_tkr_custom_space ? component.veloura_tkr_side_space|default(0) : 0 }}px;
     "
   >
     <div class="tkr__wrap">
 
-      {# Each band prints the list TWICE. That is what the -50% slide in the
-         keyframes is measured against: at the end of the animation the second
-         copy sits exactly where the first began, so the reset is invisible.
-         Change one and the other has to change with it. #}
-      <div class="tkr__band tkr__band--a">
+      <div class="tkr__band tkr__band--a {{ component.veloura_tkr_glass ? 'is-glass' : '' }}"
+        style="
+          --band-from: {{ component.veloura_tkr_color_from|default('#7c3aed') }};
+          --band-to: {{ component.veloura_tkr_color_to|default('#ec4899') }};
+          --band-text: {{ component.veloura_tkr_text_color|default('#ffffff') }};
+          --band-tint: {{ component.veloura_tkr_glass_tint|default(70) }}%;
+          --tkr-shift: -{{ tkr_shift }}%;
+          --tkr-shift-rtl: {{ tkr_shift }}%;
+        ">
         <div class="tkr__track">
-          {% for pass in 1..2 %}
+          {% for pass in 1..tkr_copies %}
             {% for item in tkr_items %}
               {% if item.text %}
                 {% if item.url %}
@@ -334,28 +309,19 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       </div>
 
       {% if tkr_two %}
-        <div class="tkr__band tkr__band--b" aria-hidden="true">
+        <div class="tkr__band tkr__band--b {{ component.veloura_tkr2_glass ? 'is-glass' : '' }}"
+          style="
+            --band-from: {{ component.veloura_tkr2_color_from|default(component.veloura_tkr_color_to|default('#ec4899')) }};
+            --band-to: {{ component.veloura_tkr2_color_to|default(component.veloura_tkr_color_from|default('#7c3aed')) }};
+            --band-text: {{ component.veloura_tkr2_text_color|default(component.veloura_tkr_text_color|default('#ffffff')) }};
+            --band-tint: {{ component.veloura_tkr2_glass_tint|default(70) }}%;
+            --band-speed: {{ component.veloura_tkr2_speed|default(component.veloura_tkr_speed|default(26)) }}s;
+            --tkr-shift: -{{ tkr_shift_b }}%;
+            --tkr-shift-rtl: {{ tkr_shift_b }}%;
+          " aria-hidden="true">
           <div class="tkr__track">
-            {% for pass in 1..2 %}
-              {% for item in tkr_items %}
-                {% if item.text %}
-                  <span class="tkr__item">
-                    {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
-                    <span>{{ item.second_text|default(item.text) }}</span>
-                  </span>
-                  {% if tkr_sep %}<span class="tkr__sep">{{ tkr_sep }}</span>{% endif %}
-                {% endif %}
-              {% endfor %}
-            {% endfor %}
-          </div>
-        </div>
-      {% endif %}
-
-      {% if tkr_layout == 'triple' %}
-        <div class="tkr__band tkr__band--c" aria-hidden="true">
-          <div class="tkr__track">
-            {% for pass in 1..2 %}
-              {% for item in tkr_items %}
+            {% for pass in 1..tkr_copies_b %}
+              {% for item in tkr_items_b %}
                 {% if item.text %}
                   <span class="tkr__item">
                     {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}

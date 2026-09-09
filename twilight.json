@@ -17019,7 +17019,7 @@
           "format": "title",
           "label": "Title",
           "variant": "h6",
-          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات الشريط</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">شكل الشريط وعرضه وسرعته</span></span></div>"
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات الشريط</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">الشكل والعرض والحركة</span></span></div>"
         },
         {
           "id": "veloura_tkr_layout",
@@ -17029,20 +17029,16 @@
           "icon": "sicon-layout",
           "options": [
             {
-              "label": "شريطان متقاطعان",
-              "value": "cross"
+              "label": "شريط مستقيم",
+              "value": "straight"
             },
             {
-              "label": "ثلاثة أشرطة متشابكة",
-              "value": "triple"
-            },
-            {
-              "label": "شريط مائل واحد",
+              "label": "شريط مائل",
               "value": "tilt"
             },
             {
-              "label": "شريط مستقيم",
-              "value": "straight"
+              "label": "شريطان متقاطعان",
+              "value": "cross"
             }
           ],
           "selected": [
@@ -17055,15 +17051,6 @@
           "required": false
         },
         {
-          "id": "veloura_tkr_full_width",
-          "type": "boolean",
-          "format": "switch",
-          "label": "عرض الشاشة كاملًا",
-          "value": false,
-          "required": false,
-          "description": "مغلق: الشريط داخل الكونتينر مثل بقية الأقسام. مفتوح: يمتد من حافة الشاشة للحافة."
-        },
-        {
           "id": "veloura_tkr_angle",
           "type": "number",
           "format": "slider",
@@ -17074,20 +17061,7 @@
           "max": 10,
           "step": 1,
           "required": false,
-          "description": "بالدرجات. الصفر يجعل الشريط مستقيمًا حتى في الوضع المائل."
-        },
-        {
-          "id": "veloura_tkr_speed",
-          "type": "number",
-          "format": "slider",
-          "label": "مدة الدورة (ثانية)",
-          "icon": "sicon-clock",
-          "value": 26,
-          "min": 8,
-          "max": 90,
-          "step": 1,
-          "required": false,
-          "description": "كلما زادت المدة صار الشريط أبطأ. الشريط يتوقف عند مرور المؤشر عليه."
+          "description": "بالدرجات، للشريط المائل والمتقاطعين."
         },
         {
           "id": "veloura_tkr_height",
@@ -17117,7 +17091,7 @@
           "id": "veloura_tkr_gap",
           "type": "number",
           "format": "slider",
-          "label": "المسافة بين العناصر",
+          "label": "المسافة بين العبارات",
           "icon": "sicon-move-horizontal",
           "value": 26,
           "min": 10,
@@ -17139,21 +17113,67 @@
           "description": "لا تظهر في وضع «عرض الشاشة كاملًا»."
         },
         {
-          "id": "veloura_tkr_title_items",
+          "id": "veloura_tkr_full_width",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض الشاشة كاملًا",
+          "value": false,
+          "required": false,
+          "description": "مغلق: الشريط داخل الكونتينر. مفتوح: يمتد من حافة الشاشة للحافة."
+        },
+        {
+          "id": "veloura_tkr_separator",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "الفاصل بين العبارات",
+          "icon": "sicon-keyboard_arrow_down",
+          "options": [
+            {
+              "label": "نجمة ✦",
+              "value": "star"
+            },
+            {
+              "label": "نقطة •",
+              "value": "dot"
+            },
+            {
+              "label": "معيّن ◆",
+              "value": "diamond"
+            },
+            {
+              "label": "شرطة مائلة /",
+              "value": "slash"
+            },
+            {
+              "label": "بلا فاصل",
+              "value": "none"
+            }
+          ],
+          "selected": [
+            {
+              "label": "نجمة ✦",
+              "value": "star"
+            }
+          ],
+          "value": "star",
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_title_band1",
           "type": "static",
           "format": "title",
           "label": "Title",
           "variant": "h6",
-          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">عناصر الشريط</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أيقونة ونص لكل عنصر، ورابط اختياري</span></span></div>"
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الشريط الأول</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">عباراته وألوانه وسرعته</span></span></div>"
         },
         {
           "id": "veloura_tkr_items",
           "type": "collection",
           "format": "collection",
-          "label": "العبارات",
+          "label": "عبارات الشريط الأول",
           "item_label": "عبارة",
           "icon": "sicon-list-add",
-          "minLength": 1,
+          "minLength": 0,
           "maxLength": 20,
           "value": [
             {
@@ -17203,17 +17223,6 @@
               "maxLength": "60"
             },
             {
-              "id": "second_text",
-              "type": "string",
-              "format": "text",
-              "label": "نص الشريط الثاني (اختياري)",
-              "description": "يظهر في الشريط المعاكس عند اختيار «شريطان متقاطعان». اتركه فارغًا ليكرر النص نفسه.",
-              "icon": "sicon-format-text",
-              "value": "",
-              "required": false,
-              "maxLength": "60"
-            },
-            {
               "id": "url",
               "type": "string",
               "format": "url",
@@ -17225,58 +17234,17 @@
           ]
         },
         {
-          "id": "veloura_tkr_separator",
-          "type": "items",
-          "format": "dropdown-list",
-          "label": "الفاصل بين العبارات",
-          "icon": "sicon-keyboard_arrow_down",
-          "options": [
-            {
-              "label": "نجمة ✦",
-              "value": "star"
-            },
-            {
-              "label": "نقطة •",
-              "value": "dot"
-            },
-            {
-              "label": "معيّن ◆",
-              "value": "diamond"
-            },
-            {
-              "label": "شرطة مائلة /",
-              "value": "slash"
-            },
-            {
-              "label": "بلا فاصل",
-              "value": "none"
-            }
-          ],
-          "selected": [
-            {
-              "label": "نجمة ✦",
-              "value": "star"
-            }
-          ],
-          "value": "star",
-          "required": false
-        },
-        {
-          "id": "veloura_tkr_title_design",
-          "type": "static",
-          "format": "title",
-          "label": "Title",
-          "variant": "h6",
-          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الألوان</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تدرّج من لونين</span></span></div>"
-        },
-        {
-          "id": "veloura_tkr_glass",
-          "type": "boolean",
-          "format": "switch",
-          "label": "الوضع الزجاجي",
-          "description": "يستعمل نفس زجاج الهيدر والبحث والقائمة السفلية، ويتبع الوضع الداكن معها. ألوانك تبقى كتلوين خفيف فوقه.",
-          "value": false,
-          "required": false
+          "id": "veloura_tkr_speed",
+          "type": "number",
+          "format": "slider",
+          "label": "مدة الدورة (ثانية)",
+          "icon": "sicon-clock",
+          "value": 26,
+          "min": 8,
+          "max": 90,
+          "step": 1,
+          "required": false,
+          "description": "كلما زادت صار الشريط أبطأ. يتوقف عند مرور المؤشر."
         },
         {
           "id": "veloura_tkr_color_from",
@@ -17306,6 +17274,213 @@
           "required": false
         },
         {
+          "id": "veloura_tkr_glass",
+          "type": "boolean",
+          "format": "switch",
+          "label": "الوضع الزجاجي للشريط الأول",
+          "value": false,
+          "required": false,
+          "description": "زجاج الثيم نفسه (الهيدر والبحث والقائمة السفلية) وألوانك فوقه."
+        },
+        {
+          "id": "veloura_tkr_glass_tint",
+          "type": "number",
+          "format": "slider",
+          "label": "شدة اللون فوق الزجاج",
+          "icon": "sicon-brush",
+          "value": 70,
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "required": false,
+          "description": "كلما زادت صار اللون أقوى والزجاج أخفت.",
+          "conditions": [
+            {
+              "id": "veloura_tkr_glass",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr_title_band2",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "variant": "h6",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الشريط الثاني</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">يظهر عند اختيار «شريطان متقاطعان»</span></span></div>",
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_items",
+          "type": "collection",
+          "format": "collection",
+          "label": "عبارات الشريط الثاني",
+          "item_label": "عبارة",
+          "icon": "sicon-list-add",
+          "minLength": 0,
+          "maxLength": 20,
+          "value": [],
+          "fields": [
+            {
+              "id": "icon",
+              "type": "string",
+              "format": "icon",
+              "label": "الأيقونة",
+              "icon": "sicon-star",
+              "value": "sicon-star",
+              "required": false
+            },
+            {
+              "id": "text",
+              "type": "string",
+              "format": "text",
+              "label": "النص",
+              "icon": "sicon-format-text-alt",
+              "value": "",
+              "required": false,
+              "maxLength": "60"
+            },
+            {
+              "id": "url",
+              "type": "string",
+              "format": "url",
+              "label": "رابط (اختياري)",
+              "icon": "sicon-link",
+              "value": "",
+              "required": false
+            }
+          ],
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_note",
+          "type": "static",
+          "format": "description",
+          "label": null,
+          "value": "اترك عبارات الشريط الثاني فارغة ليكرر عبارات الشريط الأول.",
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_speed",
+          "type": "number",
+          "format": "slider",
+          "label": "مدة دورة الشريط الثاني (ثانية)",
+          "icon": "sicon-clock",
+          "value": 26,
+          "min": 8,
+          "max": 90,
+          "step": 1,
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_color_from",
+          "type": "string",
+          "format": "color",
+          "label": "اللون الأول للشريط الثاني",
+          "icon": "sicon-brush",
+          "value": "#ec4899",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_color_to",
+          "type": "string",
+          "format": "color",
+          "label": "اللون الثاني للشريط الثاني",
+          "icon": "sicon-brush",
+          "value": "#7c3aed",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_text_color",
+          "type": "string",
+          "format": "color",
+          "label": "لون نص الشريط الثاني",
+          "icon": "sicon-brush",
+          "value": "#ffffff",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_glass",
+          "type": "boolean",
+          "format": "switch",
+          "label": "الوضع الزجاجي للشريط الثاني",
+          "value": false,
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr2_glass_tint",
+          "type": "number",
+          "format": "slider",
+          "label": "شدة اللون فوق الزجاج",
+          "icon": "sicon-brush",
+          "value": 70,
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr2_glass",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
           "id": "veloura_tkr_title_general",
           "type": "static",
           "format": "title",
@@ -17314,17 +17489,32 @@
           "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة</strong></span></div>"
         },
         {
+          "id": "veloura_tkr_custom_space",
+          "type": "boolean",
+          "format": "switch",
+          "label": "مسافة مخصصة يمين ويسار",
+          "value": false,
+          "required": false
+        },
+        {
           "id": "veloura_tkr_side_space",
           "type": "number",
           "format": "slider",
-          "label": "مسافة يمين ويسار",
-          "description": "تُضاف داخل الكونتينر. لا أثر لها في وضع «عرض الشاشة كاملًا».",
+          "label": "مقدار المسافة",
           "icon": "sicon-move-horizontal",
-          "value": 0,
+          "value": 20,
           "min": 0,
           "max": 80,
           "step": 2,
-          "required": false
+          "required": false,
+          "description": "تُضاف داخل الكونتينر. لا أثر لها في وضع «عرض الشاشة كاملًا».",
+          "conditions": [
+            {
+              "id": "veloura_tkr_custom_space",
+              "operation": "=",
+              "value": true
+            }
+          ]
         },
         {
           "id": "veloura_tkr_mobile_only",
@@ -17346,7 +17536,7 @@
           "id": "veloura_tkr_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل111111111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "value": false,
           "required": false
         },
