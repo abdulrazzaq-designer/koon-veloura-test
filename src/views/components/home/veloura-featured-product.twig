@@ -19,6 +19,609 @@
 
 {% if not component.veloura_fp_hide %}
 
+{# ==========================================================================
+   The component's stylesheet travels WITH its markup, inline, instead of
+   living in app.css.
+
+   Twig reaches the storefront the moment the theme is published, while the
+   compiled app.css goes through a build and a CDN — and twice now the two
+   were a version apart on the live store, which is exactly the state that
+   breaks a layout: new markup, old rules. Classes the old file has never
+   heard of get no layout at all, while classes it still remembers are placed
+   by rules the markup no longer matches. Shipping the rules in the same file
+   as the markup they describe removes the skew: there is one version of this
+   component, and it is whatever the page just rendered.
+
+   Everything is scoped to .veloura-featured-product, so it cannot reach the
+   rest of the theme.
+   ========================================================================== #}
+<style>
+/* ==========================================================================
+   المنتج المميز (فيلورا)
+
+   One product, given the width of the section. Two layouts share the same
+   markup: `split` puts the image beside the content, `fullbleed` puts the
+   content on a card over the image. Colours come from the component's own
+   settings as custom properties, and dark mode swaps only the surfaces so a
+   merchant's accent colour keeps working in both.
+   ========================================================================== */
+.veloura-featured-product {
+  --vfp-radius: 20px;
+  --vfp-accent: #004956;
+  --vfp-dark-card-bg: #0f172a;
+
+  /* The component writes the merchant's choices as *-light inline; these lines
+     turn them into the properties everything below paints with, which keeps
+     the dark block at the end of this file able to override them. */
+  --vfp-title-color: var(--vfp-title-color-light, #111827);
+  --vfp-text-color: var(--vfp-text-color-light, #4b5563);
+  --vfp-surface: var(--vfp-card-bg-light, #ffffff);
+  --vfp-border: rgba(15, 23, 42, .10);
+
+  padding-inline: var(--vfp-spacing, 0);
+}
+
+.veloura-featured-product .vfp__heading {
+  margin-bottom: 18px;
+}
+
+/* The card is a plain column. Nothing here depends on grid-template-areas or
+   on display:contents any more: that pair is what let a stylesheet that did
+   not match the markup drop every block into one cell and print the entire
+   card over the photo. The only grid is .vfp__stage, and if even that rule
+   went missing its three children would simply stack, which still reads. */
+/* The structural declarations of this component carry !important, and that is
+   deliberate rather than lazy: a stale app.css still on the CDN carries older
+   rules for these same classes, some of them a class more specific than these,
+   and a layout that half-applies is what put the whole card on top of the
+   photo. This inline sheet is the single authority for how this component is
+   laid out; the visual rules below stay overridable as usual. */
+.veloura-featured-product .vfp__card {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px;
+  padding: 20px 14px;
+  border: 1px solid var(--vfp-border);
+  border-radius: var(--vfp-radius);
+  background: var(--vfp-surface);
+  color: var(--vfp-text-color);
+  box-shadow: 0 18px 46px rgba(15, 23, 42, .07);
+}
+
+@media (min-width: 640px) {
+  .veloura-featured-product .vfp__card { padding: 28px 20px; gap: 20px; }
+}
+
+@media (min-width: 1024px) {
+  .veloura-featured-product .vfp__card { padding: 34px; }
+}
+
+.veloura-featured-product .vfp__stage {
+  display: grid !important;
+  gap: 10px;
+  align-items: center;
+}
+
+/* The reset that matters most.
+
+   An older app.css still on the CDN puts `grid-area: media` / `features` /
+   `trust` on these very children. Those names existed on the CARD back then;
+   inside .vfp__stage they name nothing, so each child was pushed into an
+   implicit column of its own — measured: five tracks, "0px 400px 0px 0px
+   602px", with the photo in the fifth. Clearing the placement here means the
+   three children take the three columns this sheet defines, whatever an older
+   sheet still says about them. */
+.veloura-featured-product .vfp__stage > * {
+  grid-area: auto !important;
+}
+
+.veloura-featured-product .vfp__media { position: relative; }
+
+/* ============================ centred spotlight (the default) ============ */
+/* A list, the photo, a list — at every width. What changes on a phone is the
+   SHAPE of the side items, not the arrangement: an icon chip with a short
+   label under it, so a narrow column still says something instead of breaking
+   a sentence into one word per line. */
+.veloura-featured-product.vfp--center .vfp__stage {
+  grid-template-columns: minmax(0, .62fr) minmax(0, 2fr) minmax(0, .62fr) !important;
+  gap: 8px;
+}
+
+.veloura-featured-product.vfp--center .vfp__top,
+.veloura-featured-product.vfp--center .vfp__bottom,
+.veloura-featured-product.vfp--center .vfp__actions { text-align: center; }
+
+.veloura-featured-product.vfp--center .vfp__prices,
+.veloura-featured-product.vfp--center .vfp__actions,
+.veloura-featured-product.vfp--center .vfp__countdown-units,
+.veloura-featured-product.vfp--center .vfp__thumbs { justify-content: center; }
+
+.veloura-featured-product.vfp--center .vfp__add { flex: 0 1 420px; }
+
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__stage {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 400px) minmax(0, 1fr) !important;
+    gap: 22px;
+  }
+
+  /* Both lists hug the photo rather than the card's outer edges: each side is
+     a full grid track, and `end`/`start` are logical, so they resolve toward
+     the middle column in either page direction. */
+  .veloura-featured-product.vfp--center .vfp__features { justify-self: end; max-width: 260px; }
+  .veloura-featured-product.vfp--center .vfp__trust { justify-self: start; max-width: 260px; }
+}
+
+/* A halo behind the photo, the merchant's own accent at low alpha, so it reads
+   as a spotlight and not as a colour of its own. */
+.veloura-featured-product.vfp--center .vfp__media::before {
+  content: "";
+  position: absolute;
+  inset: -8% -6%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--vfp-accent) 22%, transparent),
+    transparent 100%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* The badge is deliberately NOT lifted here: it is absolutely positioned
+   inside the frame, and position:relative on it drops it back into the flow,
+   where centred text parks it in the middle of the picture. */
+.veloura-featured-product.vfp--center .vfp__image-wrap,
+.veloura-featured-product.vfp--center .vfp__thumbs { position: relative; z-index: 1; }
+
+/* --- the side lists ------------------------------------------------------ */
+.veloura-featured-product.vfp--center .vfp__features,
+.veloura-featured-product.vfp--center .vfp__trust {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+
+.veloura-featured-product.vfp--center .vfp__features li,
+.veloura-featured-product.vfp--center .vfp__trust li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* The chip's second line is the detail ("within 1-3 days"); beside a 55px
+   column it is noise, so phones keep only the name. */
+.veloura-featured-product.vfp--center .vfp__trust li small { display: none; }
+
+/* An icon chip rather than a bare glyph: at this size a lone icon beside two
+   words reads as a bullet, while a filled circle reads as a badge. */
+.veloura-featured-product.vfp--center .vfp__features i,
+.veloura-featured-product.vfp--center .vfp__trust i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vfp-accent) 12%, transparent);
+  color: var(--vfp-accent);
+  font-size: 15px;
+}
+
+@media (min-width: 640px) {
+  .veloura-featured-product.vfp--center .vfp__features li,
+  .veloura-featured-product.vfp--center .vfp__trust li {
+    flex-direction: row;
+    gap: 10px;
+    font-size: 13px;
+    text-align: start;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust li small { display: block; }
+
+  /* Mirrored, so each list keeps its icons on the outer edge and the two sides
+     read as a pair around the photo instead of both leaning the same way. */
+  .veloura-featured-product.vfp--center .vfp__trust li {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    text-align: end;
+  }
+
+  .veloura-featured-product.vfp--center .vfp__features i,
+  .veloura-featured-product.vfp--center .vfp__trust i { width: 38px; height: 38px; font-size: 18px; }
+
+  /* The middle item of each side steps outwards, so the three curve around the
+     photo. Physical translateX with an explicit direction rule: the offset has
+     to flip with the page direction. */
+  .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
+    transform: translateX(var(--vfp-arc, 22px));
+  }
+
+  .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
+    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
+  }
+
+  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__features li:nth-child(2) {
+    transform: translateX(calc(var(--vfp-arc, 22px) * -1));
+  }
+
+  html[dir="ltr"] .veloura-featured-product.vfp--center .vfp__trust li:nth-child(2) {
+    transform: translateX(var(--vfp-arc, 22px));
+  }
+}
+
+/* ================================= split ================================= */
+/* Photo on one side, the two lists stacked on the other; the name, the price
+   and the button stay full-width rows above and below. Explicit line numbers,
+   not names — the same reason as above. */
+.veloura-featured-product.vfp--split .vfp__stage {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+@media (min-width: 768px) {
+  .veloura-featured-product.vfp--split .vfp__stage {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) !important;
+    gap: 14px 28px;
+    align-items: center;
+  }
+
+  .veloura-featured-product.vfp--split .vfp__stage > .vfp__media {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+  }
+
+  .veloura-featured-product.vfp--split .vfp__stage > .vfp__features {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: end;
+  }
+
+  .veloura-featured-product.vfp--split .vfp__stage > .vfp__trust {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    align-self: start;
+  }
+
+  .veloura-featured-product.vfp--split.vfp--image-left .vfp__stage > .vfp__media { grid-column: 2 !important; }
+  .veloura-featured-product.vfp--split.vfp--image-left .vfp__stage > .vfp__features,
+  .veloura-featured-product.vfp--split.vfp--image-left .vfp__stage > .vfp__trust { grid-column: 1 !important; }
+}
+
+/* --------------------------------------------------------- centred title -- */
+.veloura-featured-product.is-centered .vfp__heading { text-align: center; }
+
+.veloura-featured-product.is-centered .vfp__heading > * {
+  margin-inline: auto;
+  justify-content: center;
+}
+
+/* ------------------------------------------------------- the photo ------- */
+.veloura-featured-product .vfp__image-wrap {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--vfp-radius) - 6px);
+  background: rgba(15, 23, 42, .04);
+}
+
+.veloura-featured-product .vfp__image {
+  display: block;
+  width: 100%;
+  transition: transform .5s ease;
+}
+
+/* Square: a fixed 1:1 frame, the image cropped to fill it — every product
+   lines up whatever shape its photo is. */
+.veloura-featured-product.vfp--img-square .vfp__image-wrap { aspect-ratio: 1 / 1; }
+
+.veloura-featured-product.vfp--img-square .vfp__image {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Full: the photo's own proportions, nothing cropped, with a cap so a very
+   tall image cannot push the section off the screen. */
+.veloura-featured-product.vfp--img-full .vfp__image-wrap {
+  aspect-ratio: auto;
+  background: transparent;
+}
+
+.veloura-featured-product.vfp--img-full .vfp__image {
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  margin-inline: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .veloura-featured-product .vfp__image-wrap:hover .vfp__image { transform: scale(1.04); }
+}
+
+.veloura-featured-product .vfp__badge {
+  position: absolute;
+  top: 12px;
+  inset-inline-start: 12px;
+  z-index: 2;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--vfp-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  /* Written as "خصم 30%" rather than "-30%": a leading minus next to Arabic
+     text is a bidi coin-flip and rendered as "30%-" on the phone. */
+  unicode-bidi: isolate;
+}
+
+.veloura-featured-product .vfp__thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.veloura-featured-product .vfp__thumbs::-webkit-scrollbar { display: none; }
+
+.veloura-featured-product .vfp__thumb {
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--vfp-border);
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.veloura-featured-product .vfp__thumb.is-active { border-color: var(--vfp-accent); }
+.veloura-featured-product .vfp__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ------------------------------------------------------- the wording ----- */
+.veloura-featured-product .vfp__eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vfp-accent) 14%, transparent);
+  color: var(--vfp-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.veloura-featured-product .vfp__name {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.veloura-featured-product .vfp__name a { color: var(--vfp-title-color); }
+
+@media (min-width: 768px) {
+  .veloura-featured-product .vfp__name { font-size: 34px; }
+}
+
+.veloura-featured-product .vfp__rating {
+  display: flex;
+  align-items: center;
+  justify-content: inherit;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.veloura-featured-product.vfp--center .vfp__rating { justify-content: center; }
+.veloura-featured-product .vfp__stars { color: #f59e0b; letter-spacing: 2px; }
+.veloura-featured-product .vfp__rating-count { opacity: .7; }
+
+.veloura-featured-product .vfp__excerpt {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  opacity: .85;
+}
+
+.veloura-featured-product .vfp__prices {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.veloura-featured-product .vfp__price {
+  color: var(--vfp-title-color);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.veloura-featured-product .vfp__old-price {
+  color: var(--vfp-text-color);
+  font-size: 17px;
+  opacity: .6;
+}
+
+/* --------------------------------------------------------- countdown ----- */
+.veloura-featured-product .vfp__countdown {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--vfp-accent) 30%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--vfp-accent) 8%, transparent);
+}
+
+.veloura-featured-product .vfp__countdown-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: .85;
+}
+
+.veloura-featured-product .vfp__countdown-units {
+  display: flex;
+  gap: 8px;
+  /* Largest unit first in the page's own reading direction. */
+  justify-content: flex-start;
+}
+
+.veloura-featured-product .vfp__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  background: var(--vfp-surface);
+  border: 1px solid var(--vfp-border);
+}
+
+.veloura-featured-product .vfp__unit b {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--vfp-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.veloura-featured-product .vfp__unit small { font-size: 11px; opacity: .7; margin-top: 4px; }
+
+/* ------------------------------------------------ features, trust, CTA --- */
+.veloura-featured-product .vfp__features,
+.veloura-featured-product .vfp__trust {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.veloura-featured-product .vfp__features li,
+.veloura-featured-product .vfp__trust li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.veloura-featured-product .vfp__features i,
+.veloura-featured-product .vfp__trust i { color: var(--vfp-accent); font-size: 18px; flex: 0 0 auto; }
+.veloura-featured-product .vfp__trust b { display: block; font-weight: 700; }
+.veloura-featured-product .vfp__trust small { opacity: .7; }
+
+.veloura-featured-product .vfp__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.veloura-featured-product .vfp__add { flex: 1 1 220px; }
+
+.veloura-featured-product .vfp__details {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--vfp-accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------- centred title -- */
+.veloura-featured-product.is-centered .vfp__heading { text-align: center; }
+
+.veloura-featured-product.is-centered .vfp__heading > * {
+  margin-inline: auto;
+  justify-content: center;
+}
+
+/* -------------------------------------------------------- sticky bar ----- */
+.vfp__sticky {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--vfp-surface, #fff);
+  border-top: 1px solid var(--vfp-border, rgba(15, 23, 42, .10));
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, .12);
+  transform: translateY(100%);
+  transition: transform .25s ease;
+}
+
+.vfp__sticky.is-visible { transform: translateY(0); }
+.vfp__sticky-info { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.vfp__sticky-name { font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vfp__sticky-price { font-size: 15px; font-weight: 900; color: var(--vfp-accent-text, var(--vfp-accent, #004956)); }
+.vfp__sticky-add { flex: 0 0 auto; }
+
+@media (min-width: 768px) {
+  .vfp__sticky { display: none; }
+}
+
+/* -------------------------------------------------------------- dark ----- */
+html.dark .veloura-featured-product,
+html body.dark .veloura-featured-product {
+  --vfp-surface: var(--vfp-dark-card-bg, #0f172a);
+  --vfp-title-color: #f9fafb;
+  --vfp-text-color: #cbd5e1;
+  --vfp-border: rgba(255, 255, 255, .12);
+}
+
+/* The merchant's accent is chosen against a white card, so as TEXT on a dark
+   card it turns unreadable — a deep teal on near-black. Backgrounds keep the
+   real accent (white sits on it fine); only accent-coloured text and icons are
+   lightened, by mixing the same colour with white so the brand hue survives. */
+html.dark .veloura-featured-product,
+html body.dark .veloura-featured-product {
+  --vfp-accent-text: color-mix(in srgb, var(--vfp-accent) 45%, #ffffff);
+}
+
+html.dark .veloura-featured-product :is(.vfp__eyebrow, .vfp__details),
+html body.dark .veloura-featured-product :is(.vfp__eyebrow, .vfp__details),
+html.dark .veloura-featured-product :is(.vfp__features i, .vfp__trust i, .vfp__unit b),
+html body.dark .veloura-featured-product :is(.vfp__features i, .vfp__trust i, .vfp__unit b) {
+  color: var(--vfp-accent-text);
+}
+
+html.dark .veloura-featured-product .vfp__eyebrow,
+html body.dark .veloura-featured-product .vfp__eyebrow {
+  background: color-mix(in srgb, var(--vfp-accent) 30%, transparent);
+}
+
+html.dark .vfp__sticky,
+html body.dark .vfp__sticky {
+  --vfp-surface: #0f172a;
+  --vfp-border: rgba(255, 255, 255, .12);
+  color: #f9fafb;
+}
+
+html.dark .veloura-featured-product .vfp__image-wrap,
+html body.dark .veloura-featured-product .vfp__image-wrap {
+  background: rgba(255, 255, 255, .05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-featured-product .vfp__image,
+  .vfp__sticky { transition: none; }
+}
+
+</style>
+
   {# Dropdowns arrive as a bare value, {value: …}, or a one-item list. #}
   {# Defaults to the centred spotlight: a component saved before this
      option existed has no stored value, so the fallback is what it gets. #}
