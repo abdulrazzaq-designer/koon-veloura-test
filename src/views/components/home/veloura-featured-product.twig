@@ -44,6 +44,17 @@
   padding-inline: var(--fp2-spacing, 0);
 }
 
+/* The hidden attribute has to keep working.
+
+   The browser hides [hidden] with `display: none` from its own stylesheet, and
+   ANY author display rule outranks that — so .fp2__countdown { display:
+   inline-block } left an empty countdown showing 0 0 0 0 on the store even
+   though the script had set hidden, and the discount panel showed empty when
+   there was no offer. Measured: hidden = true, computed display = block,
+   height > 0. Every element the script toggles is covered by this one line. */
+.veloura-fp2 [hidden],
+.fp2-sticky[hidden] { display: none !important; }
+
 .veloura-fp2 .fp2__heading { margin-bottom: 16px; }
 .veloura-fp2.is-centered .fp2__heading { text-align: center; }
 .veloura-fp2.is-centered .fp2__heading > * { margin-inline: auto; justify-content: center; }
@@ -112,7 +123,11 @@
 .veloura-fp2.fp2--square .fp2__img { height: 100%; object-fit: cover; }
 
 .veloura-fp2.fp2--full .fp2__frame { background: transparent; }
-.veloura-fp2.fp2--full .fp2__img { height: auto; max-height: 520px; object-fit: contain; margin-inline: auto; }
+.veloura-fp2.fp2--full .fp2__img { height: auto; max-height: 420px; object-fit: contain; margin-inline: auto; }
+
+@media (min-width: 1024px) {
+  .veloura-fp2.fp2--full .fp2__img { max-height: 480px; }
+}
 
 @media (hover: hover) and (pointer: fine) {
   .veloura-fp2 .fp2__frame:hover .fp2__img { transform: scale(1.05); }
