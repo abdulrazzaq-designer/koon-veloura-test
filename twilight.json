@@ -16991,6 +16991,350 @@
           "required": false
         }
       ]
+    },
+    {
+      "key": "5b2e9a71-4c38-4f6d-8e21-9c7a3d5f1b40",
+      "title": {
+        "ar": "شريط إعلاني (فيلورا)",
+        "en": "Marquee Ribbon - Veloura"
+      },
+      "icon": "sicon-arrow-right-left",
+      "path": "home.veloura-ticker",
+      "fields": [
+        {
+          "id": "veloura_home_tab_name_2026",
+          "type": "string",
+          "format": "text",
+          "label": "اسم التبويب الذي يظهر فيه العنصر",
+          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
+          "placeholder": "مثال: العطور",
+          "icon": "sicon-layout-grid",
+          "value": "",
+          "required": false,
+          "maxLength": 40
+        },
+        {
+          "id": "veloura_tkr_title_options",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "variant": "h6",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">خيارات الشريط</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">شكل الشريط وعرضه وسرعته</span></span></div>"
+        },
+        {
+          "id": "veloura_tkr_layout",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "شكل الشريط",
+          "icon": "sicon-layout",
+          "options": [
+            {
+              "label": "شريطان متقاطعان",
+              "value": "cross"
+            },
+            {
+              "label": "شريط مائل واحد",
+              "value": "tilt"
+            },
+            {
+              "label": "شريط مستقيم",
+              "value": "straight"
+            }
+          ],
+          "selected": [
+            {
+              "label": "شريطان متقاطعان",
+              "value": "cross"
+            }
+          ],
+          "value": "cross",
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_full_width",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض الشاشة كاملًا",
+          "value": true,
+          "required": false,
+          "description": "يخرج الشريط من الكونتينر من حافة لحافة."
+        },
+        {
+          "id": "veloura_tkr_angle",
+          "type": "number",
+          "format": "slider",
+          "label": "زاوية الميلان",
+          "icon": "sicon-swap",
+          "value": 3,
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "required": false,
+          "description": "بالدرجات. الصفر يجعل الشريط مستقيمًا حتى في الوضع المائل."
+        },
+        {
+          "id": "veloura_tkr_speed",
+          "type": "number",
+          "format": "slider",
+          "label": "مدة الدورة (ثانية)",
+          "icon": "sicon-clock",
+          "value": 26,
+          "min": 8,
+          "max": 90,
+          "step": 1,
+          "required": false,
+          "description": "كلما زادت المدة صار الشريط أبطأ. الشريط يتوقف عند مرور المؤشر عليه."
+        },
+        {
+          "id": "veloura_tkr_height",
+          "type": "number",
+          "format": "slider",
+          "label": "ارتفاع الشريط",
+          "icon": "sicon-move-vertical",
+          "value": 46,
+          "min": 32,
+          "max": 90,
+          "step": 2,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_font_size",
+          "type": "number",
+          "format": "slider",
+          "label": "حجم الخط",
+          "icon": "sicon-format-text",
+          "value": 14,
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_gap",
+          "type": "number",
+          "format": "slider",
+          "label": "المسافة بين العناصر",
+          "icon": "sicon-move-horizontal",
+          "value": 26,
+          "min": 10,
+          "max": 80,
+          "step": 2,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_radius",
+          "type": "number",
+          "format": "slider",
+          "label": "استدارة الحواف",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "required": false,
+          "description": "لا تظهر في وضع «عرض الشاشة كاملًا»."
+        },
+        {
+          "id": "veloura_tkr_title_items",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "variant": "h6",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">عناصر الشريط</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">أيقونة ونص لكل عنصر، ورابط اختياري</span></span></div>"
+        },
+        {
+          "id": "veloura_tkr_items",
+          "type": "collection",
+          "format": "collection",
+          "label": "العبارات",
+          "item_label": "عبارة",
+          "icon": "sicon-list-add",
+          "minLength": 1,
+          "maxLength": 20,
+          "value": [
+            {
+              "icon": "sicon-medal",
+              "text": "ضمان الجودة",
+              "url": ""
+            },
+            {
+              "icon": "sicon-shipping-fast",
+              "text": "تسليم سريع",
+              "url": ""
+            },
+            {
+              "icon": "sicon-star",
+              "text": "تقييم 5 نجوم",
+              "url": ""
+            },
+            {
+              "icon": "sicon-users",
+              "text": "آلاف العملاء",
+              "url": ""
+            },
+            {
+              "icon": "sicon-chat-conversation-alt",
+              "text": "دعم 24/7",
+              "url": ""
+            }
+          ],
+          "fields": [
+            {
+              "id": "icon",
+              "type": "string",
+              "format": "icon",
+              "label": "الأيقونة",
+              "icon": "sicon-star",
+              "value": "sicon-star",
+              "required": false
+            },
+            {
+              "id": "text",
+              "type": "string",
+              "format": "text",
+              "label": "النص",
+              "icon": "sicon-format-text-alt",
+              "value": "",
+              "required": false,
+              "maxLength": "60"
+            },
+            {
+              "id": "second_text",
+              "type": "string",
+              "format": "text",
+              "label": "نص الشريط الثاني (اختياري)",
+              "description": "يظهر في الشريط المعاكس عند اختيار «شريطان متقاطعان». اتركه فارغًا ليكرر النص نفسه.",
+              "icon": "sicon-format-text",
+              "value": "",
+              "required": false,
+              "maxLength": "60"
+            },
+            {
+              "id": "url",
+              "type": "string",
+              "format": "url",
+              "label": "رابط (اختياري)",
+              "icon": "sicon-link",
+              "value": "",
+              "required": false
+            }
+          ]
+        },
+        {
+          "id": "veloura_tkr_separator",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "الفاصل بين العبارات",
+          "icon": "sicon-keyboard_arrow_down",
+          "options": [
+            {
+              "label": "نجمة ✦",
+              "value": "star"
+            },
+            {
+              "label": "نقطة •",
+              "value": "dot"
+            },
+            {
+              "label": "معيّن ◆",
+              "value": "diamond"
+            },
+            {
+              "label": "شرطة مائلة /",
+              "value": "slash"
+            },
+            {
+              "label": "بلا فاصل",
+              "value": "none"
+            }
+          ],
+          "selected": [
+            {
+              "label": "نجمة ✦",
+              "value": "star"
+            }
+          ],
+          "value": "star",
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_title_design",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "variant": "h6",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الألوان</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تدرّج من لونين</span></span></div>"
+        },
+        {
+          "id": "veloura_tkr_color_from",
+          "type": "string",
+          "format": "color",
+          "label": "اللون الأول",
+          "icon": "sicon-brush",
+          "value": "#7c3aed",
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_color_to",
+          "type": "string",
+          "format": "color",
+          "label": "اللون الثاني",
+          "icon": "sicon-brush",
+          "value": "#ec4899",
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_text_color",
+          "type": "string",
+          "format": "color",
+          "label": "لون النص",
+          "icon": "sicon-brush",
+          "value": "#ffffff",
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_title_general",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "variant": "h6",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة</strong></span></div>"
+        },
+        {
+          "id": "veloura_tkr_mobile_only",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض العنصر في الجوال فقط",
+          "value": false,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_desktop_only",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض العنصر في الكمبيوتر والتابلت فقط",
+          "value": false,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_hide",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "value": false,
+          "required": false
+        },
+        {
+          "id": "veloura_tkr_custom_classes",
+          "type": "string",
+          "format": "text",
+          "label": "Classes",
+          "placeholder": "ex: container dark p-5 custom",
+          "icon": "sicon-code",
+          "value": "",
+          "required": false
+        }
+      ]
     }
   ],
   "support_url": "https://koon-A.com",

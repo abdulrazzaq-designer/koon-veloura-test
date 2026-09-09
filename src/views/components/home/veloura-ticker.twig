@@ -1,0 +1,260 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{% if not component.veloura_tkr_hide %}
+
+{# ==========================================================================
+   شريط إعلاني (فيلورا)
+
+   The stylesheet is inline, in this file, and every class is its own name —
+   the same two rules the featured-product component learned the hard way:
+   Twig publishes instantly while app.css goes through a build and a CDN, and
+   markup under a stylesheet one version older than itself is how a layout
+   breaks without anyone touching it.
+
+   There is no JavaScript. The loop is a CSS animation on transform over a
+   list rendered twice; nothing runs per frame, and the browser can keep the
+   whole thing on the compositor.
+   ========================================================================== #}
+<style>
+/* ==========================================================================
+   شريط إعلاني (فيلورا) — scoped entirely to .veloura-tkr
+   ========================================================================== */
+.veloura-tkr {
+  --tkr-from: #7c3aed;
+  --tkr-to: #ec4899;
+  --tkr-text: #ffffff;
+  --tkr-height: 46px;
+  --tkr-size: 14px;
+  --tkr-gap: 26px;
+  --tkr-speed: 26s;
+  --tkr-angle: 3deg;
+
+  /* The band is wider than the viewport and tilted, so the section must clip
+     it — without this the page gains a horizontal scrollbar on every screen. */
+  overflow: hidden;
+}
+
+.veloura-tkr [hidden] { display: none !important; }
+
+/* Full width means leaving the container: 100vw plus a pull of half the
+   difference on each side, which centres it whatever the container's width or
+   the page's direction. */
+.veloura-tkr.tkr--bleed .tkr__wrap {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.veloura-tkr.tkr--boxed .tkr__wrap {
+  border-radius: var(--tkr-radius, 16px);
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------- one band -- */
+.veloura-tkr .tkr__band {
+  display: flex;
+  align-items: center;
+  width: 118%;
+  margin-inline-start: -9%;
+  min-height: var(--tkr-height);
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--tkr-from), var(--tkr-to));
+  color: var(--tkr-text);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
+}
+
+.veloura-tkr.tkr--straight .tkr__band { width: 100%; margin-inline-start: 0; }
+
+.veloura-tkr .tkr__band--b {
+  background: linear-gradient(90deg, var(--tkr-to), var(--tkr-from));
+}
+
+/* The track holds the list TWICE and slides exactly half its own width, which
+   is what makes the loop seamless: at -50% the second copy sits precisely
+   where the first started, so the jump back is invisible. */
+.veloura-tkr .tkr__track {
+  display: flex;
+  align-items: center;
+  /* Stated, not assumed: the track must never wrap. A wrapped track is three
+     stacked rows inside a 40px band, which is how the phone ended up with two
+     coloured wedges and no words in them. */
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  width: max-content;
+  gap: var(--tkr-gap);
+  padding-inline-end: var(--tkr-gap);
+  animation: veloura-tkr-scroll var(--tkr-speed) linear infinite;
+}
+
+.veloura-tkr .tkr__band--b .tkr__track { animation-direction: reverse; }
+.veloura-tkr .tkr__band:hover .tkr__track { animation-play-state: paused; }
+
+/* The slide has to follow the page's direction, and this is not cosmetic.
+
+   In an RTL flex row the first copy of the list is laid out at the RIGHT edge
+   of the track and the second copy sits to its LEFT. Sliding the track further
+   left therefore drags BOTH copies out of the band: measured on a phone, the
+   track ended at x = -827 while the band was at 0…390 — a coloured ribbon with
+   no words in it, which is exactly what the screenshots showed. In RTL the
+   track must move RIGHT, so the second copy slides into the band and lands
+   precisely where the first began. */
+@keyframes veloura-tkr-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes veloura-tkr-scroll-rtl {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(50%, 0, 0); }
+}
+
+html[dir="rtl"] .veloura-tkr .tkr__track,
+body[dir="rtl"] .veloura-tkr .tkr__track {
+  animation-name: veloura-tkr-scroll-rtl;
+}
+
+.veloura-tkr .tkr__item {
+  display: inline-flex;
+  text-decoration: none;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  color: inherit;
+  font-size: var(--tkr-size);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.veloura-tkr a.tkr__item:hover { text-decoration: underline; }
+.veloura-tkr .tkr__item i { font-size: calc(var(--tkr-size) + 3px); opacity: .9; }
+
+.veloura-tkr .tkr__sep {
+  flex: 0 0 auto;
+  opacity: .55;
+  font-size: calc(var(--tkr-size) - 1px);
+}
+
+/* ------------------------------------------------------------- tilted ---- */
+.veloura-tkr.tkr--tilt .tkr__band { transform: rotate(calc(var(--tkr-angle) * -1)); }
+
+/* Two bands crossing. They are stacked in a fixed-height stage and tilted the
+   opposite way from each other; the stage is what gives them room to cross
+   without either one dragging the page taller. */
+.veloura-tkr.tkr--cross .tkr__wrap {
+  position: relative;
+  height: calc(var(--tkr-height) * 2.9);
+}
+
+.veloura-tkr.tkr--cross .tkr__band {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+}
+
+.veloura-tkr.tkr--cross .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); }
+.veloura-tkr.tkr--cross .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); }
+
+@media (max-width: 639px) {
+  .veloura-tkr { --tkr-height: 40px; --tkr-size: 12.5px; --tkr-gap: 18px; }
+  .veloura-tkr.tkr--cross .tkr__wrap { height: calc(var(--tkr-height) * 2.6); }
+}
+
+/* Someone who turns motion off in their system gets a readable band, not a
+   frozen half-scrolled one: the animation stops at the start. */
+@media (prefers-reduced-motion: reduce) {
+  .veloura-tkr .tkr__track { animation: none; transform: none; }
+  .veloura-tkr .tkr__band { justify-content: center; }
+}
+
+</style>
+
+  {% set tkr_layout = component.veloura_tkr_layout|default('cross') %}
+  {% if tkr_layout is iterable and tkr_layout[0].value is defined %}{% set tkr_layout = tkr_layout[0].value %}
+  {% elseif tkr_layout.value is defined %}{% set tkr_layout = tkr_layout.value %}{% endif %}
+
+  {% set tkr_sep_key = component.veloura_tkr_separator|default('star') %}
+  {% if tkr_sep_key is iterable and tkr_sep_key[0].value is defined %}{% set tkr_sep_key = tkr_sep_key[0].value %}
+  {% elseif tkr_sep_key.value is defined %}{% set tkr_sep_key = tkr_sep_key.value %}{% endif %}
+  {% set tkr_sep_map = {'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': ''} %}
+  {% set tkr_sep = tkr_sep_map[tkr_sep_key]|default('✦') %}
+
+  {% set tkr_items = component.veloura_tkr_items %}
+
+  {% if tkr_items %}
+  <section
+    data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    id="veloura-ticker-{{ position }}"
+    class="s-block veloura-tkr
+      tkr--{{ tkr_layout }}
+      {{ tkr_layout == 'cross' or tkr_layout == 'tilt' ? 'tkr--tilted' : '' }}
+      {{ component.veloura_tkr_full_width ? 'tkr--bleed' : 'tkr--boxed' }}
+      {{ component.veloura_tkr_mobile_only ? 'veloura-mobile-only' : '' }}
+      {{ component.veloura_tkr_desktop_only ? 'veloura-desktop-only' : '' }}
+      {{ component.veloura_tkr_custom_classes }}"
+    style="
+      --tkr-from: {{ component.veloura_tkr_color_from|default('#7c3aed') }};
+      --tkr-to: {{ component.veloura_tkr_color_to|default('#ec4899') }};
+      --tkr-text: {{ component.veloura_tkr_text_color|default('#ffffff') }};
+      --tkr-height: {{ component.veloura_tkr_height|default(46) }}px;
+      --tkr-size: {{ component.veloura_tkr_font_size|default(14) }}px;
+      --tkr-gap: {{ component.veloura_tkr_gap|default(26) }}px;
+      --tkr-speed: {{ component.veloura_tkr_speed|default(26) }}s;
+      --tkr-angle: {{ component.veloura_tkr_angle|default(3) }}deg;
+      --tkr-radius: {{ component.veloura_tkr_radius|default(16) }}px;
+    "
+  >
+    <div class="tkr__wrap">
+
+      {# Each band prints the list TWICE. That is what the -50% slide in the
+         keyframes is measured against: at the end of the animation the second
+         copy sits exactly where the first began, so the reset is invisible.
+         Change one and the other has to change with it. #}
+      <div class="tkr__band tkr__band--a">
+        <div class="tkr__track">
+          {% for pass in 1..2 %}
+            {% for item in tkr_items %}
+              {% if item.text %}
+                {% if item.url %}
+                  <a class="tkr__item" href="{{ item.url }}">
+                    {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
+                    <span>{{ item.text }}</span>
+                  </a>
+                {% else %}
+                  <span class="tkr__item">
+                    {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
+                    <span>{{ item.text }}</span>
+                  </span>
+                {% endif %}
+                {% if tkr_sep %}<span class="tkr__sep" aria-hidden="true">{{ tkr_sep }}</span>{% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if tkr_layout == 'cross' %}
+        <div class="tkr__band tkr__band--b" aria-hidden="true">
+          <div class="tkr__track">
+            {% for pass in 1..2 %}
+              {% for item in tkr_items %}
+                {% if item.text %}
+                  <span class="tkr__item">
+                    {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
+                    <span>{{ item.second_text|default(item.text) }}</span>
+                  </span>
+                  {% if tkr_sep %}<span class="tkr__sep">{{ tkr_sep }}</span>{% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+{% endif %}
