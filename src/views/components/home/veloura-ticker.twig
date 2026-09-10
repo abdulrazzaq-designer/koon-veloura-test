@@ -250,7 +250,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   .veloura-tkr { --tkr-height: 40px; --tkr-size: 12.5px; --tkr-gap: 18px; }
 
   .veloura-tkr .tkr__track {
-    animation-duration: calc(var(--band-speed, var(--tkr-speed)) * var(--tkr-mobile-speed, .75));
+    animation-duration: calc(var(--band-speed, var(--tkr-speed)) * var(--tkr-mobile-speed, .5));
   }
   .veloura-tkr.tkr--cross .tkr__wrap { height: calc(var(--tkr-height) * 2.6); }
 }
@@ -286,8 +286,22 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
      falls back to the star, which is indistinguishable from the setting being
      ignored. #}
   {% set tkr_sep_key = tkr_sep_key|trim %}
-  {% set tkr_sep_map = {'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': ''} %}
-  {% set tkr_sep = tkr_sep_map[tkr_sep_key]|default('✦') %}
+  {# The map is keyed by BOTH the stored value and the label the editor shows,
+     and anything else short is taken literally. A dropdown can hand back the
+     label instead of the value, and a key the map does not know falls through
+     to the star — which is indistinguishable from the setting being ignored,
+     and is what "الفاصل ما تغيّر" actually was. #}
+  {% set tkr_sep_map = {
+    'star': '✦', 'dot': '•', 'slash': '/', 'diamond': '◆', 'none': '',
+    'نجمة ✦': '✦', 'نقطة •': '•', 'معيّن ◆': '◆', 'شرطة مائلة /': '/', 'بلا فاصل': ''
+  } %}
+  {% if tkr_sep_key in tkr_sep_map|keys %}
+    {% set tkr_sep = tkr_sep_map[tkr_sep_key] %}
+  {% elseif tkr_sep_key|length <= 3 %}
+    {% set tkr_sep = tkr_sep_key %}
+  {% else %}
+    {% set tkr_sep = '✦' %}
+  {% endif %}
 
   {# ---- the items -------------------------------------------------------- #}
   {% set tkr_items = component.veloura_tkr_items|default([]) %}
@@ -340,7 +354,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-shine-a: {{ component.veloura_tkr_shine_a|default('#ffffff') }};
       --tkr-shine-b: {{ component.veloura_tkr_shine_b|default('#ffe9a8') }};
       --tkr-shine-speed: {{ component.veloura_tkr_shine_speed|default(4.5) }}s;
-      --tkr-mobile-speed: {{ (component.veloura_tkr_mobile_speed|default(75)) / 100 }};
+      --tkr-mobile-speed: {{ (component.veloura_tkr_mobile_speed|default(50)) / 100 }};
       --tkr-side: {{ component.veloura_tkr_custom_space ? component.veloura_tkr_side_space|default(0) : 0 }}px;
     "
   >

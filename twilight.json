@@ -16425,29 +16425,35 @@
           "options": [
             {
               "label": "الأكثر مبيعًا",
-              "value": "sales"
+              "value": "sales",
+              "key": "3537280f-f5a2-f472-ddb1-8c7a63a245ca"
             },
             {
               "label": "أحدث المنتجات",
-              "value": "latest"
+              "value": "latest",
+              "key": "3d51aa5c-91d4-db15-2ba4-a8b815792415"
             },
             {
               "label": "المنتجات المخفضة",
-              "value": "offers"
+              "value": "offers",
+              "key": "f676f0b3-3474-2400-a047-6226a2daa9d4"
             },
             {
               "label": "لا تعرض العنصر",
-              "value": "none"
+              "value": "none",
+              "key": "82d42be0-9ab9-e1e6-05c8-3fe3488e0159"
             }
           ],
           "selected": [
             {
               "label": "الأكثر مبيعًا",
-              "value": "sales"
+              "value": "sales",
+              "key": "3537280f-f5a2-f472-ddb1-8c7a63a245ca"
             }
           ],
-          "value": "sales",
-          "required": false
+          "required": false,
+          "description": null,
+          "labelHTML": null
         },
         {
           "id": "veloura_fp_image_fit",
@@ -16459,21 +16465,24 @@
           "options": [
             {
               "label": "مربعة",
-              "value": "square"
+              "value": "square",
+              "key": "38620681-0a16-ac1f-6b3f-d1a66de7e0c5"
             },
             {
               "label": "كاملة بأبعادها",
-              "value": "full"
+              "value": "full",
+              "key": "db0a259a-612d-65a5-cdf6-3feeb88abfaf"
             }
           ],
           "selected": [
             {
               "label": "مربعة",
-              "value": "square"
+              "value": "square",
+              "key": "38620681-0a16-ac1f-6b3f-d1a66de7e0c5"
             }
           ],
-          "value": "square",
-          "required": false
+          "required": false,
+          "labelHTML": null
         },
         {
           "id": "veloura_fp_center_titles",
@@ -16514,6 +16523,14 @@
           "required": false,
           "placeholder": "مثال: اختيار المتجر",
           "maxLength": 60
+        },
+        {
+          "id": "veloura_fp_crown",
+          "type": "boolean",
+          "format": "switch",
+          "label": "أيقونة التاج بجانب العبارة",
+          "value": true,
+          "required": false
         },
         {
           "id": "veloura_fp_show_gallery",
@@ -16897,29 +16914,35 @@
           "options": [
             {
               "label": "حادة",
-              "value": "sharp"
+              "value": "sharp",
+              "key": "2361d593-10cb-6026-8a66-28ed229ca3ab"
             },
             {
               "label": "خفيفة",
-              "value": "soft"
+              "value": "soft",
+              "key": "a8185cd9-3863-8bb9-6f19-c975db2596c3"
             },
             {
               "label": "متوسطة",
-              "value": "medium"
+              "value": "medium",
+              "key": "7047483f-f628-deac-dbfa-1b6985791418"
             },
             {
               "label": "كبيرة",
-              "value": "large"
+              "value": "large",
+              "key": "a2e4b0bd-3ed9-8fe1-b364-af749861c071"
             }
           ],
           "selected": [
             {
               "label": "متوسطة",
-              "value": "medium"
+              "value": "medium",
+              "key": "7047483f-f628-deac-dbfa-1b6985791418"
             }
           ],
-          "value": "medium",
-          "required": false
+          "required": false,
+          "description": null,
+          "labelHTML": null
         },
         {
           "id": "veloura_fp_title_general",
@@ -17030,25 +17053,30 @@
           "options": [
             {
               "label": "شريط مستقيم",
-              "value": "straight"
+              "value": "straight",
+              "key": "3f930fdc-043f-1667-abdd-4d1fa238f28b"
             },
             {
               "label": "شريط مائل",
-              "value": "tilt"
+              "value": "tilt",
+              "key": "38d7660d-fc03-cf05-c3db-425eaac0b529"
             },
             {
               "label": "شريطان متقاطعان",
-              "value": "cross"
+              "value": "cross",
+              "key": "e6b6d96e-5424-a653-12a8-b80da2d1a84f"
             }
           ],
           "selected": [
             {
               "label": "شريطان متقاطعان",
-              "value": "cross"
+              "value": "cross",
+              "key": "e6b6d96e-5424-a653-12a8-b80da2d1a84f"
             }
           ],
-          "value": "cross",
-          "required": false
+          "required": false,
+          "description": null,
+          "labelHTML": null
         },
         {
           "id": "veloura_tkr_angle",
@@ -17174,33 +17202,40 @@
           "options": [
             {
               "label": "نجمة ✦",
-              "value": "star"
+              "value": "star",
+              "key": "d85c1870-8b74-08ff-cebf-bc9a184b8e8d"
             },
             {
               "label": "نقطة •",
-              "value": "dot"
+              "value": "dot",
+              "key": "50bcca73-435a-f7f8-22d8-931f42e17294"
             },
             {
               "label": "معيّن ◆",
-              "value": "diamond"
+              "value": "diamond",
+              "key": "9aa1452d-ac1a-b653-e76a-bb30477f3202"
             },
             {
               "label": "شرطة مائلة /",
-              "value": "slash"
+              "value": "slash",
+              "key": "740dd2cc-87b5-e116-36c9-0264183b7c40"
             },
             {
               "label": "بلا فاصل",
-              "value": "none"
+              "value": "none",
+              "key": "735c01e1-6f7b-c40b-361c-4f79d0d674a6"
             }
           ],
           "selected": [
             {
               "label": "نجمة ✦",
-              "value": "star"
+              "value": "star",
+              "key": "d85c1870-8b74-08ff-cebf-bc9a184b8e8d"
             }
           ],
-          "value": "star",
-          "required": false
+          "required": false,
+          "description": null,
+          "labelHTML": null
         },
         {
           "id": "veloura_tkr_title_band1",
@@ -17295,10 +17330,10 @@
           "type": "number",
           "format": "slider",
           "label": "سرعة الجوال (% من المدة)",
-          "description": "نسخة القائمة أضيق على الجوال، فنفس المدة تعني حركة أبطأ. 75% تجعلها أسرع بنحو الثلث؛ أقل = أسرع.",
+          "description": "نسخة القائمة أضيق على الجوال، فنفس المدة تعني حركة أبطأ. 50% تجعلها ضعف السرعة تقريبًا؛ أقل = أسرع.",
           "icon": "sicon-clock",
-          "value": 75,
-          "min": 30,
+          "value": 50,
+          "min": 25,
           "max": 100,
           "step": 2,
           "required": false
