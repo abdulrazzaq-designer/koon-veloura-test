@@ -9,15 +9,20 @@
 {# ==========================================================================
    المنتج المميز (فيلورا)
 
+   Built to the sketch. Desktop: the details in the first column — phrase,
+   name, description ending in its own "عرض المزيد", the price with the
+   discount at the other end of the row, the buy button, then the features as a
+   row of equal boxes — the photo in the middle, and a scrolling column of
+   thumbnails with an arrow at each end on the far side. Phone: the same strip
+   beside the photo, everything else beneath it.
+
+   The three columns are stretched to one height, so the strip scrolls instead
+   of growing however many images the product has.
+
    The stylesheet is inline and the classes carry their own names: on this
    store the published Twig and the built app.css have repeatedly been a
    version apart, and new markup under old rules is how a layout breaks with
    nobody touching it.
-
-   Phone: features | photo | thumbnails across one row (20 / 60 / 20), with
-   everything else beneath. Desktop: the details, the photo, the features —
-   three columns of one height, the thumbnail strip riding the photo's bottom
-   edge. One DOM, two sets of grid areas.
    ========================================================================== #}
 <style>
 /* ==========================================================================
@@ -30,11 +35,12 @@
   --fp2-text: var(--fp2-text-light, #52606d);
   --fp2-surface: var(--fp2-card-light, #ffffff);
   --fp2-border: rgba(15, 23, 42, .10);
+  --fp2-thumb: 72px;
   padding-inline: var(--fp2-spacing, 0);
 }
 
-/* The hidden attribute must keep working: the browser hides [hidden] from its
-   own stylesheet with display:none, and any author display rule outranks it. */
+/* [hidden] has to keep working: the browser hides it from its own stylesheet
+   with display:none, and any author display rule outranks that. */
 .veloura-fp2 [hidden], .fp2-sticky[hidden] { display: none !important; }
 
 .veloura-fp2 .fp2__heading { margin-bottom: 18px; }
@@ -52,133 +58,118 @@
 }
 
 /* ============================== the stage ================================
-   Phone: 20% features | 60% photo | 20% thumbnails, then everything else in a
-   row underneath. Desktop: the details take the first column, the photo the
-   middle, the features the third — three columns of about one height, with the
-   thumbnail strip riding the bottom edge of the picture instead of sitting
-   apart from it. */
+   Phone: the strip of thumbnails beside the photo, everything else beneath.
+   Desktop: details, photo, strip — three columns stretched to ONE height,
+   which is what `stretch` here and `height: 100%` on the two boxes below buy. */
 .veloura-fp2 .fp2__stage {
   display: grid !important;
-  grid-template-columns: 20% minmax(0, 60%) 20%;
+  grid-template-columns: minmax(0, 22%) minmax(0, 78%);
   grid-template-areas:
-    "eyebrow eyebrow eyebrow"
-    "side    media   thumbs"
-    "info    info    info";
-  align-items: center;
-  gap: 12px 8px;
+    "gallery media"
+    "info    info";
+  align-items: stretch;
+  gap: 14px 10px;
 }
 
-/* The phrase is rendered twice — a row above the photo and a chip on it — and
-   exactly one of the two is ever shown. Both were visible on the phone. */
-.veloura-fp2 .fp2__eyebrow-row {
-  grid-area: eyebrow;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.veloura-fp2 .fp2__side { grid-area: side; }
+.veloura-fp2 .fp2__gallery { grid-area: gallery; }
 .veloura-fp2 .fp2__media { grid-area: media; position: relative; }
-.veloura-fp2 .fp2__thumbs { grid-area: thumbs; }
 .veloura-fp2 .fp2__info { grid-area: info; }
 
 @media (min-width: 768px) {
   .veloura-fp2 .fp2__stage {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 420px) minmax(0, .8fr);
-    grid-template-areas:
-      "info media side";
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 1.15fr) calc(var(--fp2-thumb) + 24px);
+    grid-template-areas: "info media gallery";
     gap: 28px;
   }
-
-  .veloura-fp2 .fp2__eyebrow-row { display: none; }
-
-  /* On a desktop the strip belongs to the picture: centred on its bottom edge,
-     half on the photo and half below it, so the two read as one object. */
-  .veloura-fp2 .fp2__thumbs {
-    grid-area: media;
-    align-self: end;
-    justify-self: center;
-    position: relative;
-    z-index: 3;
-    margin-bottom: -26px;
-  }
-
-  .veloura-fp2 .fp2__media { padding-bottom: 26px; }
 }
 
 /* --------------------------------------------------------------- photo -- */
 .veloura-fp2 .fp2__frame {
   display: block;
   position: relative;
+  height: 100%;
   overflow: hidden;
   border-radius: calc(var(--fp2-radius) - 4px);
   background: rgba(15, 23, 42, .04);
 }
 
-.veloura-fp2 .fp2__img { display: block; width: 100%; transition: transform .6s ease; }
-.veloura-fp2.fp2--square .fp2__frame { aspect-ratio: 1 / 1; }
-.veloura-fp2.fp2--square .fp2__img { height: 100%; object-fit: cover; }
-.veloura-fp2.fp2--full .fp2__frame { background: transparent; }
-.veloura-fp2.fp2--full .fp2__img { height: auto; max-height: 460px; object-fit: contain; margin-inline: auto; }
+.veloura-fp2 .fp2__img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.veloura-fp2.fp2--full .fp2__img { object-fit: contain; }
+.veloura-fp2.fp2--square .fp2__frame { aspect-ratio: 1 / 1; height: auto; }
+
+@media (min-width: 768px) {
+  .veloura-fp2.fp2--square .fp2__frame { aspect-ratio: auto; height: 100%; min-height: 420px; }
+}
 
 @media (hover: hover) and (pointer: fine) {
   .veloura-fp2 .fp2__frame:hover .fp2__img { transform: scale(1.04); }
 }
 
 .veloura-fp2 .fp2__chip {
-  position: absolute;
-  z-index: 3;
-  top: 12px;
-  inset-inline-start: 12px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 13px;
-  border: 1px solid rgba(255, 255, 255, .7);
+  padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .6);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-  backdrop-filter: blur(16px) saturate(170%);
-  color: var(--fp2-title);
-  font-size: 12px;
+  background: color-mix(in srgb, var(--fp2-accent) 12%, transparent);
+  color: var(--fp2-accent);
+  font-size: 12.5px;
   font-weight: 800;
   white-space: nowrap;
 }
 
 .veloura-fp2 .fp2__crown { width: 15px; height: 15px; flex: 0 0 auto; }
 
-/* Written after .fp2__chip on purpose. Both of these share its specificity, so
-   only document order decides — placed before it, the absolute positioning and
-   the flex display of the base rule simply won, and the phrase showed twice:
-   once floating beside the section heading, once on the photo. Measured that
-   way: both chips position:absolute, display:flex.
-
-   The row copy sits in its row; the copy on the photo appears only where there
-   is a photo edge to pin it to, which is the desktop layout. */
-.veloura-fp2 .fp2__chip--row { position: static; }
-.veloura-fp2 .fp2__chip--onphoto { display: none; }
-
-@media (min-width: 768px) {
-  .veloura-fp2 .fp2__chip--onphoto { display: inline-flex; }
+/* ------------------------------------------------------------- gallery -- */
+/* A column of thumbnails with an arrow at each end. The strip scrolls rather
+   than growing, so however many images the product has the column stays the
+   height of the photo beside it. */
+.veloura-fp2 .fp2__gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  min-height: 0;
 }
 
-/* ---------------------------------------------------------- thumbnails --- */
-/* A column on the phone — its height follows the features beside it, which is
-   what keeps the two flanks level — and a centred row on the desktop. */
+.veloura-fp2 .fp2__nav {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fp2-title);
+  cursor: pointer;
+  opacity: .75;
+}
+
+.veloura-fp2 .fp2__nav:hover { opacity: 1; }
+.veloura-fp2 .fp2__nav svg { width: 16px; height: 16px; }
+
 .veloura-fp2 .fp2__thumbs {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: center;
-  justify-content: center;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
+
+.veloura-fp2 .fp2__thumbs::-webkit-scrollbar { display: none; }
 
 .veloura-fp2 .fp2__thumb {
   flex: 0 0 auto;
   width: 100%;
-  max-width: 66px;
-  aspect-ratio: 1 / 1;
+  height: var(--fp2-thumb);
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--fp2-border);
@@ -187,121 +178,56 @@
   cursor: pointer;
 }
 
-.veloura-fp2 .fp2__thumb.is-active { border-color: var(--fp2-accent); }
+.veloura-fp2 .fp2__thumb.is-active { border-color: var(--fp2-accent); border-width: 2px; }
 .veloura-fp2 .fp2__thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-@media (min-width: 768px) {
-  .veloura-fp2 .fp2__thumbs {
-    flex-direction: row;
-    gap: 10px;
-    padding: 8px;
-    border-radius: 16px;
-    background: var(--fp2-surface);
-    border: 1px solid var(--fp2-border);
-    box-shadow: 0 12px 30px rgba(15, 23, 42, .12);
-  }
-
-  .veloura-fp2 .fp2__thumb { width: 52px; max-width: none; }
-}
-
-/* ------------------------------------------------------------ features -- */
-.veloura-fp2 .fp2__side {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  align-content: center;
-}
-
-.veloura-fp2 .fp2__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 6px;
-  border: 1px solid var(--fp2-border);
-  border-radius: 14px;
-  background: var(--fp2-surface);
-  text-align: center;
-  font-size: 10.5px;
-  line-height: 1.4;
-  color: var(--fp2-text);
-}
-
-.veloura-fp2 .fp2__item b { display: block; font-weight: 700; color: var(--fp2-title); }
-.veloura-fp2 .fp2__item small { display: none; }
-
-.veloura-fp2 .fp2__item i {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--fp2-accent) 12%, transparent);
-  color: var(--fp2-accent);
-  font-size: 15px;
-}
-
-@media (min-width: 768px) {
-  .veloura-fp2 .fp2__side { gap: 12px; align-content: center; }
-
-  .veloura-fp2 .fp2__item {
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    text-align: start;
-    font-size: 13.5px;
-  }
-
-  .veloura-fp2 .fp2__item small { display: block; opacity: .72; font-size: 12px; }
-  .veloura-fp2 .fp2__item i { width: 40px; height: 40px; font-size: 18px; }
-}
 
 /* ---------------------------------------------------------------- info -- */
 .veloura-fp2 .fp2__info {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   text-align: center;
   align-items: center;
 }
 
 @media (min-width: 768px) {
-  .veloura-fp2 .fp2__info { text-align: start; align-items: flex-start; gap: 12px; }
+  .veloura-fp2 .fp2__info { text-align: start; align-items: flex-start; }
 }
 
-.veloura-fp2 .fp2__name { margin: 0; font-size: 22px; font-weight: 900; line-height: 1.35; }
+.veloura-fp2 .fp2__name { margin: 0; font-size: 24px; font-weight: 900; line-height: 1.35; }
 .veloura-fp2 .fp2__name a { color: var(--fp2-title); }
-.veloura-fp2 .fp2__excerpt { margin: 0; font-size: 13.5px; line-height: 1.8; opacity: .85; }
 
-/* Deliberately small: a second full-width button next to "add to cart" reads as
-   a competing call to action. */
+@media (min-width: 768px) { .veloura-fp2 .fp2__name { font-size: 30px; } }
+
+/* The description and its link are one paragraph: "…وصف المنتج مع عرض المزيد",
+   not a paragraph with a button parked under it. */
+.veloura-fp2 .fp2__excerpt {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  opacity: .85;
+  max-width: 46ch;
+}
+
 .veloura-fp2 .fp2__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border: 1px solid color-mix(in srgb, var(--fp2-accent) 35%, transparent);
-  border-radius: 999px;
+  display: inline;
+  margin-inline-start: 6px;
   color: var(--fp2-accent);
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: 13.5px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .veloura-fp2 .fp2__rating { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .veloura-fp2 .fp2__stars { color: #f59e0b; letter-spacing: 2px; }
 .veloura-fp2 .fp2__rating-count { opacity: .7; }
 
-/* The price and the discount share one row, the discount at its far end. */
+/* One row: the price at the start edge, the discount at the other end. */
 .veloura-fp2 .fp2__pricerow {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 14px;
   width: 100%;
   justify-content: center;
 }
@@ -311,22 +237,59 @@
 }
 
 .veloura-fp2 .fp2__prices { display: flex; align-items: baseline; gap: 10px; }
-.veloura-fp2 .fp2__price { font-size: 26px; font-weight: 900; color: var(--fp2-title); }
-.veloura-fp2 .fp2__old-price { font-size: 15px; opacity: .55; }
+.veloura-fp2 .fp2__price { font-size: 30px; font-weight: 900; color: var(--fp2-title); }
+.veloura-fp2 .fp2__old-price { font-size: 16px; opacity: .5; }
 
 .veloura-fp2 .fp2__sale {
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--fp2-accent) 14%, transparent);
+  background: color-mix(in srgb, var(--fp2-accent) 13%, transparent);
   color: var(--fp2-accent);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 900;
   unicode-bidi: isolate;
 }
 
-.veloura-fp2 .fp2__add { width: 100%; max-width: 420px; }
-@media (min-width: 768px) { .veloura-fp2 .fp2__add { max-width: none; } }
+.veloura-fp2 .fp2__add { width: 100%; }
 
+/* The features are a row of equal boxes under the button, in both layouts. */
+.veloura-fp2 .fp2__side {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.veloura-fp2 .fp2__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 62px;
+  padding: 10px 8px;
+  border: 1px solid var(--fp2-border);
+  border-radius: 14px;
+  background: var(--fp2-surface);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--fp2-text);
+}
+
+.veloura-fp2 .fp2__item b { display: block; font-weight: 700; color: var(--fp2-title); }
+.veloura-fp2 .fp2__item small { display: none; }
+.veloura-fp2 .fp2__item i { color: var(--fp2-accent); font-size: 17px; }
+
+@media (min-width: 768px) {
+  .veloura-fp2 .fp2__item { min-height: 74px; font-size: 13px; }
+}
+
+/* ----------------------------------------------------------- countdown --- */
 .veloura-fp2 .fp2__countdown {
   display: inline-block;
   padding: 10px 14px;
@@ -349,7 +312,7 @@
 
 .veloura-fp2 .fp2__trust {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px; width: 100%; margin: 4px 0 0; padding: 12px 0 0;
+  gap: 10px; width: 100%; margin: 0; padding: 12px 0 0;
   border-top: 1px solid var(--fp2-border); list-style: none;
 }
 
@@ -384,21 +347,16 @@ html.dark .veloura-fp2, html body.dark .veloura-fp2 {
   --fp2-accent-text: color-mix(in srgb, var(--fp2-accent) 45%, #ffffff);
 }
 
-/* The accent is chosen against a white card, so as TEXT on a dark one it turns
+/* The accent is picked against a white card, so as TEXT on a dark one it turns
    unreadable. Backgrounds keep the real accent; only text is mixed. */
-html.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__trust i),
-html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__trust i) {
+html.dark .veloura-fp2 :is(.fp2__chip, .fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__trust i),
+html body.dark .veloura-fp2 :is(.fp2__chip, .fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__trust i) {
   color: var(--fp2-accent-text);
-}
-
-html.dark .veloura-fp2 .fp2__chip, html body.dark .veloura-fp2 .fp2__chip {
-  background: rgba(15, 23, 42, .6);
-  border-color: rgba(255, 255, 255, .18);
-  color: #f8fafc;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .veloura-fp2 .fp2__img, .fp2-sticky { transition: none; }
+  .veloura-fp2 .fp2__thumbs { scroll-behavior: auto; }
 }
 
 </style>
@@ -429,7 +387,7 @@ html.dark .veloura-fp2 .fp2__chip, html body.dark .veloura-fp2 .fp2__chip {
 
   {# |first, never a {% for %}: Twig scopes a loop body, so a {% set %} inside
      one is gone at {% endfor %} — the chosen product's id came out empty and
-     the section silently showed the automatic fallback instead. #}
+     the section silently fell back to the automatic source. #}
   {% set fp_chosen = component.veloura_fp_product|first %}
   {% set fp_product_id = fp_chosen.id|default(fp_chosen.value|default('')) %}
 
@@ -478,60 +436,43 @@ html.dark .veloura-fp2 .fp2__chip, html body.dark .veloura-fp2 .fp2__chip {
       <div class="fp2__card" data-vfp-card>
         <div class="fp2__stage">
 
-          {# The phrase sits above the photo on a phone and on the photo itself
-             on a desktop — the same words rendered twice rather than moved,
-             since a chip that has to live inside the frame cannot also be a
-             row of its own. #}
-          {% if component.veloura_fp_eyebrow %}
-            <div class="fp2__eyebrow-row">
-              <span class="fp2__chip fp2__chip--row">
-                {% if component.veloura_fp_crown %}<svg class="fp2__crown" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8.5 6.6 12l3.1-5.2a2.7 2.7 0 0 0 4.6 0L17.4 12 21 8.5l-1.6 9.2a2 2 0 0 1-2 1.7H6.6a2 2 0 0 1-2-1.7L3 8.5Z"/></svg>{% endif %}
-                {{ component.veloura_fp_eyebrow }}
-              </span>
+          {% if component.veloura_fp_show_gallery %}
+            <div class="fp2__gallery" data-vfp-gallery hidden>
+              <button type="button" class="fp2__nav" data-vfp-thumb-prev aria-label="السابق">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+              </button>
+              <div class="fp2__thumbs" data-vfp-thumbs></div>
+              <button type="button" class="fp2__nav" data-vfp-thumb-next aria-label="التالي">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
             </div>
-          {% endif %}
-
-          {% if component.veloura_fp_features %}
-            <ul class="fp2__side">
-              {% for feature in component.veloura_fp_features %}
-                {% if feature.text %}
-                  <li class="fp2__item">
-                    <i class="{{ feature.icon|default('sicon-check') }}" aria-hidden="true"></i>
-                    <span><b>{{ feature.text }}</b>{% if feature.note %}<small>{{ feature.note }}</small>{% endif %}</span>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
           {% endif %}
 
           <div class="fp2__media">
             <a class="fp2__frame" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
               <img class="fp2__img" data-vfp-image src="" alt="" loading="lazy" decoding="async">
-              {% if component.veloura_fp_eyebrow %}
-                <span class="fp2__chip fp2__chip--onphoto">
-                  {% if component.veloura_fp_crown %}<svg class="fp2__crown" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8.5 6.6 12l3.1-5.2a2.7 2.7 0 0 0 4.6 0L17.4 12 21 8.5l-1.6 9.2a2 2 0 0 1-2 1.7H6.6a2 2 0 0 1-2-1.7L3 8.5Z"/></svg>{% endif %}
-                  {{ component.veloura_fp_eyebrow }}
-                </span>
-              {% endif %}
             </a>
           </div>
 
-          {% if component.veloura_fp_show_gallery %}
-            <div class="fp2__thumbs" data-vfp-thumbs hidden></div>
-          {% endif %}
-
           <div class="fp2__info">
+            {% if component.veloura_fp_eyebrow %}
+              <span class="fp2__chip">
+                {% if component.veloura_fp_crown %}<svg class="fp2__crown" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8.5 6.6 12l3.1-5.2a2.7 2.7 0 0 0 4.6 0L17.4 12 21 8.5l-1.6 9.2a2 2 0 0 1-2 1.7H6.6a2 2 0 0 1-2-1.7L3 8.5Z"/></svg>{% endif %}
+                {{ component.veloura_fp_eyebrow }}
+              </span>
+            {% endif %}
+
             <h3 class="fp2__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
 
             {% if component.veloura_fp_show_excerpt %}
-              <p class="fp2__excerpt" data-vfp-excerpt hidden></p>
-            {% endif %}
-
-            {% if component.veloura_fp_show_link %}
-              <a class="fp2__more" data-vfp-link href="#">
-                {{ component.veloura_fp_link_text|default('عرض المزيد') }}
-                <i class="sicon-arrow-left" aria-hidden="true"></i>
-              </a>
+              {# The link closes the sentence rather than sitting under it as a
+                 second button competing with "add to cart". #}
+              <p class="fp2__excerpt" data-vfp-excerpt-wrap hidden>
+                <span data-vfp-excerpt></span>
+                {% if component.veloura_fp_show_link %}
+                  <a class="fp2__more" data-vfp-link href="#">{{ component.veloura_fp_link_text|default('عرض المزيد') }}</a>
+                {% endif %}
+              </p>
             {% endif %}
 
             {% if component.veloura_fp_show_rating %}
@@ -568,6 +509,19 @@ html.dark .veloura-fp2 .fp2__chip, html body.dark .veloura-fp2 .fp2__chip {
               product-type="product"
               width="wide"
             >{{ component.veloura_fp_button_text|default('أضف للسلة') }}</salla-add-product-button>
+
+            {% if component.veloura_fp_features %}
+              <ul class="fp2__side">
+                {% for feature in component.veloura_fp_features %}
+                  {% if feature.text %}
+                    <li class="fp2__item">
+                      <i class="{{ feature.icon|default('sicon-check') }}" aria-hidden="true"></i>
+                      <span><b>{{ feature.text }}</b>{% if feature.note %}<small>{{ feature.note }}</small>{% endif %}</span>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
 
             {% if component.veloura_fp_show_trust_row and component.veloura_fp_trust %}
               <ul class="fp2__trust">

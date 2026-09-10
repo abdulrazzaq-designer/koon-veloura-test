@@ -114,10 +114,12 @@ const paint = (section, product) => {
     el.hidden = !product.discount;
   });
 
-  set('data-vfp-excerpt', el => {
-    el.textContent = product.excerpt;
-    el.hidden = !product.excerpt;
-  });
+  set('data-vfp-excerpt', el => { el.textContent = product.excerpt; });
+
+  /* The paragraph wrapper is what hides, not the text span: the "عرض المزيد"
+     link is its sibling inside that paragraph, and hiding the span alone left
+     the link floating on its own line. */
+  set('data-vfp-excerpt-wrap', el => { el.hidden = !product.excerpt; });
 
   set('data-vfp-rating', el => {
     if (!product.rating) return;
@@ -163,7 +165,10 @@ const loadGallery = async (section, product) => {
 
 const paintThumbs = (section, images) => {
   const thumbs = section.querySelector('[data-vfp-thumbs]');
+  const gallery = section.querySelector('[data-vfp-gallery]');
+
   if (thumbs && images.length > 1) {
+    if (gallery) gallery.hidden = false;
     thumbs.innerHTML = images
       .map((url, i) => `<button type="button" class="fp2__thumb${i === 0 ? ' is-active' : ''}" data-vfp-thumb="${url}"><img src="${url}" alt="" loading="lazy"></button>`)
       .join('');
@@ -175,6 +180,19 @@ const paintThumbs = (section, images) => {
       section.querySelectorAll('[data-vfp-image]').forEach(img => { img.src = button.dataset.vfpThumb; });
       thumbs.querySelectorAll('.fp2__thumb').forEach(b => b.classList.toggle('is-active', b === button));
     }, { once: false });
+
+    /* The arrows scroll the strip by one thumbnail. The strip is a scroller
+       rather than a growing column, which is what keeps it the same height as
+       the photo beside it however many images the product has. */
+    const step = () => {
+      const first = thumbs.querySelector('.fp2__thumb');
+      return first ? first.getBoundingClientRect().height + 8 : 80;
+    };
+
+    section.querySelector('[data-vfp-thumb-prev]')
+      ?.addEventListener('click', () => thumbs.scrollBy({ top: -step(), behavior: 'smooth' }));
+    section.querySelector('[data-vfp-thumb-next]')
+      ?.addEventListener('click', () => thumbs.scrollBy({ top: step(), behavior: 'smooth' }));
   }
 };
 
