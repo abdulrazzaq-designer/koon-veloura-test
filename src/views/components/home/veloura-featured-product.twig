@@ -33,8 +33,10 @@
   --fp2-text: var(--fp2-text-light, #52606d);
   --fp2-surface: var(--fp2-card-light, #ffffff);
   --fp2-border: rgba(15, 23, 42, .10);
-  --fp2-glass: rgba(255, 255, 255, .55);
-  --fp2-glass-edge: rgba(255, 255, 255, .65);
+  /* The boxes behind the thumbnails and the features take the theme's own
+     secondary colour — the same token the rest of Veloura's glass reads — so
+     they follow the light and dark palettes instead of inventing a shade. */
+  --fp2-second: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7));
   --fp2-thumb: 68px;
   /* Every rounded thing in the component is derived from the one setting, so
      "حادة" really does square the whole card and not just the photo. The pill
@@ -66,9 +68,16 @@
 /* The spacing sits on the component's own boxes rather than on the section: the
    theme styles .s-block with a `padding` shorthand, and a shorthand later in the
    sheet wipes out a padding-inline of the same weight — which is why the setting
-   did nothing. It is written after the card's own rule for the same reason. */
-.veloura-fp2 .fp2__heading,
-.veloura-fp2 .fp2__card { padding-block: 0; padding-inline: var(--fp2-spacing, 0); }
+   did nothing. It is written after the card's own rule for the same reason.
+
+   Switching the setting on also stands the component down from the theme's
+   container, whose own gutter and max-width would otherwise keep the card off
+   the edges no matter what number the merchant typed: zero has to mean zero. */
+.veloura-fp2.fp2--spaced { padding-inline: 0 !important; }
+.veloura-fp2.fp2--spaced > .container { max-width: none; padding-inline: 0; }
+
+.veloura-fp2.fp2--spaced .fp2__heading,
+.veloura-fp2.fp2--spaced .fp2__card { padding-block: 0; padding-inline: var(--fp2-spacing, 0); }
 
 /* ============================== the stage ================================
    Phone: the photo at the start edge (the right, in Arabic) with the strip of
@@ -142,11 +151,9 @@
   gap: 5px;
   max-width: calc(100% - 24px);
   padding: 5px 11px;
-  border: 1px solid var(--fp2-glass-edge);
+  border: 0;
   border-radius: var(--fp2-r-pill);
-  background: var(--fp2-glass);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
+  background: var(--fp2-second);
   box-shadow: 0 6px 18px rgba(15, 23, 42, .12);
   color: var(--fp2-title);
   font-size: 11.5px;
@@ -171,11 +178,9 @@
   box-sizing: border-box;
   height: 100%;
   min-height: 0;
-  border: 1px solid var(--fp2-border);
+  border: 0;
   border-radius: var(--fp2-radius);
-  /* A tint of the title colour rather than white on white: the island has to
-     read as one piece beside the photo on a pale page too. */
-  background: color-mix(in srgb, var(--fp2-title) 5%, transparent);
+  background: var(--fp2-second);
 }
 
 .veloura-fp2 .fp2__strip {
@@ -231,13 +236,13 @@
   height: var(--fp2-thumb);
   padding: 0;
   overflow: hidden;
-  border: 1px solid var(--fp2-border);
+  border: 0;
   border-radius: var(--fp2-r-thumb);
   background: transparent;
   cursor: pointer;
 }
 
-.veloura-fp2 .fp2__thumb.is-active { border-color: var(--fp2-accent); border-width: 2px; }
+.veloura-fp2 .fp2__thumb.is-active { outline: 2px solid var(--fp2-accent); outline-offset: -2px; }
 .veloura-fp2 .fp2__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 @media (min-width: 768px) {
@@ -246,10 +251,7 @@
      as the second row, so nothing overlaps what comes after the section. */
   .veloura-fp2 .fp2__gallery {
     height: auto;
-    border: 0;
     background: transparent;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
     justify-self: center;
     max-width: 100%;
     margin-top: calc((var(--fp2-thumb) + 18px) / -2);
@@ -265,11 +267,9 @@
     width: max-content;
     max-width: 100%;
     padding: 8px;
-    border: 1px solid var(--fp2-glass-edge);
+    border: 0;
     border-radius: var(--fp2-r-pill);
-    background: var(--fp2-glass);
-    -webkit-backdrop-filter: blur(16px) saturate(170%);
-    backdrop-filter: blur(16px) saturate(170%);
+    background: var(--fp2-second);
     box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
   }
 
@@ -401,9 +401,9 @@ html[dir="ltr"] .veloura-fp2 .fp2__more:hover i { transform: translateX(3px); }
   justify-content: flex-start;
   gap: 7px;
   padding: 12px 8px;
-  border: 1px solid var(--fp2-border);
+  border: 0;
   border-radius: var(--fp2-r-card);
-  background: var(--fp2-surface);
+  background: var(--fp2-second);
   text-align: center;
   font-size: 12px;
   line-height: 1.45;
@@ -442,7 +442,7 @@ html[dir="ltr"] .veloura-fp2 .fp2__more:hover i { transform: translateX(3px); }
 .veloura-fp2 .fp2__unit {
   display: flex; flex-direction: column; align-items: center;
   min-width: 52px; padding: 7px 6px; border-radius: var(--fp2-r-thumb);
-  border: 1px solid var(--fp2-border); background: var(--fp2-surface);
+  border: 0; background: var(--fp2-second);
 }
 
 .veloura-fp2 .fp2__unit b { font-size: 18px; font-weight: 900; line-height: 1; color: var(--fp2-accent); font-variant-numeric: tabular-nums; }
@@ -471,8 +471,7 @@ html.dark .veloura-fp2, html body.dark .veloura-fp2 {
   --fp2-title: #f8fafc;
   --fp2-text: #cbd5e1;
   --fp2-border: rgba(255, 255, 255, .12);
-  --fp2-glass: rgba(15, 23, 42, .5);
-  --fp2-glass-edge: rgba(255, 255, 255, .16);
+  --fp2-second: var(--veloura-dark-secondary-bg, #010612);
   --fp2-accent-text: color-mix(in srgb, var(--fp2-accent) 45%, #ffffff);
 }
 
@@ -531,6 +530,7 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
     id="veloura-featured-product-{{ position }}"
     class="s-block veloura-fp2
       fp2--{{ fp_image_fit }}
+      {{ component.veloura_fp_custom_spacing ? 'fp2--spaced' : '' }}
       {{ component.veloura_fp_center_titles ? 'is-centered' : '' }}
       {{ component.veloura_fp_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_fp_desktop_only ? 'veloura-desktop-only' : '' }}

@@ -33,6 +33,14 @@
   /* A tilted band is wider than the viewport, so the section must clip it —
      without this every screen gains a horizontal scrollbar. */
   overflow: hidden;
+
+  /* The theme paints .s-block as a white card with a rounding of its own, and
+     that card is what was showing around the ribbon — the rounded ends in the
+     screenshot belong to the block, not to the band. The section carries
+     nothing; the band carries everything. */
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 .veloura-tkr [hidden] { display: none !important; }
@@ -40,7 +48,7 @@
 /* Inside the container is the default; the switch is what leaves it. */
 /* The side spacing is padding on the SECTION, not on the wrap.
 
-   A tilted band is 118% wide with a negative start margin — it overflows any
+   A tilted band is wider than its line, with a negative start margin — it overflows any
    padding put on its own container, so the setting moved nothing at all in the
    two layouts that use it. Padding the section shrinks the wrap instead, and
    the wrap is what clips, so the visible ribbon really does narrow. */
@@ -51,12 +59,10 @@
   margin-inline: auto;
 }
 
-.veloura-tkr.tkr--boxed .tkr__wrap {
-  border-radius: var(--tkr-radius, 16px);
-  /* The clip belongs on the same box as the radius, or a tilted band pokes out
-     of the rounded corners. */
-  overflow: hidden;
-}
+/* A tilted band leans out of its own line, so the wrap makes room for the
+   corners instead of cutting them off — the angle is fixed, and the room it
+   needs is a share of the viewport's width. */
+.veloura-tkr.tkr--tilt .tkr__wrap { padding-block: 3.2vw; }
 
 .veloura-tkr.tkr--bleed .tkr__wrap {
   max-width: none;
@@ -64,17 +70,19 @@
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding-inline: 0;
-  border-radius: 0;
 }
 
 /* ------------------------------------------------------------- the band -- */
 .veloura-tkr .tkr__band {
   display: flex;
   align-items: center;
-  width: 118%;
-  margin-inline-start: -9%;
+  width: 130%;
+  margin-inline-start: -15%;
   min-height: var(--tkr-height);
   overflow: hidden;
+  /* The rounding is the BAND's, which is the thing the merchant sees; putting
+     it on the wrap rounded the whole element around the ribbon. */
+  border-radius: var(--tkr-radius, 16px);
   background: linear-gradient(90deg, var(--band-from), var(--band-to));
   color: var(--band-text);
   box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
@@ -85,6 +93,7 @@
 }
 
 .veloura-tkr.tkr--straight .tkr__band { width: 100%; margin-inline-start: 0; }
+.veloura-tkr.tkr--bleed .tkr__band { border-radius: 0; }
 
 /* The track carries N copies of the list and slides exactly ONE copy's width,
    so the moment it resets, copy 2 is standing where copy 1 began and the seam
@@ -152,8 +161,8 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   background-image: linear-gradient(
     100deg,
     var(--band-text) 0%,
-    var(--tkr-shine-a, #ffffff) 20%,
-    var(--tkr-shine-b, #ffe9a8) 32%,
+    var(--tkr-shine, #ffe9a8) 20%,
+    var(--tkr-shine, #ffe9a8) 32%,
     var(--band-text) 50%,
     var(--band-text) 100%
   );
@@ -162,7 +171,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: veloura-tkr-shine var(--tkr-shine-speed, 4.5s) linear infinite;
+  animation: veloura-tkr-shine 4.5s linear infinite;
 }
 
 @keyframes veloura-tkr-shine {
@@ -229,7 +238,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
    dragging the page taller. */
 .veloura-tkr.tkr--cross .tkr__wrap {
   position: relative;
-  height: calc(var(--tkr-height) * 2.9);
+  height: max(calc(var(--tkr-height) * 2.9), calc(var(--tkr-height) + 7vw));
 }
 
 .veloura-tkr.tkr--cross .tkr__band {
@@ -252,7 +261,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   .veloura-tkr .tkr__track {
     animation-duration: calc(var(--band-speed, var(--tkr-speed)) * var(--tkr-mobile-speed, .5));
   }
-  .veloura-tkr.tkr--cross .tkr__wrap { height: calc(var(--tkr-height) * 2.6); }
+  .veloura-tkr.tkr--cross .tkr__wrap { height: max(calc(var(--tkr-height) * 2.6), calc(var(--tkr-height) + 9vw)); }
 }
 
 /* Motion off in the system means a readable band, not a frozen half-scrolled
@@ -338,7 +347,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       tkr--{{ tkr_layout }}
       {{ tkr_is_tilted ? 'tkr--tilted' : '' }}
       {{ component.veloura_tkr_full_width ? 'tkr--bleed' : 'tkr--boxed' }}
-      {{ component.veloura_tkr_shine ? 'tkr--shine' : '' }}
+      tkr--shine
       {{ component.veloura_tkr_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_tkr_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_tkr_custom_classes }}"
@@ -347,13 +356,10 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-size: {{ component.veloura_tkr_font_size|default(14) }}px;
       --tkr-gap: {{ component.veloura_tkr_gap|default(26) }}px;
       --tkr-speed: {{ component.veloura_tkr_speed|default(26) }}s;
-      --tkr-angle: {{ component.veloura_tkr_angle|default(3) }}deg;
       --tkr-radius: {{ component.veloura_tkr_radius|default(16) }}px;
       --tkr-edge: {{ component.veloura_tkr_border ? (component.veloura_tkr_border_width|default(1)) : 0 }}px;
       --tkr-edge-color: {{ component.veloura_tkr_border_color|default('rgba(255,255,255,.35)') }};
-      --tkr-shine-a: {{ component.veloura_tkr_shine_a|default('#ffffff') }};
-      --tkr-shine-b: {{ component.veloura_tkr_shine_b|default('#ffe9a8') }};
-      --tkr-shine-speed: {{ component.veloura_tkr_shine_speed|default(4.5) }}s;
+      --tkr-shine: {{ component.veloura_tkr_shine_color|default('#ffe9a8') }};
       --tkr-mobile-speed: {{ (component.veloura_tkr_mobile_speed|default(50)) / 100 }};
       --tkr-side: {{ component.veloura_tkr_custom_space ? component.veloura_tkr_side_space|default(0) : 0 }}px;
     "
@@ -392,13 +398,30 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       </div>
 
       {% if tkr_two %}
+        {# Resolved in plain sets: a default nested inside another default is
+           the kind of expression that quietly evaluates to nothing, and an
+           empty --band-from makes the whole gradient invalid — which is a band
+           that renders as two hairlines with no colour between them. #}
+        {% set tkr2_from = component.veloura_tkr2_color_from %}
+        {% if not tkr2_from %}{% set tkr2_from = component.veloura_tkr_color_to %}{% endif %}
+        {% if not tkr2_from %}{% set tkr2_from = '#ec4899' %}{% endif %}
+        {% set tkr2_to = component.veloura_tkr2_color_to %}
+        {% if not tkr2_to %}{% set tkr2_to = component.veloura_tkr_color_from %}{% endif %}
+        {% if not tkr2_to %}{% set tkr2_to = '#7c3aed' %}{% endif %}
+        {% set tkr2_text = component.veloura_tkr2_text_color %}
+        {% if not tkr2_text %}{% set tkr2_text = component.veloura_tkr_text_color %}{% endif %}
+        {% if not tkr2_text %}{% set tkr2_text = '#ffffff' %}{% endif %}
+        {% set tkr2_speed = component.veloura_tkr2_speed %}
+        {% if not tkr2_speed %}{% set tkr2_speed = component.veloura_tkr_speed %}{% endif %}
+        {% if not tkr2_speed %}{% set tkr2_speed = 26 %}{% endif %}
+
         <div class="tkr__band tkr__band--b {{ component.veloura_tkr2_glass ? 'is-glass' : '' }}"
           style="
-            --band-from: {{ component.veloura_tkr2_color_from|default(component.veloura_tkr_color_to|default('#ec4899')) }};
-            --band-to: {{ component.veloura_tkr2_color_to|default(component.veloura_tkr_color_from|default('#7c3aed')) }};
-            --band-text: {{ component.veloura_tkr2_text_color|default(component.veloura_tkr_text_color|default('#ffffff')) }};
+            --band-from: {{ tkr2_from }};
+            --band-to: {{ tkr2_to }};
+            --band-text: {{ tkr2_text }};
             --band-tint: {{ component.veloura_tkr2_glass_tint|default(70) }}%;
-            --band-speed: {{ component.veloura_tkr2_speed|default(component.veloura_tkr_speed|default(26)) }}s;
+            --band-speed: {{ tkr2_speed }}s;
             --tkr-shift: -{{ tkr_shift_b }}%;
             --tkr-shift-rtl: {{ tkr_shift_b }}%;
           " aria-hidden="true">

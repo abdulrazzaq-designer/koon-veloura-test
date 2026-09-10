@@ -17012,19 +17012,6 @@
           "source": "Manual"
         },
         {
-          "id": "veloura_tkr_angle",
-          "type": "number",
-          "format": "slider",
-          "label": "زاوية الميلان",
-          "icon": "sicon-swap",
-          "value": 3,
-          "min": 0,
-          "max": 10,
-          "step": 1,
-          "required": false,
-          "description": "بالدرجات، للشريط المائل والمتقاطعين."
-        },
-        {
           "id": "veloura_tkr_height",
           "type": "number",
           "format": "slider",
@@ -17300,64 +17287,13 @@
           "required": false
         },
         {
-          "id": "veloura_tkr_shine",
-          "type": "boolean",
-          "format": "switch",
-          "label": "نص لامع متدرّج",
-          "description": "تدرّج يعبر داخل الحروف بدل لون ثابت. الأيقونات تبقى بلون النص.",
-          "value": false,
-          "required": false
-        },
-        {
-          "id": "veloura_tkr_shine_a",
+          "id": "veloura_tkr_shine_color",
           "type": "string",
           "format": "color",
-          "label": "لون اللمعة الأول",
-          "icon": "sicon-brush",
-          "value": "#ffffff",
-          "required": false,
-          "conditions": [
-            {
-              "id": "veloura_tkr_shine",
-              "operation": "=",
-              "value": true
-            }
-          ]
-        },
-        {
-          "id": "veloura_tkr_shine_b",
-          "type": "string",
-          "format": "color",
-          "label": "لون اللمعة الثاني",
-          "icon": "sicon-brush",
+          "label": "لون لمعة النص",
+          "icon": "sicon-color-palette",
           "value": "#ffe9a8",
-          "required": false,
-          "conditions": [
-            {
-              "id": "veloura_tkr_shine",
-              "operation": "=",
-              "value": true
-            }
-          ]
-        },
-        {
-          "id": "veloura_tkr_shine_speed",
-          "type": "number",
-          "format": "float",
-          "label": "مدة مرور اللمعة (ثانية)",
-          "icon": "sicon-clock",
-          "value": 4.5,
-          "min": 1,
-          "max": 12,
-          "step": 0.5,
-          "required": false,
-          "conditions": [
-            {
-              "id": "veloura_tkr_shine",
-              "operation": "=",
-              "value": true
-            }
-          ]
+          "required": false
         },
         {
           "id": "veloura_tkr_glass",
