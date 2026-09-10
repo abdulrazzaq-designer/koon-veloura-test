@@ -43,8 +43,8 @@
   --fp2-r-card: min(var(--fp2-radius), 18px);
   --fp2-r-thumb: min(var(--fp2-radius), 14px);
   --fp2-r-pill: min(calc(var(--fp2-radius) * 40), 999px);
-  padding-inline: var(--fp2-spacing, 0);
 }
+
 
 /* [hidden] has to keep working: the browser hides it from its own stylesheet
    with display:none, and any author display rule outranks that. */
@@ -58,11 +58,17 @@
   display: flex !important;
   flex-direction: column !important;
   gap: 16px;
-  padding: 0;
   border: 0;
   background: transparent;
   color: var(--fp2-text);
 }
+
+/* The spacing sits on the component's own boxes rather than on the section: the
+   theme styles .s-block with a `padding` shorthand, and a shorthand later in the
+   sheet wipes out a padding-inline of the same weight — which is why the setting
+   did nothing. It is written after the card's own rule for the same reason. */
+.veloura-fp2 .fp2__heading,
+.veloura-fp2 .fp2__card { padding-block: 0; padding-inline: var(--fp2-spacing, 0); }
 
 /* ============================== the stage ================================
    Phone: the photo at the start edge (the right, in Arabic) with the strip of
@@ -162,6 +168,7 @@
    glass, the arrows and thumbnails inset inside it. */
 .veloura-fp2 .fp2__gallery {
   position: relative;
+  box-sizing: border-box;
   height: 100%;
   min-height: 0;
   border: 1px solid var(--fp2-border);
@@ -321,19 +328,19 @@
   opacity: .85;
 }
 
-.veloura-fp2 .fp2__desc.is-open .fp2__excerpt { -webkit-line-clamp: 99; }
-
 .veloura-fp2 .fp2__more {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   margin-top: 4px;
-  padding: 0;
-  border: 0;
-  background: transparent;
   color: var(--fp2-accent);
   font-size: 13.5px;
   font-weight: 800;
-  cursor: pointer;
 }
+
+.veloura-fp2 .fp2__more i { font-size: 15px; transition: transform .2s ease; }
+.veloura-fp2 .fp2__more:hover i { transform: translateX(-3px); }
+html[dir="ltr"] .veloura-fp2 .fp2__more:hover i { transform: translateX(3px); }
 
 .veloura-fp2 .fp2__more:hover { text-decoration: underline; }
 
@@ -593,16 +600,16 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
             <h3 class="fp2__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
 
             {% if component.veloura_fp_show_excerpt %}
-              {# Two lines under the name, and "عرض المزيد" unfolds the rest here
-                 instead of sending the visitor to another page — the buy button
-                 stays the only thing that takes them away. #}
+              {# Two lines under the name, and "عرض المزيد" opens the product's
+                 own page — where the full description sits next to the options
+                 the buyer needs anyway. #}
               <div class="fp2__desc" data-vfp-excerpt-wrap hidden>
                 <p class="fp2__excerpt" data-vfp-excerpt></p>
                 {% if component.veloura_fp_show_link %}
-                  <button type="button" class="fp2__more" data-vfp-more
-                    data-more="{{ component.veloura_fp_link_text|default('عرض المزيد') }}"
-                    data-less="{{ component.veloura_fp_less_text|default('عرض أقل') }}"
-                    hidden>{{ component.veloura_fp_link_text|default('عرض المزيد') }}</button>
+                  <a class="fp2__more" data-vfp-link href="#">
+                    {{ component.veloura_fp_link_text|default('عرض المزيد') }}
+                    <i class="sicon-arrow-left" aria-hidden="true"></i>
+                  </a>
                 {% endif %}
               </div>
             {% endif %}

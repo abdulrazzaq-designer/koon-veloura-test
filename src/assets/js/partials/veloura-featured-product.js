@@ -179,42 +179,16 @@ const loadGallery = async (section, product) => {
   } catch (_) {}
 };
 
-/* Two lines, then a button that unfolds the rest in place. The button only
-   appears when there is something folded away: measured after paint, since
-   whether two lines are enough depends on the column and the font. */
+/* Two lines under the name; "عرض المزيد" is a link to the product page, so
+   there is nothing to measure or toggle here — only the text to fill in and the
+   wrapper to reveal once there is one. */
 const paintExcerpt = (section, description) => {
   const wrap = section.querySelector('[data-vfp-excerpt-wrap]');
   const paragraph = section.querySelector('[data-vfp-excerpt]');
   if (!wrap || !paragraph) return;
 
-  paragraph.textContent = description;
+  paragraph.textContent = description || '';
   wrap.hidden = !description;
-  if (!description) return;
-
-  const button = wrap.querySelector('[data-vfp-more]');
-  if (!button) return;
-
-  const measure = () => {
-    if (wrap.classList.contains('is-open')) return;
-    button.hidden = paragraph.scrollHeight <= paragraph.clientHeight + 1;
-  };
-
-  requestAnimationFrame(measure);
-  if ('ResizeObserver' in window && !button.dataset.vfpWatched) {
-    button.dataset.vfpWatched = '1';
-    new ResizeObserver(measure).observe(paragraph);
-  }
-
-  if (button.dataset.vfpBound === '1') return;
-  button.dataset.vfpBound = '1';
-
-  button.addEventListener('click', () => {
-    const open = wrap.classList.toggle('is-open');
-    button.textContent = open
-      ? (button.dataset.less || 'عرض أقل')
-      : (button.dataset.more || 'عرض المزيد');
-    if (!open) requestAnimationFrame(measure);
-  });
 };
 
 const paintThumbs = (section, images) => {
@@ -229,7 +203,15 @@ const paintThumbs = (section, images) => {
     thumbs.hidden = false;
 
     thumbs.addEventListener('click', event => {
-      const button = event.target.closest('[data-vfp-thumb]');
+      /* A drag ends in a click; ignore that one. */
+      if (thumbs.dataset.vfpDragged === '1') { thumbs.dataset.vfpDragged = '0'; return; }
+
+      /* elementFromPoint as well as the event's own target: while a pointer is
+         captured the click is delivered to the scroller rather than to the
+         thumbnail under the cursor, which is what left the desktop strip stuck
+         on the first picture. */
+      const button = event.target.closest('[data-vfp-thumb]')
+        || document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-vfp-thumb]');
       if (!button) return;
       section.querySelectorAll('[data-vfp-image]').forEach(img => { img.src = button.dataset.vfpThumb; });
       thumbs.querySelectorAll('.fp2__thumb').forEach(b => b.classList.toggle('is-active', b === button));
@@ -301,32 +283,43 @@ const paintThumbs = (section, images) => {
     window.addEventListener('resize', sync);
     requestAnimationFrame(sync);
 
-    /* Drag to scroll. The class it sets also turns off smooth scrolling and the
-       thumbnails' own clicks, so a drag never lands on a picture. */
-    let dragging = false;
+    /* Drag to scroll. The pointer is captured only once the cursor has actually
+       travelled: capturing on pointerdown would send every following click to
+       this element, and a plain click on a thumbnail would never reach it. */
+    let down = false;
+    let dragged = false;
     let startX = 0;
     let startScroll = 0;
 
     thumbs.addEventListener('pointerdown', event => {
       if (!horizontal() || event.button !== 0) return;
-      dragging = true;
+      down = true;
+      dragged = false;
       startX = event.clientX;
       startScroll = thumbs.scrollLeft;
-      thumbs.setPointerCapture(event.pointerId);
     });
 
     thumbs.addEventListener('pointermove', event => {
-      if (!dragging) return;
+      if (!down) return;
       const moved = event.clientX - startX;
-      if (!thumbs.classList.contains('is-dragging') && Math.abs(moved) < 4) return;
-      thumbs.classList.add('is-dragging');
+      if (!dragged && Math.abs(moved) < 5) return;
+
+      if (!dragged) {
+        dragged = true;
+        thumbs.classList.add('is-dragging');
+        try { thumbs.setPointerCapture(event.pointerId); } catch (_) {}
+      }
+
       thumbs.scrollLeft = startScroll - moved;
     });
 
-    const endDrag = () => {
-      if (!dragging) return;
-      dragging = false;
-      requestAnimationFrame(() => thumbs.classList.remove('is-dragging'));
+    const endDrag = event => {
+      if (!down) return;
+      down = false;
+      if (!dragged) return;
+      thumbs.dataset.vfpDragged = '1';
+      thumbs.classList.remove('is-dragging');
+      try { thumbs.releasePointerCapture(event.pointerId); } catch (_) {}
     };
 
     thumbs.addEventListener('pointerup', endDrag);
