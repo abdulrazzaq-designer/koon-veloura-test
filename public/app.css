@@ -3645,6 +3645,24 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
     animation: slideDownFromTop .6s linear;
     transition-duration: 500ms;
 }
+.s-app-install-alert-wrapper.\!open[position=top]{
+    display: flex;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes slideDownFromTop{
+    0%{
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(-0%);
+        opacity: 1;
+    }
+}
+.s-app-install-alert-wrapper.\!open[position=top]{
+    animation: slideDownFromTop .6s linear;
+    transition-duration: 500ms;
+}
 .s-app-install-alert-wrapper:not(.open){
     display: none;
 }
@@ -3677,6 +3695,22 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
     }
 }
 .s-app-install-alert-wrapper.open[position=bottom]{
+    animation: slideUpFromBottom .6s linear;
+}
+.s-app-install-alert-wrapper.\!open[position=bottom]{
+    display: flex;
+}
+@keyframes slideUpFromBottom{
+    0%{
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+.s-app-install-alert-wrapper.\!open[position=bottom]{
     animation: slideUpFromBottom .6s linear;
 }
 .s-app-install-alert-wrapper[position=bottom]{
@@ -8730,6 +8764,11 @@ body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 .s-delivery-promise-arrow.open{
+    --tw-rotate: 180deg;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(180deg) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.s-delivery-promise-arrow.\!open{
     --tw-rotate: 180deg;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(180deg) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));

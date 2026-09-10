@@ -36,6 +36,13 @@
   --fp2-glass: rgba(255, 255, 255, .55);
   --fp2-glass-edge: rgba(255, 255, 255, .65);
   --fp2-thumb: 68px;
+  /* Every rounded thing in the component is derived from the one setting, so
+     "حادة" really does square the whole card and not just the photo. The pill
+     shapes are the setting multiplied until they cap out — at 0 they are
+     squares like everything else. */
+  --fp2-r-card: min(var(--fp2-radius), 18px);
+  --fp2-r-thumb: min(var(--fp2-radius), 14px);
+  --fp2-r-pill: min(calc(var(--fp2-radius) * 40), 999px);
   padding-inline: var(--fp2-spacing, 0);
 }
 
@@ -100,13 +107,18 @@
   position: relative;
   height: 100%;
   overflow: hidden;
-  border-radius: calc(var(--fp2-radius) - 4px);
+  border-radius: var(--fp2-radius);
   background: rgba(15, 23, 42, .04);
 }
 
 .veloura-fp2 .fp2__img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
-.veloura-fp2.fp2--full .fp2__img { object-fit: contain; }
+
+/* "مربعة" crops to an even frame; "كاملة بأبعادها" lets the picture keep its
+   own shape — which means the FRAME has to give up its height as well, or the
+   photo is still boxed and only the cropping changes. */
 .veloura-fp2.fp2--square .fp2__frame { aspect-ratio: 1 / 1; height: auto; }
+.veloura-fp2.fp2--full .fp2__frame { height: auto; aspect-ratio: auto; }
+.veloura-fp2.fp2--full .fp2__img { height: auto; object-fit: contain; }
 
 @media (hover: hover) and (pointer: fine) {
   .veloura-fp2 .fp2__frame:hover .fp2__img { transform: scale(1.04); }
@@ -125,7 +137,7 @@
   max-width: calc(100% - 24px);
   padding: 5px 11px;
   border: 1px solid var(--fp2-glass-edge);
-  border-radius: 999px;
+  border-radius: var(--fp2-r-pill);
   background: var(--fp2-glass);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
   backdrop-filter: blur(14px) saturate(160%);
@@ -146,11 +158,22 @@
    product has the strip scrolls instead of growing past it. On a desktop the
    same strip lies flat across the photo's bottom edge, inside its own pane of
    glass. */
-.veloura-fp2 .fp2__gallery { position: relative; height: 100%; min-height: 0; }
+/* On a phone the strip is an island beside the photo: same rounding, same
+   glass, the arrows and thumbnails inset inside it. */
+.veloura-fp2 .fp2__gallery {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--fp2-border);
+  border-radius: var(--fp2-radius);
+  /* A tint of the title colour rather than white on white: the island has to
+     read as one piece beside the photo on a pale page too. */
+  background: color-mix(in srgb, var(--fp2-title) 5%, transparent);
+}
 
 .veloura-fp2 .fp2__strip {
   position: absolute;
-  inset: 0;
+  inset: 7px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,7 +190,7 @@
   height: 22px;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--fp2-r-thumb);
   background: transparent;
   color: var(--fp2-title);
   cursor: pointer;
@@ -202,7 +225,7 @@
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--fp2-border);
-  border-radius: 12px;
+  border-radius: var(--fp2-r-thumb);
   background: transparent;
   cursor: pointer;
 }
@@ -216,6 +239,10 @@
      as the second row, so nothing overlaps what comes after the section. */
   .veloura-fp2 .fp2__gallery {
     height: auto;
+    border: 0;
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     justify-self: center;
     max-width: 100%;
     margin-top: calc((var(--fp2-thumb) + 18px) / -2);
@@ -232,7 +259,7 @@
     max-width: 100%;
     padding: 8px;
     border: 1px solid var(--fp2-glass-edge);
-    border-radius: 999px;
+    border-radius: var(--fp2-r-pill);
     background: var(--fp2-glass);
     -webkit-backdrop-filter: blur(16px) saturate(170%);
     backdrop-filter: blur(16px) saturate(170%);
@@ -251,7 +278,7 @@
 
   .veloura-fp2 .fp2__thumbs.is-dragging { cursor: grabbing; scroll-behavior: auto; }
   .veloura-fp2 .fp2__thumbs.is-dragging .fp2__thumb { pointer-events: none; }
-  .veloura-fp2 .fp2__thumb { width: var(--fp2-thumb); height: var(--fp2-thumb); border-radius: 14px; }
+  .veloura-fp2 .fp2__thumb { width: var(--fp2-thumb); height: var(--fp2-thumb); border-radius: var(--fp2-r-thumb); }
   .veloura-fp2 .fp2__thumb img { border-radius: inherit; }
 
   /* The same chevron turned a quarter: pointing at the start edge for "back"
@@ -330,7 +357,7 @@
 
 .veloura-fp2 .fp2__sale {
   padding: 7px 14px;
-  border-radius: 999px;
+  border-radius: var(--fp2-r-pill);
   background: color-mix(in srgb, var(--fp2-accent) 13%, transparent);
   color: var(--fp2-accent);
   font-size: 13.5px;
@@ -339,6 +366,12 @@
 }
 
 .veloura-fp2 .fp2__add { width: 100%; }
+
+/* The setting has to reach the buy button too, which Salla renders as an
+   ordinary button inside its custom element. */
+.veloura-fp2 .fp2__add button,
+.veloura-fp2 .fp2__add .s-button-element,
+.fp2-sticky salla-add-product-button button { border-radius: var(--fp2-r-pill) !important; }
 
 /* ------------------------------------------------------------ features --
    Each one reads top to bottom — the icon, then its name — three across on a
@@ -362,7 +395,7 @@
   gap: 7px;
   padding: 12px 8px;
   border: 1px solid var(--fp2-border);
-  border-radius: 16px;
+  border-radius: var(--fp2-r-card);
   background: var(--fp2-surface);
   text-align: center;
   font-size: 12px;
@@ -392,7 +425,7 @@
   display: inline-block;
   padding: 10px 14px;
   border: 1px solid color-mix(in srgb, var(--fp2-accent) 28%, transparent);
-  border-radius: 14px;
+  border-radius: var(--fp2-r-card);
   background: color-mix(in srgb, var(--fp2-accent) 7%, transparent);
 }
 
@@ -401,7 +434,7 @@
 
 .veloura-fp2 .fp2__unit {
   display: flex; flex-direction: column; align-items: center;
-  min-width: 52px; padding: 7px 6px; border-radius: 10px;
+  min-width: 52px; padding: 7px 6px; border-radius: var(--fp2-r-thumb);
   border: 1px solid var(--fp2-border); background: var(--fp2-surface);
 }
 

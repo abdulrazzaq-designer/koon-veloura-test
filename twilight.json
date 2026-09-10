@@ -350,7 +350,7 @@
       "description": "يتحكم بتدوير كروت تفاصيل المنتج، الوصف، الخيارات، الأزرار والأجزاء العامة التي تدعم متغير Veloura",
       "icon": "sicon-border-radius",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "large",
       "default": "large",
       "selected": [
@@ -2563,7 +2563,7 @@
       "description": "تطبق على صورة الخلفية في الوضع الفاتح وعلى صورة الوضع الداكن.",
       "icon": "sicon-image",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "cover",
       "default": "cover",
       "selected": [
@@ -2881,7 +2881,7 @@
       "label": "حواف القسم السفلي",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "medium",
       "default": "medium",
       "selected": [
@@ -2942,7 +2942,7 @@
       "label": "حجم عناوين الفوتر",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "large",
       "default": "large",
       "selected": [
@@ -2989,7 +2989,7 @@
       "label": "حجم نصوص الفوتر",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "medium",
       "default": "medium",
       "selected": [
@@ -3045,7 +3045,7 @@
       "label": "شكل وسائل الاتصال والسوشيال",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "icon_text",
       "default": "icon_text",
       "selected": [
@@ -3753,7 +3753,7 @@
           "label": "التصنيف",
           "description": "اختر تصنيفًا أو أكثر لتظهر بجانبه العبارة",
           "value": [],
-          "required": true,
+          "required": false,
           "source": "categories",
           "searchable": true,
           "multiselect": true,
@@ -4342,7 +4342,7 @@
       "label": "مكان صورة التصنيف",
       "description": "اختر مكان ظهور صورة أو أيقونة التصنيف",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "selected": [
         {
           "label": "فوق العنوان",
@@ -4628,7 +4628,7 @@
       "label": "حواف بنر التصنيف",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "selected": [
         {
           "label": "ناعم",
@@ -6841,7 +6841,7 @@
       "label": "ارتفاع صور المنتج",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "auto_each",
       "default": "auto_each",
       "selected": [
@@ -7164,7 +7164,7 @@
       "label": "شكل حقل الكمية في الجوال",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "modern",
       "default": "modern",
       "selected": [
@@ -7326,7 +7326,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "1",
       "default": "1",
       "selected": [
@@ -7409,7 +7409,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "2",
       "default": "2",
       "selected": [
@@ -7492,7 +7492,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "3",
       "default": "3",
       "selected": [
@@ -7575,7 +7575,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "5",
       "default": "5",
       "selected": [
@@ -7658,7 +7658,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "6",
       "default": "6",
       "selected": [
@@ -7741,7 +7741,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "7",
       "default": "7",
       "selected": [
@@ -7824,7 +7824,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "8",
       "default": "8",
       "selected": [
@@ -7907,7 +7907,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "9",
       "default": "9",
       "selected": [
@@ -7990,7 +7990,7 @@
       "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "10",
       "default": "10",
       "selected": [
@@ -8186,7 +8186,7 @@
       "label": "مصدر المنتجات المقترحة",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "selected",
       "default": "selected",
       "selected": [
@@ -8565,7 +8565,7 @@
       "description": "اختر شكل القائمة أسفل شاشة الجوال",
       "icon": "sicon-list",
       "source": "Manual",
-      "required": false,
+      "required": true,
       "value": "full_width",
       "default": "full_width",
       "selected": [
@@ -12119,7 +12119,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_image_radius",
@@ -12166,7 +12166,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_enable_counter",
@@ -12415,7 +12415,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_faq_items",
@@ -12701,7 +12701,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_title_line_color",
@@ -12746,7 +12746,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_title_size",
@@ -12796,7 +12796,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_title_for_next_section",
@@ -13276,7 +13276,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_products_chosen",
@@ -13509,7 +13509,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_quick_desktop_cols",
@@ -13873,7 +13873,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_articles_autoplay",
@@ -14176,7 +14176,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_branches_items",
@@ -14398,7 +14398,8 @@
           ],
           "source": "Manual",
           "multichoice": false,
-          "searchable": false
+          "searchable": false,
+          "required": true
         },
         {
           "id": "veloura_brands_gap",
@@ -14454,7 +14455,8 @@
           ],
           "source": "Manual",
           "multichoice": false,
-          "searchable": false
+          "searchable": false,
+          "required": true
         },
         {
           "id": "veloura_brands_general_title",
@@ -14622,7 +14624,8 @@
           ],
           "source": "Manual",
           "multichoice": false,
-          "searchable": false
+          "searchable": false,
+          "required": true
         },
         {
           "id": "veloura_before_after_before_image",
@@ -14859,7 +14862,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_testimonials_hide_arrows",
@@ -15215,7 +15218,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_about_radius",
@@ -15260,7 +15263,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_about_apply_radius_all",
@@ -15869,7 +15872,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_popup_behavior_title",
@@ -15913,7 +15916,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_popup_delay",
@@ -16170,7 +16173,7 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": false
+          "required": true
         },
         {
           "id": "veloura_steps_mobile_columns",
@@ -16451,9 +16454,10 @@
               "key": "3537280f-f5a2-f472-ddb1-8c7a63a245ca"
             }
           ],
-          "required": false,
+          "required": true,
           "description": null,
-          "labelHTML": null
+          "labelHTML": null,
+          "source": "Manual"
         },
         {
           "id": "veloura_fp_image_fit",
@@ -16481,8 +16485,9 @@
               "key": "38620681-0a16-ac1f-6b3f-d1a66de7e0c5"
             }
           ],
-          "required": false,
-          "labelHTML": null
+          "required": true,
+          "labelHTML": null,
+          "source": "Manual"
         },
         {
           "id": "veloura_fp_center_titles",
@@ -16883,9 +16888,10 @@
               "key": "7047483f-f628-deac-dbfa-1b6985791418"
             }
           ],
-          "required": false,
+          "required": true,
           "description": null,
-          "labelHTML": null
+          "labelHTML": null,
+          "source": "Manual"
         },
         {
           "id": "veloura_fp_title_general",
@@ -17017,9 +17023,10 @@
               "key": "e6b6d96e-5424-a653-12a8-b80da2d1a84f"
             }
           ],
-          "required": false,
+          "required": true,
           "description": null,
-          "labelHTML": null
+          "labelHTML": null,
+          "source": "Manual"
         },
         {
           "id": "veloura_tkr_angle",
@@ -17176,9 +17183,10 @@
               "key": "d85c1870-8b74-08ff-cebf-bc9a184b8e8d"
             }
           ],
-          "required": false,
+          "required": true,
           "description": null,
-          "labelHTML": null
+          "labelHTML": null,
+          "source": "Manual"
         },
         {
           "id": "veloura_tkr_title_band1",

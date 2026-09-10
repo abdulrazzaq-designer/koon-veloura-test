@@ -249,7 +249,27 @@ const paintThumbs = (section, images) => {
     const next = section.querySelector('[data-vfp-thumb-next]');
 
     const horizontal = () => getComputedStyle(thumbs).flexDirection.indexOf('row') === 0;
-    const towardsEnd = () => (getComputedStyle(thumbs).direction === 'rtl' ? -1 : 1);
+
+    /* Which way scrollLeft counts is measured, not assumed: browsers have
+       disagreed about right-to-left scrollers, and guessing wrong is exactly
+       how one arrow ends up doing nothing while the other works. The probe
+       moves the strip by a pixel and puts it back before anything is painted. */
+    let endSign = 0;
+    const towardsEnd = () => {
+      if (endSign) return endSign;
+      if (getComputedStyle(thumbs).direction !== 'rtl') return (endSign = 1);
+      /* Smooth scrolling animates an assignment, so the read-back would be the
+         old value and the probe would answer wrongly; it is switched off for
+         the two lines it takes. */
+      const was = thumbs.scrollLeft;
+      const behavior = thumbs.style.scrollBehavior;
+      thumbs.style.scrollBehavior = 'auto';
+      thumbs.scrollLeft = -1;
+      endSign = thumbs.scrollLeft < 0 ? -1 : 1;
+      thumbs.scrollLeft = was;
+      thumbs.style.scrollBehavior = behavior;
+      return endSign;
+    };
 
     const step = () => {
       const first = thumbs.querySelector('.fp2__thumb');
@@ -257,6 +277,9 @@ const paintThumbs = (section, images) => {
       return (box ? (horizontal() ? box.width : box.height) : 80) + 8;
     };
 
+    /* sign: -1 walks back towards the first thumbnail (the right-hand arrow in
+       Arabic), +1 walks on towards the last (the left-hand one), which moves
+       the pictures the other way — press left, the row travels right. */
     const scrollStrip = sign => {
       thumbs.scrollBy(horizontal()
         ? { left: sign * step() * towardsEnd(), behavior: 'smooth' }
