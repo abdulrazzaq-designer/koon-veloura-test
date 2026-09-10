@@ -16578,7 +16578,7 @@
           "id": "veloura_fp_show_link",
           "type": "boolean",
           "format": "switch",
-          "label": "إظهار رابط تفاصيل المنتج",
+          "label": "إظهار زر عرض المزيد للوصف",
           "value": true,
           "required": false
         },
@@ -16611,27 +16611,36 @@
           ]
         },
         {
-          "id": "veloura_fp_show_trust_row",
-          "type": "boolean",
-          "format": "switch",
-          "label": "تكرار شرائط الثقة أسفل زر الشراء",
-          "description": "الشرائط تظهر أصلًا في العمود المقابل للمميزات.",
-          "value": false,
-          "required": false
-        },
-        {
           "id": "veloura_fp_link_text",
           "type": "string",
           "format": "text",
-          "label": "نص الرابط",
+          "label": "نص زر عرض المزيد",
           "icon": "sicon-link",
-          "value": "تفاصيل المنتج",
+          "value": "عرض المزيد",
           "required": false,
           "conditions": [
             {
               "id": "veloura_fp_show_link",
               "operation": "=",
-              "value": true
+              "value": true,
+              "label": "إظهار زر عرض المزيد للوصف"
+            }
+          ]
+        },
+        {
+          "id": "veloura_fp_less_text",
+          "type": "string",
+          "format": "text",
+          "label": "نص إخفاء الوصف",
+          "icon": "sicon-link",
+          "value": "عرض أقل",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_fp_show_link",
+              "operation": "=",
+              "value": true,
+              "label": "إظهار زر عرض المزيد للوصف"
             }
           ]
         },
@@ -16766,72 +16775,6 @@
               "id": "veloura_fp_countdown_enabled",
               "operation": "=",
               "value": true
-            }
-          ]
-        },
-        {
-          "id": "veloura_fp_title_trust",
-          "type": "static",
-          "format": "title",
-          "label": "Title",
-          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">شرائط الثقة</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تظهر أسفل زر الشراء</span></span></div>",
-          "variant": "h6"
-        },
-        {
-          "id": "veloura_fp_trust",
-          "type": "collection",
-          "format": "collection",
-          "label": "قائمة الشرائط",
-          "item_label": "شريط",
-          "icon": "sicon-list-add",
-          "minLength": 0,
-          "maxLength": 4,
-          "value": [
-            {
-              "icon": "sicon-shipping-fast",
-              "title": "شحن سريع",
-              "subtitle": "خلال 1-3 أيام"
-            },
-            {
-              "icon": "sicon-secure-payment",
-              "title": "دفع آمن",
-              "subtitle": "جميع وسائل الدفع"
-            },
-            {
-              "icon": "sicon-refresh",
-              "title": "إرجاع مجاني",
-              "subtitle": "خلال 14 يومًا"
-            }
-          ],
-          "fields": [
-            {
-              "id": "icon",
-              "type": "string",
-              "format": "icon",
-              "label": "الأيقونة",
-              "icon": "sicon-star",
-              "value": "sicon-shipping-fast",
-              "required": false
-            },
-            {
-              "id": "title",
-              "type": "string",
-              "format": "text",
-              "label": "العنوان",
-              "icon": "sicon-format-text-alt",
-              "value": "",
-              "required": false,
-              "maxLength": "60"
-            },
-            {
-              "id": "subtitle",
-              "type": "string",
-              "format": "text",
-              "label": "وصف صغير",
-              "icon": "sicon-format-text",
-              "value": "",
-              "required": false,
-              "maxLength": "80"
             }
           ]
         },

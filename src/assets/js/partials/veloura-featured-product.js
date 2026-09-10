@@ -30,6 +30,14 @@ const money = value => {
   try { return salla.money(amount); } catch (_) { return String(amount); }
 };
 
+/* Salla's description is HTML. It is read as text, never inserted as markup. */
+const plain = value => text(value)
+  .replace(/<br\s*\/?>/gi, ' ')
+  .replace(/<[^>]*>/g, '')
+  .replace(/&nbsp;/gi, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
 const imageUrl = image => {
   if (!image) return '';
   if (typeof image === 'string') return image;
@@ -56,7 +64,11 @@ const normalize = product => {
     price: money(onSale ? sale : (product.price ?? regular)),
     oldPrice: onSale ? money(regular) : '',
     discount: onSale ? Math.round(((regular - sale) / regular) * 100) : 0,
-    excerpt: text(product.subtitle || product.promotion_title || '').trim(),
+    /* The short subtitle if the merchant wrote one, otherwise the product's
+       own description with its markup stripped — the strip is why the
+       paragraph came out empty on the store: a list product carries a
+       description full of tags and no `subtitle` at all. */
+    excerpt: text(product.subtitle || product.promotion_title || plain(product.description) || '').trim(),
     rating: product.rating && product.rating.stars ? product.rating : null,
     discountEnds: product.discount_ends || '',
   };
@@ -114,12 +126,7 @@ const paint = (section, product) => {
     el.hidden = !product.discount;
   });
 
-  set('data-vfp-excerpt', el => { el.textContent = product.excerpt; });
-
-  /* The paragraph wrapper is what hides, not the text span: the "عرض المزيد"
-     link is its sibling inside that paragraph, and hiding the span alone left
-     the link floating on its own line. */
-  set('data-vfp-excerpt-wrap', el => { el.hidden = !product.excerpt; });
+  paintExcerpt(section, product.excerpt);
 
   set('data-vfp-rating', el => {
     if (!product.rating) return;
@@ -147,20 +154,67 @@ const paint = (section, product) => {
    endpoint is the one that has the gallery, so it is asked for separately,
    after the card is already painted, and its absence costs nothing. */
 const loadGallery = async (section, product) => {
-  if (!section.querySelector('[data-vfp-thumbs]')) return;
-  if (product.images.length > 1) return;
+  const wantsThumbs = Boolean(section.querySelector('[data-vfp-thumbs]')) && product.images.length <= 1;
+  const wantsText = Boolean(section.querySelector('[data-vfp-excerpt]')) && !product.excerpt;
+  if (!wantsThumbs && !wantsText) return;
 
   try {
     const response = await salla.product.getDetails(product.id, ['images']);
     const details = response?.data || response;
-    const images = (details?.images || [])
-      .filter(i => (i.type || 'image') === 'image')
-      .map(imageUrl)
-      .filter(Boolean)
-      .slice(0, 5);
 
-    if (images.length > 1) paintThumbs(section, images);
+    if (wantsThumbs) {
+      const images = (details?.images || [])
+        .filter(i => (i.type || 'image') === 'image')
+        .map(imageUrl)
+        .filter(Boolean)
+        .slice(0, 8);
+
+      if (images.length > 1) paintThumbs(section, images);
+    }
+
+    if (wantsText) {
+      const description = plain(details?.description || details?.subtitle || '');
+      if (description) paintExcerpt(section, description);
+    }
   } catch (_) {}
+};
+
+/* Two lines, then a button that unfolds the rest in place. The button only
+   appears when there is something folded away: measured after paint, since
+   whether two lines are enough depends on the column and the font. */
+const paintExcerpt = (section, description) => {
+  const wrap = section.querySelector('[data-vfp-excerpt-wrap]');
+  const paragraph = section.querySelector('[data-vfp-excerpt]');
+  if (!wrap || !paragraph) return;
+
+  paragraph.textContent = description;
+  wrap.hidden = !description;
+  if (!description) return;
+
+  const button = wrap.querySelector('[data-vfp-more]');
+  if (!button) return;
+
+  const measure = () => {
+    if (wrap.classList.contains('is-open')) return;
+    button.hidden = paragraph.scrollHeight <= paragraph.clientHeight + 1;
+  };
+
+  requestAnimationFrame(measure);
+  if ('ResizeObserver' in window && !button.dataset.vfpWatched) {
+    button.dataset.vfpWatched = '1';
+    new ResizeObserver(measure).observe(paragraph);
+  }
+
+  if (button.dataset.vfpBound === '1') return;
+  button.dataset.vfpBound = '1';
+
+  button.addEventListener('click', () => {
+    const open = wrap.classList.toggle('is-open');
+    button.textContent = open
+      ? (button.dataset.less || 'عرض أقل')
+      : (button.dataset.more || 'عرض المزيد');
+    if (!open) requestAnimationFrame(measure);
+  });
 };
 
 const paintThumbs = (section, images) => {
@@ -181,26 +235,79 @@ const paintThumbs = (section, images) => {
       thumbs.querySelectorAll('.fp2__thumb').forEach(b => b.classList.toggle('is-active', b === button));
     }, { once: false });
 
-    /* The arrows scroll the strip by one thumbnail. The strip is a scroller
-       rather than a growing list, which is what keeps it the height of the
-       photo beside it on a phone however many images the product has.
+    /* Moving the strip.
 
-       It lies down on a desktop, so the direction is read off the layout at
-       click time rather than assumed: `left` is resolved by the browser against
-       the writing direction, so -1 is always "towards the start" — the right,
-       in Arabic — without a dir check here. */
-    const scrollStrip = sign => {
+       Direction first: scrollLeft counts DOWN from zero in a right-to-left
+       scroller, so "towards the end" is a negative delta there and a positive
+       one in English — reading it off the computed direction is what makes the
+       forward arrow do anything at all instead of clamping at zero.
+
+       Then the arrows are only offered while there is something to reach, and
+       the strip can be dragged and flicked as well, which is what a visitor
+       tries first on a row of pictures. */
+    const prev = section.querySelector('[data-vfp-thumb-prev]');
+    const next = section.querySelector('[data-vfp-thumb-next]');
+
+    const horizontal = () => getComputedStyle(thumbs).flexDirection.indexOf('row') === 0;
+    const towardsEnd = () => (getComputedStyle(thumbs).direction === 'rtl' ? -1 : 1);
+
+    const step = () => {
       const first = thumbs.querySelector('.fp2__thumb');
       const box = first && first.getBoundingClientRect();
-      const horizontal = getComputedStyle(thumbs).flexDirection.indexOf('row') === 0;
-      const distance = (box ? (horizontal ? box.width : box.height) : 80) + 8;
-      thumbs.scrollBy(horizontal
-        ? { left: sign * distance, behavior: 'smooth' }
-        : { top: sign * distance, behavior: 'smooth' });
+      return (box ? (horizontal() ? box.width : box.height) : 80) + 8;
     };
 
-    section.querySelector('[data-vfp-thumb-prev]')?.addEventListener('click', () => scrollStrip(-1));
-    section.querySelector('[data-vfp-thumb-next]')?.addEventListener('click', () => scrollStrip(1));
+    const scrollStrip = sign => {
+      thumbs.scrollBy(horizontal()
+        ? { left: sign * step() * towardsEnd(), behavior: 'smooth' }
+        : { top: sign * step(), behavior: 'smooth' });
+    };
+
+    const sync = () => {
+      const room = horizontal()
+        ? thumbs.scrollWidth - thumbs.clientWidth
+        : thumbs.scrollHeight - thumbs.clientHeight;
+      const at = horizontal() ? Math.abs(thumbs.scrollLeft) : thumbs.scrollTop;
+      if (prev) prev.disabled = at <= 1;
+      if (next) next.disabled = at >= room - 1;
+    };
+
+    prev?.addEventListener('click', () => scrollStrip(-1));
+    next?.addEventListener('click', () => scrollStrip(1));
+    thumbs.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    requestAnimationFrame(sync);
+
+    /* Drag to scroll. The class it sets also turns off smooth scrolling and the
+       thumbnails' own clicks, so a drag never lands on a picture. */
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    thumbs.addEventListener('pointerdown', event => {
+      if (!horizontal() || event.button !== 0) return;
+      dragging = true;
+      startX = event.clientX;
+      startScroll = thumbs.scrollLeft;
+      thumbs.setPointerCapture(event.pointerId);
+    });
+
+    thumbs.addEventListener('pointermove', event => {
+      if (!dragging) return;
+      const moved = event.clientX - startX;
+      if (!thumbs.classList.contains('is-dragging') && Math.abs(moved) < 4) return;
+      thumbs.classList.add('is-dragging');
+      thumbs.scrollLeft = startScroll - moved;
+    });
+
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      requestAnimationFrame(() => thumbs.classList.remove('is-dragging'));
+    };
+
+    thumbs.addEventListener('pointerup', endDrag);
+    thumbs.addEventListener('pointercancel', endDrag);
   }
 };
 

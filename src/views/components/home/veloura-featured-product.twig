@@ -33,7 +33,9 @@
   --fp2-text: var(--fp2-text-light, #52606d);
   --fp2-surface: var(--fp2-card-light, #ffffff);
   --fp2-border: rgba(15, 23, 42, .10);
-  --fp2-thumb: 72px;
+  --fp2-glass: rgba(255, 255, 255, .55);
+  --fp2-glass-edge: rgba(255, 255, 255, .65);
+  --fp2-thumb: 68px;
   padding-inline: var(--fp2-spacing, 0);
 }
 
@@ -59,7 +61,7 @@
    Phone: the photo at the start edge (the right, in Arabic) with the strip of
    thumbnails beside it, then the details, then the features.
    Desktop: three columns of exactly one third each — details, photo, features
-   — with the thumbnail strip riding under the photo in the middle column. */
+   — and the strip of thumbnails sitting across the photo's bottom edge. */
 .veloura-fp2 .fp2__stage {
   display: grid !important;
   grid-template-columns: minmax(0, 78%) minmax(0, 22%);
@@ -82,9 +84,14 @@
     grid-template-areas:
       "info media   side"
       "info gallery side";
-    grid-template-rows: 1fr auto;
-    gap: 14px 28px;
+    grid-template-rows: auto auto;
+    gap: 0 28px;
   }
+
+  /* The photo keeps its natural height and the two side columns keep theirs —
+     what is asked of them is to match each other, which the grid does by
+     centring their content in a shared row rather than stretching the boxes. */
+  .veloura-fp2 .fp2__media { align-self: start; }
 }
 
 /* --------------------------------------------------------------- photo -- */
@@ -101,34 +108,44 @@
 .veloura-fp2.fp2--full .fp2__img { object-fit: contain; }
 .veloura-fp2.fp2--square .fp2__frame { aspect-ratio: 1 / 1; height: auto; }
 
-@media (min-width: 768px) {
-  .veloura-fp2.fp2--square .fp2__frame { aspect-ratio: auto; height: 100%; min-height: 420px; }
-}
-
 @media (hover: hover) and (pointer: fine) {
   .veloura-fp2 .fp2__frame:hover .fp2__img { transform: scale(1.04); }
 }
 
+/* The phrase is a pane of glass on the picture: small, blurred, out of the way
+   of the product itself. */
 .veloura-fp2 .fp2__chip {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 5px;
+  max-width: calc(100% - 24px);
+  padding: 5px 11px;
+  border: 1px solid var(--fp2-glass-edge);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--fp2-accent) 12%, transparent);
-  color: var(--fp2-accent);
-  font-size: 12.5px;
+  background: var(--fp2-glass);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, .12);
+  color: var(--fp2-title);
+  font-size: 11.5px;
   font-weight: 800;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.veloura-fp2 .fp2__crown { width: 15px; height: 15px; flex: 0 0 auto; }
+.veloura-fp2 .fp2__crown { width: 13px; height: 13px; flex: 0 0 auto; color: var(--fp2-accent); }
 
 /* ------------------------------------------------------------- gallery --
    One element, two directions. On a phone it is a column beside the photo,
    stretched by the grid to the photo's full height, so however many images the
    product has the strip scrolls instead of growing past it. On a desktop the
-   same strip lies flat under the photo with an arrow at each end. */
+   same strip lies flat across the photo's bottom edge, inside its own pane of
+   glass. */
 .veloura-fp2 .fp2__gallery { position: relative; height: 100%; min-height: 0; }
 
 .veloura-fp2 .fp2__strip {
@@ -155,9 +172,11 @@
   color: var(--fp2-title);
   cursor: pointer;
   opacity: .75;
+  transition: opacity .2s ease;
 }
 
 .veloura-fp2 .fp2__nav:hover { opacity: 1; }
+.veloura-fp2 .fp2__nav[disabled] { opacity: .22; cursor: default; }
 .veloura-fp2 .fp2__nav svg { width: 16px; height: 16px; }
 
 .veloura-fp2 .fp2__thumbs {
@@ -171,6 +190,7 @@
   overflow-x: hidden;
   scrollbar-width: none;
   scroll-behavior: smooth;
+  overscroll-behavior: contain;
 }
 
 .veloura-fp2 .fp2__thumbs::-webkit-scrollbar { display: none; }
@@ -188,11 +208,36 @@
 }
 
 .veloura-fp2 .fp2__thumb.is-active { border-color: var(--fp2-accent); border-width: 2px; }
-.veloura-fp2 .fp2__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.veloura-fp2 .fp2__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 @media (min-width: 768px) {
-  .veloura-fp2 .fp2__gallery { height: auto; }
-  .veloura-fp2 .fp2__strip { position: static; flex-direction: row; width: 100%; min-width: 0; }
+  /* Half the strip's height is pulled back over the photo, which puts its
+     middle exactly on the picture's bottom edge — and leaves the other half
+     as the second row, so nothing overlaps what comes after the section. */
+  .veloura-fp2 .fp2__gallery {
+    height: auto;
+    justify-self: center;
+    max-width: 100%;
+    margin-top: calc((var(--fp2-thumb) + 18px) / -2);
+    z-index: 2;
+  }
+
+  .veloura-fp2 .fp2__strip {
+    position: static;
+    flex-direction: row;
+    gap: 6px;
+    /* Hugs the thumbnails when they fit and stops at the column's width when
+       they don't, so the pane is never a wide empty bar behind three pictures. */
+    width: max-content;
+    max-width: 100%;
+    padding: 8px;
+    border: 1px solid var(--fp2-glass-edge);
+    border-radius: 999px;
+    background: var(--fp2-glass);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+    backdrop-filter: blur(16px) saturate(170%);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
+  }
 
   .veloura-fp2 .fp2__thumbs {
     flex-direction: row;
@@ -200,13 +245,18 @@
     min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
+    /* Dragged and flicked as well as clicked. */
+    cursor: grab;
   }
 
-  .veloura-fp2 .fp2__thumb { width: var(--fp2-thumb); height: var(--fp2-thumb); }
+  .veloura-fp2 .fp2__thumbs.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+  .veloura-fp2 .fp2__thumbs.is-dragging .fp2__thumb { pointer-events: none; }
+  .veloura-fp2 .fp2__thumb { width: var(--fp2-thumb); height: var(--fp2-thumb); border-radius: 14px; }
+  .veloura-fp2 .fp2__thumb img { border-radius: inherit; }
 
   /* The same chevron turned a quarter: pointing at the start edge for "back"
      and the end edge for "forward", which in Arabic is right then left. */
-  .veloura-fp2 .fp2__nav { width: 22px; height: 26px; }
+  .veloura-fp2 .fp2__nav { width: 24px; height: var(--fp2-thumb); }
   .veloura-fp2 .fp2__nav svg { transform: rotate(90deg); }
   html[dir="ltr"] .veloura-fp2 .fp2__nav svg { transform: rotate(-90deg); }
 }
@@ -230,24 +280,35 @@
 
 @media (min-width: 768px) { .veloura-fp2 .fp2__name { font-size: 28px; } }
 
-/* The description and its link are one paragraph: "…وصف المنتج مع عرض المزيد",
-   not a paragraph with a button parked under it. */
+/* Two lines by default; the button below unfolds the rest in place. */
+.veloura-fp2 .fp2__desc { width: 100%; max-width: 46ch; }
+
 .veloura-fp2 .fp2__excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   margin: 0;
   font-size: 14px;
   line-height: 1.9;
   opacity: .85;
-  max-width: 46ch;
 }
 
+.veloura-fp2 .fp2__desc.is-open .fp2__excerpt { -webkit-line-clamp: 99; }
+
 .veloura-fp2 .fp2__more {
-  display: inline;
-  margin-inline-start: 6px;
+  display: inline-block;
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--fp2-accent);
   font-size: 13.5px;
   font-weight: 800;
-  white-space: nowrap;
+  cursor: pointer;
 }
+
+.veloura-fp2 .fp2__more:hover { text-decoration: underline; }
 
 .veloura-fp2 .fp2__rating { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .veloura-fp2 .fp2__stars { color: #f59e0b; letter-spacing: 2px; }
@@ -280,13 +341,12 @@
 .veloura-fp2 .fp2__add { width: 100%; }
 
 /* ------------------------------------------------------------ features --
-   A row of equal boxes under everything on a phone — one line each, the main
-   text only — and the whole third column on a desktop, stacked, where there is
-   room for the second line. */
+   Each one reads top to bottom — the icon, then its name — three across on a
+   phone with any further ones falling onto the next row, and one under another
+   down the last third of the desktop row. */
 .veloura-fp2 .fp2__side {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   width: 100%;
   margin: 0;
@@ -296,43 +356,34 @@
 
 .veloura-fp2 .fp2__item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 0;
-  padding: 10px 8px;
+  justify-content: flex-start;
+  gap: 7px;
+  padding: 12px 8px;
   border: 1px solid var(--fp2-border);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--fp2-surface);
   text-align: center;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--fp2-text);
 }
 
 .veloura-fp2 .fp2__item b { display: block; font-weight: 700; color: var(--fp2-title); }
 .veloura-fp2 .fp2__item small { display: none; }
-.veloura-fp2 .fp2__item i { color: var(--fp2-accent); font-size: 17px; flex: 0 0 auto; }
+.veloura-fp2 .fp2__item i { color: var(--fp2-accent); font-size: 20px; line-height: 1; flex: 0 0 auto; }
 
 @media (min-width: 768px) {
   .veloura-fp2 .fp2__side {
-    grid-auto-flow: row;
-    grid-auto-rows: 1fr;
-    grid-auto-columns: auto;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
     gap: 12px;
     height: 100%;
-    align-content: stretch;
   }
 
-  .veloura-fp2 .fp2__item {
-    justify-content: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-    text-align: start;
-    font-size: 13px;
-  }
-
-  .veloura-fp2 .fp2__item i { font-size: 20px; }
+  .veloura-fp2 .fp2__item { padding: 16px 14px; font-size: 13px; }
+  .veloura-fp2 .fp2__item i { font-size: 22px; }
   .veloura-fp2 .fp2__item small { display: block; margin-top: 2px; opacity: .75; font-size: 11.5px; }
 }
 
@@ -357,17 +408,6 @@
 .veloura-fp2 .fp2__unit b { font-size: 18px; font-weight: 900; line-height: 1; color: var(--fp2-accent); font-variant-numeric: tabular-nums; }
 .veloura-fp2 .fp2__unit small { margin-top: 4px; font-size: 10px; opacity: .7; }
 
-.veloura-fp2 .fp2__trust {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px; width: 100%; margin: 0; padding: 12px 0 0;
-  border-top: 1px solid var(--fp2-border); list-style: none;
-}
-
-.veloura-fp2 .fp2__trust li { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
-.veloura-fp2 .fp2__trust i { color: var(--fp2-accent); font-size: 18px; }
-.veloura-fp2 .fp2__trust b { display: block; font-weight: 700; color: var(--fp2-title); }
-.veloura-fp2 .fp2__trust small { opacity: .7; }
-
 /* ---------------------------------------------------------- sticky bar --- */
 .fp2-sticky {
   position: fixed; inset-inline: 0; bottom: 0; z-index: 2147483000;
@@ -391,18 +431,20 @@ html.dark .veloura-fp2, html body.dark .veloura-fp2 {
   --fp2-title: #f8fafc;
   --fp2-text: #cbd5e1;
   --fp2-border: rgba(255, 255, 255, .12);
+  --fp2-glass: rgba(15, 23, 42, .5);
+  --fp2-glass-edge: rgba(255, 255, 255, .16);
   --fp2-accent-text: color-mix(in srgb, var(--fp2-accent) 45%, #ffffff);
 }
 
 /* The accent is picked against a white card, so as TEXT on a dark one it turns
    unreadable. Backgrounds keep the real accent; only text is mixed. */
-html.dark .veloura-fp2 :is(.fp2__chip, .fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__trust i),
-html body.dark .veloura-fp2 :is(.fp2__chip, .fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__trust i) {
+html.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__crown),
+html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item i, .fp2__crown) {
   color: var(--fp2-accent-text);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .veloura-fp2 .fp2__img, .fp2-sticky { transition: none; }
+  .veloura-fp2 .fp2__img, .fp2-sticky, .veloura-fp2 .fp2__nav { transition: none; }
   .veloura-fp2 .fp2__thumbs { scroll-behavior: auto; }
 }
 </style>
@@ -503,28 +545,33 @@ html body.dark .veloura-fp2 :is(.fp2__chip, .fp2__more, .fp2__sale, .fp2__unit b
           <div class="fp2__media">
             <a class="fp2__frame" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
               <img class="fp2__img" data-vfp-image src="" alt="" loading="lazy" decoding="async">
+              {# The phrase rides the photo as a small pane of glass rather than
+                 taking a row of its own above the name. #}
+              {% if component.veloura_fp_eyebrow %}
+                <span class="fp2__chip">
+                  {% if component.veloura_fp_crown %}<svg class="fp2__crown" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8.5 6.6 12l3.1-5.2a2.7 2.7 0 0 0 4.6 0L17.4 12 21 8.5l-1.6 9.2a2 2 0 0 1-2 1.7H6.6a2 2 0 0 1-2-1.7L3 8.5Z"/></svg>{% endif %}
+                  {{ component.veloura_fp_eyebrow }}
+                </span>
+              {% endif %}
             </a>
           </div>
 
           <div class="fp2__info">
-            {% if component.veloura_fp_eyebrow %}
-              <span class="fp2__chip">
-                {% if component.veloura_fp_crown %}<svg class="fp2__crown" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8.5 6.6 12l3.1-5.2a2.7 2.7 0 0 0 4.6 0L17.4 12 21 8.5l-1.6 9.2a2 2 0 0 1-2 1.7H6.6a2 2 0 0 1-2-1.7L3 8.5Z"/></svg>{% endif %}
-                {{ component.veloura_fp_eyebrow }}
-              </span>
-            {% endif %}
-
             <h3 class="fp2__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
 
             {% if component.veloura_fp_show_excerpt %}
-              {# The link closes the sentence rather than sitting under it as a
-                 second button competing with "add to cart". #}
-              <p class="fp2__excerpt" data-vfp-excerpt-wrap hidden>
-                <span data-vfp-excerpt></span>
+              {# Two lines under the name, and "عرض المزيد" unfolds the rest here
+                 instead of sending the visitor to another page — the buy button
+                 stays the only thing that takes them away. #}
+              <div class="fp2__desc" data-vfp-excerpt-wrap hidden>
+                <p class="fp2__excerpt" data-vfp-excerpt></p>
                 {% if component.veloura_fp_show_link %}
-                  <a class="fp2__more" data-vfp-link href="#">{{ component.veloura_fp_link_text|default('عرض المزيد') }}</a>
+                  <button type="button" class="fp2__more" data-vfp-more
+                    data-more="{{ component.veloura_fp_link_text|default('عرض المزيد') }}"
+                    data-less="{{ component.veloura_fp_less_text|default('عرض أقل') }}"
+                    hidden>{{ component.veloura_fp_link_text|default('عرض المزيد') }}</button>
                 {% endif %}
-              </p>
+              </div>
             {% endif %}
 
             {% if component.veloura_fp_show_rating %}
@@ -562,18 +609,6 @@ html body.dark .veloura-fp2 :is(.fp2__chip, .fp2__more, .fp2__sale, .fp2__unit b
               width="wide"
             >{{ component.veloura_fp_button_text|default('أضف للسلة') }}</salla-add-product-button>
 
-            {% if component.veloura_fp_show_trust_row and component.veloura_fp_trust %}
-              <ul class="fp2__trust">
-                {% for chip in component.veloura_fp_trust %}
-                  {% if chip.title %}
-                    <li>
-                      <i class="{{ chip.icon|default('sicon-shipping-fast') }}" aria-hidden="true"></i>
-                      <span><b>{{ chip.title }}</b>{% if chip.subtitle %}<small>{{ chip.subtitle }}</small>{% endif %}</span>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            {% endif %}
           </div>
 
           {# The features are their own third of the row on a desktop, so they
