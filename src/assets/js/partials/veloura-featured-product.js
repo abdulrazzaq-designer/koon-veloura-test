@@ -182,17 +182,25 @@ const paintThumbs = (section, images) => {
     }, { once: false });
 
     /* The arrows scroll the strip by one thumbnail. The strip is a scroller
-       rather than a growing column, which is what keeps it the same height as
-       the photo beside it however many images the product has. */
-    const step = () => {
+       rather than a growing list, which is what keeps it the height of the
+       photo beside it on a phone however many images the product has.
+
+       It lies down on a desktop, so the direction is read off the layout at
+       click time rather than assumed: `left` is resolved by the browser against
+       the writing direction, so -1 is always "towards the start" — the right,
+       in Arabic — without a dir check here. */
+    const scrollStrip = sign => {
       const first = thumbs.querySelector('.fp2__thumb');
-      return first ? first.getBoundingClientRect().height + 8 : 80;
+      const box = first && first.getBoundingClientRect();
+      const horizontal = getComputedStyle(thumbs).flexDirection.indexOf('row') === 0;
+      const distance = (box ? (horizontal ? box.width : box.height) : 80) + 8;
+      thumbs.scrollBy(horizontal
+        ? { left: sign * distance, behavior: 'smooth' }
+        : { top: sign * distance, behavior: 'smooth' });
     };
 
-    section.querySelector('[data-vfp-thumb-prev]')
-      ?.addEventListener('click', () => thumbs.scrollBy({ top: -step(), behavior: 'smooth' }));
-    section.querySelector('[data-vfp-thumb-next]')
-      ?.addEventListener('click', () => thumbs.scrollBy({ top: step(), behavior: 'smooth' }));
+    section.querySelector('[data-vfp-thumb-prev]')?.addEventListener('click', () => scrollStrip(-1));
+    section.querySelector('[data-vfp-thumb-next]')?.addEventListener('click', () => scrollStrip(1));
   }
 };
 
