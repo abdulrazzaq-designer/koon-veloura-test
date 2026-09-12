@@ -62,7 +62,7 @@ body .veloura-tkr.veloura-tkr > .container {
   /* The theme's own variables, so untouched this is the same box as every other
      section rather than merely close to it. */
   max-width: var(--veloura-global-container, 1280px) !important;
-  padding-inline: var(--tkr-gutter, var(--veloura-global-spacing, 10px)) !important;
+  padding-inline: var(--veloura-global-spacing, 10px) !important;
 }
 
 /* Below 1024 the theme writes its own gutter with
@@ -78,9 +78,14 @@ body .veloura-tkr.veloura-tkr > .container {
   }
 }
 
+/* From 1024 up the custom number stays out of it: the section keeps the
+   theme's own container gutter, so it sits exactly where every other block on
+   the page sits rather than a few pixels wider. The setting is a phone and
+   tablet affair, which is where it is wanted. */
 @media (min-width: 1024px) {
   body .veloura-tkr.veloura-tkr > .container {
     max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
+    padding-inline: var(--veloura-global-spacing, 10px) !important;
   }
 }
 
