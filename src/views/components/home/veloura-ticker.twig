@@ -55,15 +55,33 @@
    shorthand, which would otherwise outrank a padding-inline of equal weight. */
 .veloura-tkr { padding-inline: 0 !important; }
 
-.veloura-tkr > .container {
+body .veloura-tkr.veloura-tkr > .container {
   width: 100%;
-  max-width: var(--veloura-global-container, 1280px) !important;
   margin-inline: auto !important;
-  /* The same two variables the theme's bridge writes onto every container, so
-     the ribbon is the same box as every other section rather than running wide
-     of them. --tkr-gutter replaces the gutter only when it is written. */
-  padding-inline: var(--tkr-gutter, var(--veloura-global-spacing, 10px)) !important;
   box-sizing: border-box;
+  /* The theme's own variables, so untouched this is the same box as every other
+     section rather than merely close to it. */
+  max-width: var(--veloura-global-container, 1280px) !important;
+  padding-inline: var(--tkr-gutter, var(--veloura-global-spacing, 10px)) !important;
+}
+
+/* Below 1024 the theme writes its own gutter with
+   `body.veloura-general-enabled .container` — two classes and an element, a
+   heavier selector than this component's, and !important on top. That rule, not
+   any floor of its own, is why the number here did nothing on a phone. The
+   class is repeated to outweigh it, and the same chain is followed so that an
+   untouched section still matches the rest of the page. */
+@media (max-width: 1023px) {
+  body .veloura-tkr.veloura-tkr > .container {
+    max-width: none !important;
+    padding-inline: var(--tkr-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  body .veloura-tkr.veloura-tkr > .container {
+    max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
+  }
 }
 
 /* The clip lives here: a tilted band is wider than its line by design, and this
@@ -90,7 +108,6 @@
   border-radius: var(--tkr-radius, 16px);
   background: linear-gradient(90deg, var(--band-from), var(--band-to));
   color: var(--band-text);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
   /* A hairline along the top and bottom only. It costs nothing when the width
      is 0, and it is what gives the glass mode an edge to catch the light. */
   border-top: var(--tkr-edge, 0px) solid var(--tkr-edge-color, transparent);
@@ -214,7 +231,6 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   backdrop-filter: var(--veloura-filter, blur(20px) saturate(124%));
   border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .20));
   border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .12));
-  box-shadow: 0 10px 30px var(--veloura-glass-shadow, rgba(15, 23, 42, .10));
   background-image: linear-gradient(
     90deg,
     color-mix(in srgb, var(--band-from) var(--band-tint, 70%), transparent),

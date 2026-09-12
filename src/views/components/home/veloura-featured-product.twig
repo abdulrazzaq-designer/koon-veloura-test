@@ -75,16 +75,33 @@
    seemed to have a floor under it. Zero now really is zero. */
 .veloura-fp2 { padding-inline: 0 !important; }
 
-.veloura-fp2 > .container {
+body .veloura-fp2.veloura-fp2 > .container {
   width: 100%;
-  max-width: var(--veloura-global-container, 1280px) !important;
   margin-inline: auto !important;
-  /* The theme's own bridge in master.twig writes exactly these two variables
-     onto every .container on the page. Reading them here means that, untouched,
-     this section is the same box as every other section — not "close to it" —
-     and the merchant's number simply replaces the gutter. */
-  padding-inline: var(--fp2-gutter, var(--veloura-global-spacing, 10px)) !important;
   box-sizing: border-box;
+  /* The theme's own variables, so untouched this is the same box as every other
+     section rather than merely close to it. */
+  max-width: var(--veloura-global-container, 1280px) !important;
+  padding-inline: var(--fp2-gutter, var(--veloura-global-spacing, 10px)) !important;
+}
+
+/* Below 1024 the theme writes its own gutter with
+   `body.veloura-general-enabled .container` — two classes and an element, a
+   heavier selector than this component's, and !important on top. That rule, not
+   any floor of its own, is why the number here did nothing on a phone. The
+   class is repeated to outweigh it, and the same chain is followed so that an
+   untouched section still matches the rest of the page. */
+@media (max-width: 1023px) {
+  body .veloura-fp2.veloura-fp2 > .container {
+    max-width: none !important;
+    padding-inline: var(--fp2-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  body .veloura-fp2.veloura-fp2 > .container {
+    max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
+  }
 }
 
 /* ============================== the stage ================================
