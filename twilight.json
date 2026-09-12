@@ -17560,7 +17560,7 @@
           "id": "veloura_tkr_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل111111",
           "value": false,
           "required": false
         },
