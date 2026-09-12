@@ -16121,16 +16121,6 @@
           "required": false
         },
         {
-          "id": "veloura_steps_card_bg",
-          "type": "string",
-          "format": "color",
-          "inputType": "color",
-          "label": "لون خلفية البطاقات",
-          "icon": "sicon-paint-bucket",
-          "value": "#ffffff",
-          "required": false
-        },
-        {
           "id": "veloura_steps_radius",
           "type": "items",
           "format": "dropdown-list",
@@ -16181,10 +16171,10 @@
           "format": "slider",
           "inputType": "range",
           "label": "عدد الخطوات في الجوال",
-          "description": null,
+          "description": "اجعلها 1 ليظهر الخط الزمني الرأسي على الجوال.",
           "labelHTML": null,
           "icon": "sicon-pin",
-          "value": "2",
+          "value": 1,
           "required": false,
           "step": "1",
           "minimum": "1",
@@ -16209,11 +16199,12 @@
           "id": "veloura_steps_show_connectors",
           "type": "boolean",
           "format": "switch",
-          "label": "إظهار خطوط الربط بين الخطوات",
+          "label": "إظهار خط الربط بين الخطوات",
           "icon": "sicon-toggle-off",
           "value": true,
           "selected": true,
-          "required": false
+          "required": false,
+          "description": "يُرسم فقط حين تكون الخطوات متجاورة فعلاً: في صف واحد على الكمبيوتر، وعمود واحد على الجوال."
         },
         {
           "id": "veloura_steps_center_text",
@@ -16223,7 +16214,8 @@
           "icon": "sicon-align-center",
           "value": true,
           "selected": true,
-          "required": false
+          "required": false,
+          "description": "الدوائر تبقى في المنتصف دائماً؛ هذا الخيار للنصوص تحتها."
         },
         {
           "id": "veloura_steps_items_title",
@@ -17560,7 +17552,7 @@
           "id": "veloura_tkr_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل111111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "value": false,
           "required": false
         },

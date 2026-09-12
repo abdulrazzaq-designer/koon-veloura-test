@@ -6,115 +6,335 @@
 
 {% if not component.veloura_steps_hide %}
 
-  {% set radius_key = component.veloura_steps_radius|default('medium') %}
-  {% if radius_key is iterable and radius_key[0].value is defined %}
-    {% set radius_key = radius_key[0].value %}
-  {% elseif radius_key.value is defined %}
-    {% set radius_key = radius_key.value %}
-  {% endif %}
+{# ==========================================================================
+   خطوات الشراء (فيلورا)
 
-  {% set radius_map = {
-    'sharp': '0px',
-    'soft': '8px',
-    'medium': '16px',
-    'large': '28px',
-    'round': '999px'
-  } %}
+   A numbered path rather than a row of cards: one line runs through the
+   circles, each step wears its number on the edge of its own circle, and the
+   words sit under it. Nothing is boxed and nothing is framed — the only
+   surfaces are the circles themselves, and they take the theme's secondary
+   colour so the section belongs to the store in both light and dark.
 
-  {% set steps_radius = radius_map[radius_key]|default('16px') %}
+   The line is only drawn where it can be honest: across a row when the steps
+   all fit one, and down the page when the phone shows them one under another.
+   With more steps than columns there is no line to mislead anyone.
 
-  {% set section_classes = [
-    's-block',
-    'veloura-purchase-steps',
-    component.veloura_steps_show_connectors ? 'has-connectors' : '',
-    component.veloura_steps_center_text ? 'is-centered' : '',
-    component.veloura_steps_custom_spacing ? 'has-spacing' : '',
-    component.veloura_steps_mobile_only ? 'veloura-purchase-steps--mobile-only' : '',
-    component.veloura_steps_desktop_only ? 'veloura-purchase-steps--desktop-only' : '',
-    component.veloura_steps_custom_classes ?: ''
-  ]|join(' ') %}
+   The stylesheet and the little observer are inline: on this store the
+   published Twig and the built app.css have repeatedly been a version apart,
+   and new markup under old rules is how a layout breaks with nobody touching
+   it.
+   ========================================================================== #}
+<style>
+/* ==========================================================================
+   خطوات الشراء (فيلورا) — scoped entirely to .veloura-stp
+   ========================================================================== */
+.veloura-stp {
+  --stp-accent: #004956;
+  --stp-title: var(--stp-title-light, #0f172a);
+  --stp-text: var(--stp-text-light, #52606d);
+  --stp-second: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7));
+  --stp-line: color-mix(in srgb, var(--stp-accent) 22%, transparent);
+  --stp-dot: 88px;
+  --stp-badge: 26px;
 
-  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
-    class="{{ section_classes }}"
+  background: transparent !important;
+  padding-inline: 0 !important;
+}
+
+.veloura-stp [hidden] { display: none !important; }
+
+/* The gutter, read from the theme's own variables so an untouched section is
+   the same box as every other block; the custom number is a phone and tablet
+   affair, which is where the setting says it belongs. */
+body .veloura-stp.veloura-stp > .container {
+  width: 100%;
+  margin-inline: auto !important;
+  box-sizing: border-box;
+  max-width: var(--veloura-global-container, 1280px) !important;
+  padding-inline: var(--veloura-global-spacing, 10px) !important;
+}
+
+@media (max-width: 1023px) {
+  body .veloura-stp.veloura-stp > .container {
+    max-width: none !important;
+    padding-inline: var(--stp-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  body .veloura-stp.veloura-stp > .container {
+    max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
+    padding-inline: var(--veloura-global-spacing, 10px) !important;
+  }
+}
+
+.veloura-stp .stp__heading { margin-bottom: 34px; text-align: center; }
+.veloura-stp .stp__heading h2 { margin: 0 0 8px; font-size: 26px; font-weight: 900; color: var(--stp-title); }
+.veloura-stp .stp__heading p { margin: 0; font-size: 14px; opacity: .75; color: var(--stp-text); }
+
+@media (min-width: 768px) { .veloura-stp .stp__heading h2 { font-size: 30px; } }
+
+/* ------------------------------------------------------------- the row -- */
+.veloura-stp .stp__row {
+  display: grid !important;
+  grid-template-columns: repeat(var(--stp-cols-mobile, 1), minmax(0, 1fr));
+  gap: 30px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .veloura-stp .stp__row {
+    grid-template-columns: repeat(var(--stp-cols, 4), minmax(0, 1fr));
+    gap: 26px 18px;
+  }
+}
+
+.veloura-stp .stp__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  color: var(--stp-text);
+}
+
+/* Text to the start edge when the merchant turns centring off — the circle
+   stays where it is, since the line has to pass through its middle. */
+.veloura-stp:not(.is-centered) .stp__step { text-align: start; }
+
+/* ------------------------------------------------------------ the line --
+   From this step's circle back to the one before it — never past the first,
+   and never drawn at all where the steps are not really neighbours. It fades
+   in rather than growing: a scale would need a different origin in each
+   direction, and this section is read right to left. The circle sits above it
+   with a background of its own, so the line disappears behind each one. */
+.veloura-stp.has-line .stp__step::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--stp-dot) / 2 - 1px);
+  inset-inline-end: 50%;
+  width: calc(100% + 18px);
+  height: 2px;
+  background: var(--stp-line);
+  opacity: 0;
+  transition: opacity .7s ease calc(var(--i, 0) * .12s);
+}
+
+.veloura-stp.has-line .stp__step:first-child::before { content: none; }
+.veloura-stp.has-line.is-inview .stp__step::before { opacity: 1; }
+
+/* One under another on a phone: the same line, stood on its end between the
+   circle above and this one. */
+@media (max-width: 767px) {
+  .veloura-stp.has-line-mobile .stp__step::before {
+    content: "";
+    top: auto;
+    bottom: calc(100% + 9px);
+    inset-inline-end: auto;
+    left: 50%;
+    width: 2px;
+    height: 21px;
+    transform: translateX(-50%);
+  }
+
+  .veloura-stp.has-line-mobile .stp__step:first-child::before { content: none; }
+  .veloura-stp.has-line-mobile.is-inview .stp__step::before { opacity: 1; }
+  .veloura-stp:not(.has-line-mobile) .stp__step::before { content: none; }
+}
+
+@media (min-width: 768px) {
+  .veloura-stp:not(.has-line) .stp__step::before { content: none; }
+}
+
+/* ---------------------------------------------------------- the circle -- */
+.veloura-stp .stp__dot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--stp-dot);
+  height: var(--stp-dot);
+  flex: 0 0 auto;
+  border-radius: var(--stp-radius, 999px);
+  background: var(--stp-second);
+  color: var(--step-color, var(--stp-accent));
+  transition: transform .35s ease, background-color .35s ease;
+}
+
+.veloura-stp .stp__dot i { font-size: calc(var(--stp-dot) * .38); line-height: 1; }
+.veloura-stp .stp__dot img { width: 52%; height: 52%; object-fit: contain; }
+
+@media (hover: hover) and (pointer: fine) {
+  .veloura-stp .stp__step:hover .stp__dot {
+    transform: translateY(-5px);
+    background: color-mix(in srgb, var(--step-color, var(--stp-accent)) 14%, var(--stp-second));
+  }
+}
+
+/* The number rides the circle's edge instead of floating above the card. */
+.veloura-stp .stp__num {
+  position: absolute;
+  top: -4px;
+  inset-inline-end: -4px;
+  display: grid;
+  place-items: center;
+  min-width: var(--stp-badge);
+  height: var(--stp-badge);
+  padding-inline: 7px;
+  border-radius: 999px;
+  background: var(--step-color, var(--stp-accent));
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--step-color, var(--stp-accent)) 35%, transparent);
+}
+
+/* ----------------------------------------------------------- the words -- */
+.veloura-stp .stp__text { display: flex; flex-direction: column; gap: 6px; }
+.veloura-stp .stp__text h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--stp-title); }
+.veloura-stp .stp__text p { margin: 0; font-size: 13.5px; line-height: 1.8; opacity: .72; }
+
+@media (min-width: 768px) {
+  .veloura-stp .stp__text h3 { font-size: 17px; }
+  .veloura-stp .stp__text p { max-width: 34ch; margin-inline: auto; }
+  .veloura-stp:not(.is-centered) .stp__text p { margin-inline: 0; }
+}
+
+/* --------------------------------------------------------- the reveal --- */
+.veloura-stp .stp__step {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .6s ease calc(var(--i, 0) * .12s), transform .6s ease calc(var(--i, 0) * .12s);
+}
+
+.veloura-stp.is-inview .stp__step { opacity: 1; transform: none; }
+
+/* No script, no observer, no reveal — the section must still be readable. */
+.veloura-stp.no-js .stp__step { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-stp .stp__step,
+  .veloura-stp .stp__dot { transition: none; }
+  .veloura-stp .stp__step { opacity: 1; transform: none; }
+  .veloura-stp.has-line .stp__step::before { opacity: 1; transition: none; }
+}
+
+/* ------------------------------------------------------------ the dark -- */
+html.dark .veloura-stp, html body.dark .veloura-stp {
+  --stp-title: #f8fafc;
+  --stp-text: #cbd5e1;
+  --stp-second: var(--veloura-dark-secondary-bg, #010612);
+  --stp-line: color-mix(in srgb, #ffffff 16%, transparent);
+}
+
+html.dark .veloura-stp .stp__dot,
+html body.dark .veloura-stp .stp__dot {
+  color: color-mix(in srgb, var(--step-color, var(--stp-accent)) 45%, #ffffff);
+}
+</style>
+
+  {% set stp_radius_key = component.veloura_steps_radius|default('') %}
+  {% if stp_radius_key.selected is defined %}{% set stp_radius_key = stp_radius_key.selected %}{% endif %}
+  {% if stp_radius_key is iterable and stp_radius_key.value is not defined %}{% set stp_radius_key = stp_radius_key|first %}{% endif %}
+  {% if stp_radius_key.value is defined %}{% set stp_radius_key = stp_radius_key.value %}{% endif %}
+  {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'round' %}{% endif %}
+  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px'} %}
+
+  {% set stp_items = component.veloura_steps_collection|default([]) %}
+  {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
+  {% set stp_cols_mobile = component.veloura_steps_mobile_columns|default(1) %}
+
+  {# The line is only honest while the steps really are neighbours: across one
+     row on a desktop, and down a single column on a phone. #}
+  {% set stp_line = component.veloura_steps_show_connectors and stp_items|length <= stp_cols %}
+  {% set stp_line_mobile = component.veloura_steps_show_connectors and stp_cols_mobile == 1 %}
+
+  <section
+    data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    data-veloura-steps
+    id="veloura-purchase-steps-{{ position }}"
+    class="s-block veloura-stp no-js
+      {{ component.veloura_steps_center_text ? 'is-centered' : '' }}
+      {{ stp_line ? 'has-line' : '' }}
+      {{ stp_line_mobile ? 'has-line-mobile' : '' }}
+      {{ component.veloura_steps_mobile_only ? 'veloura-mobile-only' : '' }}
+      {{ component.veloura_steps_desktop_only ? 'veloura-desktop-only' : '' }}
+      {{ component.veloura_steps_custom_classes }}"
     style="
-      --veloura-steps-radius: {{ steps_radius }};
-      --veloura-steps-title-color: {{ component.veloura_steps_title_color|default('#222222') }};
-      --veloura-steps-text-color: {{ component.veloura_steps_text_color|default('#333333') }};
-      --veloura-steps-accent: {{ component.veloura_steps_accent_color|default('#004956') }};
-      --veloura-steps-card-bg: {{ component.veloura_steps_card_bg|default('#ffffff') }};
-      --veloura-steps-desktop-cols: {{ component.veloura_steps_desktop_columns|default(4) }};
-      --veloura-steps-mobile-cols: {{ component.veloura_steps_mobile_columns|default(2) }};
-      --veloura-steps-spacing: {{ component.veloura_steps_custom_spacing ? component.veloura_steps_spacing|default(0) : 0 }}px;
+      --stp-radius: {{ stp_radius_map[stp_radius_key]|default('999px') }};
+      --stp-accent: {{ component.veloura_steps_accent_color|default('#004956') }};
+      {# The merchant's colours are written as *-light properties, never as the
+         ones the component paints with: an inline style outranks any rule, and
+         would leave the dark block unable to lighten the text. #}
+      --stp-title-light: {{ component.veloura_steps_title_color|default('#0f172a') }};
+      --stp-text-light: {{ component.veloura_steps_text_color|default('#52606d') }};
+      --stp-cols: {{ stp_cols }};
+      --stp-cols-mobile: {{ stp_cols_mobile }};
+      {% if component.veloura_steps_custom_spacing %}--stp-gutter: {{ component.veloura_steps_spacing|default(0) }}px;{% endif %}
     "
   >
-
-    {% if component.veloura_steps_custom_spacing %}
-      <div class="veloura-purchase-steps__container">
-    {% else %}
-      <div class="container veloura-purchase-steps__container">
-    {% endif %}
+    <div class="container">
 
       {% if component.veloura_steps_title or component.veloura_steps_subtitle %}
-        <div class="veloura-purchase-steps__heading veloura-component-title" data-veloura-section-heading>
-          {% if component.veloura_steps_title %}
-            <h2>{{ component.veloura_steps_title }}</h2>
-          {% endif %}
-
-          {% if component.veloura_steps_subtitle %}
-            <p>{{ component.veloura_steps_subtitle }}</p>
-          {% endif %}
+        <div class="stp__heading veloura-component-title" data-veloura-section-heading>
+          <div data-veloura-section-heading-text>
+            {% if component.veloura_steps_title %}<h2>{{ component.veloura_steps_title }}</h2>{% endif %}
+            {% if component.veloura_steps_subtitle %}<p>{{ component.veloura_steps_subtitle }}</p>{% endif %}
+          </div>
         </div>
       {% endif %}
 
-      {% if component.veloura_steps_collection %}
-        <div class="veloura-purchase-steps__grid">
-
-          {% for step in component.veloura_steps_collection %}
-
+      {% if stp_items %}
+        <ol class="stp__row">
+          {% for step in stp_items %}
             {% set step_image = step.step_image.url|default(step.step_image) %}
-            {% set step_color = step.step_color|default(component.veloura_steps_accent_color|default('#004956')) %}
-
-            <div
-              class="veloura-purchase-steps__item"
-              style="--step-color: {{ step_color }};"
-            >
-
-              <div class="veloura-purchase-steps__number">
-                {{ loop.index }}
-              </div>
-
-              <div class="veloura-purchase-steps__icon">
+            <li class="stp__step" style="--i: {{ loop.index0 }}; {% if step.step_color %}--step-color: {{ step.step_color }};{% endif %}">
+              <span class="stp__dot">
                 {% if step_image %}
-                  <img src="{{ step_image }}" alt="{{ step.step_title|default('step') }}" loading="lazy">
+                  <img src="{{ step_image }}" alt="{{ step.step_title|default('') }}" loading="lazy" decoding="async">
                 {% elseif step.step_icon %}
-                  <i class="{{ step.step_icon }}"></i>
+                  <i class="{{ step.step_icon }}" aria-hidden="true"></i>
                 {% endif %}
-              </div>
+                <span class="stp__num">{{ loop.index }}</span>
+              </span>
 
-              <div class="veloura-purchase-steps__content">
-  {% if step.step_title %}
-    <h3>{{ step.step_title }}</h3>
-  {% endif %}
-
-  {% if step.step_description %}
-    <p>{{ step.step_description }}</p>
-  {% endif %}
-</div>
-
-{% if component.veloura_steps_show_connectors and not loop.last %}
-  <span class="veloura-purchase-steps__arrow">
-    <i class="sicon-keyboard_arrow_left"></i>
-  </span>
-{% endif %}
-
-            </div>
-
+              <span class="stp__text">
+                {% if step.step_title %}<h3>{{ step.step_title }}</h3>{% endif %}
+                {% if step.step_description %}<p>{{ step.step_description }}</p>{% endif %}
+              </span>
+            </li>
           {% endfor %}
-
-        </div>
+        </ol>
       {% endif %}
 
     </div>
   </section>
 
+  {# Inline on purpose: the bundled script goes through a build and a CDN, and
+     this section has to reveal itself the moment the Twig is published. The
+     class is dropped first so that, with no JavaScript at all, the steps are
+     simply visible. #}
+  <script>
+  (function () {
+    var section = document.getElementById('veloura-purchase-steps-{{ position }}');
+    if (!section) return;
+    section.classList.remove('no-js');
+
+    if (!('IntersectionObserver' in window)) { section.classList.add('is-inview'); return; }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-inview');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+    observer.observe(section);
+  })();
+  </script>
 {% endif %}
