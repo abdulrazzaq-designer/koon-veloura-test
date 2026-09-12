@@ -74,7 +74,18 @@
    sheet wipes out a padding-inline of the same weight, which is why the number
    seemed to have a floor under it. Zero now really is zero. */
 .veloura-fp2 { padding-inline: 0 !important; }
-.veloura-fp2 > .container { padding-inline: var(--fp2-gutter, 10px) !important; }
+
+.veloura-fp2 > .container {
+  width: 100%;
+  max-width: var(--veloura-global-container, 1280px) !important;
+  margin-inline: auto !important;
+  /* The theme's own bridge in master.twig writes exactly these two variables
+     onto every .container on the page. Reading them here means that, untouched,
+     this section is the same box as every other section — not "close to it" —
+     and the merchant's number simply replaces the gutter. */
+  padding-inline: var(--fp2-gutter, var(--veloura-global-spacing, 10px)) !important;
+  box-sizing: border-box;
+}
 
 /* ============================== the stage ================================
    Phone: the photo at the start edge (the right, in Arabic) with the strip of
@@ -543,8 +554,9 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
       --fp2-text-light: {{ component.veloura_fp_text_color|default('#52606d') }};
       --fp2-card-light: {{ component.veloura_fp_card_bg|default('#ffffff') }};
       --fp2-card-dark: {{ component.veloura_fp_dark_card_bg|default('#0f172a') }};
-      {# Untouched, the component keeps the theme's own 10px container gutter. #}
-      --fp2-gutter: {{ component.veloura_fp_custom_spacing ? component.veloura_fp_spacing|default(0) : 10 }}px;
+      {# Written ONLY when the merchant asked for a number; otherwise the
+         variable stays unset and the container keeps the theme's own gutter. #}
+      {% if component.veloura_fp_custom_spacing %}--fp2-gutter: {{ component.veloura_fp_spacing|default(0) }}px;{% endif %}
     "
   >
     <div class="container">

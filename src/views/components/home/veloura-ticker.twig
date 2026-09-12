@@ -54,9 +54,21 @@
    is forced to zero because the theme styles .s-block with a `padding`
    shorthand, which would otherwise outrank a padding-inline of equal weight. */
 .veloura-tkr { padding-inline: 0 !important; }
-.veloura-tkr > .container { padding-inline: var(--tkr-gutter, 0px) !important; }
 
-.veloura-tkr .tkr__wrap { position: relative; }
+.veloura-tkr > .container {
+  width: 100%;
+  max-width: var(--veloura-global-container, 1280px) !important;
+  margin-inline: auto !important;
+  /* The same two variables the theme's bridge writes onto every container, so
+     the ribbon is the same box as every other section rather than running wide
+     of them. --tkr-gutter replaces the gutter only when it is written. */
+  padding-inline: var(--tkr-gutter, var(--veloura-global-spacing, 10px)) !important;
+  box-sizing: border-box;
+}
+
+/* The clip lives here: a tilted band is wider than its line by design, and this
+   is what keeps it inside the container instead of running past both edges. */
+.veloura-tkr .tkr__wrap { position: relative; overflow: hidden; }
 
 /* A tilted band leans out of its own line, so the wrap makes room for the
    corners instead of cutting them off — the angle is fixed, and the room it
@@ -333,10 +345,10 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   {% set tkr_shift = (100 / tkr_copies)|round(4) %}
   {% set tkr_shift_b = (100 / tkr_copies_b)|round(4) %}
 
-  {# The gutter, decided in one place: a custom number when the merchant set
-     one, otherwise nothing at all while the ribbon is flush with the edges
-     (the default) and the theme's own 10px when it is not. #}
-  {% set tkr_gutter = 10 %}
+  {# The gutter is written only when something asks for one: a custom number
+     from the merchant, or zero while the ribbon is flush with the edges (the
+     default). Left unwritten, the container keeps the theme's own gutter. #}
+  {% set tkr_gutter = '' %}
   {% if component.veloura_tkr_full_width %}{% set tkr_gutter = 0 %}{% endif %}
   {% if component.veloura_tkr_custom_space %}{% set tkr_gutter = component.veloura_tkr_side_space|default(0) %}{% endif %}
 
@@ -361,7 +373,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-edge-color: {{ component.veloura_tkr_border_color|default('rgba(255,255,255,.35)') }};
       --tkr-shine: {{ component.veloura_tkr_shine_color|default('#ffe9a8') }};
       --tkr-mobile-speed: {{ (component.veloura_tkr_mobile_speed|default(50)) / 100 }};
-      --tkr-gutter: {{ tkr_gutter }}px;
+      {% if tkr_gutter != '' %}--tkr-gutter: {{ tkr_gutter }}px;{% endif %}
     "
   >
     <div class="container">
