@@ -16890,7 +16890,8 @@
           "format": "switch",
           "label": "مسافة أفقية مخصصة",
           "value": false,
-          "required": false
+          "required": false,
+          "description": "بدون تفعيلها يأخذ العنصر مسافة الكونتينر الافتراضية. صفر يعني ملاصقًا للحواف."
         },
         {
           "id": "veloura_fp_spacing",
@@ -16907,7 +16908,8 @@
             {
               "id": "veloura_fp_custom_spacing",
               "operation": "=",
-              "value": true
+              "value": true,
+              "description": "بدون تفعيلها يأخذ العنصر مسافة الكونتينر الافتراضية. صفر يعني ملاصقًا للحواف."
             }
           ]
         },
@@ -17108,10 +17110,10 @@
           "id": "veloura_tkr_full_width",
           "type": "boolean",
           "format": "switch",
-          "label": "عرض الشاشة كاملًا",
-          "value": false,
+          "label": "إلصاق الشريط بحواف الشاشة",
+          "value": true,
           "required": false,
-          "description": "مغلق: الشريط داخل الكونتينر. مفتوح: يمتد من حافة الشاشة للحافة."
+          "description": "مفعّل افتراضيًا. على اللابتوب يبقى الشريط بعرض الكونتينر، وعلى الجوال يلامس الحواف. لمسافة جانبية مختلفة استخدم \"مسافة مخصصة يمين ويسار\"."
         },
         {
           "id": "veloura_tkr_separator",

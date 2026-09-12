@@ -45,32 +45,25 @@
 
 .veloura-tkr [hidden] { display: none !important; }
 
-/* Inside the container is the default; the switch is what leaves it. */
-/* The side spacing is padding on the SECTION, not on the wrap.
+/* One gutter, in one place — the same arrangement the featured product uses.
 
-   A tilted band is wider than its line, with a negative start margin — it overflows any
-   padding put on its own container, so the setting moved nothing at all in the
-   two layouts that use it. Padding the section shrinks the wrap instead, and
-   the wrap is what clips, so the visible ribbon really does narrow. */
-.veloura-tkr.tkr--boxed { padding-inline: var(--tkr-side, 0px); }
+   The ribbon sits in the theme's own .container, so on a laptop it lines up
+   with every other section instead of running visibly wider than them, and the
+   side setting is nothing but that container's padding: zero puts the ribbon
+   against the screen edges on a phone, any number walks it back in. The section
+   is forced to zero because the theme styles .s-block with a `padding`
+   shorthand, which would otherwise outrank a padding-inline of equal weight. */
+.veloura-tkr { padding-inline: 0 !important; }
+.veloura-tkr > .container { padding-inline: var(--tkr-gutter, 0px) !important; }
 
-.veloura-tkr .tkr__wrap {
-  max-width: var(--veloura-container, 1200px);
-  margin-inline: auto;
-}
+.veloura-tkr .tkr__wrap { position: relative; }
 
 /* A tilted band leans out of its own line, so the wrap makes room for the
    corners instead of cutting them off — the angle is fixed, and the room it
    needs is a share of the viewport's width. */
 .veloura-tkr.tkr--tilt .tkr__wrap { padding-block: 3.2vw; }
 
-.veloura-tkr.tkr--bleed .tkr__wrap {
-  max-width: none;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding-inline: 0;
-}
+
 
 /* ------------------------------------------------------------- the band -- */
 .veloura-tkr .tkr__band {
@@ -340,6 +333,13 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   {% set tkr_shift = (100 / tkr_copies)|round(4) %}
   {% set tkr_shift_b = (100 / tkr_copies_b)|round(4) %}
 
+  {# The gutter, decided in one place: a custom number when the merchant set
+     one, otherwise nothing at all while the ribbon is flush with the edges
+     (the default) and the theme's own 10px when it is not. #}
+  {% set tkr_gutter = 10 %}
+  {% if component.veloura_tkr_full_width %}{% set tkr_gutter = 0 %}{% endif %}
+  {% if component.veloura_tkr_custom_space %}{% set tkr_gutter = component.veloura_tkr_side_space|default(0) %}{% endif %}
+
   <section
     data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-ticker-{{ position }}"
@@ -361,9 +361,10 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-edge-color: {{ component.veloura_tkr_border_color|default('rgba(255,255,255,.35)') }};
       --tkr-shine: {{ component.veloura_tkr_shine_color|default('#ffe9a8') }};
       --tkr-mobile-speed: {{ (component.veloura_tkr_mobile_speed|default(50)) / 100 }};
-      --tkr-side: {{ component.veloura_tkr_custom_space ? component.veloura_tkr_side_space|default(0) : 0 }}px;
+      --tkr-gutter: {{ tkr_gutter }}px;
     "
   >
+    <div class="container">
     <div class="tkr__wrap">
 
       <div class="tkr__band tkr__band--a {{ component.veloura_tkr_glass ? 'is-glass' : '' }}"
@@ -440,6 +441,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
           </div>
         </div>
       {% endif %}
+    </div>
     </div>
   </section>
 {% endif %}

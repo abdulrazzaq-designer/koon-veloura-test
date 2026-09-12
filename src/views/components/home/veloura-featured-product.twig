@@ -65,19 +65,16 @@
   color: var(--fp2-text);
 }
 
-/* The spacing sits on the component's own boxes rather than on the section: the
-   theme styles .s-block with a `padding` shorthand, and a shorthand later in the
-   sheet wipes out a padding-inline of the same weight — which is why the setting
-   did nothing. It is written after the card's own rule for the same reason.
+/* One gutter, in one place.
 
-   Switching the setting on also stands the component down from the theme's
-   container, whose own gutter and max-width would otherwise keep the card off
-   the edges no matter what number the merchant typed: zero has to mean zero. */
-.veloura-fp2.fp2--spaced { padding-inline: 0 !important; }
-.veloura-fp2.fp2--spaced > .container { max-width: none; padding-inline: 0; }
-
-.veloura-fp2.fp2--spaced .fp2__heading,
-.veloura-fp2.fp2--spaced .fp2__card { padding-block: 0; padding-inline: var(--fp2-spacing, 0); }
+   The component keeps the theme's own .container — so on a laptop it lines up
+   with every other section, to the pixel — and the side setting is nothing but
+   that container's padding. The section itself is forced to zero: the theme
+   styles .s-block with a `padding` shorthand, and a shorthand later in the
+   sheet wipes out a padding-inline of the same weight, which is why the number
+   seemed to have a floor under it. Zero now really is zero. */
+.veloura-fp2 { padding-inline: 0 !important; }
+.veloura-fp2 > .container { padding-inline: var(--fp2-gutter, 10px) !important; }
 
 /* ============================== the stage ================================
    Phone: the photo at the start edge (the right, in Arabic) with the strip of
@@ -530,7 +527,6 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
     id="veloura-featured-product-{{ position }}"
     class="s-block veloura-fp2
       fp2--{{ fp_image_fit }}
-      {{ component.veloura_fp_custom_spacing ? 'fp2--spaced' : '' }}
       {{ component.veloura_fp_center_titles ? 'is-centered' : '' }}
       {{ component.veloura_fp_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_fp_desktop_only ? 'veloura-desktop-only' : '' }}
@@ -547,7 +543,8 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
       --fp2-text-light: {{ component.veloura_fp_text_color|default('#52606d') }};
       --fp2-card-light: {{ component.veloura_fp_card_bg|default('#ffffff') }};
       --fp2-card-dark: {{ component.veloura_fp_dark_card_bg|default('#0f172a') }};
-      --fp2-spacing: {{ component.veloura_fp_custom_spacing ? component.veloura_fp_spacing|default(0) : 0 }}px;
+      {# Untouched, the component keeps the theme's own 10px container gutter. #}
+      --fp2-gutter: {{ component.veloura_fp_custom_spacing ? component.veloura_fp_spacing|default(0) : 10 }}px;
     "
   >
     <div class="container">
