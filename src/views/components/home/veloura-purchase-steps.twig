@@ -127,8 +127,9 @@ body .veloura-stp.veloura-stp > .container {
 .veloura-stp.has-line.is-inview .stp__step::before { opacity: 1; }
 
 /* ----------------------------------------------------------- the phone --
-   A zigzag around one spine: the circles sit on a line down the middle and the
-   words fall to one side and then the other. The spine is drawn from the top
+   A zigzag around one spine, on every phone — not behind a saved setting that
+   an existing section may never have been given: the circles sit on a line down
+   the middle and the words fall to one side and then the other. The spine is drawn from the top
    as the section arrives, and each step slides in from its own side after it,
    so the eye walks the path instead of reading a grid. */
 @media (max-width: 767px) {
@@ -136,13 +137,13 @@ body .veloura-stp.veloura-stp > .container {
      draws it, which carries the has-line class as well. */
   .veloura-stp.veloura-stp .stp__step::before { content: none !important; }
 
-  .veloura-stp.has-zigzag .stp__row {
+  .veloura-stp .stp__row {
     position: relative;
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
 
-  .veloura-stp.has-zigzag .stp__row::before {
+  .veloura-stp .stp__row::before {
     content: "";
     position: absolute;
     top: calc(var(--stp-dot) / 2);
@@ -155,9 +156,9 @@ body .veloura-stp.veloura-stp > .container {
     transition: transform 1.1s ease .08s;
   }
 
-  .veloura-stp.has-zigzag.is-inview .stp__row::before { transform: translateX(-50%) scaleY(1); }
+  .veloura-stp.is-inview .stp__row::before { transform: translateX(-50%) scaleY(1); }
 
-  .veloura-stp.has-zigzag .stp__step {
+  .veloura-stp .stp__step {
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--stp-dot) minmax(0, 1fr);
     align-items: center;
@@ -165,18 +166,18 @@ body .veloura-stp.veloura-stp > .container {
     gap: 0 12px;
   }
 
-  .veloura-stp.has-zigzag .stp__dot { grid-column: 2; }
+  .veloura-stp .stp__dot { grid-column: 2; }
 
   /* The words lean towards the spine from whichever side they are on — in
      Arabic the first column is the right-hand one. */
-  .veloura-stp.has-zigzag .stp__step:nth-child(odd) .stp__text { grid-column: 1; text-align: end; }
-  .veloura-stp.has-zigzag .stp__step:nth-child(even) .stp__text { grid-column: 3; text-align: start; }
-  .veloura-stp.has-zigzag .stp__text p { max-width: none; }
+  .veloura-stp .stp__step:nth-child(odd) .stp__text { grid-column: 1; text-align: end; }
+  .veloura-stp .stp__step:nth-child(even) .stp__text { grid-column: 3; text-align: start; }
+  .veloura-stp .stp__text p { max-width: none; }
 
   /* Each side arrives from its own side. */
-  .veloura-stp.has-zigzag .stp__step:nth-child(odd) { transform: translate(-18px, 10px); }
-  .veloura-stp.has-zigzag .stp__step:nth-child(even) { transform: translate(18px, 10px); }
-  .veloura-stp.has-zigzag.is-inview .stp__step { transform: none; }
+  .veloura-stp .stp__step:nth-child(odd) { transform: translate(-18px, 10px); }
+  .veloura-stp .stp__step:nth-child(even) { transform: translate(18px, 10px); }
+  .veloura-stp.is-inview .stp__step { transform: none; }
 
   .veloura-stp { --stp-dot: 72px; --stp-badge: 24px; }
 }
@@ -287,7 +288,6 @@ html body.dark .veloura-stp .stp__dot {
   {# The line is only honest while the steps really are neighbours: across one
      row on a desktop, and down a single column on a phone. #}
   {% set stp_line = component.veloura_steps_show_connectors and stp_items|length <= stp_cols %}
-  {% set stp_zigzag = stp_cols_mobile == 1 %}
 
   <section
     data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
@@ -296,7 +296,6 @@ html body.dark .veloura-stp .stp__dot {
     class="s-block veloura-stp no-js
       {{ component.veloura_steps_center_text ? 'is-centered' : '' }}
       {{ stp_line ? 'has-line' : '' }}
-      {{ stp_zigzag ? 'has-zigzag' : '' }}
       {{ component.veloura_steps_mobile_only ? 'veloura-mobile-only' : '' }}
       {{ component.veloura_steps_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_steps_custom_classes }}"

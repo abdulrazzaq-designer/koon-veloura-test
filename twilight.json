@@ -16166,21 +16166,6 @@
           "required": true
         },
         {
-          "id": "veloura_steps_mobile_columns",
-          "type": "number",
-          "format": "slider",
-          "inputType": "range",
-          "label": "عدد الخطوات في الجوال",
-          "description": "اجعلها 1 ليظهر الخط الزمني الرأسي على الجوال.",
-          "labelHTML": null,
-          "icon": "sicon-pin",
-          "value": 1,
-          "required": false,
-          "step": "1",
-          "minimum": "1",
-          "maximum": "4"
-        },
-        {
           "id": "veloura_steps_desktop_columns",
           "type": "number",
           "format": "slider",
@@ -16204,7 +16189,7 @@
           "value": true,
           "selected": true,
           "required": false,
-          "description": "يُرسم فقط حين تكون الخطوات متجاورة فعلاً: في صف واحد على الكمبيوتر، وعمود واحد على الجوال."
+          "description": "على الكمبيوتر يُرسم الخط حين تكون الخطوات في صف واحد. على الجوال الخطوات دائمًا بشكل زكزاك حول خط واحد."
         },
         {
           "id": "veloura_steps_center_text",
