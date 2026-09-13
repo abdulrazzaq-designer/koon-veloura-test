@@ -3727,6 +3727,35 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     color: inherit !important;
     -webkit-text-fill-color: currentColor !important;
   }
+
+  /* mmenu draws the panel's own title as a pseudo-element on .mm-spn, so it is
+     reachable by no rule written for real elements — which is why "القائمة
+     الرئيسية" stayed dark while everything under it turned white. */
+  html.dark body#app .mm-ocd.mm-ocd--open .mm-spn::after,
+  html body#app.dark .mm-ocd.mm-ocd--open .mm-spn::after,
+  html.dark body#app .mm-ocd.mm-ocd--open :is(.mm-spn__title, .mm-navbar__title, .mm-navbar),
+  html body#app.dark .mm-ocd.mm-ocd--open :is(.mm-spn__title, .mm-navbar__title, .mm-navbar) {
+    color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+    -webkit-text-fill-color: currentColor !important;
+    opacity: .9;
+  }
+</style>
+
+{# ==========================================================================
+   الفوتر: صفّ التواصل واحدًا، متباعدًا، وفي المنتصف (فيلورا)
+   ========================================================================== #}
+<style id="veloura-footer-social-row-2026">
+  .veloura-footer-social .veloura-footer-social-cards {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 100%;
+    margin-inline: auto !important;
+  }
+
+  .veloura-footer-social .veloura-footer-social-cards > * { margin: 0 !important; }
 </style>
 
 {# ==========================================================================
