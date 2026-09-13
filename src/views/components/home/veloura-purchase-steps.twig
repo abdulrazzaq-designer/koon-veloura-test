@@ -127,15 +127,19 @@ body .veloura-stp.veloura-stp > .container {
 .veloura-stp.has-line.is-inview .stp__step::after { opacity: 1; }
 
 /* ----------------------------------------------------------- the phone --
-   A staircase rather than a column: each step takes half the width, the sides
-   alternate, and every step starts a row of its own so the block sits lower
-   than the one before it. Between them runs a rounded dashed bracket — it
-   leaves the block's top, crosses to the other side and drops into the block
-   above, which is a path the eye can follow rather than a bare straight line.
+   A staircase: each step takes half the width and starts a row of its own, so
+   the blocks fall right, left, right, left down the page, close enough to read
+   as one path.
 
-   Direction is never assumed: the odd steps live in the inline-START column, so
-   their bracket reaches towards the end, and the even ones the other way. That
-   holds in Arabic and in English without a second set of rules. */
+   Between them is a single slanted dash that leaves the block above and runs
+   straight into the circle below it. A bracket was tried first and read as a
+   shape parked in the gap rather than a join; one diagonal, corner to corner
+   of the space between two blocks, is the line the eye actually follows.
+
+   It is drawn as a gradient inside that space instead of as a rotated bar: no
+   trigonometry, and it stretches to whatever the gap turns out to be. The two
+   sides need opposite diagonals, and since the sides alternate by parity the
+   directions are written physically here, mirrored once for English. */
 @media (max-width: 767px) {
   /* The desktop row's own connector carries an extra class, so this has to
      outweigh it rather than merely follow it. */
@@ -143,50 +147,68 @@ body .veloura-stp.veloura-stp > .container {
 
   .veloura-stp .stp__row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 10px;
-    row-gap: var(--stp-step-gap, 44px);
+    column-gap: 6px;
+    row-gap: var(--stp-step-gap, 26px);
   }
 
   .veloura-stp .stp__step {
     grid-row: calc(var(--i) + 1);
     align-items: center;
     text-align: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .veloura-stp .stp__step:nth-child(odd) { grid-column: 1; }
   .veloura-stp .stp__step:nth-child(even) { grid-column: 2; }
-  .veloura-stp .stp__text p { max-width: none; }
+  .veloura-stp .stp__text p { max-width: none; font-size: 12.5px; line-height: 1.7; }
 
-  /* The bracket: up out of this block, across, and down into the one before. */
   .veloura-stp.has-path .stp__step::before {
     content: "";
     position: absolute;
-    /* Six pixels into this block, and exactly up to the bottom of the one
-       before it — enough to touch both without crossing anybody's words. */
-    bottom: calc(100% - 6px);
+    bottom: calc(100% - 4px);
     width: 100%;
-    height: calc(var(--stp-step-gap, 44px) - 6px);
-    border-top: 2px dashed var(--stp-line);
-    border-inline-start: 2px dashed var(--stp-line);
-    border-inline-end: 2px dashed var(--stp-line);
-    border-start-start-radius: 16px;
-    border-start-end-radius: 16px;
+    height: calc(var(--stp-step-gap, 26px) + 8px);
     opacity: 0;
     transition: opacity .6s ease calc(var(--i, 0) * .12s);
   }
 
-  .veloura-stp.has-path .stp__step:nth-child(odd)::before { inset-inline-start: 50%; }
-  .veloura-stp.has-path .stp__step:nth-child(even)::before { inset-inline-end: 50%; }
+  .veloura-stp.has-path .stp__step:nth-child(odd)::before {
+    right: 50%;
+    background: linear-gradient(to bottom right,
+      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
+      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+  }
+
+  .veloura-stp.has-path .stp__step:nth-child(even)::before {
+    left: 50%;
+    background: linear-gradient(to bottom left,
+      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
+      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+  }
+
+  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(odd)::before {
+    right: auto; left: 50%;
+    background: linear-gradient(to bottom left,
+      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
+      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+  }
+
+  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(even)::before {
+    left: auto; right: 50%;
+    background: linear-gradient(to bottom right,
+      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
+      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+  }
+
   .veloura-stp.has-path .stp__step:first-child::before { content: none; }
   .veloura-stp.has-path.is-inview .stp__step::before { opacity: 1; }
 
   /* Each side arrives from its own side. */
-  .veloura-stp .stp__step:nth-child(odd) { transform: translate(-16px, 10px); }
-  .veloura-stp .stp__step:nth-child(even) { transform: translate(16px, 10px); }
+  .veloura-stp .stp__step:nth-child(odd) { transform: translate(-14px, 8px); }
+  .veloura-stp .stp__step:nth-child(even) { transform: translate(14px, 8px); }
   .veloura-stp.is-inview .stp__step { transform: none; }
 
-  .veloura-stp { --stp-dot: 74px; --stp-badge: 24px; --stp-step-gap: 44px; }
+  .veloura-stp { --stp-dot: 68px; --stp-badge: 23px; --stp-step-gap: 26px; }
 }
 
 /* ---------------------------------------------------------- the circle -- */
