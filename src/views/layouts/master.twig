@@ -3930,10 +3930,14 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     /* The bottom bar is hidden while the side menu is open and put back when
        the menu's own close runs. Closing it any other way — the backdrop, the
        drawer's own button, the back gesture — never reaches that code, and the
-       bar stayed gone for the rest of the visit. This watches the drawer
-       instead of trusting a handler: no open drawer, no suppression. */
+       bar stayed gone for the rest of the visit.
+
+       The check runs on a short timer that exists ONLY while the menu is open,
+       and stops itself the moment the bar is back. An observer over the whole
+       document was the first attempt and it was far too expensive: every class
+       change anywhere on a busy page woke a document-wide query. */
     var restoreBottomNav = function () {
-      if (document.querySelector('.mm-ocd.mm-ocd--open')) return;
+      if (document.querySelector('.mm-ocd.mm-ocd--open')) return false;
 
       var nav = document.querySelector('[data-vbn]');
 
@@ -3942,19 +3946,34 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         nav.removeAttribute('aria-hidden');
       }
 
-      document.body.classList.remove('veloura-bottom-nav-categories-open');
+      if (document.body.classList.contains('veloura-bottom-nav-categories-open')) {
+        document.body.classList.remove('veloura-bottom-nav-categories-open');
+      }
+
+      return true;
     };
 
-    if ('MutationObserver' in window) {
-      new MutationObserver(restoreBottomNav).observe(document.documentElement, {
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['class'],
-      });
-    }
+    var navTimer = null;
 
+    var watchBottomNav = function () {
+      if (navTimer) return;
+
+      navTimer = setInterval(function () {
+        if (!restoreBottomNav()) return;
+        clearInterval(navTimer);
+        navTimer = null;
+      }, 350);
+    };
+
+    document.addEventListener('veloura:mobile-menu:opening', watchBottomNav);
     document.addEventListener('veloura:mobile-menu:closed', restoreBottomNav);
     window.addEventListener('pageshow', restoreBottomNav);
+
+    /* One late look, in case the drawer was already open when this ran. */
+    setTimeout(function () {
+      if (document.querySelector('.mm-ocd.mm-ocd--open')) watchBottomNav();
+      else restoreBottomNav();
+    }, 900);
 
     var dock = document.querySelector('[data-veloura-fab]');
 

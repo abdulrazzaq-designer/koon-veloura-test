@@ -1766,19 +1766,29 @@ isElementLoaded(selector){
         };
 
         /* mmenu can close itself — the backdrop, its own button, a back
-           gesture — and none of those reach closeNativeMenu. Watching the
-           drawer's class is what guarantees the bottom bar comes back. */
-        if ('MutationObserver' in window) {
-          new MutationObserver(() => {
-            if (document.querySelector('.mm-ocd.mm-ocd--open')) return;
-            suppressBottomNav(false);
-            removeBodyClassesIfPresent('veloura-bottom-nav-categories-open');
-          }).observe(document.documentElement, {
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['class'],
-          });
-        }
+           gesture — and none of those reach closeNativeMenu. This watches for
+           that on a short timer that exists only while the menu is open and
+           stops the moment the bar is back; an observer over the document woke
+           on every class change anywhere and cost far more than it saved. */
+        let bottomNavTimer = null;
+
+        const releaseBottomNavWhenClosed = () => {
+          if (document.querySelector('.mm-ocd.mm-ocd--open')) return false;
+
+          suppressBottomNav(false);
+          removeBodyClassesIfPresent('veloura-bottom-nav-categories-open');
+          return true;
+        };
+
+        const watchBottomNav = () => {
+          if (bottomNavTimer) return;
+
+          bottomNavTimer = setInterval(() => {
+            if (!releaseBottomNavWhenClosed()) return;
+            clearInterval(bottomNavTimer);
+            bottomNavTimer = null;
+          }, 350);
+        };
 
         const closeNativeMenu = () => {
           removeBodyClassesIfPresent(
@@ -1820,6 +1830,7 @@ isElementLoaded(selector){
             'veloura-bottom-nav-categories-open'
           );
           suppressBottomNav(true);
+          watchBottomNav();
 
           try {
             drawer.open();
