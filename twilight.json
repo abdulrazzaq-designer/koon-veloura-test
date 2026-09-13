@@ -9279,6 +9279,435 @@
           "value": true
         }
       ]
+    },
+    {
+      "type": "static",
+      "format": "title",
+      "id": "veloura_fab_title_2026",
+      "icon": "sicon-chat-conversation-alt",
+      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-chat-conversation-alt\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">أزرار التواصل والعودة للأعلى</strong></div></div>"
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_fab_enabled_2026",
+      "label": " ",
+      "wide": true,
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "id": "veloura_fab_subtitle_general_2026",
+      "type": "static",
+      "format": "title",
+      "label": "الشكل والمكان",
+      "icon": "sicon-sliders",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل والمكان</span></div>"
+    },
+    {
+      "id": "veloura_fab_mode_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "طريقة عرض أزرار التواصل",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "expand",
+      "default": "expand",
+      "selected": [
+        {
+          "label": "زر واحد يفتح البقية",
+          "value": "expand",
+          "key": "8c5f31ff-de5f-00c4-4c2c-12f1647e40f6"
+        }
+      ],
+      "options": [
+        {
+          "label": "زر واحد يفتح البقية",
+          "value": "expand",
+          "key": "8c5f31ff-de5f-00c4-4c2c-12f1647e40f6"
+        },
+        {
+          "label": "كل الأزرار ظاهرة",
+          "value": "stack",
+          "key": "403e3ead-c764-9262-b725-ce1340b1262f"
+        }
+      ],
+      "description": "مع «زر واحد» تظهر الأيقونات فوقه عند الضغط وتُغلق بالضغط خارجها.",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_contact_side_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "جهة أزرار التواصل",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "start",
+      "default": "start",
+      "selected": [
+        {
+          "label": "يمين الشاشة",
+          "value": "start",
+          "key": "2a1fa209-9229-7096-ab0b-968885ef0234"
+        }
+      ],
+      "options": [
+        {
+          "label": "يمين الشاشة",
+          "value": "start",
+          "key": "2a1fa209-9229-7096-ab0b-968885ef0234"
+        },
+        {
+          "label": "يسار الشاشة",
+          "value": "end",
+          "key": "1a350e79-0753-9f92-bc08-e4a32d73d84e"
+        }
+      ],
+      "description": "زر العودة للأعلى يأخذ الجهة الأخرى تلقائيًا.",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_size_2026",
+      "type": "number",
+      "format": "number",
+      "label": "حجم الزر (بكسل)",
+      "value": 48,
+      "required": false,
+      "icon": "sicon-resize",
+      "minimum": 36,
+      "maximum": 72,
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_offset_2026",
+      "type": "number",
+      "format": "number",
+      "label": "المسافة فوق قائمة الجوال (بكسل)",
+      "value": 14,
+      "required": false,
+      "icon": "sicon-sort",
+      "minimum": 0,
+      "maximum": 90,
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_labels_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار اسم كل منصة بجانب أيقونتها",
+      "value": true,
+      "required": false,
+      "icon": "sicon-format-text-alt",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_desktop_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهارها على الكمبيوتر أيضًا",
+      "value": false,
+      "required": false,
+      "icon": "sicon-desktop",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_subtitle_contact_2026",
+      "type": "static",
+      "format": "title",
+      "label": "زر التواصل",
+      "icon": "sicon-chat-conversation-alt",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>زر التواصل</span></div>"
+    },
+    {
+      "id": "veloura_fab_toggle_icon_2026",
+      "type": "string",
+      "format": "icon",
+      "label": "أيقونة زر التواصل",
+      "value": "sicon-chat-conversation-alt",
+      "required": false,
+      "icon": "sicon-star",
+      "description": "تظهر حين تكون الطريقة «زر واحد يفتح البقية».",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_toggle_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون زر التواصل",
+      "value": "#004956",
+      "required": false,
+      "icon": "sicon-palette",
+      "inputType": "color",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_links_2026",
+      "type": "collection",
+      "format": "collection",
+      "label": "أزرار التواصل",
+      "item_label": "زر",
+      "icon": "sicon-list-add",
+      "required": false,
+      "minLength": 0,
+      "maxLength": 8,
+      "value": [],
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "description": "كل زر يأخذ أيقونة منصته ولونها تلقائيًا، ويمكنك تغييرهما لأي زر.",
+      "fields": [
+        {
+          "id": "enabled",
+          "type": "boolean",
+          "format": "switch",
+          "label": "تفعيل الزر",
+          "value": true,
+          "required": false
+        },
+        {
+          "id": "platform",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "المنصة",
+          "icon": "sicon-share",
+          "source": "Manual",
+          "required": true,
+          "value": "whatsapp",
+          "default": "whatsapp",
+          "selected": [
+            {
+              "label": "واتساب",
+              "value": "whatsapp",
+              "key": "8b1eda02-7d24-0407-1284-149c8030bd92"
+            }
+          ],
+          "options": [
+            {
+              "label": "واتساب",
+              "value": "whatsapp",
+              "key": "8b1eda02-7d24-0407-1284-149c8030bd92"
+            },
+            {
+              "label": "اتصال هاتفي",
+              "value": "phone",
+              "key": "b3830a19-64f5-ee33-0115-2e70b3bb30d3"
+            },
+            {
+              "label": "انستقرام",
+              "value": "instagram",
+              "key": "90550edc-2e9d-1c98-0c77-eede24d978d4"
+            },
+            {
+              "label": "سناب شات",
+              "value": "snapchat",
+              "key": "56a394cd-a6d1-e434-778b-7cfe87614fd6"
+            },
+            {
+              "label": "تيك توك",
+              "value": "tiktok",
+              "key": "0d26c23c-6633-fd03-d9b4-06c1ac38b2a6"
+            },
+            {
+              "label": "إكس (تويتر)",
+              "value": "x",
+              "key": "f5a0f3e2-c9df-a4bc-6378-cc9e7c5a68dc"
+            },
+            {
+              "label": "تيليجرام",
+              "value": "telegram",
+              "key": "c9da87a3-99f3-dc25-08ab-3acf1697c1c3"
+            },
+            {
+              "label": "بريد إلكتروني",
+              "value": "email",
+              "key": "625fb0c8-706d-3847-53c1-14a34f6bd0f8"
+            },
+            {
+              "label": "الموقع على الخرائط",
+              "value": "maps",
+              "key": "fba699c6-0d42-12e5-02c6-fa21962ac285"
+            },
+            {
+              "label": "رابط مخصص",
+              "value": "custom",
+              "key": "dd1753ca-2703-10ef-ce79-37b0fc9650c4"
+            }
+          ]
+        },
+        {
+          "id": "value",
+          "type": "string",
+          "format": "text",
+          "label": "الرقم أو المعرّف أو الرابط",
+          "icon": "sicon-link",
+          "value": "",
+          "required": false,
+          "description": "واتساب واتصال: الرقم بصيغة دولية بلا صفر ولا رموز، مثل 9665xxxxxxxx. الشبكات: المعرّف فقط أو الرابط كاملًا. المخصص: الرابط كاملًا."
+        },
+        {
+          "id": "label",
+          "type": "string",
+          "format": "text",
+          "label": "الاسم الظاهر",
+          "icon": "sicon-format-text-alt",
+          "value": "",
+          "required": false
+        },
+        {
+          "id": "icon",
+          "type": "string",
+          "format": "icon",
+          "label": "أيقونة بديلة (اختياري)",
+          "icon": "sicon-star",
+          "value": "",
+          "required": false
+        },
+        {
+          "id": "color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون مخصص (اختياري)",
+          "icon": "sicon-palette",
+          "value": "",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_subtitle_top_2026",
+      "type": "static",
+      "format": "title",
+      "label": "زر العودة للأعلى",
+      "icon": "sicon-arrow-up",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>زر العودة للأعلى</span></div>"
+    },
+    {
+      "id": "veloura_fab_show_top_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار زر العودة للأعلى",
+      "value": true,
+      "required": false,
+      "icon": "sicon-arrow-up",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_top_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون زر العودة للأعلى",
+      "value": "#0f172a",
+      "required": false,
+      "icon": "sicon-palette",
+      "inputType": "color",
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_fab_top_after_2026",
+      "type": "number",
+      "format": "number",
+      "label": "يظهر بعد التمرير (بكسل)",
+      "value": 420,
+      "required": false,
+      "icon": "sicon-sort",
+      "minimum": 0,
+      "maximum": 4000,
+      "conditions": [
+        {
+          "id": "veloura_fab_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     }
   ],
   "components": [
