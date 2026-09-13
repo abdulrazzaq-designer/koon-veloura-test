@@ -148,7 +148,7 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 6px;
-    row-gap: var(--stp-step-gap, 26px);
+    row-gap: var(--stp-step-gap, 18px);
   }
 
   .veloura-stp .stp__step {
@@ -162,42 +162,63 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__step:nth-child(even) { grid-column: 2; }
   .veloura-stp .stp__text p { max-width: none; font-size: 12.5px; line-height: 1.7; }
 
+  /* The join is a Z, not a shallow slope: a 45° leg out of the block above, a
+     flat run across, and a 45° leg down into the circle below. A single
+     straight diagonal between two blocks half a screen apart can only ever be
+     shallow — 45° over that distance would need a gap as tall as the row is
+     wide — so the angle is kept where it is seen, at the two ends.
+
+     Three gradients in one box, each sized to its own piece: the legs are
+     squares, which is what makes them exactly 45° whatever the gap. */
   .veloura-stp.has-path .stp__step::before {
     content: "";
     position: absolute;
     bottom: calc(100% - 4px);
     width: 100%;
-    height: calc(var(--stp-step-gap, 26px) + 8px);
+    height: calc(var(--stp-step-gap, 18px) + 10px);
+    background-repeat: no-repeat;
+    background-size:
+      calc((var(--stp-step-gap, 18px) + 10px) / 2) calc((var(--stp-step-gap, 18px) + 10px) / 2),
+      calc(100% - var(--stp-step-gap, 18px) - 10px) 2.4px,
+      calc((var(--stp-step-gap, 18px) + 10px) / 2) calc((var(--stp-step-gap, 18px) + 10px) / 2);
     opacity: 0;
     transition: opacity .6s ease calc(var(--i, 0) * .12s);
   }
 
   .veloura-stp.has-path .stp__step:nth-child(odd)::before {
     right: 50%;
-    background: linear-gradient(to bottom right,
-      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
-      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-image:
+      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
+      linear-gradient(var(--stp-line), var(--stp-line)),
+      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-position: left top, center center, right bottom;
   }
 
   .veloura-stp.has-path .stp__step:nth-child(even)::before {
     left: 50%;
-    background: linear-gradient(to bottom left,
-      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
-      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-image:
+      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
+      linear-gradient(var(--stp-line), var(--stp-line)),
+      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-position: right top, center center, left bottom;
   }
 
   html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(odd)::before {
     right: auto; left: 50%;
-    background: linear-gradient(to bottom left,
-      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
-      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-image:
+      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
+      linear-gradient(var(--stp-line), var(--stp-line)),
+      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-position: right top, center center, left bottom;
   }
 
   html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(even)::before {
     left: auto; right: 50%;
-    background: linear-gradient(to bottom right,
-      transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px),
-      var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-image:
+      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
+      linear-gradient(var(--stp-line), var(--stp-line)),
+      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+    background-position: left top, center center, right bottom;
   }
 
   .veloura-stp.has-path .stp__step:first-child::before { content: none; }
@@ -208,7 +229,7 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__step:nth-child(even) { transform: translate(14px, 8px); }
   .veloura-stp.is-inview .stp__step { transform: none; }
 
-  .veloura-stp { --stp-dot: 68px; --stp-badge: 23px; --stp-step-gap: 26px; }
+  .veloura-stp { --stp-dot: 64px; --stp-badge: 22px; --stp-step-gap: 18px; }
 }
 
 /* ---------------------------------------------------------- the circle -- */
