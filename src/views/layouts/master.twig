@@ -3536,11 +3536,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {# ==========================================================================
    الأزرار العائمة فوق قائمة الجوال (فيلورا)
 
-   Two docks, one at each edge, standing on the bottom nav: the store's own
-   contact buttons on one side and "back to top" on the other. Their offset is
-   read from the nav's own variables, so they stay above it whatever height or
-   shape the merchant gives it, and they step down to the safe area when the
-   nav is switched off.
+   Two buttons standing on the bottom nav — the store's contact links on one
+   side, "back to top" on the other. They live in the nav's own container and
+   share its side padding and its 430px width, so their edges line up with the
+   pill beneath them instead of floating at some margin of their own. Nothing
+   here is sized or coloured by hand: each platform brings its own colour, the
+   rest follows the menu.
 
    The stylesheet and the little script are inline, like the rest of Veloura's
    later work: the bundled assets go through a build and a CDN, and this has to
@@ -3555,75 +3556,74 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vfab_side = _self.veloura_dm_value(theme.settings.get('veloura_fab_contact_side_2026', 'start'), 'start')|trim %}
   {% if vfab_side not in ['start', 'end'] %}{% set vfab_side = 'start' %}{% endif %}
 
-  {% set vfab_size = _self.veloura_dm_value(theme.settings.get('veloura_fab_size_2026', 48), 48)|trim + 0 %}
-  {% if vfab_size < 36 %}{% set vfab_size = 36 %}{% endif %}
-  {% if vfab_size > 72 %}{% set vfab_size = 72 %}{% endif %}
-
-  {% set vfab_offset = _self.veloura_dm_value(theme.settings.get('veloura_fab_offset_2026', 14), 14)|trim + 0 %}
-  {% if vfab_offset < 0 %}{% set vfab_offset = 0 %}{% endif %}
-  {% if vfab_offset > 90 %}{% set vfab_offset = 90 %}{% endif %}
-
   {% set vfab_labels = _self.veloura_dm_value(theme.settings.get('veloura_fab_labels_2026', true), true)|trim in [true, 1, '1', 'true', 'on'] %}
   {% set vfab_desktop = _self.veloura_dm_value(theme.settings.get('veloura_fab_desktop_2026', false), false)|trim in [true, 1, '1', 'true', 'on'] %}
+  {% set vfab_glass = _self.veloura_dm_value(theme.settings.get('veloura_fab_glass_2026', false), false)|trim in [true, 1, '1', 'true', 'on'] %}
   {% set vfab_show_top = _self.veloura_dm_value(theme.settings.get('veloura_fab_show_top_2026', true), true)|trim in [true, 1, '1', 'true', 'on'] %}
 
-  {% set vfab_toggle_icon = _self.veloura_dm_value(theme.settings.get('veloura_fab_toggle_icon_2026', 'sicon-chat-conversation-alt'), 'sicon-chat-conversation-alt')|trim %}
-  {% if not vfab_toggle_icon %}{% set vfab_toggle_icon = 'sicon-chat-conversation-alt' %}{% endif %}
-  {% set vfab_toggle_color = _self.veloura_dm_value(theme.settings.get('veloura_fab_toggle_color_2026', '#004956'), '#004956')|trim %}
-  {% set vfab_top_color = _self.veloura_dm_value(theme.settings.get('veloura_fab_top_color_2026', '#0f172a'), '#0f172a')|trim %}
   {% set vfab_top_after = _self.veloura_dm_value(theme.settings.get('veloura_fab_top_after_2026', 420), 420)|trim + 0 %}
   {% if vfab_top_after < 0 %}{% set vfab_top_after = 0 %}{% endif %}
 
   {# Each platform brings its own icon, colour and the shape its link takes. #}
   {% set vfab_map = {
-    'whatsapp':  {'icon': 'sicon-whatsapp',               'color': '#25D366', 'label': 'واتساب',       'prefix': 'https://wa.me/'},
-    'phone':     {'icon': 'sicon-phone',                  'color': '#0ea5e9', 'label': 'اتصل بنا',     'prefix': 'tel:'},
-    'instagram': {'icon': 'sicon-instagram',              'color': '#E1306C', 'label': 'انستقرام',     'prefix': 'https://instagram.com/'},
-    'snapchat':  {'icon': 'sicon-snapchat',               'color': '#FFC400', 'label': 'سناب شات',     'prefix': 'https://snapchat.com/add/', 'ink': '#1f2937'},
-    'tiktok':    {'icon': 'sicon-tiktok',                 'color': '#111111', 'label': 'تيك توك',      'prefix': 'https://tiktok.com/@'},
-    'x':         {'icon': 'sicon-twitter',                'color': '#111111', 'label': 'إكس',          'prefix': 'https://x.com/'},
-    'telegram':  {'icon': 'sicon-telegram',               'color': '#229ED9', 'label': 'تيليجرام',     'prefix': 'https://t.me/'},
-    'email':     {'icon': 'sicon-email',                  'color': '#6366f1', 'label': 'راسلنا',       'prefix': 'mailto:'},
-    'maps':      {'icon': 'sicon-location',               'color': '#16a34a', 'label': 'موقعنا',       'prefix': 'https://maps.google.com/?q='},
-    'custom':    {'icon': 'sicon-link',                   'color': '#004956', 'label': 'رابط',         'prefix': ''}
+    'whatsapp':  {'icon': 'sicon-whatsapp', 'color': '#25D366', 'label': 'واتساب',   'prefix': 'https://wa.me/'},
+    'phone':     {'icon': 'sicon-phone',    'color': '#0ea5e9', 'label': 'اتصل بنا', 'prefix': 'tel:'},
+    'instagram': {'icon': 'sicon-instagram','color': '#E1306C', 'label': 'انستقرام', 'prefix': 'https://instagram.com/'},
+    'snapchat':  {'icon': 'sicon-snapchat', 'color': '#FFC400', 'label': 'سناب شات', 'prefix': 'https://snapchat.com/add/', 'ink': '#1f2937'},
+    'tiktok':    {'icon': 'sicon-tiktok',   'color': '#111111', 'label': 'تيك توك',  'prefix': 'https://tiktok.com/@'},
+    'x':         {'icon': 'sicon-twitter',  'color': '#111111', 'label': 'إكس',      'prefix': 'https://x.com/'},
+    'telegram':  {'icon': 'sicon-telegram', 'color': '#229ED9', 'label': 'تيليجرام', 'prefix': 'https://t.me/'},
+    'email':     {'icon': 'sicon-email',    'color': '#6366f1', 'label': 'راسلنا',   'prefix': 'mailto:'},
+    'maps':      {'icon': 'sicon-location', 'color': '#16a34a', 'label': 'موقعنا',   'prefix': 'https://maps.google.com/?q='},
+    'custom':    {'icon': 'sicon-link',     'color': '#004956', 'label': 'رابط',     'prefix': ''}
   } %}
 
+  {% set vfab_links = theme.settings.get('veloura_fab_links_2026', []) %}
+
+  {# How many links survive their switches is counted in the script below, not
+     here: Twig scopes a loop body, so a counter raised inside {% for %} is gone
+     again at {% endfor %} — this project has been bitten by that before. #}
+
   <style id="veloura-fab-2026">
-    .veloura-fab {
-      --vfab-size: {{ vfab_size }}px;
-      --vfab-gap: 10px;
-      /* Above the bottom nav when there is one, above the safe area when there
-         is not. Both variables are written by the nav itself. */
-      --vfab-bottom: calc(
-        {{ vfab_offset }}px
-        + var(--vfab-nav, 0px)
-        + env(safe-area-inset-bottom, 0px)
-      );
+    /* The bar is the nav's own geometry: its side padding, its 430px cap, and
+       its height as the floor. Both buttons hang off the same box, which is
+       what keeps them level with the pill's own edges. */
+    .veloura-fab-bar {
       position: fixed;
+      inset-inline: 0;
+      bottom: calc(12px + var(--vfab-nav, 0px) + env(safe-area-inset-bottom, 0px));
       z-index: 2147482000;
-      bottom: var(--vfab-bottom);
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--vfab-gap);
+      justify-content: center;
+      padding-inline: var(--veloura-home-container-padding, var(--veloura-site-spacing, 14px));
       pointer-events: none;
     }
 
-    body.veloura-bottom-nav-enabled .veloura-fab { --vfab-nav: calc(var(--vbn-height, 56px) + var(--vbn-bottom, 0px)); }
+    body.veloura-bottom-nav-enabled .veloura-fab-bar { --vfab-nav: calc(var(--vbn-height, 56px) + var(--vbn-bottom, 0px)); }
 
-    .veloura-fab--contact { inset-inline-{{ vfab_side }}: 14px; }
+    .veloura-fab-bar__inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      width: min(430px, 100%);
+    }
 
-    /* The buttons stand in one column and the labels hang off their inner
-       side, so the children align to the dock's own edge rather than to their
-       own middles — otherwise a long label pushes its button out of line with
-       the toggle underneath it. */
-    .veloura-fab--contact.veloura-fab--start { align-items: flex-start; }
-    .veloura-fab--contact.veloura-fab--end { align-items: flex-end; }
-    .veloura-fab--top { inset-inline-{{ vfab_side == 'start' ? 'end' : 'start' }}: 14px; }
+    .veloura-fab-bar--flip .veloura-fab-bar__inner { flex-direction: row-reverse; }
 
-    .veloura-fab > * { pointer-events: auto; }
+    .veloura-fab {
+      --vfab-size: 46px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .veloura-fab--contact { align-items: flex-start; }
+    .veloura-fab-bar--flip .veloura-fab--contact { align-items: flex-end; }
+    .veloura-fab > *, .veloura-fab button, .veloura-fab a { pointer-events: auto; }
 
     .veloura-fab__btn {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -3633,13 +3633,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       border: 0;
       border-radius: 999px;
       background: var(--vfab-color, #004956);
-      /* Snapchat's yellow needs dark glyphs; everything else is white on its
-         own colour. */
       color: var(--vfab-ink, #fff);
       font-size: calc(var(--vfab-size) * .44);
       line-height: 1;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, .22), 0 2px 6px rgba(15, 23, 42, .14);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .18);
       transition: transform .25s ease, box-shadow .25s ease, opacity .25s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -3647,23 +3645,38 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab__btn:active { transform: scale(.94); }
 
     @media (hover: hover) and (pointer: fine) {
-      .veloura-fab__btn:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(15, 23, 42, .26); }
+      .veloura-fab__btn:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(15, 23, 42, .22); }
     }
 
-    /* The stack of contact buttons. In "expand" it is folded away until the
-       toggle is pressed; in "stack" it simply stands there. */
+    /* Glass: the same material the bottom bar wears, with the platform's colour
+       moving from the background to the glyph. */
+    .veloura-fab--glass .veloura-fab__btn {
+      background: var(--veloura-glass-surface, rgba(230, 232, 235, .72));
+      color: var(--vfab-color, #004956);
+      border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .11));
+      border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .05));
+      -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%);
+      backdrop-filter: blur(20px) saturate(124%) contrast(200%);
+      box-shadow: 0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, .08));
+    }
+
+    html.dark .veloura-fab--glass .veloura-fab__btn,
+    html body.dark .veloura-fab--glass .veloura-fab__btn {
+      color: color-mix(in srgb, var(--vfab-color, #004956) 55%, #ffffff);
+    }
+
     .veloura-fab__list {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: var(--vfab-gap);
+      align-items: inherit;
+      gap: 10px;
       margin: 0;
       padding: 0;
       list-style: none;
     }
 
     .veloura-fab__item { display: flex; align-items: center; gap: 8px; flex-direction: row-reverse; }
-    .veloura-fab--end .veloura-fab__item { flex-direction: row; }
+    .veloura-fab-bar--flip .veloura-fab__item { flex-direction: row; }
 
     .veloura-fab__label {
       padding: 5px 11px;
@@ -3677,15 +3690,14 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       backdrop-filter: blur(6px);
     }
 
-    .veloura-fab--expand .veloura-fab__list .veloura-fab__item {
+    .veloura-fab--expand .veloura-fab__item {
       opacity: 0;
       transform: translateY(14px) scale(.8);
       visibility: hidden;
       transition: opacity .28s ease, transform .28s ease, visibility .28s;
     }
 
-    /* Opening walks up from the toggle; closing folds back down in reverse. */
-    .veloura-fab--expand.is-open .veloura-fab__list .veloura-fab__item {
+    .veloura-fab--expand.is-open .veloura-fab__item {
       opacity: 1;
       transform: none;
       visibility: visible;
@@ -3695,27 +3707,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab__toggle i { transition: transform .3s ease; }
     .veloura-fab--expand.is-open .veloura-fab__toggle i { transform: rotate(90deg) scale(.9); }
 
-    /* The toggle wears a soft halo while it is closed, which is what makes a
-       floating button read as something to press. */
-    .veloura-fab--expand:not(.is-open) .veloura-fab__toggle::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      box-shadow: 0 0 0 0 var(--vfab-color, #004956);
-      animation: veloura-fab-halo 2.6s ease-out infinite;
-    }
-
-    .veloura-fab__toggle { position: relative; }
-
-    @keyframes veloura-fab-halo {
-      0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--vfab-color, #004956) 45%, transparent); }
-      70% { box-shadow: 0 0 0 14px transparent; }
-      100% { box-shadow: 0 0 0 0 transparent; }
-    }
-
-    /* Back to top: out of the way until the page has actually been scrolled. */
+    /* ------------------------------------------------------ back to top --
+       The ring is the page's own progress: it fills as the reader goes down
+       and empties as they come back up, which makes the button a report on
+       where they are as well as a way out of it. */
     .veloura-fab--top .veloura-fab__btn {
+      --vfab-color: var(--vbn-bg, #ffffff);
+      --vfab-ink: var(--vbn-text, #111827);
       opacity: 0;
       visibility: hidden;
       transform: translateY(10px) scale(.85);
@@ -3723,87 +3721,119 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
     .veloura-fab--top.is-shown .veloura-fab__btn { opacity: 1; visibility: visible; transform: none; }
 
+    .veloura-fab--top .veloura-fab__btn::before {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: inherit;
+      background: conic-gradient(
+        var(--vbn-active, #004956) calc(var(--vfab-p, 0) * 360deg),
+        color-mix(in srgb, var(--vbn-active, #004956) 16%, transparent) 0
+      );
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      pointer-events: none;
+    }
+
     {% if not vfab_desktop %}
-      @media (min-width: 768px) { .veloura-fab { display: none !important; } }
+      @media (min-width: 768px) { .veloura-fab-bar { display: none !important; } }
     {% endif %}
 
     @media (prefers-reduced-motion: reduce) {
-      .veloura-fab__btn,
-      .veloura-fab__item,
-      .veloura-fab__toggle i { transition: none !important; }
-      .veloura-fab--expand:not(.is-open) .veloura-fab__toggle::after { animation: none; }
+      .veloura-fab__btn, .veloura-fab__item, .veloura-fab__toggle i { transition: none !important; }
     }
   </style>
 
-  {% set vfab_links = theme.settings.get('veloura_fab_links_2026', []) %}
+  <div class="veloura-fab-bar{{ vfab_side == 'end' ? ' veloura-fab-bar--flip' : '' }}" data-veloura-fab-bar>
+    <div class="veloura-fab-bar__inner">
 
-  {% if vfab_links %}
-    <div class="veloura-fab veloura-fab--contact veloura-fab--{{ vfab_mode }} veloura-fab--{{ vfab_side }}" data-veloura-fab>
-      <ul class="veloura-fab__list" data-veloura-fab-list>
-        {% for link in vfab_links %}
-          {% set l_enabled_raw = link.enabled is defined ? link.enabled : true %}
-          {% set l_enabled = l_enabled_raw in [true, 1, '1', 'true', 'on'] %}
-          {% if l_enabled and link.value %}
-            {% set l_platform = _self.veloura_dm_value(link.platform|default('whatsapp'), 'whatsapp')|trim %}
-            {% if l_platform not in vfab_map|keys %}{% set l_platform = 'custom' %}{% endif %}
-            {% set l_meta = vfab_map[l_platform] %}
+      {% if vfab_links %}
+        <div class="veloura-fab veloura-fab--contact veloura-fab--{{ vfab_mode }}{{ vfab_glass ? ' veloura-fab--glass' : '' }}" data-veloura-fab>
+          <ul class="veloura-fab__list">
+            {% for link in vfab_links %}
+              {% set l_enabled_raw = link.enabled is defined ? link.enabled : true %}
+              {% set l_enabled = l_enabled_raw in [true, 1, '1', 'true', 'on'] %}
 
-            {# A value that is already a link is used as it stands; anything
-               else is a handle or a number and takes its platform's prefix. #}
-            {% set l_value = link.value|trim %}
-            {% set l_href = l_value %}
+              {% if l_enabled and link.value %}
+                {% set l_platform = _self.veloura_dm_value(link.platform|default('whatsapp'), 'whatsapp')|trim %}
+                {% if l_platform not in vfab_map|keys %}{% set l_platform = 'custom' %}{% endif %}
+                {% set l_meta = vfab_map[l_platform] %}
 
-            {% if not (l_value starts with 'http' or l_value starts with 'tel:' or l_value starts with 'mailto:' or l_value starts with '/') %}
-              {% set l_clean = l_value|replace({'@': ''}) %}
-              {% if l_platform == 'whatsapp' or l_platform == 'phone' %}
-                {% set l_clean = l_value|replace({' ': '', '-': '', '+': '', '(': '', ')': ''}) %}
+                {# A value that is already a link is used as it stands; anything
+                   else is a handle or a number and takes its platform's prefix. #}
+                {% set l_value = link.value|trim %}
+                {% set l_href = l_value %}
+
+                {% if not (l_value starts with 'http' or l_value starts with 'tel:' or l_value starts with 'mailto:' or l_value starts with '/') %}
+                  {% set l_clean = l_value|replace({'@': ''}) %}
+                  {% if l_platform == 'whatsapp' or l_platform == 'phone' %}
+                    {% set l_clean = l_value|replace({' ': '', '-': '', '+': '', '(': '', ')': ''}) %}
+                  {% endif %}
+                  {% set l_href = l_meta.prefix ~ l_clean %}
+                {% endif %}
+
+                <li class="veloura-fab__item" style="--vfab-i: {{ loop.index0 }};">
+                  {% if vfab_labels %}<span class="veloura-fab__label">{{ link.label|default(l_meta.label) }}</span>{% endif %}
+                  <a
+                    class="veloura-fab__btn"
+                    href="{{ l_href }}"
+                    {% if l_platform not in ['phone', 'email'] %}target="_blank" rel="noopener nofollow"{% endif %}
+                    aria-label="{{ link.label|default(l_meta.label) }}"
+                    style="--vfab-color: {{ l_meta.color }};{% if l_meta.ink is defined %} --vfab-ink: {{ l_meta.ink }};{% endif %}"
+                  ><i class="{{ l_meta.icon }}" aria-hidden="true"></i></a>
+                </li>
               {% endif %}
-              {% set l_href = l_meta.prefix ~ l_clean %}
-            {% endif %}
+            {% endfor %}
+          </ul>
 
-            <li class="veloura-fab__item" style="--vfab-i: {{ loop.index0 }};">
-              {% if vfab_labels %}<span class="veloura-fab__label">{{ link.label|default(l_meta.label) }}</span>{% endif %}
-              <a
-                class="veloura-fab__btn"
-                href="{{ l_href }}"
-                {% if l_platform not in ['phone', 'email'] %}target="_blank" rel="noopener nofollow"{% endif %}
-                aria-label="{{ link.label|default(l_meta.label) }}"
-                style="--vfab-color: {{ link.color|default(l_meta.color) }};{% if l_meta.ink is defined and not link.color %} --vfab-ink: {{ l_meta.ink }};{% endif %}"
-              >
-                <i class="{{ link.icon|default(l_meta.icon) }}" aria-hidden="true"></i>
-              </a>
-            </li>
+          {% if vfab_mode == 'expand' %}
+            <button
+              type="button"
+              class="veloura-fab__btn veloura-fab__toggle"
+              data-veloura-fab-toggle
+              aria-expanded="false"
+              aria-label="وسائل التواصل"
+              style="--vfab-color: var(--vbn-active, #004956);"
+            ><i class="sicon-chat-conversation-alt" aria-hidden="true"></i></button>
           {% endif %}
-        {% endfor %}
-      </ul>
-
-      {% if vfab_mode == 'expand' %}
-        <button
-          type="button"
-          class="veloura-fab__btn veloura-fab__toggle"
-          data-veloura-fab-toggle
-          aria-expanded="false"
-          aria-label="وسائل التواصل"
-          style="--vfab-color: {{ vfab_toggle_color }};"
-        ><i class="{{ vfab_toggle_icon }}" aria-hidden="true"></i></button>
+        </div>
+      {% else %}
+        <span></span>
       {% endif %}
-    </div>
-  {% endif %}
 
-  {% if vfab_show_top %}
-    <div class="veloura-fab veloura-fab--top" data-veloura-fab-top data-vfab-after="{{ vfab_top_after }}">
-      <button
-        type="button"
-        class="veloura-fab__btn"
-        aria-label="العودة لأعلى الصفحة"
-        style="--vfab-color: {{ vfab_top_color }};"
-      ><i class="sicon-keyboard_arrow_up" aria-hidden="true"></i></button>
+      {% if vfab_show_top %}
+        <div class="veloura-fab veloura-fab--top{{ vfab_glass ? ' veloura-fab--glass' : '' }}" data-veloura-fab-top data-vfab-after="{{ vfab_top_after }}">
+          <button type="button" class="veloura-fab__btn" aria-label="العودة لأعلى الصفحة">
+            <i class="sicon-keyboard_arrow_up" aria-hidden="true"></i>
+          </button>
+        </div>
+      {% else %}
+        <span></span>
+      {% endif %}
+
     </div>
-  {% endif %}
+  </div>
 
   <script data-cfasync="false" id="veloura-fab-script-2026">
   (function () {
     var dock = document.querySelector('[data-veloura-fab]');
+
+    if (dock) {
+      var items = dock.querySelectorAll('.veloura-fab__item');
+      var opener = dock.querySelector('[data-veloura-fab-toggle]');
+
+      /* Nothing to show, or nothing worth folding: a button that opens a list
+         of one is a button in the way, so the single link simply stands there,
+         and an empty dock leaves altogether. */
+      if (!items.length) {
+        dock.remove();
+        dock = null;
+      } else if (items.length < 2 && opener) {
+        opener.remove();
+        dock.classList.remove('veloura-fab--expand');
+        dock.classList.add('veloura-fab--stack');
+      }
+    }
 
     if (dock && dock.classList.contains('veloura-fab--expand')) {
       var toggle = dock.querySelector('[data-veloura-fab-toggle]');
@@ -3834,11 +3864,21 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     var top = document.querySelector('[data-veloura-fab-top]');
     if (!top) return;
 
+    var button = top.querySelector('button');
     var after = parseInt(top.dataset.vfabAfter || '420', 10);
     var ticking = false;
 
     var sync = function () {
-      top.classList.toggle('is-shown', (window.scrollY || window.pageYOffset || 0) > after);
+      var y = window.scrollY || window.pageYOffset || 0;
+      var doc = document.documentElement;
+      var reach = (doc.scrollHeight - window.innerHeight) || 1;
+      var progress = y / reach;
+
+      if (progress < 0) progress = 0;
+      if (progress > 1) progress = 1;
+
+      button.style.setProperty('--vfab-p', progress.toFixed(4));
+      top.classList.toggle('is-shown', y > after);
       ticking = false;
     };
 
@@ -3848,7 +3888,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       window.requestAnimationFrame(sync);
     }, { passive: true });
 
-    top.querySelector('button').addEventListener('click', function () {
+    window.addEventListener('resize', sync);
+
+    button.addEventListener('click', function () {
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
     });
@@ -3857,7 +3899,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   })();
   </script>
 {% endif %}
-
 
 <script data-cfasync="false" id="veloura-product-card-native-actions-sync-2026">
 /* Veloura Product Card Native Actions Sync V7

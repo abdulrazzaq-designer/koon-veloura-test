@@ -9389,42 +9389,6 @@
       ]
     },
     {
-      "id": "veloura_fab_size_2026",
-      "type": "number",
-      "format": "number",
-      "label": "حجم الزر (بكسل)",
-      "value": 48,
-      "required": false,
-      "icon": "sicon-resize",
-      "minimum": 36,
-      "maximum": 72,
-      "conditions": [
-        {
-          "id": "veloura_fab_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_fab_offset_2026",
-      "type": "number",
-      "format": "number",
-      "label": "المسافة فوق قائمة الجوال (بكسل)",
-      "value": 14,
-      "required": false,
-      "icon": "sicon-sort",
-      "minimum": 0,
-      "maximum": 90,
-      "conditions": [
-        {
-          "id": "veloura_fab_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_fab_labels_2026",
       "type": "boolean",
       "format": "switch",
@@ -9457,46 +9421,14 @@
       ]
     },
     {
-      "id": "veloura_fab_subtitle_contact_2026",
-      "type": "static",
-      "format": "title",
-      "label": "زر التواصل",
-      "icon": "sicon-chat-conversation-alt",
-      "conditions": [
-        {
-          "id": "veloura_fab_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>زر التواصل</span></div>"
-    },
-    {
-      "id": "veloura_fab_toggle_icon_2026",
-      "type": "string",
-      "format": "icon",
-      "label": "أيقونة زر التواصل",
-      "value": "sicon-chat-conversation-alt",
+      "id": "veloura_fab_glass_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "الوضع الزجاجي للأزرار",
+      "icon": "sicon-eye",
+      "value": false,
       "required": false,
-      "icon": "sicon-star",
-      "description": "تظهر حين تكون الطريقة «زر واحد يفتح البقية».",
-      "conditions": [
-        {
-          "id": "veloura_fab_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_fab_toggle_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون زر التواصل",
-      "value": "#004956",
-      "required": false,
-      "icon": "sicon-palette",
-      "inputType": "color",
+      "description": "نفس زجاج القائمة العائمة، ولون المنصة ينتقل إلى الأيقونة.",
       "conditions": [
         {
           "id": "veloura_fab_enabled_2026",
@@ -9523,7 +9455,7 @@
           "value": true
         }
       ],
-      "description": "كل زر يأخذ أيقونة منصته ولونها تلقائيًا، ويمكنك تغييرهما لأي زر.",
+      "description": "كل زر يأخذ أيقونة منصته ولونها تلقائيًا.",
       "fields": [
         {
           "id": "enabled",
@@ -9621,25 +9553,6 @@
           "icon": "sicon-format-text-alt",
           "value": "",
           "required": false
-        },
-        {
-          "id": "icon",
-          "type": "string",
-          "format": "icon",
-          "label": "أيقونة بديلة (اختياري)",
-          "icon": "sicon-star",
-          "value": "",
-          "required": false
-        },
-        {
-          "id": "color",
-          "type": "string",
-          "format": "color",
-          "inputType": "color",
-          "label": "لون مخصص (اختياري)",
-          "icon": "sicon-palette",
-          "value": "",
-          "required": false
         }
       ]
     },
@@ -9666,23 +9579,6 @@
       "value": true,
       "required": false,
       "icon": "sicon-arrow-up",
-      "conditions": [
-        {
-          "id": "veloura_fab_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_fab_top_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون زر العودة للأعلى",
-      "value": "#0f172a",
-      "required": false,
-      "icon": "sicon-palette",
-      "inputType": "color",
       "conditions": [
         {
           "id": "veloura_fab_enabled_2026",
