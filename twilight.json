@@ -653,11 +653,23 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_loader_active_2026",
-      "label": "تفعيل صفحة التحميل",
+      "label": " ",
       "icon": "sicon-timer",
       "required": false,
       "value": false,
-      "selected": false
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_loader_enable_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_loader_active_2026",
+          "operation": "=",
+          "value": "veloura-hidden"
+        }
+      ]
     },
     {
       "type": "static",
