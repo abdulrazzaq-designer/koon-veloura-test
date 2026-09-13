@@ -3534,6 +3534,73 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 
 {# ==========================================================================
+   القائمة الجانبية: الزجاج يبقى زجاجًا في الوضع الداكن (فيلورا)
+
+   The dark palette was winning over the glass: a later rule painted the
+   drawer's surface with the side-menu dark background and dropped the blur,
+   so a menu the merchant had set to glass came back opaque the moment the
+   store went dark. This block is written after everything else and carries
+   both the class on <html> and one on <body>, which is heavier than anything
+   in the built stylesheet — and it only ever applies while the glass option is
+   actually on.
+
+   The inner panels are cleared as well: a blurred surface shows nothing if the
+   lists on top of it are painted solid.
+   ========================================================================== #}
+<style id="veloura-side-menu-dark-glass-2026">
+  html.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+  html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
+  html.veloura-side-cats-glass body.dark .mm-ocd.mm-ocd--open .mm-ocd__content {
+    --veloura-side-glass-source: var(--veloura-dark-secondary-bg, #010612);
+    --veloura-side-glass-tint: color-mix(in srgb, var(--veloura-side-glass-source) 94%, #ffffff 6%);
+    --veloura-side-glass-surface: color-mix(in srgb, var(--veloura-side-glass-tint) 60%, transparent);
+
+    background: var(--veloura-side-glass-surface) !important;
+    background-color: var(--veloura-side-glass-surface) !important;
+    background-image: none !important;
+
+    border-top: 1px solid rgba(255, 255, 255, .12) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .055) !important;
+    border-inline: 0 !important;
+
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    filter: none !important;
+
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, .27),
+      inset 0 1px 0 rgba(255, 255, 255, .018) !important;
+  }
+
+  html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content :is(
+    #mobile-menu,
+    .mm-spn,
+    .mm-spn ul,
+    .mm-spn li,
+    .main-menu,
+    .veloura-side-menu-panel,
+    .veloura-side-menu-footer,
+    .veloura-side-menu-header
+  ),
+  html.veloura-side-cats-glass body.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is(
+    #mobile-menu,
+    .mm-spn,
+    .mm-spn ul,
+    .mm-spn li,
+    .main-menu,
+    .veloura-side-menu-panel,
+    .veloura-side-menu-footer,
+    .veloura-side-menu-header
+  ) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+</style>
+
+{# ==========================================================================
    الأزرار العائمة فوق قائمة الجوال (فيلورا)
 
    Two buttons standing on the bottom nav — the store's contact links on one
@@ -3637,7 +3704,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab-bar--flip .veloura-fab-bar__inner { flex-direction: row-reverse; }
 
     .veloura-fab {
-      --vfab-size: 46px;
+      --vfab-size: 42px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -3860,6 +3927,35 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
   <script data-cfasync="false" id="veloura-fab-script-2026">
   (function () {
+    /* The bottom bar is hidden while the side menu is open and put back when
+       the menu's own close runs. Closing it any other way — the backdrop, the
+       drawer's own button, the back gesture — never reaches that code, and the
+       bar stayed gone for the rest of the visit. This watches the drawer
+       instead of trusting a handler: no open drawer, no suppression. */
+    var restoreBottomNav = function () {
+      if (document.querySelector('.mm-ocd.mm-ocd--open')) return;
+
+      var nav = document.querySelector('[data-vbn]');
+
+      if (nav && nav.classList.contains('is-side-menu-suppressed')) {
+        nav.classList.remove('is-side-menu-suppressed');
+        nav.removeAttribute('aria-hidden');
+      }
+
+      document.body.classList.remove('veloura-bottom-nav-categories-open');
+    };
+
+    if ('MutationObserver' in window) {
+      new MutationObserver(restoreBottomNav).observe(document.documentElement, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
+
+    document.addEventListener('veloura:mobile-menu:closed', restoreBottomNav);
+    window.addEventListener('pageshow', restoreBottomNav);
+
     var dock = document.querySelector('[data-veloura-fab]');
 
     if (dock) {

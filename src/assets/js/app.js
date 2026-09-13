@@ -448,7 +448,16 @@ const initVelouraFooter = (() => {
       sources.forEach(source => {
         const kind = detectKind(source, 'social');
         const href = (source.getAttribute('href') || '').trim().toLowerCase();
-        const key = `${kind}:${href || cleanText(source)}`;
+
+        /* One card per platform. Keying on the link as well meant a store with
+           the same account entered twice — with and without the www, or with a
+           trailing slash — showed that platform twice side by side. Only the
+           generic kinds, where several different links are legitimate, still
+           key on the address. */
+        const key = (kind === 'website' || kind === 'contact')
+          ? `${kind}:${href || cleanText(source)}`
+          : kind;
+
         if (!key || seen.has(key)) return;
 
         seen.add(key);
@@ -1755,6 +1764,21 @@ isElementLoaded(selector){
             drawerContent.style.removeProperty('transform');
           }
         };
+
+        /* mmenu can close itself — the backdrop, its own button, a back
+           gesture — and none of those reach closeNativeMenu. Watching the
+           drawer's class is what guarantees the bottom bar comes back. */
+        if ('MutationObserver' in window) {
+          new MutationObserver(() => {
+            if (document.querySelector('.mm-ocd.mm-ocd--open')) return;
+            suppressBottomNav(false);
+            removeBodyClassesIfPresent('veloura-bottom-nav-categories-open');
+          }).observe(document.documentElement, {
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class'],
+          });
+        }
 
         const closeNativeMenu = () => {
           removeBodyClassesIfPresent(
