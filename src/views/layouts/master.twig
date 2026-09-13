@@ -3591,7 +3591,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab-bar {
       position: fixed;
       inset-inline: 0;
-      bottom: calc(12px + var(--vfab-nav, 0px) + env(safe-area-inset-bottom, 0px));
+      bottom: calc(18px + var(--vfab-nav, 0px) + env(safe-area-inset-bottom, 0px));
       z-index: 2147482000;
       display: flex;
       justify-content: center;
@@ -3606,6 +3606,18 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       align-items: flex-end;
       justify-content: space-between;
       width: min(430px, 100%);
+    }
+
+    /* There is no bottom bar on a laptop to stand on, so the buttons take the
+       page's own container instead — its width and its gutter — and sit at its
+       two edges rather than in the middle of the screen. */
+    @media (min-width: 768px) {
+      .veloura-fab-bar {
+        bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+        padding-inline: var(--veloura-global-spacing, 16px);
+      }
+
+      .veloura-fab-bar__inner { width: min(var(--veloura-global-container, 1280px), 100%); }
     }
 
     .veloura-fab-bar--flip .veloura-fab-bar__inner { flex-direction: row-reverse; }
@@ -3652,12 +3664,30 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
        moving from the background to the glyph. */
     .veloura-fab--glass .veloura-fab__btn {
       background: var(--veloura-glass-surface, rgba(230, 232, 235, .72));
+      background-color: var(--veloura-glass-surface, rgba(230, 232, 235, .72));
       color: var(--vfab-color, #004956);
       border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .11));
       border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .05));
-      -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%);
-      backdrop-filter: blur(20px) saturate(124%) contrast(200%);
-      box-shadow: 0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, .08));
+      border-inline: 0;
+      -webkit-backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(124%) contrast(200%));
+      backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(124%) contrast(200%));
+      /* The hairlines again as inset shadows: on a circle a 1px border thins
+         to nothing at the sides, and these are what the bar itself uses to keep
+         its top and bottom edges readable. */
+      box-shadow:
+        inset 0 1px 0 var(--veloura-glass-edge-top, rgba(100, 116, 139, .11)),
+        inset 0 -1px 0 var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .05)),
+        0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, .08));
+    }
+
+    html.dark .veloura-fab--glass .veloura-fab__btn,
+    html body.dark .veloura-fab--glass .veloura-fab__btn {
+      border-top-color: var(--veloura-edge-top, rgba(255, 255, 255, .12));
+      border-bottom-color: var(--veloura-edge-bottom, rgba(255, 255, 255, .055));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .10),
+        inset 0 -1px 0 rgba(255, 255, 255, .04),
+        0 10px 28px var(--veloura-shadow, rgba(0, 0, 0, .27));
     }
 
     html.dark .veloura-fab--glass .veloura-fab__btn,
@@ -3724,14 +3754,14 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab--top .veloura-fab__btn::before {
       content: "";
       position: absolute;
-      inset: -4px;
+      inset: -5px;
       border-radius: inherit;
       background: conic-gradient(
         var(--vbn-active, #004956) calc(var(--vfab-p, 0) * 360deg),
-        color-mix(in srgb, var(--vbn-active, #004956) 16%, transparent) 0
+        color-mix(in srgb, var(--vbn-active, #004956) 14%, transparent) 0
       );
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3.5px), #000 calc(100% - 3.5px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 3.5px), #000 calc(100% - 3.5px));
       pointer-events: none;
     }
 
