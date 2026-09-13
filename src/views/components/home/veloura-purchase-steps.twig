@@ -33,9 +33,11 @@
   --stp-title: var(--stp-title-light, #0f172a);
   --stp-text: var(--stp-text-light, #52606d);
   --stp-second: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7));
-  --stp-line: color-mix(in srgb, var(--stp-accent) 22%, transparent);
-  --stp-dot: 88px;
-  --stp-badge: 26px;
+  --stp-page: var(--veloura-site-bg, #ffffff);
+  --stp-line: color-mix(in srgb, var(--stp-accent) 26%, transparent);
+  --stp-tile: 104px;
+  --stp-badge: 34px;
+  --stp-col-gap: 18px;
 
   background: transparent !important;
   padding-inline: 0 !important;
@@ -68,242 +70,247 @@ body .veloura-stp.veloura-stp > .container {
   }
 }
 
-.veloura-stp .stp__heading { margin-bottom: 34px; text-align: center; }
+/* ---------------------------------------------------------- the heading -- */
+.veloura-stp .stp__heading { margin-bottom: 36px; text-align: center; }
+.veloura-stp .stp__kicker {
+  display: block;
+  margin-bottom: 10px;
+  color: color-mix(in srgb, var(--stp-accent) 65%, var(--stp-text));
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+}
 .veloura-stp .stp__heading h2 { margin: 0 0 8px; font-size: 26px; font-weight: 900; color: var(--stp-title); }
 .veloura-stp .stp__heading p { margin: 0; font-size: 14px; opacity: .75; color: var(--stp-text); }
 
-@media (min-width: 768px) { .veloura-stp .stp__heading h2 { font-size: 30px; } }
+@media (min-width: 768px) { .veloura-stp .stp__heading h2 { font-size: 34px; } }
 
-/* ------------------------------------------------------------- the row -- */
+/* -------------------------------------------------------------- the row -- */
 .veloura-stp .stp__row {
   display: grid !important;
-  grid-template-columns: repeat(var(--stp-cols-mobile, 1), minmax(0, 1fr));
-  gap: 30px 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--stp-step-gap, 26px) var(--stp-col-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 @media (min-width: 768px) {
-  .veloura-stp .stp__row {
-    grid-template-columns: repeat(var(--stp-cols, 4), minmax(0, 1fr));
-    gap: 26px 18px;
-  }
+  .veloura-stp .stp__row { grid-template-columns: repeat(var(--stp-cols, 4), minmax(0, 1fr)); }
 }
 
 .veloura-stp .stp__step {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 14px;
-  text-align: center;
   color: var(--stp-text);
 }
 
-/* Text to the start edge when the merchant turns centring off — the circle
-   stays where it is, since the line has to pass through its middle. */
-.veloura-stp:not(.is-centered) .stp__step { text-align: start; }
-
-/* ------------------------------------------------------------ the line --
-   From this step's circle back to the one before it — never past the first,
-   and never drawn at all where the steps are not really neighbours. It fades
-   in rather than growing: a scale would need a different origin in each
-   direction, and this section is read right to left. The circle sits above it
-   with a background of its own, so the line disappears behind each one. */
-.veloura-stp.has-line .stp__step::after {
-  content: "";
-  position: absolute;
-  top: calc(var(--stp-dot) / 2 - 1px);
-  inset-inline-end: 50%;
-  width: calc(100% + 18px);
-  height: 2px;
-  background: var(--stp-line);
-  opacity: 0;
-  transition: opacity .7s ease calc(var(--i, 0) * .12s);
-}
-
-.veloura-stp.has-line .stp__step:first-child::after { content: none; }
-.veloura-stp.has-line.is-inview .stp__step::after { opacity: 1; }
-
-/* ----------------------------------------------------------- the phone --
-   A staircase: each step takes half the width and starts a row of its own, so
-   the blocks fall right, left, right, left down the page, close enough to read
-   as one path.
-
-   Between them is a single slanted dash that leaves the block above and runs
-   straight into the circle below it. A bracket was tried first and read as a
-   shape parked in the gap rather than a join; one diagonal, corner to corner
-   of the space between two blocks, is the line the eye actually follows.
-
-   It is drawn as a gradient inside that space instead of as a rotated bar: no
-   trigonometry, and it stretches to whatever the gap turns out to be. The two
-   sides need opposite diagonals, and since the sides alternate by parity the
-   directions are written physically here, mirrored once for English. */
-@media (max-width: 767px) {
-  /* The desktop row's own connector carries an extra class, so this has to
-     outweigh it rather than merely follow it. */
-  .veloura-stp.veloura-stp .stp__step::after { content: none !important; }
-
-  .veloura-stp .stp__row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 6px;
-    row-gap: var(--stp-step-gap, 18px);
-  }
-
-  .veloura-stp .stp__step {
-    grid-row: calc(var(--i) + 1);
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-  }
-
-  .veloura-stp .stp__step:nth-child(odd) { grid-column: 1; }
-  .veloura-stp .stp__step:nth-child(even) { grid-column: 2; }
-  .veloura-stp .stp__text p { max-width: none; font-size: 12.5px; line-height: 1.7; }
-
-  /* The join is a Z, not a shallow slope: a 45° leg out of the block above, a
-     flat run across, and a 45° leg down into the circle below. A single
-     straight diagonal between two blocks half a screen apart can only ever be
-     shallow — 45° over that distance would need a gap as tall as the row is
-     wide — so the angle is kept where it is seen, at the two ends.
-
-     Three gradients in one box, each sized to its own piece: the legs are
-     squares, which is what makes them exactly 45° whatever the gap. */
-  .veloura-stp.has-path .stp__step::before {
-    content: "";
-    position: absolute;
-    bottom: calc(100% - 4px);
-    width: 100%;
-    height: calc(var(--stp-step-gap, 18px) + 10px);
-    background-repeat: no-repeat;
-    background-size:
-      calc((var(--stp-step-gap, 18px) + 10px) / 2) calc((var(--stp-step-gap, 18px) + 10px) / 2),
-      calc(100% - var(--stp-step-gap, 18px) - 10px) 2.4px,
-      calc((var(--stp-step-gap, 18px) + 10px) / 2) calc((var(--stp-step-gap, 18px) + 10px) / 2);
-    opacity: 0;
-    transition: opacity .6s ease calc(var(--i, 0) * .12s);
-  }
-
-  .veloura-stp.has-path .stp__step:nth-child(odd)::before {
-    right: 50%;
-    background-image:
-      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
-      linear-gradient(var(--stp-line), var(--stp-line)),
-      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
-    background-position: left top, center center, right bottom;
-  }
-
-  .veloura-stp.has-path .stp__step:nth-child(even)::before {
-    left: 50%;
-    background-image:
-      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
-      linear-gradient(var(--stp-line), var(--stp-line)),
-      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
-    background-position: right top, center center, left bottom;
-  }
-
-  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(odd)::before {
-    right: auto; left: 50%;
-    background-image:
-      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
-      linear-gradient(var(--stp-line), var(--stp-line)),
-      linear-gradient(to bottom left, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
-    background-position: right top, center center, left bottom;
-  }
-
-  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(even)::before {
-    left: auto; right: 50%;
-    background-image:
-      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
-      linear-gradient(var(--stp-line), var(--stp-line)),
-      linear-gradient(to bottom right, transparent calc(50% - 1.2px), var(--stp-line) calc(50% - 1.2px), var(--stp-line) calc(50% + 1.2px), transparent calc(50% + 1.2px));
-    background-position: left top, center center, right bottom;
-  }
-
-  .veloura-stp.has-path .stp__step:first-child::before { content: none; }
-  .veloura-stp.has-path.is-inview .stp__step::before { opacity: 1; }
-
-  /* Each side arrives from its own side. */
-  .veloura-stp .stp__step:nth-child(odd) { transform: translate(-14px, 8px); }
-  .veloura-stp .stp__step:nth-child(even) { transform: translate(14px, 8px); }
-  .veloura-stp.is-inview .stp__step { transform: none; }
-
-  .veloura-stp { --stp-dot: 64px; --stp-badge: 22px; --stp-step-gap: 18px; }
-}
-
-/* ---------------------------------------------------------- the circle -- */
+/* ------------------------------------------------------------- the tile --
+   A rounded square holding the icon, with the number riding its outer top
+   corner — the two together are the thing the eye lands on, so everything else
+   stays quiet around them. */
 .veloura-stp .stp__dot {
   position: relative;
   z-index: 1;
   display: grid;
   place-items: center;
-  width: var(--stp-dot);
-  height: var(--stp-dot);
+  width: var(--stp-tile);
+  height: var(--stp-tile);
   flex: 0 0 auto;
-  border-radius: var(--stp-radius, 999px);
+  border-radius: var(--stp-radius, 26px);
   background: var(--stp-second);
   color: var(--step-color, var(--stp-accent));
-  transition: transform .35s ease, background-color .35s ease;
+  transition: transform .35s ease, box-shadow .35s ease, background-color .35s ease;
 }
 
-.veloura-stp .stp__dot i { font-size: calc(var(--stp-dot) * .38); line-height: 1; }
-.veloura-stp .stp__dot img { width: 52%; height: 52%; object-fit: contain; }
+.veloura-stp .stp__dot i { font-size: calc(var(--stp-tile) * .4); line-height: 1; }
+.veloura-stp .stp__dot img { width: 54%; height: 54%; object-fit: contain; }
 
 @media (hover: hover) and (pointer: fine) {
   .veloura-stp .stp__step:hover .stp__dot {
-    transform: translateY(-5px);
-    background: color-mix(in srgb, var(--step-color, var(--stp-accent)) 14%, var(--stp-second));
+    transform: translateY(-6px);
+    box-shadow: 0 16px 30px color-mix(in srgb, var(--step-color, var(--stp-accent)) 18%, transparent);
   }
 }
 
-/* The number rides the circle's edge instead of floating above the card. */
 .veloura-stp .stp__num {
   position: absolute;
-  top: -4px;
-  inset-inline-end: -4px;
+  top: calc(var(--stp-badge) / -2.6);
+  inset-inline-start: calc(var(--stp-badge) / -2.6);
   display: grid;
   place-items: center;
-  min-width: var(--stp-badge);
+  width: var(--stp-badge);
   height: var(--stp-badge);
-  padding-inline: 7px;
   border-radius: 999px;
+  border: 3px solid var(--stp-page);
   background: var(--step-color, var(--stp-accent));
   color: #fff;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--step-color, var(--stp-accent)) 35%, transparent);
 }
 
-/* ----------------------------------------------------------- the words -- */
-.veloura-stp .stp__text { display: flex; flex-direction: column; gap: 6px; }
+/* ------------------------------------------------------------- the words -- */
+.veloura-stp .stp__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .veloura-stp .stp__text h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--stp-title); }
-.veloura-stp .stp__text p { margin: 0; font-size: 13.5px; line-height: 1.8; opacity: .72; }
+.veloura-stp .stp__text p { margin: 0; font-size: 13px; line-height: 1.75; opacity: .72; }
 
+/* ====================================================== desktop: one row ==
+   Tile above, words beneath, and between every two tiles a hairline with a
+   chevron sitting in the middle of it — drawn only where the steps really are
+   neighbours, which is when they all fit a single row. */
 @media (min-width: 768px) {
+  .veloura-stp .stp__step {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .veloura-stp:not(.is-centered) .stp__step { text-align: start; }
+  .veloura-stp .stp__text { align-items: center; }
+  .veloura-stp:not(.is-centered) .stp__text { align-items: flex-start; }
   .veloura-stp .stp__text h3 { font-size: 17px; }
-  .veloura-stp .stp__text p { max-width: 34ch; margin-inline: auto; }
-  .veloura-stp:not(.is-centered) .stp__text p { margin-inline: 0; }
+  .veloura-stp .stp__text p { max-width: 30ch; }
+
+  .veloura-stp.has-line .stp__step::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--stp-tile) / 2 - 1px);
+    inset-inline-end: 50%;
+    width: calc(100% + var(--stp-col-gap));
+    height: 2px;
+    background: var(--stp-line);
+    opacity: 0;
+    transition: opacity .7s ease calc(var(--i, 0) * .12s);
+  }
+
+  /* The chevron: a corner of a square turned a quarter, so it points along the
+     reading direction without an image or a font behind it. */
+  .veloura-stp.has-line .stp__step::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--stp-tile) / 2 - 5px);
+    inset-inline-end: calc(100% + var(--stp-col-gap) / 2 - 5px);
+    width: 9px;
+    height: 9px;
+    /* Physical borders on purpose: the corner they make points up and to the
+       right, and the rotation that turns it along the reading direction is a
+       different one in each — 225° to point left in Arabic, 45° to point right
+       in English. Logical borders would flip the corner as well and the two
+       would cancel out. */
+    border-top: 2px solid var(--stp-line);
+    border-right: 2px solid var(--stp-line);
+    transform: rotate(225deg);
+    opacity: 0;
+    transition: opacity .7s ease calc(var(--i, 0) * .12s);
+  }
+
+  html[dir="ltr"] .veloura-stp.has-line .stp__step::before { transform: rotate(45deg); }
+
+  .veloura-stp.has-line .stp__step:first-child::after,
+  .veloura-stp.has-line .stp__step:first-child::before { content: none; }
+  .veloura-stp.has-line.is-inview .stp__step::after,
+  .veloura-stp.has-line.is-inview .stp__step::before { opacity: 1; }
+
+  .veloura-stp:not(.has-line) .stp__step::after,
+  .veloura-stp:not(.has-line) .stp__step::before { content: none; }
 }
 
-/* --------------------------------------------------------- the reveal --- */
+/* ======================================================= phone: a staircase ==
+   The tile keeps one edge and the words sit beside it, and the sides swap on
+   every step. Between them a diagonal runs from one tile's middle to the next
+   one's, with a small ring where it crosses the halfway mark — the same idea as
+   the desktop chevron, turned on its side. */
+@media (max-width: 767px) {
+  .veloura-stp { --stp-tile: 76px; --stp-badge: 28px; --stp-step-gap: 30px; }
+
+  .veloura-stp .stp__step:nth-child(even) { flex-direction: row-reverse; text-align: end; }
+  .veloura-stp .stp__step:nth-child(even) .stp__text { align-items: flex-end; }
+  .veloura-stp .stp__step:nth-child(even) .stp__num { inset-inline-start: auto; inset-inline-end: calc(var(--stp-badge) / -2.6); }
+
+  .veloura-stp.has-path .stp__step::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% - 6px);
+    inset-inline: calc(var(--stp-tile) / 2) calc(var(--stp-tile) / 2);
+    height: calc(var(--stp-step-gap, 30px) + 12px);
+    opacity: 0;
+    transition: opacity .6s ease calc(var(--i, 0) * .12s);
+  }
+
+  /* Odd steps carry their tile at the start edge, so the step above them has
+     its own at the other end: the diagonal falls one way, then the other. */
+  .veloura-stp.has-path .stp__step:nth-child(odd)::before {
+    background: linear-gradient(to bottom right,
+      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
+      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
+  }
+
+  .veloura-stp.has-path .stp__step:nth-child(even)::before {
+    background: linear-gradient(to bottom left,
+      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
+      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
+  }
+
+  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(odd)::before {
+    background: linear-gradient(to bottom left,
+      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
+      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
+  }
+
+  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(even)::before {
+    background: linear-gradient(to bottom right,
+      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
+      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
+  }
+
+  /* The ring sits on the crossing point and wears the page's own colour, so
+     the line stops at it instead of running through. */
+  .veloura-stp.has-path .stp__step::after {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + var(--stp-step-gap, 30px) / 2 - 5px);
+    left: 50%;
+    width: 11px;
+    height: 11px;
+    margin-inline-start: -5.5px;
+    border: 2px solid var(--stp-line);
+    border-radius: 999px;
+    background: var(--stp-page);
+    opacity: 0;
+    transition: opacity .6s ease calc(var(--i, 0) * .12s);
+  }
+
+  .veloura-stp.has-path .stp__step:first-child::before,
+  .veloura-stp.has-path .stp__step:first-child::after { content: none; }
+  .veloura-stp.has-path.is-inview .stp__step::before,
+  .veloura-stp.has-path.is-inview .stp__step::after { opacity: 1; }
+
+  .veloura-stp .stp__step:nth-child(odd) { transform: translate(-14px, 8px); }
+  .veloura-stp .stp__step:nth-child(even) { transform: translate(14px, 8px); }
+  .veloura-stp.is-inview .stp__step { transform: none; }
+}
+
+/* ---------------------------------------------------------- the reveal --- */
 .veloura-stp .stp__step {
   opacity: 0;
-  transform: translateY(16px);
   transition: opacity .6s ease calc(var(--i, 0) * .12s), transform .6s ease calc(var(--i, 0) * .12s);
 }
 
-.veloura-stp.is-inview .stp__step { opacity: 1; transform: none; }
+.veloura-stp.is-inview .stp__step { opacity: 1; }
 
 /* No script, no observer, no reveal — the section must still be readable. */
 .veloura-stp.no-js .stp__step { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .veloura-stp .stp__step,
-  .veloura-stp .stp__dot { transition: none; }
+  .veloura-stp .stp__step, .veloura-stp .stp__dot { transition: none; }
   .veloura-stp .stp__step { opacity: 1; transform: none; }
-  .veloura-stp.has-line .stp__step::after { opacity: 1; transition: none; }
+  .veloura-stp .stp__step::before,
+  .veloura-stp .stp__step::after { opacity: 1 !important; transition: none; }
 }
 
 /* ------------------------------------------------------------ the dark -- */
@@ -311,7 +318,8 @@ html.dark .veloura-stp, html body.dark .veloura-stp {
   --stp-title: #f8fafc;
   --stp-text: #cbd5e1;
   --stp-second: var(--veloura-dark-secondary-bg, #010612);
-  --stp-line: color-mix(in srgb, #ffffff 16%, transparent);
+  --stp-page: var(--veloura-dark-bg, #05070f);
+  --stp-line: color-mix(in srgb, #ffffff 20%, transparent);
 }
 
 html.dark .veloura-stp .stp__dot,
@@ -324,12 +332,11 @@ html body.dark .veloura-stp .stp__dot {
   {% if stp_radius_key.selected is defined %}{% set stp_radius_key = stp_radius_key.selected %}{% endif %}
   {% if stp_radius_key is iterable and stp_radius_key.value is not defined %}{% set stp_radius_key = stp_radius_key|first %}{% endif %}
   {% if stp_radius_key.value is defined %}{% set stp_radius_key = stp_radius_key.value %}{% endif %}
-  {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'round' %}{% endif %}
+  {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'medium' %}{% endif %}
   {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px'} %}
 
   {% set stp_items = component.veloura_steps_collection|default([]) %}
   {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
-  {% set stp_cols_mobile = component.veloura_steps_mobile_columns|default(1) %}
 
   {# The line is only honest while the steps really are neighbours: across one
      row on a desktop, and down a single column on a phone. #}
@@ -347,7 +354,7 @@ html body.dark .veloura-stp .stp__dot {
       {{ component.veloura_steps_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_steps_custom_classes }}"
     style="
-      --stp-radius: {{ stp_radius_map[stp_radius_key]|default('999px') }};
+      --stp-radius: {{ stp_radius_map[stp_radius_key]|default('20px') }};
       --stp-accent: {{ component.veloura_steps_accent_color|default('#004956') }};
       {# The merchant's colours are written as *-light properties, never as the
          ones the component paints with: an inline style outranks any rule, and
@@ -355,7 +362,6 @@ html body.dark .veloura-stp .stp__dot {
       --stp-title-light: {{ component.veloura_steps_title_color|default('#0f172a') }};
       --stp-text-light: {{ component.veloura_steps_text_color|default('#52606d') }};
       --stp-cols: {{ stp_cols }};
-      --stp-cols-mobile: {{ stp_cols_mobile }};
       {% if component.veloura_steps_custom_spacing %}--stp-gutter: {{ component.veloura_steps_spacing|default(0) }}px;{% endif %}
     "
   >
@@ -364,6 +370,7 @@ html body.dark .veloura-stp .stp__dot {
       {% if component.veloura_steps_title or component.veloura_steps_subtitle %}
         <div class="stp__heading veloura-component-title" data-veloura-section-heading>
           <div data-veloura-section-heading-text>
+            {% if component.veloura_steps_kicker %}<span class="stp__kicker">{{ component.veloura_steps_kicker }}</span>{% endif %}
             {% if component.veloura_steps_title %}<h2>{{ component.veloura_steps_title }}</h2>{% endif %}
             {% if component.veloura_steps_subtitle %}<p>{{ component.veloura_steps_subtitle }}</p>{% endif %}
           </div>

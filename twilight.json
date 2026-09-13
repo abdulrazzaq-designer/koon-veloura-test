@@ -16064,6 +16064,16 @@
           "icon": "sicon-list"
         },
         {
+          "id": "veloura_steps_kicker",
+          "type": "string",
+          "format": "text",
+          "label": "كلمة فوق العنوان (اختياري)",
+          "icon": "sicon-text",
+          "value": "",
+          "required": false,
+          "description": "تظهر بأحرف متباعدة فوق العنوان، مثل «HOW TO BUY»."
+        },
+        {
           "id": "veloura_steps_title",
           "type": "string",
           "format": "text",
