@@ -3580,6 +3580,19 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
   var dedupe = function () {
     document.querySelectorAll('[data-veloura-footer-social]').forEach(function (row) {
+      /* The theme builds its own cards from the native links; where it has,
+         the native row is the same accounts a second time — that is the pair of
+         identical groups standing side by side, not a duplicate account. */
+      var cards = row.querySelector('.veloura-footer-social-cards');
+
+      row.querySelectorAll('salla-social').forEach(function (native) {
+        if (cards && cards.querySelector('a[href]')) {
+          native.style.setProperty('display', 'none', 'important');
+        } else {
+          native.style.removeProperty('display');
+        }
+      });
+
       var seen = {};
 
       row.querySelectorAll('a[href]').forEach(function (link) {
@@ -3697,6 +3710,22 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     background-image: none !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
+  }
+
+  /* Every word in the drawer takes the dark palette's own text colour. Parts of
+     it were inheriting an accent meant for a light background and came out red
+     over the glass. Anything the merchant coloured on purpose — a badge, a
+     chip, a button with its own background — is left alone. */
+  html.dark body#app .mm-ocd.mm-ocd--open .mm-ocd__content :is(a, button, span, li, p, h1, h2, h3, h4, i, em, strong, small),
+  html body#app.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is(a, button, span, li, p, h1, h2, h3, h4, i, em, strong, small) {
+    color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+    -webkit-text-fill-color: currentColor !important;
+  }
+
+  html.dark body#app .mm-ocd.mm-ocd--open .mm-ocd__content :is([class*="badge"], [class*="chip"], [class*="count"], .s-badge),
+  html body#app.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is([class*="badge"], [class*="chip"], [class*="count"], .s-badge) {
+    color: inherit !important;
+    -webkit-text-fill-color: currentColor !important;
   }
 </style>
 
