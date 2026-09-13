@@ -3564,6 +3564,21 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vfab_top_after = _self.veloura_dm_value(theme.settings.get('veloura_fab_top_after_2026', 420), 420)|trim + 0 %}
   {% if vfab_top_after < 0 %}{% set vfab_top_after = 0 %}{% endif %}
 
+  {# How high to stand is worked out HERE, from the same numbers the bar itself
+     was built with, and written into the rule as a plain value.
+
+     --vbn-height and --vbn-bottom live in the nav's own inline style. A custom
+     property inherits downwards, and this bar is the nav's sibling, not its
+     child — so reading them from here only ever returned the fallbacks, and a
+     menu of any other height ended up wearing the buttons. #}
+  {% set vfab_nav = 0 %}
+  {% set vfab_width = '100%' %}
+
+  {% if vbn_enabled and not vbn_is_product_page %}
+    {% set vfab_nav = vbn_height + vbn_bottom %}
+    {% if vbn_position == 'pill' %}{% set vfab_width = 'min(430px, 100%)' %}{% endif %}
+  {% endif %}
+
   {# Each platform brings its own icon, colour and the shape its link takes. #}
   {% set vfab_map = {
     'whatsapp':  {'icon': 'sicon-whatsapp', 'color': '#25D366', 'label': 'واتساب',   'prefix': 'https://wa.me/'},
@@ -3591,7 +3606,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab-bar {
       position: fixed;
       inset-inline: 0;
-      bottom: calc(18px + var(--vfab-nav, 0px) + env(safe-area-inset-bottom, 0px));
+      bottom: calc({{ 18 + vfab_nav }}px + env(safe-area-inset-bottom, 0px));
       z-index: 2147482000;
       display: flex;
       justify-content: center;
@@ -3599,13 +3614,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       pointer-events: none;
     }
 
-    body.veloura-bottom-nav-enabled .veloura-fab-bar { --vfab-nav: calc(var(--vbn-height, 56px) + var(--vbn-bottom, 0px)); }
-
     .veloura-fab-bar__inner {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      width: min(430px, 100%);
+      /* The bar's own width, so the two buttons sit over its two ends. */
+      width: {{ vfab_width }};
     }
 
     /* There is no bottom bar on a laptop to stand on, so the buttons take the
