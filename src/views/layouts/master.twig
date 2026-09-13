@@ -3534,6 +3534,98 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 
 {# ==========================================================================
+   الفوتر: منصة واحدة مرة واحدة (فيلورا)
+
+   The same account entered twice in the dashboard — with and without the www,
+   or with a trailing slash — comes back from <salla-social> as two links, and
+   the footer showed both side by side. The de-duplication lives in the bundled
+   script as well, but that goes through a build and a CDN; this runs the
+   moment the Twig is published.
+
+   Nothing is removed: the extra link is hidden, so if Salla re-renders the row
+   the original markup is still whole underneath.
+   ========================================================================== #}
+<script data-cfasync="false" id="veloura-footer-social-dedupe-2026">
+(function () {
+  var PLATFORMS = [
+    ['whatsapp', /wa\.me|whatsapp|واتساب/],
+    ['snapchat', /snapchat|snap\.com|سناب/],
+    ['instagram', /instagram|انستقرام|انستغرام/],
+    ['tiktok', /tiktok|تيك/],
+    ['twitter', /twitter\.com|x\.com|إكس/],
+    ['telegram', /t\.me|telegram|تلجرام|تيليجرام/],
+    ['youtube', /youtube|youtu\.be|يوتيوب/],
+    ['facebook', /facebook|fb\.com|فيسبوك/],
+    ['pinterest', /pinterest/],
+    ['linkedin', /linkedin/],
+    ['email', /mailto:/],
+    ['phone', /tel:/]
+  ];
+
+  var platformOf = function (link) {
+    var haystack = [
+      link.getAttribute('href') || '',
+      link.getAttribute('aria-label') || '',
+      link.getAttribute('title') || '',
+      link.className || '',
+      (link.innerHTML || '').slice(0, 400)
+    ].join(' ').toLowerCase();
+
+    for (var i = 0; i < PLATFORMS.length; i++) {
+      if (PLATFORMS[i][1].test(haystack)) return PLATFORMS[i][0];
+    }
+
+    return '';
+  };
+
+  var dedupe = function () {
+    document.querySelectorAll('[data-veloura-footer-social]').forEach(function (row) {
+      var seen = {};
+
+      row.querySelectorAll('a[href]').forEach(function (link) {
+        var platform = platformOf(link);
+        if (!platform) return;
+
+        /* The card the theme builds and the native link it was built from are
+           the same account twice over; only their own row is compared. */
+        var card = link.closest('.veloura-footer-social-card') || link;
+        var host = card.closest('.veloura-footer-social-cards') ? 'cards' : 'native';
+        var key = host + ':' + platform;
+
+        if (!seen[key]) {
+          seen[key] = true;
+          card.removeAttribute('data-veloura-dupe');
+          return;
+        }
+
+        card.setAttribute('data-veloura-dupe', '1');
+        card.style.setProperty('display', 'none', 'important');
+      });
+    });
+  };
+
+  /* <salla-social> fills itself in after the page, and the theme's own footer
+     script rebuilds the row on top of that — so this is run again a few times
+     rather than once, and then left alone. */
+  var runs = 0;
+
+  var schedule = function () {
+    dedupe();
+    if (++runs > 6) return;
+    setTimeout(schedule, runs * 600);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedule);
+  } else {
+    schedule();
+  }
+
+  window.addEventListener('load', dedupe);
+})();
+</script>
+
+{# ==========================================================================
    القائمة الجانبية: الزجاج يبقى زجاجًا في الوضع الداكن (فيلورا)
 
    The dark palette was winning over the glass: a later rule painted the
@@ -3548,9 +3640,16 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    lists on top of it are painted solid.
    ========================================================================== #}
 <style id="veloura-side-menu-dark-glass-2026">
-  html.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
-  html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
-  html.veloura-side-cats-glass body.dark .mm-ocd.mm-ocd--open .mm-ocd__content {
+  /* body#app is the point of this block.
+
+     The dark contract is injected at runtime as the LAST element of <body>,
+     and re-appended whenever something else is added after it — so no rule
+     written here can ever come later than it, and matching its weight is not
+     enough. The id lifts these selectors above anything built from classes,
+     whichever version of that contract the store happens to be running. */
+  html.dark.veloura-side-cats-glass body#app .mm-ocd.mm-ocd--open .mm-ocd__content,
+  html.dark body#app.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+  html.veloura-side-cats-glass body#app.dark .mm-ocd.mm-ocd--open .mm-ocd__content {
     --veloura-side-glass-source: var(--veloura-dark-secondary-bg, #010612);
     --veloura-side-glass-tint: color-mix(in srgb, var(--veloura-side-glass-source) 94%, #ffffff 6%);
     --veloura-side-glass-surface: color-mix(in srgb, var(--veloura-side-glass-tint) 60%, transparent);
@@ -3572,25 +3671,26 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       inset 0 1px 0 rgba(255, 255, 255, .018) !important;
   }
 
-  html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content :is(
+  /* A blurred surface shows nothing through lists painted solid on top of it. */
+  html.dark.veloura-side-cats-glass body#app .mm-ocd.mm-ocd--open .mm-ocd__content :is(
     #mobile-menu,
     .mm-spn,
     .mm-spn ul,
     .mm-spn li,
     .main-menu,
     .veloura-side-menu-panel,
-    .veloura-side-menu-footer,
-    .veloura-side-menu-header
+    .veloura-side-menu-header,
+    .veloura-side-menu-footer
   ),
-  html.veloura-side-cats-glass body.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is(
+  html.veloura-side-cats-glass body#app.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is(
     #mobile-menu,
     .mm-spn,
     .mm-spn ul,
     .mm-spn li,
     .main-menu,
     .veloura-side-menu-panel,
-    .veloura-side-menu-footer,
-    .veloura-side-menu-header
+    .veloura-side-menu-header,
+    .veloura-side-menu-footer
   ) {
     background: transparent !important;
     background-color: transparent !important;
