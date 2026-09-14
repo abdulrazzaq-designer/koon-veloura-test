@@ -1,4 +1,12 @@
 {# VELOURA HOME TAB ASSIGNMENT START #}
+{# الحواف: رقم بالبيكسل من شريط تمرير، مع إبقاء المفاتيح القديمة مفهومة. #}
+{% set sf_radius_key = component.veloura_image_radius|default('') %}
+{% if sf_radius_key.selected is defined %}{% set sf_radius_key = sf_radius_key.selected %}{% endif %}
+{% if sf_radius_key is iterable and sf_radius_key.value is not defined %}{% set sf_radius_key = sf_radius_key|first %}{% endif %}
+{% if sf_radius_key.value is defined %}{% set sf_radius_key = sf_radius_key.value %}{% endif %}
+{% set sf_radius_map = {'sharp':'0px','soft':'8px','medium':'16px','large':'28px','round':'999px','40':'999px'} %}
+{% set sf_radius_px = sf_radius_map[sf_radius_key]|default((sf_radius_key|trim == '' ? '18' : sf_radius_key) ~ 'px') %}
+
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
 {% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
@@ -32,7 +40,7 @@
     --veloura-icon-width: {{ component.veloura_feature_image_width|default(70) }}px;
     --veloura-icon-height: {{ component.veloura_feature_image_height and component.veloura_feature_image_height > 0 ? component.veloura_feature_image_height : 70 }}px;
     --veloura-custom-spacing: {{ component.veloura_enable_custom_spacing ? component.veloura_custom_spacing|default(0) : 0 }}px;
-    --veloura-radius: {{ component.veloura_image_radius == 'sharp' ? '0px' : component.veloura_image_radius == 'soft' ? '8px' : component.veloura_image_radius == 'medium' ? '16px' : component.veloura_image_radius == 'large' ? '28px' : component.veloura_image_radius == 'round' ? '999px' : '18px' }};
+    --veloura-radius: {{ sf_radius_px }};
   "
 >
 

@@ -9,7 +9,8 @@
   'soft': '8px',
   'medium': '16px',
   'large': '28px',
-  'round': '999px'
+  'round': '999px',
+  '40': '999px'
 } %}
 
 {% set h_spacing = component.h_spacing|default(0) %}
@@ -19,7 +20,7 @@
 
 {% set effect = component.animated_transition_type|default('slide') %}
 {% set safe_effect = effect == 'cards' ? 'slide' : effect %}
-{% set animated_radius = radius_map[component.animated_image_radius|default('sharp')]|default('0px') %}
+{% set animated_radius = radius_map[component.animated_image_radius|default('sharp')]|default((component.animated_image_radius|default('sharp')|trim == '' ? '0' : component.animated_image_radius|default('sharp')) ~ 'px') %}
 {% set is_full = component.animated_full_width ? true : false %}
 {% set has_mobile_spacing = component.use_h_spacing and not is_full ? true : false %}
 
@@ -50,23 +51,32 @@
   pointer-events: none;
 }
 
-.animated-banners__content.is-center { align-items: center; text-align: center; }
-.animated-banners__content.is-right { align-items: flex-start; }
+/* مكان النصوص: يمين أو منتصف أو يسار — فيزيائي، فما يتغير مع اتجاه المتجر. */
+.animated-banners__content.is-pos-right { align-items: flex-start; text-align: right; }
+.animated-banners__content.is-pos-left { align-items: flex-end; text-align: left; }
+.animated-banners__content.is-pos-center { align-items: center; text-align: center; }
 
-/* تعتيم خفيف تحت النص فقط — وما ينزل إلا إذا كان في نص أصلاً */
+html[dir="ltr"] .animated-banners__content.is-pos-right { align-items: flex-end; }
+html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start; }
+
+/* تعتيم خفيف تحت النص فقط — وما ينزل إلا إذا كان في نص أصلاً، ومن الجهة
+   اللي فيها النص. */
 .animated-banners__content.has-content::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
+}
+
+.animated-banners__content.has-content.is-pos-right::before {
   background: linear-gradient(to left, rgba(0, 0, 0, .62), rgba(0, 0, 0, .18) 58%, rgba(0, 0, 0, 0) 82%);
 }
 
-html[dir="ltr"] .animated-banners__content.has-content::before {
+.animated-banners__content.has-content.is-pos-left::before {
   background: linear-gradient(to right, rgba(0, 0, 0, .62), rgba(0, 0, 0, .18) 58%, rgba(0, 0, 0, 0) 82%);
 }
 
-.animated-banners__content.has-content.is-center::before {
+.animated-banners__content.has-content.is-pos-center::before {
   background: linear-gradient(to top, rgba(0, 0, 0, .55), rgba(0, 0, 0, .22) 55%, rgba(0, 0, 0, .45));
 }
 
@@ -191,7 +201,109 @@ html[dir="ltr"] .animated-banners__content.has-content::before {
 @media (max-width: 430px) {
   .animated-banners__content p { display: none; }
 }
+
+/* ==========================================================================
+   تخطيط «بنر كبير + بنرين جانبيين»
+
+   البنر الأول يأخذ الثلثين، والاثنان بعده يتقاسمان الثلث الباقي فوق بعضهما.
+   ارتفاع الصف يحدده البنر الكبير بنسبته الطبيعية، والصغيران يتمددان عليه —
+   فما في ارتفاع مفروض بالقوة على صور ما نعرف مقاساتها.
+   ========================================================================== */
+.animated-banners__feature { display: grid; gap: var(--ab-gap, 14px); }
+
+.animated-banners__row {
+  display: grid;
+  gap: var(--ab-gap, 14px);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.animated-banners__side { display: grid; gap: var(--ab-gap, 14px); grid-template-columns: minmax(0, 1fr); }
+
+@media (min-width: 1024px) {
+  .animated-banners__row.has-side { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  .animated-banners__side { grid-auto-rows: 1fr; }
+
+  .animated-banners__side .animated-banners__card,
+  .animated-banners__side picture {
+    height: 100%;
+  }
+
+  .animated-banners__side img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 1023px) {
+  .animated-banners__side { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .animated-banners__side:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+}
+
+.animated-banners__feature .animated-banners__card { margin-inline: 0; }
 </style>
+
+{# البطاقة الواحدة في مكان واحد: يستعملها الشريط المتحرك والتخطيط الثابت معاً،
+   فأي تعديل عليها يصيب الاثنين. #}
+{% macro ab_card(banner) %}
+  {% set image_src = banner.banner_image %}
+  {% if banner.use_image_url and banner.image_url %}{% set image_src = banner.image_url %}{% endif %}
+
+  {% set mobile_image = banner.banner_image_mobile ?: image_src %}
+  {% if banner.use_mobile_image_url and banner.mobile_image_url %}{% set mobile_image = banner.mobile_image_url %}{% endif %}
+
+  {% set banner_link = banner.url ?: '#' %}
+
+  {# مكان النصوص: الخيار الجديد، ومع المتاجر القديمة يرجع لمفتاح التوسيط. #}
+  {% set tpos = banner.text_position|default('') %}
+  {% if tpos.selected is defined %}{% set tpos = tpos.selected %}{% endif %}
+  {% if tpos is iterable and tpos.value is not defined %}{% set tpos = tpos|first %}{% endif %}
+  {% if tpos.value is defined %}{% set tpos = tpos.value %}{% endif %}
+  {% if tpos not in ['right', 'center', 'left'] %}{% set tpos = banner.text_center ? 'center' : 'right' %}{% endif %}
+
+  {% set has_overlay = banner.banner_title or banner.banner_subtitle or banner.button_text or (banner.discount_enable and banner.discount_end_date) %}
+
+  {% if image_src %}
+    <a href="{{ banner_link }}" class="animated-banners__card">
+      <picture>
+        <source media="(max-width: 767px)" srcset="{{ mobile_image }}">
+        <img src="{{ image_src }}" alt="{{ banner.banner_title ?: 'banner' }}" loading="lazy">
+      </picture>
+
+      <div class="animated-banners__content is-pos-{{ tpos }} {{ has_overlay ? 'has-content' : 'is-empty' }}">
+        {% if banner.banner_title %}
+          <h2 style="color: {{ banner.banner_title_color|default('#ffffff') }};">{{ banner.banner_title|raw }}</h2>
+        {% endif %}
+
+        {% if banner.banner_subtitle %}
+          <p style="color: {{ banner.banner_subtitle_color|default('#ffffff') }};">{{ banner.banner_subtitle|raw }}</p>
+        {% endif %}
+
+        {% if banner.discount_enable and banner.discount_end_date %}
+          <div class="animated-banners__countdown" data-countdown="{{ banner.discount_end_date }}">
+            <div><strong data-days>0</strong><span>يوم</span></div>
+            <div><strong data-hours>0</strong><span>ساعة</span></div>
+            <div><strong data-minutes>0</strong><span>دقيقة</span></div>
+            <div><strong data-seconds>0</strong><span>ثانية</span></div>
+          </div>
+        {% endif %}
+
+        {% if banner.button_text %}
+          <span class="animated-banners__button {{ banner.button_no_bg ? 'is-outline' : '' }} {{ banner.button_rounded ? 'is-rounded' : '' }} {{ banner.button_icon_reverse ? 'is-reverse' : '' }}">
+            {% if not banner.button_hide_icon %}<i class="{{ banner.button_icon|default('sicon-arrow-left') }}"></i>{% endif %}
+            {{ banner.button_text }}
+          </span>
+        {% endif %}
+      </div>
+    </a>
+  {% endif %}
+{% endmacro %}
+
+{# شكل العرض على اللابتوب: شريط متحرك، أو بنر كبير بالثلثين وبنرين في الثلث. #}
+{% set ab_layout = component.animated_desktop_layout|default('slider') %}
+{% if ab_layout.selected is defined %}{% set ab_layout = ab_layout.selected %}{% endif %}
+{% if ab_layout is iterable and ab_layout.value is not defined %}{% set ab_layout = ab_layout|first %}{% endif %}
+{% if ab_layout.value is defined %}{% set ab_layout = ab_layout.value %}{% endif %}
+{% if ab_layout not in ['slider', 'feature'] %}{% set ab_layout = 'slider' %}{% endif %}
 
 {% if component.animated_banners|length > 0 %}
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
@@ -200,100 +312,63 @@ html[dir="ltr"] .animated-banners__content.has-content::before {
     animated-banners
     {{ is_full ? 'full-banner is-full-width-desktop' : '' }}
     {{ has_mobile_spacing ? 'has-mobile-spacing' : '' }}
-    {{ component.animated_transition_type in ['cube', 'flip'] ? 'has-3d-effect' : '' }}
+    {{ ab_layout == 'feature' ? 'is-feature-layout' : '' }}
+    {{ ab_layout != 'feature' and component.animated_transition_type in ['cube', 'flip'] ? 'has-3d-effect' : '' }}
   "
   style="
     --banner-margin: {{ has_mobile_spacing ? h_spacing : 0 }}px;
     --animated-radius: {{ animated_radius }};
+    --ab-gap: 14px;
   "
 >
   <div class="{{ is_full ? 'animated-banners__container is-full-width' : 'container animated-banners__container' }}">
-    <salla-slider
-      class="animated-banners__slider {{ is_full ? 'fullwidth-slider' : '' }}"
-      type="{{ is_full ? 'fullwidth' : 'slider' }}"
-      id="animated-banners-{{ position }}"
-      {% if component.animated_hide_arrows_desktop %}show-controls="false"{% endif %}
-      {% if not component.animated_hide_dots %}pagination{% endif %}
-      {% if component.animated_autoplay %}auto-play{% endif %}
-      static-when-single
-      slider-config='{
-        "effect": "{{ effect }}",
-        "loop": {{ effect == "cards" ? "false" : (component.animated_loop ? "true" : "false") }},
-        "speed": 800,
-        "autoplay": {{ component.animated_autoplay ? "{\"delay\":2500,\"disableOnInteraction\":false}" : "false" }},
-        "cardsEffect": {
-          "slideShadows": true,
-          "perSlideOffset": 12,
-          "perSlideRotate": 3
-        }
-      }'
-    >
-      <div slot="items">
-        {% for banner in component.animated_banners %}
-          {% set image_src = banner.banner_image %}
-          {% if banner.use_image_url and banner.image_url %}
-            {% set image_src = banner.image_url %}
-          {% endif %}
 
-          {% set mobile_image = banner.banner_image_mobile ?: image_src %}
-          {% if banner.use_mobile_image_url and banner.mobile_image_url %}
-            {% set mobile_image = banner.mobile_image_url %}
-          {% endif %}
+    {% if ab_layout == 'feature' %}
+      {# كل ثلاثة بنرات صف: الأول بالثلثين، والاثنان بعده فوق بعضهما في الثلث.
+         الصف الناقص يتصرف من نفسه — بنر واحد يأخذ العرض كله. #}
+      <div class="animated-banners__feature">
+        {% for group in component.animated_banners|batch(3) %}
+          <div class="animated-banners__row {{ group|length > 1 ? 'has-side' : '' }}">
+            <div class="animated-banners__main">{{ _self.ab_card(group[0]) }}</div>
 
-          {% set banner_link = banner.url ?: '#' %}
-
-          {% if image_src %}
-            <div class="swiper-slide animated-banners__slide">
-              <a href="{{ banner_link }}" class="animated-banners__card">
-                <picture>
-                  <source media="(max-width: 767px)" srcset="{{ mobile_image }}">
-                  <img src="{{ image_src }}" alt="{{ banner.banner_title ?: 'banner' }}" loading="lazy">
-                </picture>
-
-                {% set has_overlay = banner.banner_title or banner.banner_subtitle or banner.button_text or (banner.discount_enable and banner.discount_end_date) %}
-                <div class="animated-banners__content {{ banner.text_center ? 'is-center' : 'is-right' }} {{ has_overlay ? 'has-content' : 'is-empty' }}">
-                  {% if banner.banner_title %}
-                    <h2 style="color: {{ banner.banner_title_color|default('#ffffff') }};">
-                      {{ banner.banner_title|raw }}
-                    </h2>
-                  {% endif %}
-
-                  {% if banner.banner_subtitle %}
-                    <p style="color: {{ banner.banner_subtitle_color|default('#ffffff') }};">
-                      {{ banner.banner_subtitle|raw }}
-                    </p>
-                  {% endif %}
-
-                  {% if banner.discount_enable and banner.discount_end_date %}
-                    <div class="animated-banners__countdown" data-countdown="{{ banner.discount_end_date }}">
-                      <div><strong data-days>0</strong><span>يوم</span></div>
-                      <div><strong data-hours>0</strong><span>ساعة</span></div>
-                      <div><strong data-minutes>0</strong><span>دقيقة</span></div>
-                      <div><strong data-seconds>0</strong><span>ثانية</span></div>
-                    </div>
-                  {% endif %}
-
-                  {% if banner.button_text %}
-                    <span class="animated-banners__button {{ banner.button_no_bg ? 'is-outline' : '' }} {{ banner.button_rounded ? 'is-rounded' : '' }} {{ banner.button_icon_reverse ? 'is-reverse' : '' }}">
-                      {% if not banner.button_hide_icon %}
-                        <i class="{{ banner.button_icon|default('sicon-arrow-left') }}"></i>
-                      {% endif %}
-                      {{ banner.button_text }}
-                    </span>
-                  {% endif %}
-                </div>
-
-                {% if banner.discount.enable and banner.discount.end_date %}
-                  <div class="animated-banners__discount">
-                    {{ banner.discount.end_date }}
-                  </div>
-                {% endif %}
-              </a>
-            </div>
-          {% endif %}
+            {% if group|length > 1 %}
+              <div class="animated-banners__side">
+                {% if group[1] is defined %}<div>{{ _self.ab_card(group[1]) }}</div>{% endif %}
+                {% if group[2] is defined %}<div>{{ _self.ab_card(group[2]) }}</div>{% endif %}
+              </div>
+            {% endif %}
+          </div>
         {% endfor %}
       </div>
-    </salla-slider>
+    {% else %}
+      <salla-slider
+        class="animated-banners__slider {{ is_full ? 'fullwidth-slider' : '' }}"
+        type="{{ is_full ? 'fullwidth' : 'slider' }}"
+        id="animated-banners-{{ position }}"
+        {% if component.animated_hide_arrows_desktop %}show-controls="false"{% endif %}
+        {% if not component.animated_hide_dots %}pagination{% endif %}
+        {% if component.animated_autoplay %}auto-play{% endif %}
+        static-when-single
+        slider-config='{
+          "effect": "{{ effect }}",
+          "loop": {{ effect == "cards" ? "false" : (component.animated_loop ? "true" : "false") }},
+          "speed": 800,
+          "autoplay": {{ component.animated_autoplay ? "{\"delay\":2500,\"disableOnInteraction\":false}" : "false" }},
+          "cardsEffect": {
+            "slideShadows": true,
+            "perSlideOffset": 12,
+            "perSlideRotate": 3
+          }
+        }'
+      >
+        <div slot="items">
+          {% for banner in component.animated_banners %}
+            <div class="swiper-slide animated-banners__slide">{{ _self.ab_card(banner) }}</div>
+          {% endfor %}
+        </div>
+      </salla-slider>
+    {% endif %}
+
   </div>
 </section>
 {% endif %}

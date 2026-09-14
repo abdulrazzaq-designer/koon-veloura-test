@@ -117,6 +117,10 @@
     {% set vcat_image_shape = _self.veloura_select(theme.settings.get('veloura_category_image_shape_2026', 'square'), 'square')|trim %}
     {% set vcat_image_fit = _self.veloura_select(theme.settings.get('veloura_category_image_fit_2026', 'cover'), 'cover')|trim %}
     {% set vcat_banner_radius = _self.veloura_select(theme.settings.get('veloura_cat_banner_radius_2026', 'medium'), 'medium')|trim %}
+{# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
+{% set vcat_banner_radius_px_map = {'sharp':'0px','soft':'10px','medium':'16px','large':'24px','round':'999px','pill':'999px','xl':'30px','40':'999px'} %}
+{% set vcat_banner_radius_px = vcat_banner_radius_px_map[vcat_banner_radius]|default((vcat_banner_radius|trim == '' ? '16' : vcat_banner_radius) ~ 'px') %}
+
 
     {% set vcat_mobile_cols = _self.veloura_select(theme.settings.get('veloura_category_mobile_cols_2026', 4), 4)|trim + 0 %}
     {% set vcat_desktop_cols = _self.veloura_select(theme.settings.get('veloura_category_desktop_cols_2026', 8), 8)|trim + 0 %}
@@ -140,9 +144,10 @@
         'soft': '10px',
         'medium': '16px',
         'large': '24px',
-        'round': '999px'
+        'round': '999px',
+        '40': '999px'
     } %}
-    {% set vcat_image_radius_px = vcat_image_radius_map[vcat_image_radius]|default('999px') %}
+    {% set vcat_image_radius_px = vcat_image_radius_map[vcat_image_radius]|default((vcat_image_radius|trim == '' ? '40' : vcat_image_radius) ~ 'px') %}
 
     {% set vcat_page_images_allowed = vcat_images_location != 'sidebar_only' %}
     {% set vcat_render_images = vcat_show_images and vcat_page_images_allowed %}
@@ -282,8 +287,10 @@
         {% endif %}
 
         {% if vcat_matched_banners|length %}
+            <style>html body .veloura-category-banners :is(.veloura-category-banner, .veloura-category-banner__image) { border-radius: var(--veloura-cat-banner-radius, 16px) !important; }</style>
             <div
                 class="veloura-category-banners veloura-category-banners--{{ vcat_banner_radius }}"
+                style="--veloura-cat-banner-radius:{{ vcat_banner_radius_px }}"
                 data-veloura-category-banners
                 data-category-id="{{ vcat_current_id|default('') }}"
             >

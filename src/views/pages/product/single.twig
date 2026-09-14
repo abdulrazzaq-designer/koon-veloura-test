@@ -333,9 +333,10 @@
       'soft': '10px',
       'medium': '16px',
       'large': '28px',
-      'xl': '36px'
+      'xl': '36px',
+      '40': '999px'
     } %}
-    {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default('28px') %}
+    {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default((vpp_general_radius_key|trim == '' ? '28' : vpp_general_radius_key) ~ 'px') %}
 
 {# VELOURA PRODUCT DATA V98 CRITICAL START #}
 <style id="veloura-product-data-v98-critical">

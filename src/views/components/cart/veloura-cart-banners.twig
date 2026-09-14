@@ -4,15 +4,21 @@
   {% set vb_title = theme.settings.get('veloura_cart_banners_title_2026') %}
   {% set vb_position = theme.settings.get('veloura_cart_banners_position_2026')|default('after_products') %}
   {% set vb_radius = theme.settings.get('veloura_cart_banners_radius_2026')|default('medium') %}
+{# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
+{% set vb_radius_px_map = {'sharp':'0px','soft':'8px','medium':'14px','large':'22px','round':'999px','pill':'999px','xl':'30px','40':'999px'} %}
+{% set vb_radius_px = vb_radius_px_map[vb_radius]|default((vb_radius|trim == '' ? '16' : vb_radius) ~ 'px') %}
+
   {% set vb_gap = theme.settings.get('veloura_cart_banners_gap_2026')|default(14) %}
   {% set vb_columns = theme.settings.get('veloura_cart_banners_columns_2026')|default(2) %}
   {% set vb_min = theme.settings.get('veloura_cart_banners_min_total_2026')|default(0) %}
+  <style>html body .veloura-cart-banners .veloura-cart-banners__item,
+  html body .veloura-cart-banners .veloura-cart-banners__item img { border-radius: var(--veloura-cart-banner-radius, 14px) !important; }</style>
   <section
     class="veloura-cart-banners"
     data-veloura-cart-banners
     data-position="{{ vb_position }}"
     data-min-total="{{ vb_min }}"
-    style="--veloura-cart-banner-gap:{{ vb_gap }}px;--veloura-cart-banner-columns:{{ vb_columns }}"
+    style="--veloura-cart-banner-gap:{{ vb_gap }}px;--veloura-cart-banner-columns:{{ vb_columns }};--veloura-cart-banner-radius:{{ vb_radius_px }}"
   >
     {% if vb_title %}<h2 class="veloura-cart-banners__title">{{ vb_title }}</h2>{% endif %}
     <div class="veloura-cart-banners__grid veloura-cart-banners__grid--{{ vb_radius }}">

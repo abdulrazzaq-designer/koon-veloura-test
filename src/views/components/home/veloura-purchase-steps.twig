@@ -29,7 +29,7 @@
   {% if stp_radius_key is iterable and stp_radius_key.value is not defined %}{% set stp_radius_key = stp_radius_key|first %}{% endif %}
   {% if stp_radius_key.value is defined %}{% set stp_radius_key = stp_radius_key.value %}{% endif %}
   {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'medium' %}{% endif %}
-  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px'} %}
+  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px','40':'999px'} %}
 
   {% set stp_items = component.veloura_steps_collection|default([]) %}
   {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
@@ -451,7 +451,7 @@ html body.dark .veloura-stp .stp__dot {
       {{ component.veloura_steps_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_steps_custom_classes }}"
     style="
-      --stp-radius: {{ stp_radius_map[stp_radius_key]|default('20px') }};
+      --stp-radius: {{ stp_radius_map[stp_radius_key]|default((stp_radius_key|trim == '' ? '20' : stp_radius_key) ~ 'px') }};
       --stp-accent: {{ component.veloura_steps_accent_color|default('#004956') }};
       {# The merchant's colours are written as *-light properties, never as the
          ones the component paints with: an inline style outranks any rule, and

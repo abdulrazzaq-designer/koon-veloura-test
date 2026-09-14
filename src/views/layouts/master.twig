@@ -116,15 +116,18 @@
 
 {% set vglobal_radius_key = vglobal_radius_key|trim %}
 
+{# القيمة صارت رقماً بالبيكسل من شريط تمرير. المفاتيح القديمة تبقى مفهومة حتى
+   لا ينكسر أي متجر محفوظ عليه إعداد قديم، و«40» تعني دائري بالكامل. #}
 {% set vglobal_radius_map = {
   'sharp': '0px',
   'soft': '10px',
   'medium': '16px',
   'large': '28px',
-  'xl': '36px'
+  'xl': '36px',
+  '40': '999px'
 } %}
 
-{% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default('28px') %}
+{% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default((vglobal_radius_key|trim == '' ? '28' : vglobal_radius_key) ~ 'px') %}
 
 <!DOCTYPE html>
 <html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}" class="{{ vdm_initial_dark ? 'dark' : '' }}" data-theme="{{ vdm_initial_dark ? 'dark' : 'light' }}" data-veloura-dark-enabled="{{ vdm_enabled ? 'true' : 'false' }}" data-veloura-dark-mode="{{ vdm_mode }}">
@@ -386,7 +389,8 @@
       'soft': '8px',
       'medium': '16px',
       'large': '28px',
-      'round': '999px'
+      'round': '999px',
+      '40': '999px'
     } %}
 
     {# لون وخلفية البطاقة #}
@@ -574,7 +578,8 @@
       'soft': '8px',
       'medium': '14px',
       'large': '22px',
-      'pill': '999px'
+      'pill': '999px',
+      '40': '999px'
     } %}
     
     {% set vpc_overlay_offset = theme.settings.get('veloura_pc_overlay_offset_2026', '14') %}
@@ -1015,7 +1020,8 @@
   'soft': '14px',
   'medium': '20px',
   'large': '28px',
-  'pill': '999px'
+  'pill': '999px',
+  '40': '999px'
 } %}
 
 {% set vbn_show_labels_raw = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_show_labels_2026', true), true)|trim %}
@@ -1133,8 +1139,8 @@
 
         {% if vpc_enabled %}
           --veloura-product-card-bg: {{ vpc_card_bg }};
-          --veloura-product-card-radius: {{ vpc_radius_map[vpc_card_radius_key]|default('16px') }};
-          --veloura-product-image-radius: {{ vpc_radius_map[vpc_image_radius_key]|default('16px') }};
+          --veloura-product-card-radius: {{ vpc_radius_map[vpc_card_radius_key]|default((vpc_card_radius_key|trim == '' ? '16' : vpc_card_radius_key) ~ 'px') }};
+          --veloura-product-image-radius: {{ vpc_radius_map[vpc_image_radius_key]|default((vpc_image_radius_key|trim == '' ? '16' : vpc_image_radius_key) ~ 'px') }};
           --veloura-product-image-padding-top: {{ vpc_image_padding_top }}px;
           --veloura-product-image-padding-x: {{ vpc_image_padding_x }}px;
           --veloura-product-image-outside-offset: {{ vpc_image_outside_offset }}px;
@@ -1142,7 +1148,7 @@
           --veloura-product-title-size: {{ vpc_title_size_map[vpc_title_size_key]|default('15px') }};
           --veloura-product-price-size: {{ vpc_price_size_map[vpc_price_size_key]|default('15px') }};
 
-          --veloura-product-button-radius: {{ vpc_radius_map[vpc_button_radius_key]|default('16px') }};
+          --veloura-product-button-radius: {{ vpc_radius_map[vpc_button_radius_key]|default((vpc_button_radius_key|trim == '' ? '16' : vpc_button_radius_key) ~ 'px') }};
           --veloura-product-button-margin-x: {{ vpc_button_margin_x }}px;
           --veloura-qv-under-cart-gap: {{ vqv_under_cart_gap }}px;
           --veloura-qv-under-cart-margin-x: {{ vqv_under_cart_margin_x }}px;
@@ -1154,7 +1160,7 @@
           --veloura-pc-promo-bg: {{ vpc_promo_bg }};
           --veloura-pc-promo-text: {{ vpc_promo_text }};
           --veloura-pc-promo-size: {{ vpc_promo_size }}px;
-          --veloura-pc-promo-radius: {{ vpc_promo_radius_map[vpc_promo_radius_key]|default('22px') }};
+          --veloura-pc-promo-radius: {{ vpc_promo_radius_map[vpc_promo_radius_key]|default((vpc_promo_radius_key|trim == '' ? '14' : vpc_promo_radius_key) ~ 'px') }};
           --veloura-pc-overlay-offset: {{ vpc_overlay_offset }}px;
           --veloura-pc-actions-gap: {{ vpc_actions_gap }}px;
 
@@ -1162,12 +1168,12 @@
             --veloura-quick-view-button-bg: {{ vqv_button_bg_color }};
             --veloura-product-action-size: {{ vpc_action_size }}px;
             --veloura-quick-view-button-text: {{ vqv_button_text_color }};
-            --veloura-quick-view-button-radius: {{ vpc_radius_map[vqv_button_radius_key]|default('999px') }};
+            --veloura-quick-view-button-radius: {{ vpc_radius_map[vqv_button_radius_key]|default((vqv_button_radius_key|trim == '' ? '40' : vqv_button_radius_key) ~ 'px') }};
             --veloura-quick-view-button-height: {{ vqv_button_height }}px;
 
             --veloura-quick-view-modal-bg: {{ vqv_modal_bg_color }};
             --veloura-quick-view-modal-text-light: {{ vqv_modal_text_color }};
-            --veloura-quick-view-modal-radius: {{ vpc_radius_map[vqv_modal_radius_key]|default('28px') }};
+            --veloura-quick-view-modal-radius: {{ vpc_radius_map[vqv_modal_radius_key]|default((vqv_modal_radius_key|trim == '' ? '28' : vqv_modal_radius_key) ~ 'px') }};
             --veloura-quick-view-image-fit: {{ vqv_image_fit }};
           {% endif %}
 {% endif %}
@@ -2910,6 +2916,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vht_top_border = vht_top_border[0].value %}
 {% endif %}
 
+{# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
+{% set vht_top_border_px_map = {'sharp':'0px','soft':'14px','medium':'24px','large':'38px','round':'999px','pill':'999px','xl':'44px','40':'999px'} %}
+{% set vht_top_border_px = vht_top_border_px_map[vht_top_border]|default((vht_top_border|trim == '' ? '16' : vht_top_border) ~ 'px') %}
+
+
 {% if is_page('index') %}
   {% set vht_enabled_raw = theme.settings.get('veloura_home_tabs_enabled_2026', false) %}
   {% if vht_enabled_raw.value is defined %}{% set vht_enabled_raw = vht_enabled_raw.value %}{% endif %}
@@ -2962,7 +2973,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       data-veloura-home-tabs
       data-veloura-tabs-hide-scroll="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
       data-veloura-tabs-connected="true"
-      style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-text-color:{{ vht_text_color }};--veloura-tabs-active-color:{{ vht_active_color }};"
+      style="--veloura-radius:{{ vht_top_border_px }};--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-text-color:{{ vht_text_color }};--veloura-tabs-active-color:{{ vht_active_color }};"
     >
       <div class="container">
         <div class="veloura-home-tabs__track" role="tablist" aria-orientation="horizontal">
@@ -3027,6 +3038,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 <div
   id="veloura-header-tabs-stack"
   class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }}{{ vh_compact ? ' veloura-header-tabs-stack--compact-enabled' : ' veloura-header-tabs-stack--compact-disabled' }}{{ vht_full_width ? ' veloura-header-tabs-stack--full-width-desktop' : ' veloura-header-tabs-stack--container-desktop' }}{{ vht_search_detached ? ' veloura-header-tabs-stack--search-detached' : '' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_has_tabs ? ' veloura-header-tabs-stack--has-tabs' : '' }}"
+  style="--veloura-radius:{{ vht_top_border_px }};"
   data-veloura-header-tabs-stack
   data-veloura-sticky="{{ vht_stack_sticky ? 'true' : 'false' }}"
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
@@ -3130,6 +3142,10 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vsc_menu_radius_px = '34px' %}
 {% elseif vsc_menu_radius == 'xl' %}
   {% set vsc_menu_radius_px = '44px' %}
+{% elseif vsc_menu_radius|trim == '40' %}
+  {% set vsc_menu_radius_px = '999px' %}
+{% elseif vsc_menu_radius|trim != '' %}
+  {% set vsc_menu_radius_px = vsc_menu_radius ~ 'px' %}
 {% endif %}
 
 {% set vsc_title_size = theme.settings.get('veloura_side_categories_title_size_2026', 'medium') %}
@@ -3178,6 +3194,10 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vsc_img_radius_px = '24px' %}
 {% elseif vsc_img_radius == 'round' %}
   {% set vsc_img_radius_px = '999px' %}
+{% elseif vsc_img_radius|trim == '40' %}
+  {% set vsc_img_radius_px = '999px' %}
+{% elseif vsc_img_radius|trim != '' %}
+  {% set vsc_img_radius_px = vsc_img_radius ~ 'px' %}
 {% endif %}
 
 {% set vsc_img_fit = theme.settings.get('veloura_side_categories_image_fit_2026', 'cover') %}
@@ -3379,7 +3399,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       --vbn-bg: {{ vbn_bg }};
       --vbn-text: {{ vbn_text }};
       --vbn-active: {{ vbn_active }};
-      --vbn-radius: {{ vbn_radius_map[vbn_radius]|default('999px') }};
+      --vbn-radius: {{ vbn_radius_map[vbn_radius]|default((vbn_radius|trim == '' ? '40' : vbn_radius) ~ 'px') }};
       --vbn-icon-size: {{ vbn_icon_size }}px;
       --vbn-font-size: {{ vbn_font_size }}px;
       --vbn-active-scale: {{ vbn_active_scale }};

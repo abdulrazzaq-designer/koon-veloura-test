@@ -344,49 +344,19 @@
     },
     {
       "id": "veloura_global_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "تدوير العناصر العامة",
-      "description": "يتحكم بتدوير كروت تفاصيل المنتج، الوصف، الخيارات، الأزرار والأجزاء العامة التي تدعم متغير Veloura",
+      "description": "يتحكم بتدوير كروت تفاصيل المنتج، الوصف، الخيارات، الأزرار والأجزاء العامة التي تدعم متغير Veloura — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
-      "source": "Manual",
-      "required": true,
-      "value": "large",
-      "default": "large",
-      "selected": [
-        {
-          "label": "كبير",
-          "value": "large",
-          "key": "veloura-global-radius-large-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "بدون تدوير",
-          "value": "sharp",
-          "key": "veloura-global-radius-sharp-2026"
-        },
-        {
-          "label": "خفيف",
-          "value": "soft",
-          "key": "veloura-global-radius-soft-2026"
-        },
-        {
-          "label": "متوسط",
-          "value": "medium",
-          "key": "veloura-global-radius-medium-2026"
-        },
-        {
-          "label": "كبير",
-          "value": "large",
-          "key": "veloura-global-radius-large-2026"
-        },
-        {
-          "label": "ضخم",
-          "value": "xl",
-          "key": "veloura-global-radius-xl-2026"
-        }
-      ],
+      "value": 28,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_general_panel_open_v4_2026",
@@ -1814,41 +1784,19 @@
     },
     {
       "id": "veloura_top_border_style_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف القسم العلوي",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-top-border-sharp-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-top-border-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلاً",
-          "value": "soft",
-          "key": "veloura-top-border-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-top-border-medium-2026"
-        },
-        {
-          "label": "ناعم جداً",
-          "value": "large",
-          "key": "veloura-top-border-large-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
@@ -2886,46 +2834,26 @@
     },
     {
       "id": "veloura_footer_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف القسم السفلي",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "value": "medium",
-      "default": "medium",
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-footer-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-footer-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-footer-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جداً",
-          "value": "large",
-          "key": "veloura-footer-radius-large-2026"
-        }
-      ],
+      "description": "في الوضع العادي تؤثر الحواف على الزاويتين العلويتين فقط، وعند تفعيل تصغير القسم السفلي تؤثر على الزوايا الأربع — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 20,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_footer_enabled_2026",
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "في الوضع العادي تؤثر الحواف على الزاويتين العلويتين فقط، وعند تفعيل تصغير القسم السفلي تؤثر على الزوايا الأربع."
+      ]
     },
     {
       "id": "veloura_footer_compact_2026",
@@ -3406,47 +3334,19 @@
     },
     {
       "id": "veloura_side_categories_menu_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "حواف القائمة الجانبية1111111",
-      "description": "اختر شكل حواف القائمة الجانبية",
-      "icon": "sicon-crop",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "side-categories-menu-radius-soft-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "side-categories-menu-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "side-categories-menu-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "side-categories-menu-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "side-categories-menu-radius-large-2026"
-        },
-        {
-          "label": "ناعم جدًا جدًا",
-          "value": "xl",
-          "key": "side-categories-menu-radius-xl-2026"
-        }
-      ],
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "حواف القائمة الجانبية",
+      "description": "اختر شكل حواف القائمة الجانبية — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
@@ -3580,47 +3480,19 @@
     },
     {
       "id": "veloura_side_categories_image_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف الصور في القائمة الجانبية",
-      "description": "اختر شكل حواف صور التصنيفات",
-      "icon": "sicon-crop",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "side-categories-image-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "side-categories-image-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "side-categories-image-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "side-categories-image-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "side-categories-image-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "side-categories-image-radius-round-2026"
-        }
-      ],
+      "description": "اختر شكل حواف صور التصنيفات — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
@@ -4437,46 +4309,19 @@
     },
     {
       "id": "veloura_category_image_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف الصور في صفحات التصنيفات",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-category-radius-round"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-category-radius-sharp"
-        },
-        {
-          "label": "ناعم قليلاً",
-          "value": "soft",
-          "key": "veloura-category-radius-soft"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-category-radius-medium"
-        },
-        {
-          "label": "ناعم جداً",
-          "value": "large",
-          "key": "veloura-category-radius-large"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-category-radius-round"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 40,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",
@@ -4633,46 +4478,19 @@
     },
     {
       "id": "veloura_cat_banner_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف بنر التصنيف",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-cat-banner-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-cat-banner-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلاً",
-          "value": "soft",
-          "key": "veloura-cat-banner-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-cat-banner-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جداً",
-          "value": "large",
-          "key": "veloura-cat-banner-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-cat-banner-radius-round-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_cat_banner_panel_open_2026",
@@ -4775,46 +4593,19 @@
     },
     {
       "id": "veloura_cart_banners_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف البنرات",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-cart-banners-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-cart-banners-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-cart-banners-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-cart-banners-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-cart-banners-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-cart-banners-radius-round-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_cart_banners_enabled_2026",
@@ -5044,46 +4835,19 @@
     },
     {
       "id": "veloura_product_card_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف بطاقة المنتج",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-product-card-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-product-card-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-product-card-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-product-card-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-product-card-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-product-card-radius-round-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -5206,46 +4970,19 @@
     },
     {
       "id": "veloura_product_card_image_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف صورة المنتج",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-product-image-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-product-image-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-product-image-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-product-image-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-product-image-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-product-image-radius-round-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -5527,46 +5264,19 @@
     },
     {
       "id": "veloura_pc_promo_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف العنوان الترويجي",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-pc-promo-radius-large-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-pc-promo-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-pc-promo-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-pc-promo-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-pc-promo-radius-large-2026"
-        },
-        {
-          "label": "كبسولة",
-          "value": "pill",
-          "key": "veloura-pc-promo-radius-pill-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 14,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -5944,46 +5654,19 @@
     },
     {
       "id": "veloura_quick_view_button_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف زر العرض السريع",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-quick-view-button-radius-round-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-quick-view-button-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-quick-view-button-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-quick-view-button-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-quick-view-button-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-quick-view-button-radius-round-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 40,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6193,41 +5876,19 @@
     },
     {
       "id": "veloura_quick_view_modal_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف نافذة العرض السريع",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-quick-view-modal-radius-large-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-quick-view-modal-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-quick-view-modal-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-quick-view-modal-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-quick-view-modal-radius-large-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 28,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6546,46 +6207,19 @@
     },
     {
       "id": "veloura_product_card_button_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف زر أضف للسلة",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-product-button-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-product-button-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلًا",
-          "value": "soft",
-          "key": "veloura-product-button-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-product-button-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "veloura-product-button-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-product-button-radius-round-2026"
-        }
-      ],
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 16,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -8892,47 +8526,19 @@
     },
     {
       "id": "veloura_mobile_floating_menu_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
       "label": "حواف القائمة",
-      "description": "اختر شكل حواف القائمة العامة",
-      "icon": "sicon-crop",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "دائري",
-          "value": "pill",
-          "key": "vmfm-radius-pill-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "vmfm-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلاً",
-          "value": "soft",
-          "key": "vmfm-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "vmfm-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جدًا",
-          "value": "large",
-          "key": "vmfm-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "pill",
-          "key": "vmfm-radius-pill-2026"
-        }
-      ],
+      "description": "اختر شكل حواف القائمة العامة — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "icon": "sicon-border-radius",
+      "value": 40,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "minimum": "0",
+      "maximum": "40",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_mobile_floating_menu_enabled_2026",
@@ -10354,43 +9960,18 @@
         },
         {
           "id": "image_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الصور",
-          "description": null,
-          "labelHTML": null,
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "e0b2aca8-eb09-4da7-8efe-2815b4f0c6c5"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "7027a744-07d4-4e8d-9d9d-bd7a33489861"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "f444031c-39a7-416e-95b5-199489617f1a"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "6352057f-378d-4460-8ddd-1fbbb24f18a4"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "d81af4e5-699e-4903-aa85-9ee720d2d9c9"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 18,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
           "required": false
         },
         {
@@ -11010,49 +10591,18 @@
         },
         {
           "id": "ultra_image_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الصور",
-          "description": null,
-          "labelHTML": null,
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "8de74152-6fcf-4a5c-9d85-1c1611478200"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "996d389e-98f9-4383-8bfd-2e174ed64f0d"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "a8215cd5-7728-4bb1-8c5d-dc53db249f22"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "8de74152-6fcf-4a5c-9d85-1c1611478200"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "38d50a74-1bd0-4bb3-bddd-b3f6043e7a56"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "b17fc5b3-21df-4f76-b1a4-449f966f93af"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
           "required": false
         },
         {
@@ -11512,6 +11062,37 @@
           "icon": "sicon-format-text"
         },
         {
+          "id": "animated_desktop_layout",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "شكل العرض على اللابتوب",
+          "description": "شريط متحرك، أو تخطيط ثابت: بنر كبير بالثلثين وبنرين صغيرين فوق بعضهما في الثلث الباقي (كل ثلاثة بنرات صف).",
+          "icon": "sicon-layout",
+          "source": "Manual",
+          "required": true,
+          "value": "slider",
+          "default": "slider",
+          "selected": [
+            {
+              "label": "شريط متحرك (سلايدر)",
+              "value": "slider",
+              "key": "animated_desktop_layout-slider"
+            }
+          ],
+          "options": [
+            {
+              "label": "شريط متحرك (سلايدر)",
+              "value": "slider",
+              "key": "animated_desktop_layout-slider"
+            },
+            {
+              "label": "بنر كبير + بنرين جانبيين",
+              "value": "feature",
+              "key": "animated_desktop_layout-feature"
+            }
+          ]
+        },
+        {
           "id": "animated_transition_type",
           "type": "items",
           "format": "dropdown-list",
@@ -11565,49 +11146,18 @@
         },
         {
           "id": "animated_image_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الصور",
-          "description": null,
-          "labelHTML": null,
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "8fcd58a8-efe3-4515-b454-042805eb895a"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "bcc2d562-8ab2-4b91-9389-4cdf5109bd35"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "bb09af4f-1121-4811-ab5b-d6e3c3d7a2c7"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "8fcd58a8-efe3-4515-b454-042805eb895a"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "9ec70a00-a9ca-4f57-9c62-75b3d37110ed"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "69ddbca6-f909-4fe1-941f-939283460cf8"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
           "required": false
         },
         {
@@ -11772,11 +11322,39 @@
               "icon": "sicon-format-text"
             },
             {
-              "id": "animated_banners.text_center",
-              "type": "boolean",
-              "format": "switch",
-              "label": "توسيط النصوص",
-              "value": false
+              "id": "animated_banners.text_position",
+              "type": "items",
+              "format": "dropdown-list",
+              "label": "مكان النصوص داخل البنر",
+              "icon": "sicon-align-right",
+              "source": "Manual",
+              "required": true,
+              "value": "right",
+              "default": "right",
+              "selected": [
+                {
+                  "label": "يمين",
+                  "value": "right",
+                  "key": "animated_banners-text_position-right"
+                }
+              ],
+              "options": [
+                {
+                  "label": "يمين",
+                  "value": "right",
+                  "key": "animated_banners-text_position-right"
+                },
+                {
+                  "label": "منتصف",
+                  "value": "center",
+                  "key": "animated_banners-text_position-center"
+                },
+                {
+                  "label": "يسار",
+                  "value": "left",
+                  "key": "animated_banners-text_position-left"
+                }
+              ]
             },
             {
               "id": "animated_banners.banner_title",
@@ -12458,50 +12036,19 @@
         },
         {
           "id": "veloura_image_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف المميزات",
-          "description": null,
-          "labelHTML": null,
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "199d683b-ad5f-4033-8a00-8bcd4e77830d"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "fa110924-8f73-4169-aac8-c51421d8c0ad"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "dfb6c9cc-6660-4510-86b8-8fb8fe9d3cfb"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "e7d0faf3-75bb-485c-9fcb-3889820da5f6"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 18,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_enable_counter",
@@ -12709,48 +12256,19 @@
         },
         {
           "id": "veloura_faq_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الأسئلة",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "faq-radius-medium"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "faq-radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "faq-radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "faq-radius-medium"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "faq-radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "faq-radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 22,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_faq_items",
@@ -13803,48 +13321,19 @@
         },
         {
           "id": "veloura_quick_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الروابط",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "199d683b-ad5f-4033-8a00-8bcd4e77830d"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "fa110924-8f73-4169-aac8-c51421d8c0ad"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "dfb6c9cc-6660-4510-86b8-8fb8fe9d3cfb"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "e7d0faf3-75bb-485c-9fcb-3889820da5f6"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_quick_desktop_cols",
@@ -14167,48 +13656,19 @@
         },
         {
           "id": "veloura_articles_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف المقالات",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "199d683b-ad5f-4033-8a00-8bcd4e77830d"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "fa110924-8f73-4169-aac8-c51421d8c0ad"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "dfb6c9cc-6660-4510-86b8-8fb8fe9d3cfb"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "e7d0faf3-75bb-485c-9fcb-3889820da5f6"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_articles_autoplay",
@@ -14470,48 +13930,19 @@
         },
         {
           "id": "veloura_branches_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الخريطة",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "199d683b-ad5f-4033-8a00-8bcd4e77830d"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "fa110924-8f73-4169-aac8-c51421d8c0ad"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "5f655ebd-604c-4558-88b8-f469c6091e92"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "dfb6c9cc-6660-4510-86b8-8fb8fe9d3cfb"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "e7d0faf3-75bb-485c-9fcb-3889820da5f6"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_branches_items",
@@ -14750,48 +14181,19 @@
         },
         {
           "id": "veloura_brands_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الماركات",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "radius-medium"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "radius-medium"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_brands_general_title",
@@ -14919,48 +14321,19 @@
         },
         {
           "id": "veloura_before_after_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف الصور",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "radius-medium"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "radius-medium"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_before_after_before_image",
@@ -15156,48 +14529,19 @@
         },
         {
           "id": "veloura_testimonials_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "حواف التقييمات",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "radius-medium"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "radius-medium"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_testimonials_hide_arrows",
@@ -15557,48 +14901,19 @@
         },
         {
           "id": "veloura_about_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "استدارة الصورة والبطاقات",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "كبير",
-              "value": "large",
-              "key": "about-radius-large"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "about-radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "about-radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "about-radius-medium"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "about-radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "about-radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 28,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_about_apply_radius_all",
@@ -16166,48 +15481,19 @@
         },
         {
           "id": "veloura_popup_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "استدارة الحواف",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "كبيرة",
-              "value": "large",
-              "key": "popup-radius-large"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "popup-radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "popup-radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "popup-radius-medium"
-            },
-            {
-              "label": "كبير",
-              "value": "large",
-              "key": "popup-radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "popup-radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 28,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_popup_behavior_title",
@@ -16467,48 +15753,19 @@
         },
         {
           "id": "veloura_steps_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "استدارة الحواف",
-          "icon": "sicon-keyboard_arrow_down",
-          "selected": [
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "steps-radius-medium"
-            }
-          ],
-          "options": [
-            {
-              "label": "حاد",
-              "value": "sharp",
-              "key": "steps-radius-sharp"
-            },
-            {
-              "label": "ناعم قليلاً",
-              "value": "soft",
-              "key": "steps-radius-soft"
-            },
-            {
-              "label": "ناعم",
-              "value": "medium",
-              "key": "steps-radius-medium"
-            },
-            {
-              "label": "ناعم جداً",
-              "value": "large",
-              "key": "steps-radius-large"
-            },
-            {
-              "label": "دائري",
-              "value": "round",
-              "key": "steps-radius-round"
-            }
-          ],
-          "source": "Manual",
-          "multichoice": false,
-          "searchable": false,
-          "required": true
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 20,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_steps_desktop_columns",
@@ -17201,43 +16458,19 @@
         },
         {
           "id": "veloura_fp_radius",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
           "label": "استدارة الحواف",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
-          "options": [
-            {
-              "label": "حادة",
-              "value": "sharp",
-              "key": "2361d593-10cb-6026-8a66-28ed229ca3ab"
-            },
-            {
-              "label": "خفيفة",
-              "value": "soft",
-              "key": "a8185cd9-3863-8bb9-6f19-c975db2596c3"
-            },
-            {
-              "label": "متوسطة",
-              "value": "medium",
-              "key": "7047483f-f628-deac-dbfa-1b6985791418"
-            },
-            {
-              "label": "كبيرة",
-              "value": "large",
-              "key": "a2e4b0bd-3ed9-8fe1-b364-af749861c071"
-            }
-          ],
-          "selected": [
-            {
-              "label": "متوسطة",
-              "value": "medium",
-              "key": "7047483f-f628-deac-dbfa-1b6985791418"
-            }
-          ],
-          "required": true,
-          "description": null,
-          "labelHTML": null,
-          "source": "Manual"
+          "value": 22,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
         },
         {
           "id": "veloura_fp_title_general",

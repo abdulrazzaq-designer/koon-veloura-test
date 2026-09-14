@@ -21,7 +21,8 @@
   'soft': '8px',
   'medium': '18px',
   'large': '30px',
-  'round': '999px'
+  'round': '999px',
+  '40': '999px'
 } %}
 
 {% set title_size_map = {
@@ -46,7 +47,7 @@
     --desktop-columns: {{ component.desktop_columns|default(3) }};
     --mobile-columns: {{ component.mobile_columns|default(2) }};
     --images-gap: {{ component.images_gap|default(16) }}px;
-    --image-radius: {{ radius_map[component.image_radius|default('medium')]|default('18px') }};
+    --image-radius: {{ radius_map[component.image_radius|default('medium')]|default((component.image_radius|default('medium')|trim == '' ? '18' : component.image_radius|default('medium')) ~ 'px') }};
     padding-inline: {{ component.custom_horizontal_spacing ? component.horizontal_spacing|default(25) ~ 'px' : '0px' }};
   "
 >

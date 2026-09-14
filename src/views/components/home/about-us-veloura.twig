@@ -25,10 +25,11 @@
     'soft': '8px',
     'medium': '16px',
     'large': '28px',
-    'round': '999px'
+    'round': '999px',
+    '40': '999px'
   } %}
 
-  {% set about_radius = radius_map[radius_key]|default('28px') %}
+  {% set about_radius = radius_map[radius_key]|default((radius_key|trim == '' ? '28' : radius_key) ~ 'px') %}
   {% set about_image = component.veloura_about_image.url|default(component.veloura_about_image) %}
 
   {% set section_classes = [
@@ -48,7 +49,8 @@
     class="{{ section_classes }}"
     style="
       --veloura-about-radius: {{ about_radius }};
-      --veloura-about-radius-md: {{ radius_key == 'sharp' ? '0px' : radius_key == 'soft' ? '8px' : radius_key == 'medium' ? '14px' : radius_key == 'large' ? '20px' : '999px' }};
+      {# القيمة صارت رقماً واحداً يحكم القسم كله، فما عاد في داعي لجدول ثانٍ. #}
+      --veloura-about-radius-md: {{ about_radius }};
       --veloura-about-bg: {{ component.veloura_about_background|default('#ffffff') }};
       --veloura-about-text: {{ component.veloura_about_text_color|default('#222222') }};
       --veloura-about-accent: {{ component.veloura_about_accent_color|default('#004956') }};

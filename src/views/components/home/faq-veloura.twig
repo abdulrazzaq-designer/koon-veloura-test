@@ -9,7 +9,8 @@
   'soft': '8px',
   'medium': '14px',
   'large': '22px',
-  'round': '999px'
+  'round': '999px',
+  '40': '999px'
 } %}
 
 {% if not component.veloura_faq_hide_section %}
@@ -37,7 +38,7 @@
     --faq-bg: {{ component.veloura_faq_background_color|default('#eeeeee') }};
     --faq-text: {{ component.veloura_faq_text_color|default('#323232') }};
     --faq-border: {{ component.veloura_faq_hide_border ? 'transparent' : component.veloura_faq_border_color|default('#323232') }};
-    --faq-radius: {{ radius_map[component.veloura_faq_radius|default('large')]|default('22px') }};
+    --faq-radius: {{ radius_map[component.veloura_faq_radius|default('large')]|default((component.veloura_faq_radius|default('large')|trim == '' ? '22' : component.veloura_faq_radius|default('large')) ~ 'px') }};
     --faq-spacing: {{ component.veloura_faq_enable_custom_spacing ? component.veloura_faq_custom_spacing|default(0) : 0 }}px;
   "
 >

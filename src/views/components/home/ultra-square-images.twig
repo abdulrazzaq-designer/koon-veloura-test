@@ -9,7 +9,8 @@
   'soft': '8px',
   'medium': '16px',
   'large': '28px',
-  'round': '999px'
+  'round': '999px',
+  '40': '999px'
 } %}
 
 {% set title_size_map = {
@@ -52,7 +53,7 @@
   class="{{ section_classes }}"
   style="
     --ultra-gap: {{ component.ultra_images_gap|default(16) }}px;
-    --ultra-radius: {{ radius_map[radius_key]|default('16px') }};
+    --ultra-radius: {{ radius_map[radius_key]|default((radius_key|trim == '' ? '16' : radius_key) ~ 'px') }};
     --ultra-mobile-columns: {{ component.ultra_mobile_columns|default(2) }};
     --ultra-desktop-columns: {{ component.ultra_desktop_columns|default(4) }};
     --ultra-horizontal-spacing: {{ component.ultra_custom_horizontal_spacing ? component.ultra_horizontal_spacing|default(0) : 0 }}px;
