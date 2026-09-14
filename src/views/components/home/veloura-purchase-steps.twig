@@ -115,14 +115,20 @@ body .veloura-stp.veloura-stp > .container {
 @media (min-width: 768px) { .veloura-stp .stp__heading h2 { font-size: 34px; } }
 
 /* -------------------------------------------------------------- the row -- */
+/* padding forced to nothing: this is an <ol>, and a list keeps a start padding
+   of its own in most stylesheets — which would move the steps off the centre
+   the spine is measured against. */
 .veloura-stp .stp__row {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--stp-step-gap, 26px) var(--stp-col-gap);
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
   list-style: none;
+  box-sizing: border-box;
 }
+
+.veloura-stp .stp__step { box-sizing: border-box; max-width: 100%; }
 
 @media (min-width: 768px) {
   .veloura-stp .stp__row { grid-template-columns: repeat(var(--stp-cols, 4), minmax(0, 1fr)); }
@@ -256,16 +262,30 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp:not(.has-line) .stp__step::after,
   .veloura-stp:not(.has-line) .stp__step::before { content: none; }
 }
-
 /* ==================================================== the phone: one shape ==
    The spine runs down the middle and a step hangs from each side of it in
-   turn. The icon takes the outer margin — hard against the edge of the page —
-   and the words run back in towards the line, so the two columns answer each
-   other across it. On the spine sits a plain dot for each step: the order is
-   in the reading, and a number printed on it only adds a thing to look at.
+   turn, with a plain dot on the line for each — the order is in the reading,
+   not in a number printed on the page.
+
+   The line is drawn by the steps themselves, one segment each, and not by the
+   list around them: a list carries padding of its own in more stylesheets than
+   it is worth arguing with, and a spine measured against a box the steps are
+   not sitting in is a spine that misses the middle.
+
+   Left to itself each step leans on the outer margin, icon hard against the
+   edge. With «توسيط النصوص» on, it is centred in its half instead — which is
+   what makes the two columns balance.
    ========================================================================== */
 @media (max-width: 767px) {
-  .veloura-stp { --stp-tile: 56px; }
+  .veloura-stp {
+    --stp-tile: 56px;
+    --stp-step-gap: 12px;
+    --stp-pin-y: 50%;
+  }
+
+  /* With the words under the icon the step's middle falls on the title, so the
+     dot — and the ends of the spine — are measured to the icon's own line. */
+  .veloura-stp.stp--v { --stp-pin-y: calc(var(--stp-tile) / 2); }
 
   /* A lifted tile becomes the containing block for whatever is positioned
      inside it, and on a phone that is a fight nobody wins. No lift. */
@@ -274,25 +294,8 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__row {
     position: relative;
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 12px;
+    row-gap: var(--stp-step-gap);
   }
-
-  .veloura-stp .stp__row::before {
-    content: "";
-    position: absolute;
-    inset-inline-start: 50%;
-    margin-inline-start: calc(var(--stp-line-w) / -2);
-    top: 26px;
-    bottom: 26px;
-    width: var(--stp-line-w);
-    border-radius: 999px;
-    background: var(--stp-line);
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    transition: transform 1s ease .05s;
-  }
-
-  .veloura-stp.is-inview .stp__row::before { transform: scaleY(1); }
 
   .veloura-stp .stp__step {
     position: relative;
@@ -304,11 +307,39 @@ body .veloura-stp.veloura-stp > .container {
 
   .veloura-stp.is-inview .stp__step { transform: none; }
 
-  /* Half the row, less the little that the spine and its dot need: the words
-     have to live in what is left, so not a pixel more is reserved. */
+  /* Half the row, less the little the spine and its dot need: the words live
+     in what is left, so not a pixel more is reserved. */
   .veloura-stp .stp__step:nth-child(odd) { padding-inline-end: calc(47% + 16px); }
   .veloura-stp .stp__step:nth-child(even) { padding-inline-start: calc(47% + 16px); }
 
+  /* ------------------------------------------------------------ the spine -- */
+  /* One segment per step, centred on the step itself — the same box the two
+     halves are measured from, so the line cannot drift off the middle. The
+     segments overlap the row gap, and the first and last stop at their own dot
+     so the run has a visible beginning and end. */
+  .veloura-stp.has-line .stp__step::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 50%;
+    margin-inline-start: calc(var(--stp-line-w) / -2);
+    top: calc(var(--stp-step-gap) / -2 - 1px);
+    bottom: calc(var(--stp-step-gap) / -2 - 1px);
+    width: var(--stp-line-w);
+    border-radius: 999px;
+    background: var(--stp-line);
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition: transform .5s ease calc(var(--i, 0) * .1s);
+  }
+
+  .veloura-stp.has-line .stp__step:first-child::before { top: var(--stp-pin-y); }
+  .veloura-stp.has-line .stp__step:last-child::before { bottom: calc(100% - var(--stp-pin-y)); }
+  .veloura-stp.has-line.is-inview .stp__step::before { transform: scaleY(1); }
+
+  .veloura-stp .stp__step::after { content: none; }
+  .veloura-stp:not(.has-line) .stp__step::before { content: none; }
+
+  /* ------------------------------------------------------- the two halves -- */
   /* Beside the icon: the tile is pushed out to the margin and the words come
      back towards the spine. */
   .veloura-stp.stp--h .stp__text { flex: 1 1 auto; }
@@ -324,6 +355,28 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp.stp--v .stp__step:nth-child(odd) .stp__text { align-items: flex-start; }
   .veloura-stp.stp--v .stp__step:nth-child(even) .stp__text { align-items: flex-end; }
 
+  /* ------------------------------------------------------------- centred -- */
+  /* The setting is worth something on a phone too: each step sits in the
+     middle of its own half, and the two columns answer each other exactly. */
+  /* The two halves above are addressed per nth-child, so these have to be as
+     well or they lose the tie and nothing moves. */
+  .veloura-stp.is-centered .stp__step:nth-child(odd),
+  .veloura-stp.is-centered .stp__step:nth-child(even),
+  .veloura-stp.is-centered .stp__step:nth-child(odd) .stp__text,
+  .veloura-stp.is-centered .stp__step:nth-child(even) .stp__text { text-align: center; }
+
+  .veloura-stp.stp--v.is-centered .stp__step:nth-child(odd),
+  .veloura-stp.stp--v.is-centered .stp__step:nth-child(even),
+  .veloura-stp.stp--v.is-centered .stp__step:nth-child(odd) .stp__text,
+  .veloura-stp.stp--v.is-centered .stp__step:nth-child(even) .stp__text { align-items: center; }
+
+  .veloura-stp.stp--h.is-centered .stp__step:nth-child(odd),
+  .veloura-stp.stp--h.is-centered .stp__step:nth-child(even) { justify-content: center; }
+
+  .veloura-stp.stp--h.is-centered .stp__step:nth-child(odd) .stp__text,
+  .veloura-stp.stp--h.is-centered .stp__step:nth-child(even) .stp__text { flex: 0 1 auto; align-items: center; }
+
+  /* ------------------------------------------------------------- the rest -- */
   .veloura-stp .stp__text p { max-width: none; font-size: 12px; }
   .veloura-stp .stp__text h3 { font-size: 15px; }
 
@@ -338,14 +391,11 @@ body .veloura-stp.veloura-stp > .container {
 
   .veloura-stp.stp--bare .stp__dot { background: transparent !important; }
 
-  .veloura-stp .stp__step::before,
-  .veloura-stp .stp__step::after { content: none; }
-
   .veloura-stp .stp__pin {
     display: block;
     position: absolute;
     inset-inline-start: 50%;
-    top: 50%;
+    top: var(--stp-pin-y);
     transform: translate(50%, -50%);
     width: 12px;
     height: 12px;
@@ -353,10 +403,6 @@ body .veloura-stp.veloura-stp > .container {
     border: 3px solid var(--stp-page);
     background: var(--step-color, var(--stp-accent));
   }
-
-  /* With the words under the icon the step's middle falls on the title, so the
-     dot is pinned to the icon's own line instead. */
-  .veloura-stp.stp--v .stp__pin { top: calc(var(--stp-tile) / 2); }
 }
 
 /* ---------------------------------------------------------- the reveal --- */
