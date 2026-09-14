@@ -34,11 +34,6 @@
   {% set stp_items = component.veloura_steps_collection|default([]) %}
   {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
 
-  {# Beside the words a card is twice as wide as it is tall, so more than three
-     to a row leaves the text a column of single syllables. #}
-  {% set stp_cols_h = stp_cols %}
-  {% if stp_cols_h > 3 %}{% set stp_cols_h = 3 %}{% endif %}
-
   {# The connector used to be withheld whenever there were more steps than
      columns — which is why a five-step section with four columns showed no
      join at all. It is drawn between neighbours instead, and the first card of
@@ -46,9 +41,10 @@
      which counts by the merchant's own column setting). #}
   {% set stp_line = component.veloura_steps_show_connectors %}
 
-  {# One shape each: the phone always gets the alternating spine, and the only
-     choice left is which way the laptop runs. Both keep their connecting line —
-     that line is what makes a set of cards read as a sequence. #}
+  {# The laptop has one shape now — icon above the words — so this setting only
+     decides how a phone step is put together: the words beside the icon, or
+     beneath it. Either way the phone keeps its alternating spine and the
+     laptop its track. #}
   {% set stp_dir = component.veloura_steps_direction|default('') %}
   {% if stp_dir.selected is defined %}{% set stp_dir = stp_dir.selected %}{% endif %}
   {% if stp_dir is iterable and stp_dir.value is not defined %}{% set stp_dir = stp_dir|first %}{% endif %}
@@ -65,12 +61,11 @@
   --stp-text: var(--stp-text-light, #52606d);
   --stp-second: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7));
   --stp-page: var(--veloura-site-bg, #ffffff);
-  --stp-line: color-mix(in srgb, var(--stp-accent) 26%, transparent);
+  --stp-line: color-mix(in srgb, var(--stp-accent) 62%, transparent);
+  --stp-line-w: 6px;
+  --stp-cap: 13px;
   --stp-tile: 104px;
-  --stp-badge: 34px;
   --stp-col-gap: 18px;
-  /* Two half-waves stretched across the gap; the stroke is what the mask keeps. */
-  --stp-curve: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpath d='M0 6 C 22 6 28 34 50 34 C 72 34 78 6 100 6' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 
   background: transparent !important;
   padding-inline: 0 !important;
@@ -178,148 +173,82 @@ body .veloura-stp.veloura-stp > .container {
   }
 }
 
-.veloura-stp .stp__num {
-  position: absolute;
-  top: calc(var(--stp-badge) / -2.6);
-  inset-inline-start: calc(var(--stp-badge) / -2.6);
-  display: grid;
-  place-items: center;
-  width: var(--stp-badge);
-  height: var(--stp-badge);
-  border-radius: 999px;
-  border: 3px solid var(--stp-page);
-  background: var(--step-color, var(--stp-accent));
-  color: #fff;
-  font-size: 13px;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
+/* The step used to wear its order on a badge. The line carries the sequence
+   now, and on a phone the spine's own dot marks the step — nothing written
+   inside it. The pin only exists on a phone. */
+.veloura-stp .stp__pin { display: none; }
 
 /* ------------------------------------------------------------- the words -- */
 .veloura-stp .stp__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .veloura-stp .stp__text h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--stp-title); }
 .veloura-stp .stp__text p { margin: 0; font-size: 13px; line-height: 1.75; opacity: .72; }
 
-/* ============================================== the step's own direction ==
-   One setting, both screens: the icon above the words, or beside them. The
-   connecting line belongs to each — what changes is where there is room for it
-   to run.
+/* ==================================================== the laptop: one shape ==
+   The icon on top and the words beneath it — always, whatever the direction
+   setting says; that setting is a phone affair now. Through the row runs a
+   thick track, tile centre to tile centre, with a cap at each end so the
+   sequence has a beginning and an end instead of a line that fades in from
+   nowhere.
    ========================================================================== */
 @media (min-width: 768px) {
-  .veloura-stp .stp__row { grid-template-columns: repeat(var(--stp-cols, 4), minmax(0, 1fr)); }
-  .veloura-stp .stp__text h3 { font-size: 17px; }
+  .veloura-stp .stp__row {
+    grid-template-columns: repeat(var(--stp-cols, 4), minmax(0, 1fr));
+    row-gap: 48px;
+  }
 
-  /* ------------------------------------------- icon above, words beneath -- */
-  .veloura-stp.stp--v .stp__step {
+  .veloura-stp .stp__step {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 18px;
   }
 
-  .veloura-stp.stp--v .stp__text { align-items: center; }
-  .veloura-stp.stp--v .stp__text p { max-width: 30ch; }
+  .veloura-stp .stp__text { align-items: center; }
+  .veloura-stp .stp__text h3 { font-size: 17px; }
+  .veloura-stp .stp__text p { max-width: 30ch; }
 
-  .veloura-stp.stp--v:not(.is-centered) .stp__step,
-  .veloura-stp.stp--v:not(.is-centered) .stp__text { text-align: start; align-items: flex-start; }
+  /* The words may be set to the start of their column, but the tiles stay
+     centred: the track is drawn through their centres and would miss them. */
+  .veloura-stp:not(.is-centered) .stp__text { text-align: start; align-items: flex-start; }
 
-  /* The tiles stand in one line, so the wave can travel the whole way from one
-     centre to the next, passing behind them. */
-  .veloura-stp.stp--v.has-line .stp__step::after {
-    content: "";
-    position: absolute;
-    top: calc(var(--stp-tile) / 2 - 30px);
-    inset-inline-end: 50%;
-    width: calc(100% + var(--stp-col-gap));
-    height: 60px;
-  }
-
-  .veloura-stp.stp--v.has-line .stp__step::before {
-    content: "";
-    position: absolute;
-    top: calc(var(--stp-tile) / 2 - 5px);
-    inset-inline-end: calc(100% + var(--stp-col-gap) / 2 - 5px);
-  }
-
-  /* -------------------------------------------- icon beside the words ----- */
-  /* A row here too — a column of five steps eats half a screen of height for
-     something that is read at a glance. Each card is an icon with its words
-     beside it, three to a row at most, and between two cards sits a chevron:
-     the one join that needs no lane to travel along, which is what the line and
-     the ring could not find here. */
-  .veloura-stp.stp--h { --stp-tile: 76px; --stp-col-gap: 34px; }
-
-  .veloura-stp.stp--h .stp__row { grid-template-columns: repeat({{ stp_cols_h }}, minmax(0, 1fr)); }
-
-  .veloura-stp.stp--h .stp__step {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: start;
-    gap: 16px;
-  }
-
-  .veloura-stp.stp--h .stp__text {
-    align-items: flex-start;
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .veloura-stp.stp--h .stp__text p { max-width: none; }
-
-  .veloura-stp.stp--h.has-line .stp__step::before {
-    content: "";
-    position: absolute;
-    top: calc(50% - 6px);
-    inset-inline-end: calc(100% + var(--stp-col-gap) / 2 - 6px);
-    width: 11px;
-    height: 11px;
-    border: 0;
-    border-top: 2px solid var(--stp-line);
-    border-right: 2px solid var(--stp-line);
-    border-radius: 2px;
-    background: none;
-    transform: rotate(225deg);
-  }
-
-  html[dir="ltr"] .veloura-stp.stp--h.has-line .stp__step::before { transform: rotate(45deg); }
-
-  .veloura-stp.stp--h .stp__step::after { content: none !important; }
-
-  /* ------------------------------------------------- shared by both ------- */
+  /* ----------------------------------------------------------- the track -- */
+  /* One segment per gap, tile edge to tile edge, on the tiles' own centre
+     line. The ends are square where they meet a tile, so the segments read as
+     one line passing through the row rather than as dashes. */
   .veloura-stp.has-line .stp__step::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--stp-tile) / 2 - var(--stp-line-w) / 2);
+    inset-inline-end: calc(50% + var(--stp-tile) / 2 - 3px);
+    width: calc(100% + var(--stp-col-gap) - var(--stp-tile) + 6px);
+    height: var(--stp-line-w);
     background: var(--stp-line);
-    -webkit-mask-image: var(--stp-curve);
-    mask-image: var(--stp-curve);
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
     opacity: 0;
-    transition: opacity .7s ease calc(var(--i, 0) * .12s);
+    transition: opacity .7s ease calc(var(--i, 0) * .1s);
   }
 
-  .veloura-stp.stp--v.has-line .stp__step::before {
-    width: 10px;
-    height: 10px;
-    border: 2px solid var(--stp-line);
-    border-radius: 999px;
-    background: var(--stp-page);
-  }
-
-  .veloura-stp.has-line .stp__step::before {
-    opacity: 0;
-    transition: opacity .7s ease calc(var(--i, 0) * .12s);
-  }
-
-  /* No join before the first card of any row — the wave would leave from the
-     far edge of the grid and arrive from nowhere. The count is the merchant's
-     own column setting. */
+  /* Nothing arrives at the first card of a row — the segment would leave from
+     the far edge of the grid and come from nowhere. The count is the
+     merchant's own column setting. */
   .veloura-stp.has-line .stp__step:first-child::after,
+  .veloura-stp.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::after { content: none; }
+
+  /* ------------------------------------------------------------ the ends -- */
   .veloura-stp.has-line .stp__step:first-child::before,
-  .veloura-stp.stp--v.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::after,
-  .veloura-stp.stp--v.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::before,
-  .veloura-stp.stp--h.has-line .stp__step:nth-child({{ stp_cols_h }}n + 1)::before { content: none; }
+  .veloura-stp.has-line .stp__step:last-child::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--stp-tile) / 2 - var(--stp-cap) / 2);
+    width: 36px;
+    height: var(--stp-cap);
+    border-radius: 999px;
+    background: var(--stp-line);
+    opacity: 0;
+    transition: opacity .7s ease;
+  }
+
+  .veloura-stp.has-line .stp__step:first-child::before { inset-inline-end: calc(50% + var(--stp-tile) / 2 - 3px); }
+  .veloura-stp.has-line .stp__step:last-child::before { inset-inline-start: calc(50% + var(--stp-tile) / 2 - 3px); }
 
   .veloura-stp.has-line.is-inview .stp__step::after,
   .veloura-stp.has-line.is-inview .stp__step::before { opacity: 1; }
@@ -329,33 +258,34 @@ body .veloura-stp.veloura-stp > .container {
 }
 
 /* ==================================================== the phone: one shape ==
-   The spine runs down the middle and a step hangs from each side of it in turn.
-   The icon keeps the inner edge, against the line, and the words run outward —
-   mirrored, so the two columns answer each other. The direction setting still
-   decides whether the words sit beside the icon or under it.
+   The spine runs down the middle and a step hangs from each side of it in
+   turn. The icon takes the outer margin — hard against the edge of the page —
+   and the words run back in towards the line, so the two columns answer each
+   other across it. On the spine sits a plain dot for each step: the order is
+   in the reading, and a number printed on it only adds a thing to look at.
    ========================================================================== */
 @media (max-width: 767px) {
-  .veloura-stp { --stp-tile: 60px; --stp-badge: 26px; }
+  .veloura-stp { --stp-tile: 56px; }
 
-  /* A lifted tile becomes the containing block for anything positioned inside
-     it, and the number lives inside the tile: on hover it was being caught and
-     dragged against the tile's own edge, off the spine. No lift on a phone. */
+  /* A lifted tile becomes the containing block for whatever is positioned
+     inside it, and on a phone that is a fight nobody wins. No lift. */
   .veloura-stp .stp__step:hover .stp__dot { transform: none; }
 
   .veloura-stp .stp__row {
     position: relative;
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 10px;
+    row-gap: 12px;
   }
 
   .veloura-stp .stp__row::before {
     content: "";
     position: absolute;
     inset-inline-start: 50%;
-    margin-inline-start: -1px;
+    margin-inline-start: calc(var(--stp-line-w) / -2);
     top: 26px;
     bottom: 26px;
-    width: 2px;
+    width: var(--stp-line-w);
+    border-radius: 999px;
     background: var(--stp-line);
     transform: scaleY(0);
     transform-origin: 50% 0;
@@ -374,32 +304,31 @@ body .veloura-stp.veloura-stp > .container {
 
   .veloura-stp.is-inview .stp__step { transform: none; }
 
-  .veloura-stp .stp__step:nth-child(odd) { padding-inline-end: calc(46% + 22px); }
-  .veloura-stp .stp__step:nth-child(even) { padding-inline-start: calc(46% + 22px); }
+  /* Half the row, less the little that the spine and its dot need: the words
+     have to live in what is left, so not a pixel more is reserved. */
+  .veloura-stp .stp__step:nth-child(odd) { padding-inline-end: calc(47% + 16px); }
+  .veloura-stp .stp__step:nth-child(even) { padding-inline-start: calc(47% + 16px); }
 
-  /* Beside the icon: the tile takes the inner edge — row-reverse on the start
-     side, plain row on the other — and the words run outward from it. */
-  .veloura-stp.stp--h .stp__step:nth-child(odd) { flex-direction: row-reverse; text-align: end; }
-  .veloura-stp.stp--h .stp__step:nth-child(even) { flex-direction: row; text-align: start; }
-  .veloura-stp.stp--h .stp__step:nth-child(odd) .stp__text { align-items: flex-end; }
-  .veloura-stp.stp--h .stp__step:nth-child(even) .stp__text { align-items: flex-start; }
+  /* Beside the icon: the tile is pushed out to the margin and the words come
+     back towards the spine. */
+  .veloura-stp.stp--h .stp__text { flex: 1 1 auto; }
+  .veloura-stp.stp--h .stp__step:nth-child(odd) { flex-direction: row; text-align: start; }
+  .veloura-stp.stp--h .stp__step:nth-child(even) { flex-direction: row-reverse; text-align: end; }
+  .veloura-stp.stp--h .stp__step:nth-child(odd) .stp__text { align-items: flex-start; }
+  .veloura-stp.stp--h .stp__step:nth-child(even) .stp__text { align-items: flex-end; }
 
-  /* Above the words: the whole block leans on the line. */
+  /* Above the words: the whole block leans on the outer margin. */
   .veloura-stp.stp--v .stp__step { flex-direction: column; gap: 8px; }
-  .veloura-stp.stp--v .stp__step:nth-child(odd) { align-items: flex-end; text-align: end; }
-  .veloura-stp.stp--v .stp__step:nth-child(even) { align-items: flex-start; text-align: start; }
-  .veloura-stp.stp--v .stp__step:nth-child(odd) .stp__text { align-items: flex-end; }
-  .veloura-stp.stp--v .stp__step:nth-child(even) .stp__text { align-items: flex-start; }
-
-  /* With the words under the icon the row's middle falls on the title, so the
-     number is pinned to the icon's own line instead. */
-  .veloura-stp.stp--v .stp__num { top: calc(var(--stp-tile) / 2); transform: translate(50%, -50%); }
+  .veloura-stp.stp--v .stp__step:nth-child(odd) { align-items: flex-start; text-align: start; }
+  .veloura-stp.stp--v .stp__step:nth-child(even) { align-items: flex-end; text-align: end; }
+  .veloura-stp.stp--v .stp__step:nth-child(odd) .stp__text { align-items: flex-start; }
+  .veloura-stp.stp--v .stp__step:nth-child(even) .stp__text { align-items: flex-end; }
 
   .veloura-stp .stp__text p { max-width: none; font-size: 12px; }
   .veloura-stp .stp__text h3 { font-size: 15px; }
 
-  /* static, not relative: the number is pinned to the ROW, and a positioned
-     tile would catch it and hold it against its own edge instead. */
+  /* static, not relative: the dot is pinned to the STEP, and a positioned tile
+     would catch it and hold it against its own edge instead. */
   .veloura-stp .stp__dot {
     position: static;
     z-index: auto;
@@ -412,25 +341,22 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__step::before,
   .veloura-stp .stp__step::after { content: none; }
 
-  /* The number sits ON the spine, inside its own dot: the line is a count and
-     the count is the line. */
-  .veloura-stp .stp__num {
+  .veloura-stp .stp__pin {
+    display: block;
     position: absolute;
     inset-inline-start: 50%;
     top: 50%;
     transform: translate(50%, -50%);
-    width: 26px;
-    height: 26px;
-    min-width: 0;
-    padding: 0;
-    border: 3px solid var(--stp-page);
+    width: 12px;
+    height: 12px;
     border-radius: 999px;
+    border: 3px solid var(--stp-page);
     background: var(--step-color, var(--stp-accent));
-    color: #fff;
-    font-size: 12px;
-    font-weight: 900;
-    line-height: 1;
   }
+
+  /* With the words under the icon the step's middle falls on the title, so the
+     dot is pinned to the icon's own line instead. */
+  .veloura-stp.stp--v .stp__pin { top: calc(var(--stp-tile) / 2); }
 }
 
 /* ---------------------------------------------------------- the reveal --- */
@@ -457,7 +383,7 @@ html.dark .veloura-stp, html body.dark .veloura-stp {
   --stp-text: #cbd5e1;
   --stp-second: var(--veloura-dark-secondary-bg, #010612);
   --stp-page: var(--veloura-dark-bg, #05070f);
-  --stp-line: color-mix(in srgb, #ffffff 20%, transparent);
+  --stp-line: color-mix(in srgb, #ffffff 42%, transparent);
 }
 
 html.dark .veloura-stp .stp__dot,
@@ -513,8 +439,9 @@ html body.dark .veloura-stp .stp__dot {
                 {% elseif step.step_icon %}
                   <i class="{{ step.step_icon }}" aria-hidden="true"></i>
                 {% endif %}
-                <span class="stp__num">{{ loop.index }}</span>
               </span>
+
+              <span class="stp__pin" aria-hidden="true"></span>
 
               <span class="stp__text">
                 {% if step.step_title %}<h3>{{ step.step_title }}</h3>{% endif %}
