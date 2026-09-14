@@ -220,79 +220,99 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp:not(.has-line) .stp__step::before { content: none; }
 }
 
-/* ======================================================= phone: a staircase ==
-   The tile keeps one edge and the words sit beside it, and the sides swap on
-   every step. Between them a diagonal runs from one tile's middle to the next
-   one's, with a small ring where it crosses the halfway mark — the same idea as
-   the desktop chevron, turned on its side. */
+/* ========================================================== phone: a spine ==
+   A line of dots down the start edge, and beside each one the step's own tile
+   with its number standing behind it, then the words. The number is the thing
+   the eye counts by, so it is the largest thing in the row; the tile keeps the
+   merchant's icon and lets the number show through.
+   ========================================================================== */
 @media (max-width: 767px) {
-  .veloura-stp { --stp-tile: 76px; --stp-badge: 28px; --stp-step-gap: 30px; }
+  .veloura-stp { --stp-tile: 74px; --stp-step-gap: 26px; }
 
-  .veloura-stp .stp__step:nth-child(even) { flex-direction: row-reverse; text-align: end; }
-  .veloura-stp .stp__step:nth-child(even) .stp__text { align-items: flex-end; }
-  .veloura-stp .stp__step:nth-child(even) .stp__num { inset-inline-start: auto; inset-inline-end: calc(var(--stp-badge) / -2.6); }
+  .veloura-stp .stp__row {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--stp-step-gap, 26px);
+  }
 
-  .veloura-stp.has-path .stp__step::before {
+  /* The spine runs between the first and last dot, never past them. */
+  .veloura-stp .stp__row::before {
     content: "";
     position: absolute;
-    bottom: calc(100% - 6px);
-    inset-inline: calc(var(--stp-tile) / 2) calc(var(--stp-tile) / 2);
-    height: calc(var(--stp-step-gap, 30px) + 12px);
-    opacity: 0;
-    transition: opacity .6s ease calc(var(--i, 0) * .12s);
+    inset-inline-start: 7px;
+    top: calc(var(--stp-tile) / 2);
+    bottom: calc(var(--stp-tile) / 2);
+    width: 2px;
+    background: var(--stp-line);
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition: transform 1s ease .05s;
   }
 
-  /* Odd steps carry their tile at the start edge, so the step above them has
-     its own at the other end: the diagonal falls one way, then the other. */
-  .veloura-stp.has-path .stp__step:nth-child(odd)::before {
-    background: linear-gradient(to bottom right,
-      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
-      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
+  .veloura-stp.is-inview .stp__row::before { transform: scaleY(1); }
+
+  .veloura-stp .stp__step {
+    display: grid;
+    grid-template-columns: 16px minmax(0, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 0 20px;
+    transform: translateY(10px);
+    text-align: start;
   }
 
-  .veloura-stp.has-path .stp__step:nth-child(even)::before {
-    background: linear-gradient(to bottom left,
-      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
-      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
-  }
-
-  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(odd)::before {
-    background: linear-gradient(to bottom left,
-      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
-      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
-  }
-
-  html[dir="ltr"] .veloura-stp.has-path .stp__step:nth-child(even)::before {
-    background: linear-gradient(to bottom right,
-      transparent calc(50% - 1.1px), var(--stp-line) calc(50% - 1.1px),
-      var(--stp-line) calc(50% + 1.1px), transparent calc(50% + 1.1px));
-  }
-
-  /* The ring sits on the crossing point and wears the page's own colour, so
-     the line stops at it instead of running through. */
-  .veloura-stp.has-path .stp__step::after {
-    content: "";
-    position: absolute;
-    bottom: calc(100% + var(--stp-step-gap, 30px) / 2 - 5px);
-    left: 50%;
-    width: 11px;
-    height: 11px;
-    margin-inline-start: -5.5px;
-    border: 2px solid var(--stp-line);
-    border-radius: 999px;
-    background: var(--stp-page);
-    opacity: 0;
-    transition: opacity .6s ease calc(var(--i, 0) * .12s);
-  }
-
-  .veloura-stp.has-path .stp__step:first-child::before,
-  .veloura-stp.has-path .stp__step:first-child::after { content: none; }
-  .veloura-stp.has-path.is-inview .stp__step::before,
-  .veloura-stp.has-path.is-inview .stp__step::after { opacity: 1; }
-
-  .veloura-stp .stp__step:nth-child(odd) { transform: translate(-14px, 8px); }
-  .veloura-stp .stp__step:nth-child(even) { transform: translate(14px, 8px); }
   .veloura-stp.is-inview .stp__step { transform: none; }
+
+  /* The dot on the spine. */
+  .veloura-stp .stp__step::before {
+    content: "";
+    grid-column: 1;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: var(--step-color, var(--stp-accent));
+    box-shadow: 0 0 0 4px var(--stp-page);
+  }
+
+  .veloura-stp .stp__step::after { content: none; }
+
+  .veloura-stp .stp__dot {
+    grid-column: 2;
+    z-index: auto;
+    overflow: visible;
+    background: color-mix(in srgb, var(--step-color, var(--stp-accent)) 20%, transparent);
+  }
+
+  .veloura-stp .stp__text { grid-column: 3; }
+  .veloura-stp .stp__text h3 { font-size: 17px; }
+  .veloura-stp .stp__text p { max-width: none; font-size: 12.5px; }
+
+  /* The number: no longer a badge on the corner but the row's headline, sitting
+     behind the tile and reaching out past it. A negative z-index puts it under
+     the tile's own background, which is why the tile gives up its stacking
+     context just above. */
+  .veloura-stp .stp__num {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    /* Pinned by its own start edge at the tile's middle, so it grows AWAY from
+       the spine and towards the words. Pinning the other edge sent it the other
+       way, straight over the dot. */
+    inset-inline-start: calc(var(--stp-tile) * .55);
+    transform: translateY(-50%);
+    width: auto;
+    height: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--stp-title);
+    font-size: calc(var(--stp-tile) * .92);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.04em;
+    opacity: .92;
+  }
 }
 
 /* ---------------------------------------------------------- the reveal --- */

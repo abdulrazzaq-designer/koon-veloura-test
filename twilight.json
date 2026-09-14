@@ -658,8 +658,15 @@
       "required": false,
       "value": false,
       "selected": false,
-      "description": "هذا هو المفتاح الذي يشغّل صفحة التحميل. يبقى أثره قائمًا حتى لو أغلقت إعدادات القسم.",
-      "wide": true
+      "description": "هذا هو المفتاح الذي يشغّل صفحة التحميل. يختفي من القائمة حين تُغلق إعدادات القسم، ويبقى أثره كما هو.",
+      "wide": true,
+      "conditions": [
+        {
+          "id": "veloura_loader_enable_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "type": "static",
