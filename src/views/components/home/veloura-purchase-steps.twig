@@ -34,6 +34,11 @@
   {% set stp_items = component.veloura_steps_collection|default([]) %}
   {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
 
+  {# Beside the words a card is twice as wide as it is tall, so more than three
+     to a row leaves the text a column of single syllables. #}
+  {% set stp_cols_h = stp_cols %}
+  {% if stp_cols_h > 3 %}{% set stp_cols_h = 3 %}{% endif %}
+
   {# The connector used to be withheld whenever there were more steps than
      columns — which is why a five-step section with four columns showed no
      join at all. It is drawn between neighbours instead, and the first card of
@@ -237,32 +242,23 @@ body .veloura-stp.veloura-stp > .container {
   }
 
   /* -------------------------------------------- icon beside the words ----- */
-  /* Beside the words, a card is a line of text with an icon at its head — and a
-     row of those has no lane left for a join to travel along, which is what
-     made the last attempt look like a stray dash between two cards. So this
-     direction takes the shape it asks for: a single column, the icons under
-     one another, and the line threading them from the first to the last. */
-  .veloura-stp.stp--h { --stp-tile: 84px; }
+  /* A row here too — a column of five steps eats half a screen of height for
+     something that is read at a glance. Each card is an icon with its words
+     beside it, three to a row at most, and between two cards sits a chevron:
+     the one join that needs no lane to travel along, which is what the line and
+     the ring could not find here. */
+  .veloura-stp.stp--h { --stp-tile: 76px; --stp-col-gap: 34px; }
 
-  .veloura-stp.stp--h .stp__row {
-    position: relative;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
-    max-width: 760px;
-    margin-inline: auto;
-  }
+  .veloura-stp.stp--h .stp__row { grid-template-columns: repeat({{ stp_cols_h }}, minmax(0, 1fr)); }
 
   .veloura-stp.stp--h .stp__step {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     text-align: start;
-    gap: 18px;
+    gap: 16px;
   }
 
-  /* The words take the rest of the line. Without this they were only as wide as
-     they needed to be, so the whole list huddled against the start edge and
-     left half the page empty — which is what the column looked like. */
   .veloura-stp.stp--h .stp__text {
     align-items: flex-start;
     flex: 1 1 auto;
@@ -271,24 +267,24 @@ body .veloura-stp.veloura-stp > .container {
 
   .veloura-stp.stp--h .stp__text p { max-width: none; }
 
-  .veloura-stp.stp--h.has-line .stp__row::before {
+  .veloura-stp.stp--h.has-line .stp__step::before {
     content: "";
     position: absolute;
-    inset-inline-start: calc(var(--stp-tile) / 2 - 1px);
-    top: calc(var(--stp-tile) / 2);
-    bottom: calc(var(--stp-tile) / 2);
-    width: 2px;
-    background: var(--stp-line);
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    transition: transform 1s ease .05s;
+    top: calc(50% - 6px);
+    inset-inline-end: calc(100% + var(--stp-col-gap) / 2 - 6px);
+    width: 11px;
+    height: 11px;
+    border: 0;
+    border-top: 2px solid var(--stp-line);
+    border-right: 2px solid var(--stp-line);
+    border-radius: 2px;
+    background: none;
+    transform: rotate(225deg);
   }
 
-  .veloura-stp.stp--h.has-line.is-inview .stp__row::before { transform: scaleY(1); }
+  html[dir="ltr"] .veloura-stp.stp--h.has-line .stp__step::before { transform: rotate(45deg); }
 
-  /* The row carries the line; the steps carry nothing. */
-  .veloura-stp.stp--h .stp__step::after,
-  .veloura-stp.stp--h .stp__step::before { content: none !important; }
+  .veloura-stp.stp--h .stp__step::after { content: none !important; }
 
   /* ------------------------------------------------- shared by both ------- */
   .veloura-stp.has-line .stp__step::after {
@@ -303,12 +299,15 @@ body .veloura-stp.veloura-stp > .container {
     transition: opacity .7s ease calc(var(--i, 0) * .12s);
   }
 
-  .veloura-stp.has-line .stp__step::before {
+  .veloura-stp.stp--v.has-line .stp__step::before {
     width: 10px;
     height: 10px;
     border: 2px solid var(--stp-line);
     border-radius: 999px;
     background: var(--stp-page);
+  }
+
+  .veloura-stp.has-line .stp__step::before {
     opacity: 0;
     transition: opacity .7s ease calc(var(--i, 0) * .12s);
   }
@@ -318,8 +317,9 @@ body .veloura-stp.veloura-stp > .container {
      own column setting. */
   .veloura-stp.has-line .stp__step:first-child::after,
   .veloura-stp.has-line .stp__step:first-child::before,
-  .veloura-stp.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::after,
-  .veloura-stp.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::before { content: none; }
+  .veloura-stp.stp--v.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::after,
+  .veloura-stp.stp--v.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::before,
+  .veloura-stp.stp--h.has-line .stp__step:nth-child({{ stp_cols_h }}n + 1)::before { content: none; }
 
   .veloura-stp.has-line.is-inview .stp__step::after,
   .veloura-stp.has-line.is-inview .stp__step::before { opacity: 1; }
