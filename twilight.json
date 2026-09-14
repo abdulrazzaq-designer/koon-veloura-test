@@ -16526,69 +16526,33 @@
           "maximum": "7"
         },
         {
-          "id": "veloura_steps_item_direction",
+          "id": "veloura_steps_direction",
           "type": "items",
           "format": "dropdown-list",
-          "label": "اتجاه محتوى الخطوة",
+          "label": "اتجاه الخطوات على الكمبيوتر",
           "icon": "sicon-list",
           "source": "Manual",
           "required": true,
-          "value": "stack",
-          "default": "stack",
-          "description": "يسري على الكمبيوتر وعلى ترتيب «صفوف أفقية» في الجوال.",
+          "value": "h",
+          "default": "h",
+          "description": "على الجوال الشكل واحد دائمًا: خط في المنتصف وخطوة يمينه وخطوة يساره.",
           "options": [
             {
-              "label": "الأيقونة فوق والنصوص تحتها",
-              "value": "stack",
-              "key": "396b1efe-bfda-c2c5-78dd-eba5f53a3448"
+              "label": "أفقي — صف من البطاقات",
+              "value": "h",
+              "key": "d0c2174c-0586-a9c8-08a3-8ea02c355e89"
             },
             {
-              "label": "الأيقونة بجانب النصوص",
-              "value": "inline",
-              "key": "5485c070-6b7c-12f8-3d26-8b4814d014de"
+              "label": "عمودي — قائمة بخط يربطها",
+              "value": "v",
+              "key": "a1690b53-9fdb-1b7c-e207-f5839e10f426"
             }
           ],
           "selected": [
             {
-              "label": "الأيقونة فوق والنصوص تحتها",
-              "value": "stack",
-              "key": "396b1efe-bfda-c2c5-78dd-eba5f53a3448"
-            }
-          ]
-        },
-        {
-          "id": "veloura_steps_mobile_layout",
-          "type": "items",
-          "format": "dropdown-list",
-          "label": "ترتيب الخطوات في الجوال",
-          "icon": "sicon-list",
-          "source": "Manual",
-          "required": true,
-          "value": "alternate",
-          "default": "alternate",
-          "description": "المتناوب يضع الخط في المنتصف وخطوة يمينه وخطوة يساره.",
-          "options": [
-            {
-              "label": "عمود واحد بخط جانبي",
-              "value": "side",
-              "key": "65a94089-2248-ab4a-5275-73ed83592a86"
-            },
-            {
-              "label": "متناوب يمين ويسار",
-              "value": "alternate",
-              "key": "89c14974-9328-5811-5147-34d8365f245c"
-            },
-            {
-              "label": "صفوف أفقية",
-              "value": "row",
-              "key": "eae809f8-078a-8fff-87fc-372005220ba6"
-            }
-          ],
-          "selected": [
-            {
-              "label": "متناوب يمين ويسار",
-              "value": "alternate",
-              "key": "89c14974-9328-5811-5147-34d8365f245c"
+              "label": "أفقي — صف من البطاقات",
+              "value": "h",
+              "key": "d0c2174c-0586-a9c8-08a3-8ea02c355e89"
             }
           ]
         },
