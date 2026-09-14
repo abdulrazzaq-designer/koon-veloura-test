@@ -653,23 +653,13 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_loader_active_2026",
-      "label": " ",
+      "label": "تفعيل صفحة التحميل للزوار",
       "icon": "sicon-timer",
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_loader_enable_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_loader_active_2026",
-          "operation": "=",
-          "value": "veloura-hidden"
-        }
-      ]
+      "description": "هذا هو المفتاح الذي يشغّل صفحة التحميل. يبقى أثره قائمًا حتى لو أغلقت إعدادات القسم.",
+      "wide": true
     },
     {
       "type": "static",

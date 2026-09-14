@@ -2309,10 +2309,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
                                     above, so it keeps being delivered (and the
                                     loading page keeps working) while the
                                     section is collapsed. #}
-{# The second switch is no longer drawn in the dashboard — the section's own
-   pill is the switch now, as it is in every other section — but its stored
-   value is still read, so a store that already had the loading page on keeps
-   it whichever way it was turned on. #}
+{# The section's pill only opens the settings; this is the switch that turns the
+   page on, and it answers to nothing else — which is the point: closing the
+   section to tidy the list must never take the loading page down with it. #}
 {% set vl_enable_raw = theme.settings.get('veloura_loader_active_2026', false) %}
 {% if vl_enable_raw.value is defined %}
   {% set vl_enable_raw = vl_enable_raw.value %}
@@ -2321,16 +2320,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 {% set vl_enable = vl_enable_raw == true or vl_enable_raw == 'true' or vl_enable_raw == 1 or vl_enable_raw == '1' or vl_enable_raw == 'on' or vl_enable_raw == 'yes' %}
 
-{% set vl_pill_raw = theme.settings.get('veloura_loader_enable_2026', false) %}
-{% if vl_pill_raw.value is defined %}
-  {% set vl_pill_raw = vl_pill_raw.value %}
-{% elseif vl_pill_raw.selected is defined %}
-  {% set vl_pill_raw = vl_pill_raw.selected %}
-{% endif %}
-
-{% if vl_pill_raw == true or vl_pill_raw == 'true' or vl_pill_raw == 1 or vl_pill_raw == '1' or vl_pill_raw == 'on' or vl_pill_raw == 'yes' %}
-  {% set vl_enable = true %}
-{% endif %}
 
 {% if vl_enable %}
   {# Logo type: upload / animated / url / store_logo #}
@@ -3774,10 +3763,14 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
   /* The identity column is centred by the footer's own rules, but the featured
      layout gives it a 680px box with an auto margin on one side only, so
-     everything inside it centres against a box that is itself off to one side.
-     The id is written twice on purpose: the rule it has to outweigh carries the
-     same id, two classes and an attribute. */
-  body#app #veloura-footer#veloura-footer:is(.veloura-footer-center-all, [data-veloura-footer-layout="featured"]) :is(
+     everything inside it centres against a box that is itself off to one side —
+     by half that margin, which is exactly the lean in the screenshots.
+
+     No layout class is asked for any more: the block at the top of the footer is
+     the store's own identity and it is centred, whichever branch drew it. The id
+     is written twice on purpose — the rule to outweigh carries the same id, two
+     classes and an attribute. */
+  body#app #veloura-footer#veloura-footer :is(
     .veloura-footer-hero,
     .veloura-footer-hero > .veloura-footer-store,
     .veloura-footer-identity,
@@ -3787,11 +3780,25 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-footer-social,
     .veloura-footer-social-cards
   ) {
+    width: 100% !important;
+    max-width: none !important;
     margin-inline: auto !important;
     padding-inline: 0 !important;
     justify-content: center !important;
     align-items: center !important;
     text-align: center !important;
+  }
+
+  /* The hero itself, and whatever single box it wraps the identity in. */
+  body#app #veloura-footer#veloura-footer .veloura-footer-hero,
+  body#app #veloura-footer#veloura-footer .veloura-footer-hero > * {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
   }
 </style>
 
