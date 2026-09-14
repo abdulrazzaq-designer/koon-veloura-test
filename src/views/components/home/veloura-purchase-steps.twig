@@ -248,7 +248,7 @@ body .veloura-stp.veloura-stp > .container {
     position: relative;
     grid-template-columns: minmax(0, 1fr);
     gap: 22px;
-    max-width: 820px;
+    max-width: 760px;
     margin-inline: auto;
   }
 
@@ -260,7 +260,15 @@ body .veloura-stp.veloura-stp > .container {
     gap: 18px;
   }
 
-  .veloura-stp.stp--h .stp__text { align-items: flex-start; }
+  /* The words take the rest of the line. Without this they were only as wide as
+     they needed to be, so the whole list huddled against the start edge and
+     left half the page empty — which is what the column looked like. */
+  .veloura-stp.stp--h .stp__text {
+    align-items: flex-start;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
   .veloura-stp.stp--h .stp__text p { max-width: none; }
 
   .veloura-stp.stp--h.has-line .stp__row::before {
