@@ -38,6 +38,8 @@
   --stp-tile: 104px;
   --stp-badge: 34px;
   --stp-col-gap: 18px;
+  /* Two half-waves stretched across the gap; the stroke is what the mask keeps. */
+  --stp-curve: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpath d='M0 6 C 22 6 28 34 50 34 C 72 34 78 6 100 6' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 
   background: transparent !important;
   padding-inline: 0 !important;
@@ -176,40 +178,43 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__text h3 { font-size: 17px; }
   .veloura-stp .stp__text p { max-width: 30ch; }
 
+  /* The join between two cards is a meander, not a rule: it leaves one card's
+     line, dips between them and rises into the next. It is one SVG path used as
+     a MASK — a mask takes the colour underneath it, which is how the line keeps
+     following --stp-line (a data URI cannot read a custom property). */
   .veloura-stp.has-line .stp__step::after {
     content: "";
     position: absolute;
-    top: calc(var(--stp-tile) / 2 - 1px);
+    top: calc(var(--stp-tile) / 2 - 30px);
     inset-inline-end: 50%;
     width: calc(100% + var(--stp-col-gap));
-    height: 2px;
+    height: 60px;
     background: var(--stp-line);
+    -webkit-mask-image: var(--stp-curve);
+    mask-image: var(--stp-curve);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
     opacity: 0;
     transition: opacity .7s ease calc(var(--i, 0) * .12s);
   }
 
-  /* The chevron: a corner of a square turned a quarter, so it points along the
-     reading direction without an image or a font behind it. */
+  /* A small ring where the two halves meet, the way the reference marks its
+     joins. */
   .veloura-stp.has-line .stp__step::before {
     content: "";
     position: absolute;
     top: calc(var(--stp-tile) / 2 - 5px);
     inset-inline-end: calc(100% + var(--stp-col-gap) / 2 - 5px);
-    width: 9px;
-    height: 9px;
-    /* Physical borders on purpose: the corner they make points up and to the
-       right, and the rotation that turns it along the reading direction is a
-       different one in each — 225° to point left in Arabic, 45° to point right
-       in English. Logical borders would flip the corner as well and the two
-       would cancel out. */
-    border-top: 2px solid var(--stp-line);
-    border-right: 2px solid var(--stp-line);
-    transform: rotate(225deg);
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--stp-line);
+    border-radius: 999px;
+    background: var(--stp-page);
     opacity: 0;
     transition: opacity .7s ease calc(var(--i, 0) * .12s);
   }
-
-  html[dir="ltr"] .veloura-stp.has-line .stp__step::before { transform: rotate(45deg); }
 
   .veloura-stp.has-line .stp__step:first-child::after,
   .veloura-stp.has-line .stp__step:first-child::before { content: none; }
@@ -239,7 +244,7 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__row::before {
     content: "";
     position: absolute;
-    inset-inline-start: 7px;
+    inset-inline-start: 13px;
     top: calc(var(--stp-tile) / 2);
     bottom: calc(var(--stp-tile) / 2);
     width: 2px;
@@ -252,66 +257,58 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp.is-inview .stp__row::before { transform: scaleY(1); }
 
   .veloura-stp .stp__step {
+    position: relative;
     display: grid;
-    grid-template-columns: 16px minmax(0, auto) minmax(0, 1fr);
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
     align-items: center;
-    gap: 0 20px;
+    gap: 0 16px;
+    padding-inline-start: 44px;
     transform: translateY(10px);
     text-align: start;
   }
 
+  /* Every other step stands a little further from the spine, which is what
+     gives the column its sway. */
+  .veloura-stp .stp__step:nth-child(even) { padding-inline-start: 74px; }
+
   .veloura-stp.is-inview .stp__step { transform: none; }
 
-  /* The dot on the spine. */
-  .veloura-stp .stp__step::before {
-    content: "";
-    grid-column: 1;
-    width: 16px;
-    height: 16px;
-    border-radius: 999px;
-    background: var(--step-color, var(--stp-accent));
-    box-shadow: 0 0 0 4px var(--stp-page);
-  }
-
+  .veloura-stp .stp__step::before,
   .veloura-stp .stp__step::after { content: none; }
 
+  /* static, not relative: the number is pinned to the ROW, and a positioned
+     tile would catch it and hold it against its own edge instead. */
   .veloura-stp .stp__dot {
-    grid-column: 2;
+    position: static;
+    grid-column: 1;
     z-index: auto;
     overflow: visible;
     background: color-mix(in srgb, var(--step-color, var(--stp-accent)) 20%, transparent);
   }
 
-  .veloura-stp .stp__text { grid-column: 3; }
+  .veloura-stp .stp__text { grid-column: 2; }
   .veloura-stp .stp__text h3 { font-size: 17px; }
   .veloura-stp .stp__text p { max-width: none; font-size: 12.5px; }
 
-  /* The number: no longer a badge on the corner but the row's headline, sitting
-     behind the tile and reaching out past it. A negative z-index puts it under
-     the tile's own background, which is why the tile gives up its stacking
-     context just above. */
+  /* The number sits ON the spine, inside its own dot — the line is a count and
+     the count is the line. It is taken out of the tile and pinned to the row,
+     which is why the step is a positioned box above. */
   .veloura-stp .stp__num {
     position: absolute;
-    z-index: -1;
+    inset-inline-start: 0;
     top: 50%;
-    /* Pinned by its own start edge at the tile's middle, so it grows AWAY from
-       the spine and towards the words. Pinning the other edge sent it the other
-       way, straight over the dot. */
-    inset-inline-start: calc(var(--stp-tile) * .55);
     transform: translateY(-50%);
-    width: auto;
-    height: auto;
+    width: 28px;
+    height: 28px;
     min-width: 0;
     padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    color: var(--stp-title);
-    font-size: calc(var(--stp-tile) * .92);
+    border: 3px solid var(--stp-page);
+    border-radius: 999px;
+    background: var(--step-color, var(--stp-accent));
+    color: #fff;
+    font-size: 13px;
     font-weight: 900;
     line-height: 1;
-    letter-spacing: -.04em;
-    opacity: .92;
   }
 }
 
