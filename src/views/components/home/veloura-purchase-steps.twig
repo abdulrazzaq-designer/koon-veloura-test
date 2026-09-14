@@ -340,12 +340,19 @@ body .veloura-stp.veloura-stp > .container {
     margin-inline-start: -1px;
   }
 
+  .veloura-stp.stp--alternate .stp__row { row-gap: 0; }
+
   .veloura-stp.stp--alternate .stp__step {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     padding-inline: 0;
   }
+
+  /* Each step climbs into the space left free by the one before it. Without
+     this every step owned a full row of its own and the column read as four
+     separate things with a line running past them. */
+  .veloura-stp.stp--alternate .stp__step + .stp__step { margin-block-start: -34px; }
 
   .veloura-stp.stp--alternate .stp__step:nth-child(odd) {
     align-items: flex-end;
@@ -370,6 +377,29 @@ body .veloura-stp.veloura-stp > .container {
   }
 
   .veloura-stp.stp--row .stp__row::before { content: none; }
+
+  /* The rows get the same join the desktop has, between the two cards that
+     really are neighbours — never across the wrap. */
+  .veloura-stp.stp--row.has-line .stp__step::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--stp-tile) / 2 - 22px);
+    inset-inline-end: 50%;
+    width: calc(100% + 14px);
+    height: 44px;
+    background: var(--stp-line);
+    -webkit-mask-image: var(--stp-curve);
+    mask-image: var(--stp-curve);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity .6s ease calc(var(--i, 0) * .12s);
+  }
+
+  .veloura-stp.stp--row.has-line .stp__step:nth-child(2n + 1)::after { content: none; }
+  .veloura-stp.stp--row.has-line.is-inview .stp__step::after { opacity: 1; }
 
   .veloura-stp.stp--row .stp__step {
     display: flex;
