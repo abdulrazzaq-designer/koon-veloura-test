@@ -24,6 +24,23 @@
    and new markup under old rules is how a layout breaks with nobody touching
    it.
    ========================================================================== #}
+{% set stp_radius_key = component.veloura_steps_radius|default('') %}
+  {% if stp_radius_key.selected is defined %}{% set stp_radius_key = stp_radius_key.selected %}{% endif %}
+  {% if stp_radius_key is iterable and stp_radius_key.value is not defined %}{% set stp_radius_key = stp_radius_key|first %}{% endif %}
+  {% if stp_radius_key.value is defined %}{% set stp_radius_key = stp_radius_key.value %}{% endif %}
+  {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'medium' %}{% endif %}
+  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px'} %}
+
+  {% set stp_items = component.veloura_steps_collection|default([]) %}
+  {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
+
+  {# The connector used to be withheld whenever there were more steps than
+     columns — which is why a five-step section with four columns showed no
+     join at all. It is drawn between neighbours instead, and the first card of
+     every row is told to skip it (see the nth-child rule in the desktop block,
+     which counts by the merchant's own column setting). #}
+  {% set stp_line = component.veloura_steps_show_connectors %}
+
 <style>
 /* ==========================================================================
    خطوات الشراء (فيلورا) — scoped entirely to .veloura-stp
@@ -216,8 +233,12 @@ body .veloura-stp.veloura-stp > .container {
     transition: opacity .7s ease calc(var(--i, 0) * .12s);
   }
 
+  /* No join before the first card of any row: the wave would leave from the far
+     edge of the grid and arrive from nowhere. */
   .veloura-stp.has-line .stp__step:first-child::after,
-  .veloura-stp.has-line .stp__step:first-child::before { content: none; }
+  .veloura-stp.has-line .stp__step:first-child::before,
+  .veloura-stp.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::after,
+  .veloura-stp.has-line .stp__step:nth-child({{ stp_cols }}n + 1)::before { content: none; }
   .veloura-stp.has-line.is-inview .stp__step::after,
   .veloura-stp.has-line.is-inview .stp__step::before { opacity: 1; }
 
@@ -267,9 +288,9 @@ body .veloura-stp.veloura-stp > .container {
     text-align: start;
   }
 
-  /* Every other step stands a little further from the spine, which is what
-     gives the column its sway. */
-  .veloura-stp .stp__step:nth-child(even) { padding-inline-start: 74px; }
+  /* One step beside the spine, the next one right across from it — the sway in
+     the sketch, not a nudge. The tile is what moves; the words follow it. */
+  .veloura-stp .stp__step:nth-child(even) { padding-inline-start: calc(44px + 22%); }
 
   .veloura-stp.is-inview .stp__step { transform: none; }
 
@@ -344,20 +365,6 @@ html body.dark .veloura-stp .stp__dot {
   color: color-mix(in srgb, var(--step-color, var(--stp-accent)) 45%, #ffffff);
 }
 </style>
-
-  {% set stp_radius_key = component.veloura_steps_radius|default('') %}
-  {% if stp_radius_key.selected is defined %}{% set stp_radius_key = stp_radius_key.selected %}{% endif %}
-  {% if stp_radius_key is iterable and stp_radius_key.value is not defined %}{% set stp_radius_key = stp_radius_key|first %}{% endif %}
-  {% if stp_radius_key.value is defined %}{% set stp_radius_key = stp_radius_key.value %}{% endif %}
-  {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'medium' %}{% endif %}
-  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px'} %}
-
-  {% set stp_items = component.veloura_steps_collection|default([]) %}
-  {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
-
-  {# The line is only honest while the steps really are neighbours: across one
-     row on a desktop, and down a single column on a phone. #}
-  {% set stp_line = component.veloura_steps_show_connectors and stp_items|length <= stp_cols %}
 
   <section
     data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
