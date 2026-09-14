@@ -16526,6 +16526,52 @@
           "maximum": "7"
         },
         {
+          "id": "veloura_steps_mobile_layout",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "ترتيب الخطوات في الجوال",
+          "icon": "sicon-list",
+          "source": "Manual",
+          "required": true,
+          "value": "alternate",
+          "default": "alternate",
+          "description": "المتناوب يضع الخط في المنتصف وخطوة يمينه وخطوة يساره.",
+          "options": [
+            {
+              "label": "عمود واحد بخط جانبي",
+              "value": "side",
+              "key": "65a94089-2248-ab4a-5275-73ed83592a86"
+            },
+            {
+              "label": "متناوب يمين ويسار",
+              "value": "alternate",
+              "key": "89c14974-9328-5811-5147-34d8365f245c"
+            },
+            {
+              "label": "صفوف أفقية",
+              "value": "row",
+              "key": "eae809f8-078a-8fff-87fc-372005220ba6"
+            }
+          ],
+          "selected": [
+            {
+              "label": "متناوب يمين ويسار",
+              "value": "alternate",
+              "key": "89c14974-9328-5811-5147-34d8365f245c"
+            }
+          ]
+        },
+        {
+          "id": "veloura_steps_tile_bg",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار خلفية الأيقونة",
+          "icon": "sicon-image",
+          "value": true,
+          "required": false,
+          "description": "أطفئها لتظهر الأيقونة وحدها بلا مربّع خلفها."
+        },
+        {
           "id": "veloura_steps_show_connectors",
           "type": "boolean",
           "format": "switch",

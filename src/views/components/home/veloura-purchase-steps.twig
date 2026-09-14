@@ -41,6 +41,12 @@
      which counts by the merchant's own column setting). #}
   {% set stp_line = component.veloura_steps_show_connectors %}
 
+  {% set stp_mobile = component.veloura_steps_mobile_layout|default('') %}
+  {% if stp_mobile.selected is defined %}{% set stp_mobile = stp_mobile.selected %}{% endif %}
+  {% if stp_mobile is iterable and stp_mobile.value is not defined %}{% set stp_mobile = stp_mobile|first %}{% endif %}
+  {% if stp_mobile.value is defined %}{% set stp_mobile = stp_mobile.value %}{% endif %}
+  {% if stp_mobile not in ['side', 'alternate', 'row'] %}{% set stp_mobile = 'alternate' %}{% endif %}
+
 <style>
 /* ==========================================================================
    خطوات الشراء (فيلورا) — scoped entirely to .veloura-stp
@@ -144,6 +150,15 @@ body .veloura-stp.veloura-stp > .container {
   color: var(--step-color, var(--stp-accent));
   transition: transform .35s ease, box-shadow .35s ease, background-color .35s ease;
 }
+
+/* The square is the merchant's to keep or drop; without it the icon simply
+   stands on the page and is drawn a size larger to hold the row. */
+.veloura-stp.stp--bare .stp__dot {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.veloura-stp.stp--bare .stp__dot i { font-size: calc(var(--stp-tile) * .52); }
 
 .veloura-stp .stp__dot i { font-size: calc(var(--stp-tile) * .4); line-height: 1; }
 .veloura-stp .stp__dot img { width: 54%; height: 54%; object-fit: contain; }
@@ -255,6 +270,11 @@ body .veloura-stp.veloura-stp > .container {
 @media (max-width: 767px) {
   .veloura-stp { --stp-tile: 74px; --stp-step-gap: 26px; }
 
+  /* A lifted tile becomes the containing block for anything inside it, and the
+     number lives inside the tile: on hover it was being caught and dragged
+     against the tile's own edge, off the spine. No lift on a phone. */
+  .veloura-stp .stp__step:hover .stp__dot { transform: none; }
+
   .veloura-stp .stp__row {
     position: relative;
     grid-template-columns: minmax(0, 1fr);
@@ -290,7 +310,7 @@ body .veloura-stp.veloura-stp > .container {
 
   /* One step beside the spine, the next one right across from it — the sway in
      the sketch, not a nudge. The tile is what moves; the words follow it. */
-  .veloura-stp .stp__step:nth-child(even) { padding-inline-start: calc(44px + 22%); }
+  .veloura-stp.stp--side .stp__step:nth-child(even) { padding-inline-start: calc(44px + 22%); }
 
   .veloura-stp.is-inview .stp__step { transform: none; }
 
@@ -310,6 +330,62 @@ body .veloura-stp.veloura-stp > .container {
   .veloura-stp .stp__text { grid-column: 2; }
   .veloura-stp .stp__text h3 { font-size: 17px; }
   .veloura-stp .stp__text p { max-width: none; font-size: 12.5px; }
+
+  /* ------------------------------------------- alternating, and in rows --
+     The alternating arrangement puts the spine down the middle and hangs one
+     step from each side of it; the row arrangement drops the spine and stands
+     the steps side by side, as they are on a desktop. */
+  .veloura-stp.stp--alternate .stp__row::before {
+    inset-inline-start: 50%;
+    margin-inline-start: -1px;
+  }
+
+  .veloura-stp.stp--alternate .stp__step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-inline: 0;
+  }
+
+  .veloura-stp.stp--alternate .stp__step:nth-child(odd) {
+    align-items: flex-end;
+    padding-inline-end: calc(50% + 22px);
+    text-align: end;
+  }
+
+  .veloura-stp.stp--alternate .stp__step:nth-child(even) {
+    align-items: flex-start;
+    padding-inline-start: calc(50% + 22px);
+    text-align: start;
+  }
+
+  .veloura-stp.stp--alternate .stp__num {
+    inset-inline-start: 50%;
+    transform: translate(50%, -50%);
+  }
+
+  .veloura-stp.stp--row .stp__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 14px;
+  }
+
+  .veloura-stp.stp--row .stp__row::before { content: none; }
+
+  .veloura-stp.stp--row .stp__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding-inline: 0;
+  }
+
+  .veloura-stp.stp--row .stp__num {
+    position: absolute;
+    inset-inline-start: calc(50% + var(--stp-tile) / 2 - 20px);
+    top: 0;
+    transform: none;
+  }
 
   /* The number sits ON the spine, inside its own dot — the line is a count and
      the count is the line. It is taken out of the tile and pinned to the row,
@@ -371,6 +447,8 @@ html body.dark .veloura-stp .stp__dot {
     data-veloura-steps
     id="veloura-purchase-steps-{{ position }}"
     class="s-block veloura-stp no-js
+      stp--{{ stp_mobile }}
+      {{ component.veloura_steps_tile_bg is defined and not component.veloura_steps_tile_bg ? 'stp--bare' : '' }}
       {{ component.veloura_steps_center_text ? 'is-centered' : '' }}
       {{ stp_line ? 'has-line' : '' }}
       {{ component.veloura_steps_show_connectors ? 'has-path' : '' }}
