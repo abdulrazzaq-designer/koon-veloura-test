@@ -9473,7 +9473,7 @@
           "required": true,
           "value": "image",
           "default": "image",
-          "description": "الفيديو أثقل على الجوال — إن اخترته ارفع صورة أيضًا لتظهر مكانه على الشاشات الصغيرة.",
+          "description": "كل نوع يعرض حقوله وحده.",
           "selected": [
             {
               "label": "صورة",
@@ -9506,7 +9506,14 @@
           "label": "صورة الخلفية",
           "icon": "sicon-image",
           "value": null,
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "image"
+            }
+          ]
         },
         {
           "id": "hero_bg_image_mobile",
@@ -9515,7 +9522,15 @@
           "label": "صورة الخلفية للجوال",
           "icon": "sicon-image",
           "value": null,
-          "required": false
+          "required": false,
+          "description": "اختيارية — إن تركتها فارغة استُعملت صورة اللابتوب.",
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "image"
+            }
+          ]
         },
         {
           "id": "hero_bg_video",
@@ -9527,7 +9542,31 @@
           "required": false,
           "maxLength": 2048,
           "placeholder": "https://…/hero.mp4",
-          "description": "يُشغَّل صامتًا ومكررًا، ولا يُحمَّل على الجوال ولا لمن يفضّل تقليل الحركة."
+          "description": "يُشغَّل صامتًا ومكررًا، ولا يُحمَّل على الجوال ولا لمن يفضّل تقليل الحركة.",
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "video"
+            }
+          ]
+        },
+        {
+          "id": "hero_bg_video_poster",
+          "type": "string",
+          "format": "image",
+          "label": "صورة بديلة للفيديو",
+          "description": "تظهر مكان الفيديو على الجوال وريثما يبدأ التشغيل. ارفعها دائمًا مع الفيديو.",
+          "icon": "sicon-image",
+          "value": null,
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "video"
+            }
+          ]
         },
         {
           "id": "hero_grad_from",
@@ -9537,7 +9576,14 @@
           "label": "لون التدرّج الأول",
           "icon": "sicon-format-fill",
           "value": "#1e1b4b",
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "gradient"
+            }
+          ]
         },
         {
           "id": "hero_grad_to",
@@ -9547,7 +9593,14 @@
           "label": "لون التدرّج الثاني",
           "icon": "sicon-format-fill",
           "value": "#0f172a",
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "gradient"
+            }
+          ]
         },
         {
           "id": "hero_grad_animate",
@@ -9557,7 +9610,14 @@
           "icon": "sicon-toggle-off",
           "value": true,
           "selected": true,
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "gradient"
+            }
+          ]
         },
         {
           "id": "hero_overlay",
@@ -9989,6 +10049,27 @@
           "required": false
         },
         {
+          "id": "hero_btn2_bg",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "خلفية الزر الثاني",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff22",
+          "required": false,
+          "description": "اتركه فارغًا ليبقى زجاجيًا شفافًا."
+        },
+        {
+          "id": "hero_btn2_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون نص الزر الثاني",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false
+        },
+        {
           "id": "hero_btn2_outline",
           "type": "boolean",
           "format": "switch",
@@ -10017,6 +10098,37 @@
           "required": false,
           "maxLength": 60,
           "placeholder": "مثال: ليش تشتري من عندنا؟"
+        },
+        {
+          "id": "hero_badge_icon_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون أيقونات الشارات",
+          "icon": "sicon-format-fill",
+          "value": "#22d3ee",
+          "required": false
+        },
+        {
+          "id": "hero_badge_bg",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "خلفية الشارات",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff12",
+          "required": false,
+          "description": "اتركه فارغًا ليبقى زجاجيًا شفافًا."
+        },
+        {
+          "id": "hero_badge_text_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون نص الشارات",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false
         },
         {
           "id": "hero_badges",
@@ -10078,6 +10190,16 @@
           "icon": "sicon-toggle-off",
           "value": true,
           "selected": true,
+          "required": false
+        },
+        {
+          "id": "hero_stats_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون الأرقام",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
           "required": false
         },
         {
@@ -10255,6 +10377,17 @@
           "selected": false,
           "required": false,
           "description": "مطفأً يظهر صفًا ثابتًا هادئًا في المنتصف — وهو الأنسب لعدد قليل من الشعارات."
+        },
+        {
+          "id": "hero_logos_gray",
+          "type": "boolean",
+          "format": "switch",
+          "label": "تفريغ ألوان الشعارات",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
+          "description": "يجعلها رمادية هادئة وتعود بألوانها عند مرور المؤشر. مطفأً تظهر بألوانها كما رُفعت."
         },
         {
           "id": "hero_logos_speed",
@@ -12224,6 +12357,44 @@
               "label": "بنر كبير + بنرين جانبيين",
               "value": "feature",
               "key": "animated_desktop_layout-feature"
+            }
+          ]
+        },
+        {
+          "id": "animated_feature_mobile",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "التخطيط الثابت على الجوال",
+          "description": "يظهر فقط مع «بنر كبير + بنرين جانبيين». الشريط يوفّر ارتفاع الصفحة ويُمرَّر بالإصبع.",
+          "icon": "sicon-list",
+          "source": "Manual",
+          "required": true,
+          "value": "slider",
+          "default": "slider",
+          "selected": [
+            {
+              "label": "شريط يُمرَّر بالإصبع",
+              "value": "slider",
+              "key": "animated_feature_mobile-slider"
+            }
+          ],
+          "options": [
+            {
+              "label": "شريط يُمرَّر بالإصبع",
+              "value": "slider",
+              "key": "animated_feature_mobile-slider"
+            },
+            {
+              "label": "مكدّسة فوق بعضها",
+              "value": "stack",
+              "key": "animated_feature_mobile-stack"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "animated_desktop_layout",
+              "operation": "=",
+              "value": "feature"
             }
           ]
         },

@@ -270,6 +270,41 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   }
 
   .animated-banners__side:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+
+  /* شريط يُمرَّر بالإصبع بدل تكديس البنرات: ثلاثة بنرات مكدّسة تأكل شاشة
+     كاملة على الجوال. الصفّ والعمود الجانبي يختفيان من التخطيط بـ contents،
+     فتصير البنرات نفسها عناصر الشريط — بلا أي تكرار في الـ DOM وبلا سكربت،
+     فالالتقاط (scroll-snap) من المتصفح نفسه. */
+  .animated-banners.is-mob-slider .animated-banners__feature {
+    display: flex;
+    /* بلا تمدد: كل بنر يحتفظ بارتفاعه الطبيعي بدل أن يُشَدّ لأطول واحد. */
+    align-items: flex-start;
+    gap: var(--ab-gap, 14px);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+
+  .animated-banners.is-mob-slider .animated-banners__feature::-webkit-scrollbar { display: none; }
+
+  .animated-banners.is-mob-slider .animated-banners__row,
+  .animated-banners.is-mob-slider .animated-banners__side { display: contents; }
+
+  .animated-banners.is-mob-slider .animated-banners__main,
+  .animated-banners.is-mob-slider .animated-banners__side > * {
+    flex: 0 0 86%;
+    scroll-snap-align: center;
+    height: auto;
+  }
+
+  .animated-banners.is-mob-slider .animated-banners__side .animated-banners__card,
+  .animated-banners.is-mob-slider .animated-banners__side .animated-banners__card picture,
+  .animated-banners.is-mob-slider .animated-banners__side .animated-banners__card img {
+    height: auto !important;
+  }
 }
 
 .animated-banners__feature .animated-banners__card { margin-inline: 0; }
@@ -338,6 +373,12 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 {% if ab_layout.value is defined %}{% set ab_layout = ab_layout.value %}{% endif %}
 {% if ab_layout not in ['slider', 'feature'] %}{% set ab_layout = 'slider' %}{% endif %}
 
+{% set ab_mob = component.animated_feature_mobile|default('slider') %}
+{% if ab_mob.selected is defined %}{% set ab_mob = ab_mob.selected %}{% endif %}
+{% if ab_mob is iterable and ab_mob.value is not defined %}{% set ab_mob = ab_mob|first %}{% endif %}
+{% if ab_mob.value is defined %}{% set ab_mob = ab_mob.value %}{% endif %}
+{% if ab_mob not in ['slider', 'stack'] %}{% set ab_mob = 'slider' %}{% endif %}
+
 {% if component.animated_banners|length > 0 %}
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="
@@ -346,6 +387,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     {{ is_full ? 'full-banner is-full-width-desktop' : '' }}
     {{ has_mobile_spacing ? 'has-mobile-spacing' : '' }}
     {{ ab_layout == 'feature' ? 'is-feature-layout' : '' }}
+    {{ ab_layout == 'feature' and ab_mob == 'slider' ? 'is-mob-slider' : '' }}
     {{ ab_layout != 'feature' and component.animated_transition_type in ['cube', 'flip'] ? 'has-3d-effect' : '' }}
   "
   style="
