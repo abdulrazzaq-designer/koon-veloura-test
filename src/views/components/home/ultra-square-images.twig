@@ -4,43 +4,6 @@
 {% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
-<style>
-/* الأعمدة تُكتب هنا للسبب نفسه: القاعدة التي تقرأ --ultra-*-columns تعيش في
-   ملف الستايل المبني، وأي متجر عليه نسخة أقدم لا يرى العدد مهما غيّرته. */
-.ultra-square-images:not(.is-masonry) .ultra-square-images__grid {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: var(--ultra-gap, 16px) !important;
-  align-items: stretch;
-}
-
-.ultra-square-images:not(.is-masonry) .ultra-square-images__grid > .ultra-square-images__item {
-  width: calc((100% - (var(--ultra-gap, 16px) * (var(--ultra-mobile-columns, 2) - 1))) / var(--ultra-mobile-columns, 2)) !important;
-  max-width: none !important;
-  flex: 0 0 auto !important;
-  grid-column: auto !important;
-  grid-row: auto !important;
-}
-
-.ultra-square-images.is-masonry .ultra-square-images__grid {
-  display: grid !important;
-  grid-template-columns: repeat(var(--ultra-mobile-columns, 2), minmax(0, 1fr)) !important;
-  gap: var(--ultra-gap, 16px) !important;
-}
-
-.ultra-square-images.is-masonry .ultra-square-images__item { width: auto !important; }
-
-@media (min-width: 768px) {
-  .ultra-square-images:not(.is-masonry) .ultra-square-images__grid > .ultra-square-images__item {
-    width: calc((100% - (var(--ultra-gap, 16px) * (var(--ultra-desktop-columns, 4) - 1))) / var(--ultra-desktop-columns, 4)) !important;
-  }
-
-  .ultra-square-images.is-masonry .ultra-square-images__grid {
-    grid-template-columns: repeat(var(--ultra-desktop-columns, 4), minmax(0, 1fr)) !important;
-  }
-}
-</style>
-
 {# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
    لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
    للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ
@@ -82,6 +45,24 @@
 {% if ultra_peek is iterable %}{% set ultra_peek = ultra_peek|first %}{% endif %}
 {% if ultra_peek.value is defined %}{% set ultra_peek = ultra_peek.value %}{% endif %}
 {% set ultra_peek = ultra_peek == true or ultra_peek == 1 or ultra_peek == '1' or ultra_peek == 'true' or ultra_peek == 'on' %}
+
+{# الفجوة كانت تُطبع كما تصل: لو وصلت ككائن خرج «--ultra-gap: Arraypx»،
+   وهي قيمة غير صالحة تُفسد كل calc يعتمد عليها فيسقط العرض ويرجع كل عنصر
+   لحجمه الطبيعي — وهذا هو سبب تضخّم الصور وتداخلها. #}
+{% set ultra_gap = component.ultra_images_gap %}
+{% if ultra_gap.value is defined %}{% set ultra_gap = ultra_gap.value %}{% endif %}
+{% if ultra_gap.selected is defined %}{% set ultra_gap = ultra_gap.selected %}{% endif %}
+{% if ultra_gap is iterable %}{% set ultra_gap = ultra_gap|first %}{% endif %}
+{% if ultra_gap.value is defined %}{% set ultra_gap = ultra_gap.value %}{% endif %}
+{% if ultra_gap is iterable or ultra_gap ~ '' == '' %}{% set ultra_gap = 16 %}{% endif %}
+{% set ultra_gap = ultra_gap + 0 %}
+
+{% set ultra_mcols = ultra_mcols + 0 %}
+{% set ultra_dcols = ultra_dcols + 0 %}
+{% if ultra_mcols < 1 %}{% set ultra_mcols = 1 %}{% endif %}
+{% if ultra_dcols < 1 %}{% set ultra_dcols = 1 %}{% endif %}
+
+{% set ultra_id = 'veloura-ultra-' ~ position %}
 
 {% set radius_map = {
   'sharp': '0px',
@@ -128,12 +109,60 @@
 ]|join(' ') %}
 
 {% if not component.ultra_hide_section %}
+<style>
+/* الأعمدة تُكتب هنا بأرقامها الصريحة لا عبر متغيّرات CSS:
+
+   • القاعدة التي تقرأها في ملف الستايل المبني قد تكون أقدم من القالب على
+     المتجر فلا توجد أصلاً.
+   • والمتغيّر إن وصلته قيمة غير صالحة أسقط الحساب كله وأعاد كل صورة إلى
+     حجمها الطبيعي — وهو ما كان يضخّم الصور ويجعلها تتداخل.
+
+   والمعرّف يخص هذا القسم وحده، فلا يؤثر على نسخة أخرى منه في الصفحة. */
+#{{ ultra_id }} img { max-width: 100%; }
+
+#{{ ultra_id }}:not(.is-masonry) .ultra-square-images__grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: {{ ultra_gap }}px !important;
+  align-items: stretch;
+}
+
+#{{ ultra_id }}:not(.is-masonry) .ultra-square-images__grid > .ultra-square-images__item {
+  width: calc((100% - ({{ ultra_gap }}px * {{ ultra_mcols - 1 }})) / {{ ultra_mcols }}) !important;
+  max-width: none !important;
+  flex: 0 0 auto !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+#{{ ultra_id }}.is-masonry .ultra-square-images__grid {
+  display: grid !important;
+  grid-template-columns: repeat({{ ultra_mcols }}, minmax(0, 1fr)) !important;
+  gap: {{ ultra_gap }}px !important;
+}
+
+#{{ ultra_id }}.is-masonry .ultra-square-images__grid > .ultra-square-images__item { width: auto !important; }
+
+@media (min-width: 768px) {
+  #{{ ultra_id }}:not(.is-masonry) .ultra-square-images__grid > .ultra-square-images__item {
+    width: calc((100% - ({{ ultra_gap }}px * {{ ultra_dcols - 1 }})) / {{ ultra_dcols }}) !important;
+  }
+
+  #{{ ultra_id }}.is-masonry .ultra-square-images__grid {
+    grid-template-columns: repeat({{ ultra_dcols }}, minmax(0, 1fr)) !important;
+  }
+}
+</style>
+
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  id="{{ ultra_id }}"
   class="{{ section_classes }}"
+  data-ultra-gap="{{ ultra_gap }}"
   data-ultra-cols="{{ ultra_mcols }}/{{ ultra_dcols }}"
   data-ultra-mode="{{ ultra_is_grid ? (ultra_is_masonry ? 'masonry' : 'grid') : 'slider' }}"
   style="
-    --ultra-gap: {{ component.ultra_images_gap|default(16) }}px;
+    --ultra-gap: {{ ultra_gap }}px;
     --ultra-radius: {{ radius_map[radius_key]|default((radius_key ~ '' == '' ? '16' : radius_key) ~ 'px') }};
     --ultra-mobile-columns: {{ ultra_mcols }};
     --ultra-desktop-columns: {{ ultra_dcols }};
@@ -229,13 +258,13 @@
           {# «إظهار جزء من التالية» كان يفرض 1.35 على الجوال مهما كان العدد،
              فيبتلع الإعداد تماماً. صار يضيف كسراً للعدد المختار لا يستبدله. #}
           "slidesPerView": {{ ultra_peek ? ultra_mcols + 0.35 : ultra_mcols }},
-          "spaceBetween": {{ component.ultra_images_gap|default(16) }},
+          "spaceBetween": {{ ultra_gap }},
           "freeMode": {{ component.ultra_slider_free_mode ? "true" : "false" }},
           "autoplay": {{ component.ultra_slider_autoplay ? "{\"delay\": 1200, \"disableOnInteraction\": false}" : "false" }},
           "breakpoints": {
             "768": {
               "slidesPerView": {{ ultra_peek ? ultra_dcols + 0.35 : ultra_dcols }},
-              "spaceBetween": {{ component.ultra_images_gap|default(16) }}
+              "spaceBetween": {{ ultra_gap }}
             }
           }
         }'
