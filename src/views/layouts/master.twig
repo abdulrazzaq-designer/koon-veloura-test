@@ -3035,10 +3035,23 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% endset %}
 {% endif %}
 
+<style>
+  /* حواف الهيدر: القيمة رقم بالبيكسل الآن، وتُكتب متغيراً على هذا العنصر.
+     القاعدتان تحت تكرران ما في ملف الستايل لكن بـ important، حتى تشتغل حتى لو
+     كان الملف المبني على المتجر نسخة أقدم — وهذا هو سطح الهيدر الذي يظهر في
+     الوضع العائم، حيث يكون الشريط الداخلي شفافاً بلا إطار. */
+  html body .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+    border-radius: var(--veloura-radius, 24px) !important;
+  }
+
+  html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) .veloura-header-tabs-stack__surface {
+    border-radius: 0 0 var(--veloura-radius, 24px) var(--veloura-radius, 24px) !important;
+  }
+</style>
+
 <div
   id="veloura-header-tabs-stack"
   class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }}{{ vh_compact ? ' veloura-header-tabs-stack--compact-enabled' : ' veloura-header-tabs-stack--compact-disabled' }}{{ vht_full_width ? ' veloura-header-tabs-stack--full-width-desktop' : ' veloura-header-tabs-stack--container-desktop' }}{{ vht_search_detached ? ' veloura-header-tabs-stack--search-detached' : '' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_has_tabs ? ' veloura-header-tabs-stack--has-tabs' : '' }}"
-  style="--veloura-radius:{{ vht_top_border_px }};"
   data-veloura-header-tabs-stack
   data-veloura-sticky="{{ vht_stack_sticky ? 'true' : 'false' }}"
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
@@ -3046,7 +3059,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   data-veloura-compact="{{ vh_compact ? 'true' : 'false' }}"
   data-veloura-full-width-desktop="{{ vht_full_width ? 'true' : 'false' }}"
   data-veloura-search-detached="{{ vht_search_detached ? 'true' : 'false' }}"
-  style="--veloura-header-solid-bg:{{ vht_header_bg }};--veloura-tabs-solid-bg:{{ vht_bar_bg }};"
+  {# سمة style واحدة فقط: عنصر فيه اثنتان يخسر إحداهما عند التحليل، وهذا
+     بالضبط ما كان يبلع حواف الهيدر العائم. #}
+  style="--veloura-radius:{{ vht_top_border_px }};--veloura-header-solid-bg:{{ vht_header_bg }};--veloura-tabs-solid-bg:{{ vht_bar_bg }};"
 >
   <div class="veloura-header-tabs-stack__container container">
     <div class="veloura-header-tabs-stack__surface">
