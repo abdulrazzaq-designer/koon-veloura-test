@@ -803,8 +803,10 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
           <p class="hero__sub">{{ component.hero_subtitle }}</p>
         {% endif %}
 
-        {% if component.hero_countdown_enabled and component.hero_countdown_date %}
-          <div class="hero__countdown" data-hero-countdown="{{ component.hero_countdown_date }}">
+        {% set hero_cd_date %}{{ _self.pick(component.hero_countdown_date, '') }}{% endset %}
+        {% set hero_cd_date = hero_cd_date|trim %}
+        {% if component.hero_countdown_enabled and hero_cd_date %}
+          <div class="hero__countdown" data-hero-countdown="{{ hero_cd_date|e('html_attr') }}">
             <div><strong data-days>0</strong><span>يوم</span></div>
             <div><strong data-hours>0</strong><span>ساعة</span></div>
             <div><strong data-minutes>0</strong><span>دقيقة</span></div>
@@ -988,19 +990,43 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
      يُبحث عن العنصر من المستند في كل ثانية بدل الاحتفاظ به: هذا يجعل العدّاد
      يعمل حتى لو أُعيد رسم القسم أو نُقل مكانه. وصيغة التاريخ تُقرأ بالاتجاهين
      (يوم-شهر-سنة أو سنة-شهر-يوم) لأن حقل التاريخ يختلف بين الإصدارات. */
+  /* حقل التاريخ يصل بأشكال مختلفة بين إصدارات لوحة التحكم: 01-01-2027 أو
+     2027-01-01 أو 2027-01-01T20:00:00Z أو معه وقت بعد مسافة. هنا نقرأ الأرقام
+     كما هي ونرتّبها بالمنطق: أربع خانات في الأول تعني سنة، وإلا فهو يوم. وإن
+     لم يُذكر وقت اعتبرنا نهاية اليوم. */
+  function heroParseEnd(raw) {
+    raw = String(raw == null ? '' : raw).replace(/"/g, '').trim();
+    if (!raw) return NaN;
+
+    var nums = raw.match(/\d+/g);
+    if (!nums || nums.length < 3) {
+      var t = Date.parse(raw);
+      return isNaN(t) ? NaN : t;
+    }
+
+    var y, m, dd;
+    if (nums[0].length === 4) { y = +nums[0]; m = +nums[1]; dd = +nums[2]; }
+    else { dd = +nums[0]; m = +nums[1]; y = +nums[2]; }
+
+    if (!y || !m || !dd || m > 12 || dd > 31) return NaN;
+
+    var hh = nums.length > 3 ? +nums[3] : 23;
+    var mi = nums.length > 4 ? +nums[4] : 59;
+    var ss = nums.length > 5 ? +nums[5] : 59;
+
+    var d = new Date(y, m - 1, dd, hh, mi, ss);
+    return isNaN(d.getTime()) ? NaN : d.getTime();
+  }
+
   function heroCountdownTick() {
     var el = document.querySelector('[data-hero-countdown]');
     if (!el) return;
 
-    var raw = String(el.getAttribute('data-hero-countdown') || '').replace(/"/g, '').trim();
-    var parts = raw.split(/[-/]/);
-    if (parts.length < 3) return;
+    var end = heroParseEnd(el.getAttribute('data-hero-countdown'));
+    /* تاريخ غير مفهوم: لا نخفي العدّاد ولا نصفّره — نتركه كما هو ونصمت،
+       فالإخفاء الفوري كان يبدو وكأن العرض انتهى في اللحظة نفسها. */
+    if (!isFinite(end)) return;
 
-    var y, m, dd;
-    if (parts[0].length === 4) { y = +parts[0]; m = +parts[1]; dd = +parts[2]; }
-    else { dd = +parts[0]; m = +parts[1]; y = +parts[2]; }
-
-    var end = new Date(y, m - 1, dd, 23, 59, 59).getTime();
     var left = end - Date.now();
 
     if (!isFinite(left) || left <= 0) { el.style.display = 'none'; return; }

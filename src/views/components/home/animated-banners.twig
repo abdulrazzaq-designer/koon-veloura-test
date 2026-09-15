@@ -451,12 +451,27 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-countdown]').forEach(function(timer) {
-      let dateString = timer.getAttribute('data-countdown').replaceAll('"', '').trim();
-      let parts = dateString.split('-');
-      let day = parseInt(parts[0], 10);
-      let month = parseInt(parts[1], 10) - 1;
-      let year = parseInt(parts[2], 10);
-      let endDate = new Date(year, month, day, 23, 59, 59).getTime();
+      /* التاريخ يصل بأشكال مختلفة (يوم-شهر-سنة، سنة-شهر-يوم، ومعه وقت
+         أحياناً). نقرأ الأرقام ونرتّبها بالمنطق بدل افتراض صيغة واحدة —
+         الافتراض الخاطئ كان ينتج تاريخاً ماضياً فيختفي العدّاد فوراً. */
+      var raw = String(timer.getAttribute('data-countdown') || '').replace(/"/g, '').trim();
+      var nums = raw.match(/\d+/g) || [];
+      var endDate = NaN;
+
+      if (nums.length >= 3) {
+        var y, m, d;
+        if (nums[0].length === 4) { y = +nums[0]; m = +nums[1]; d = +nums[2]; }
+        else { d = +nums[0]; m = +nums[1]; y = +nums[2]; }
+        if (y && m && d && m <= 12 && d <= 31) {
+          endDate = new Date(y, m - 1, d,
+            nums.length > 3 ? +nums[3] : 23,
+            nums.length > 4 ? +nums[4] : 59,
+            nums.length > 5 ? +nums[5] : 59).getTime();
+        }
+      }
+
+      if (!isFinite(endDate)) { endDate = Date.parse(raw); }
+      if (!isFinite(endDate)) return;
 
       function updateTimer() {
         let now = new Date().getTime();
