@@ -298,10 +298,13 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   .animated-banners.is-mob-slider .animated-banners__row,
   .animated-banners.is-mob-slider .animated-banners__side { display: contents; }
 
+  /* البنر يملأ عرض الكونتينر كاملاً، ناقص ما يُترك ليظهر من البنر التالي.
+     صفر يعني بنراً كامل العرض بلا أي ظهور لما بعده. */
   .animated-banners.is-mob-slider .animated-banners__main,
   .animated-banners.is-mob-slider .animated-banners__side > * {
-    flex: 0 0 86%;
-    scroll-snap-align: center;
+    flex: 0 0 calc(100% - var(--ab-peek, 12%));
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     height: auto;
   }
 
@@ -378,6 +381,10 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 {% if ab_layout.value is defined %}{% set ab_layout = ab_layout.value %}{% endif %}
 {% if ab_layout not in ['slider', 'feature'] %}{% set ab_layout = 'slider' %}{% endif %}
 
+{% set ab_peek = component.animated_feature_peek %}
+{% if ab_peek.value is defined %}{% set ab_peek = ab_peek.value %}{% endif %}
+{% if ab_peek is iterable or ab_peek ~ '' == '' %}{% set ab_peek = 12 %}{% endif %}
+
 {% set ab_mob = component.animated_feature_mobile|default('slider') %}
 {% if ab_mob.selected is defined %}{% set ab_mob = ab_mob.selected %}{% endif %}
 {% if ab_mob is iterable and ab_mob.value is not defined %}{% set ab_mob = ab_mob|first %}{% endif %}
@@ -399,6 +406,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     --banner-margin: {{ has_mobile_spacing ? h_spacing : 0 }}px;
     --animated-radius: {{ animated_radius }};
     --ab-gap: 14px;
+    --ab-peek: {{ ab_peek }}%;
   "
 >
   <div class="{{ is_full ? 'animated-banners__container is-full-width' : 'container animated-banners__container' }}">
@@ -521,17 +529,50 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     );
   };
 
-  /* ------------------------------------------------------ السحب بالفأرة -- */
-  var down = false, moved = false, startX = 0, startScroll = 0, snap = '';
+  /* --------------------------------------------- الانتقال من بنر إلى بنر -- */
+  /* الالتقاط الأصلي (scroll-snap) يطالب بسحب نصف البنر قبل أن ينتقل، وهو ما
+     يجعل الحركة تبدو ثقيلة. هنا نقرّر بأنفسنا بعد ترك الإصبع: نحسب سرعة
+     السحب ونتوقّع إلى أين كان المحتوى ماضياً، ثم ننزلق بنعومة إلى أقرب بنر
+     لتلك النقطة — فسحبة قصيرة سريعة تكفي، والحركة تنساب بدل أن تقفز. */
+  var rtl = getComputedStyle(strip).direction === 'rtl';
 
+  function edgeOf(rect) { return rtl ? rect.right : rect.left; }
+
+  function slideTo(card) {
+    if (!card) return;
+    var delta = edgeOf(card.getBoundingClientRect()) - edgeOf(strip.getBoundingClientRect());
+    /* scrollBy يعمل بالإحداثي الفيزيائي في الاتجاهين، فلا حاجة لحساب إشارة. */
+    strip.scrollBy({ left: delta, behavior: 'smooth' });
+  }
+
+  function nearest(projection) {
+    var list = cards();
+    if (!list.length) return null;
+
+    var target = edgeOf(strip.getBoundingClientRect());
+    var best = null, bestD = Infinity;
+
+    for (var i = 0; i < list.length; i++) {
+      var d = Math.abs((edgeOf(list[i].getBoundingClientRect()) + projection) - target);
+      if (d < bestD) { bestD = d; best = list[i]; }
+    }
+    return best;
+  }
+
+  /* ------------------------------------------------------ السحب بالفأرة -- */
   /* البطاقات روابط تحوي صوراً، والمتصفح يبدأ عليها سحب رابط أصلياً بمجرد
      ضغط الفأرة وتحريكها — فيلتهم حركة السحب كلها ويبقى الشريط جامداً. */
   strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
+  var down = false, moved = false, startX = 0, startScroll = 0, snap = '';
+  var lastX = 0, lastT = 0, vel = 0;
+
   strip.addEventListener('pointerdown', function (e) {
     if (e.pointerType === 'touch' || !isStrip()) return;
     down = true; moved = false;
-    startX = e.clientX;
+    startX = lastX = e.clientX;
+    lastT = e.timeStamp;
+    vel = 0;
     startScroll = strip.scrollLeft;
     snap = strip.style.scrollSnapType;
     stopAuto();
@@ -541,22 +582,32 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     if (!down) return;
     var dx = e.clientX - startX;
     if (!moved && Math.abs(dx) < 5) return;
+
     /* الالتقاط يُعطَّل أثناء السحب فقط، وإلا شدّ الشريط من تحت الإصبع. */
     if (!moved) { moved = true; strip.style.scrollSnapType = 'none'; strip.setPointerCapture(e.pointerId); }
+
+    var dt = e.timeStamp - lastT;
+    if (dt > 0) vel = (e.clientX - lastX) / dt;
+    lastX = e.clientX; lastT = e.timeStamp;
+
     strip.scrollLeft = startScroll - dx;
   });
 
-  var release = function (e) {
+  var release = function () {
     if (!down) return;
     down = false;
+
     if (moved) {
-      strip.style.scrollSnapType = snap || '';
-      /* ابتلاع النقرة التالية: السحب لا يجب أن يفتح رابط البنر. */
+      /* اندفاعة تقديرية: سحبة سريعة تنقل بنراً كاملاً، وبطيئة ترجع لمكانها. */
+      slideTo(nearest(vel * 160));
+      setTimeout(function () { strip.style.scrollSnapType = snap || ''; }, 420);
+
       strip.addEventListener('click', function swallow(ev) {
         ev.preventDefault(); ev.stopPropagation();
         strip.removeEventListener('click', swallow, true);
       }, true);
     }
+
     startAuto();
   };
 
@@ -572,25 +623,26 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     var list = cards();
     if (list.length < 2) return;
 
-    var box = strip.getBoundingClientRect();
-    var mid = box.left + box.width / 2;
-
+    var target = edgeOf(strip.getBoundingClientRect());
     var current = 0, best = Infinity;
+
     for (var i = 0; i < list.length; i++) {
-      var r = list[i].getBoundingClientRect();
-      var d = Math.abs((r.left + r.width / 2) - mid);
+      var d = Math.abs(edgeOf(list[i].getBoundingClientRect()) - target);
       if (d < best) { best = d; current = i; }
     }
 
-    var next = list[(current + 1) % list.length];
-    /* scrollIntoView يتولى الاتجاه بنفسه، فلا فرق بين متجر عربي وإنجليزي. */
-    next.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    if (current >= list.length - 1) {
+      strip.scrollTo({ left: rtl ? 0 : 0, behavior: 'smooth' });
+      return;
+    }
+
+    slideTo(list[current + 1]);
   }
 
   function startAuto() {
     {% if component.animated_autoplay %}
     if (reduced || timer) return;
-    timer = setInterval(step, 4000);
+    timer = setInterval(step, 4500);
     {% endif %}
   }
 
@@ -601,7 +653,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   }
 
   strip.addEventListener('touchstart', stopAuto, { passive: true });
-  strip.addEventListener('touchend', function () { setTimeout(startAuto, 4000); }, { passive: true });
+  strip.addEventListener('touchend', function () { setTimeout(startAuto, 4500); }, { passive: true });
   strip.addEventListener('mouseenter', stopAuto);
   strip.addEventListener('mouseleave', startAuto);
 

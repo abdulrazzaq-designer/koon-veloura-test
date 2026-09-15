@@ -12399,6 +12399,27 @@
           ]
         },
         {
+          "id": "animated_feature_peek",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "مقدار ظهور البنر التالي",
+          "description": "بالنسبة المئوية من عرض الشاشة — صفر يجعل البنر يملأ العرض كاملاً بلا أي ظهور لما بعده.",
+          "icon": "sicon-resize",
+          "value": 12,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "35",
+          "required": false,
+          "conditions": [
+            {
+              "id": "animated_desktop_layout",
+              "operation": "=",
+              "value": "feature"
+            }
+          ]
+        },
+        {
           "id": "animated_transition_type",
           "type": "items",
           "format": "dropdown-list",

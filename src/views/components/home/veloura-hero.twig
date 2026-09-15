@@ -835,7 +835,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
                     {% if tag.url %}
                       <a class="hero__tag" href="{{ tag.url }}">{{ tag.label }}</a>
                     {% else %}
-                      <button type="button" class="hero__tag" data-hero-search>{{ tag.label }}</button>
+                      <button type="button" class="hero__tag" data-hero-search data-hero-term="{{ tag.label|e('html_attr') }}">{{ tag.label }}</button>
                     {% endif %}
                   {% endif %}
                 {% endfor %}
@@ -1047,12 +1047,34 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
   /* بعض المتصفحات تبطئ المؤقتات في التبويب الخامل، فنصحّح فور العودة. */
   document.addEventListener('visibilitychange', heroCountdownTick);
 
-  /* البحث: نستدعي بحث المتجر نفسه — نفس ما يفعله زر البحث في الهيدر
-     بالضبط، فلا نسخة ثانية من <salla-search> ولا صفحة نتائج بديلة. */
+  /* البحث.
+
+     الحقل يفتح بحث المتجر نفسه — نفس ما يفعله زر البحث في الهيدر بالضبط،
+     فلا نسخة ثانية من <salla-search>.
+
+     أما الشرائح فتذهب مباشرة إلى نتائج الكلمة. والرابط يُبنى بـ
+     salla.url.get لا بمسار ثابت: مكوّن البحث نفسه يفعل هذا عند ضغط Enter،
+     لأن المتاجر تختلف (لغة في المسار، أو متجر تحت مسار فرعي) — والمسار
+     الثابت «‎/search?q=‎» هو ما كان يوصل لصفحة «لا توجد منتجات». */
+  function heroSearchUrl(word) {
+    var q = 'search?q=' + encodeURIComponent(word);
+    if (window.salla && salla.url && typeof salla.url.get === 'function') {
+      try { return salla.url.get(q); } catch (e) {}
+    }
+    return '/' + q;
+  }
+
+  function heroOpenSearch() {
+    if (typeof window.__velouraOpenSearch === 'function') { window.__velouraOpenSearch(); return true; }
+    if (window.salla && salla.event && salla.event.dispatch) { salla.event.dispatch('search::open'); return true; }
+    return false;
+  }
+
   root.querySelectorAll('[data-hero-search]').forEach(function (el) {
     el.addEventListener('click', function () {
-      if (typeof window.__velouraOpenSearch === 'function') { window.__velouraOpenSearch(); return; }
-      if (window.salla && salla.event && salla.event.dispatch) { salla.event.dispatch('search::open'); }
+      var word = (el.getAttribute('data-hero-term') || '').trim();
+      if (word) { window.location.href = heroSearchUrl(word); return; }
+      heroOpenSearch();
     });
   });
 
