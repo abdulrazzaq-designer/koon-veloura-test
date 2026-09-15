@@ -7,16 +7,19 @@
 <style>
 /* الأعمدة تُكتب هنا للسبب نفسه: القاعدة التي تقرأ --ultra-*-columns تعيش في
    ملف الستايل المبني، وأي متجر عليه نسخة أقدم لا يرى العدد مهما غيّرته. */
-.ultra-square-images.is-grid:not(.is-masonry) .ultra-square-images__grid {
+.ultra-square-images:not(.is-masonry) .ultra-square-images__grid {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: var(--ultra-gap, 16px) !important;
   align-items: stretch;
 }
 
-.ultra-square-images.is-grid:not(.is-masonry) .ultra-square-images__item {
+.ultra-square-images:not(.is-masonry) .ultra-square-images__grid > .ultra-square-images__item {
   width: calc((100% - (var(--ultra-gap, 16px) * (var(--ultra-mobile-columns, 2) - 1))) / var(--ultra-mobile-columns, 2)) !important;
-  flex: 0 0 auto;
+  max-width: none !important;
+  flex: 0 0 auto !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
 }
 
 .ultra-square-images.is-masonry .ultra-square-images__grid {
@@ -28,7 +31,7 @@
 .ultra-square-images.is-masonry .ultra-square-images__item { width: auto !important; }
 
 @media (min-width: 768px) {
-  .ultra-square-images.is-grid:not(.is-masonry) .ultra-square-images__item {
+  .ultra-square-images:not(.is-masonry) .ultra-square-images__grid > .ultra-square-images__item {
     width: calc((100% - (var(--ultra-gap, 16px) * (var(--ultra-desktop-columns, 4) - 1))) / var(--ultra-desktop-columns, 4)) !important;
   }
 
@@ -55,6 +58,30 @@
 {% if ultra_dcols is iterable %}{% set ultra_dcols = ultra_dcols|first %}{% endif %}
 {% if ultra_dcols.value is defined %}{% set ultra_dcols = ultra_dcols.value %}{% endif %}
 {% if ultra_dcols is iterable or ultra_dcols ~ '' == '' %}{% set ultra_dcols = 4 %}{% endif %}
+
+{# المفاتيح تصل أحياناً ككائن ({value: false})، والكائن «صحيح» دائماً في
+   الشرط — فيصير المفتاح مُفعّلاً وإن أطفأه التاجر. تُفكّ هنا إلى قيمة
+   منطقية حقيقية قبل استعمالها. #}
+{% set ultra_is_grid = component.ultra_display_grid %}
+{% if ultra_is_grid.value is defined %}{% set ultra_is_grid = ultra_is_grid.value %}{% endif %}
+{% if ultra_is_grid.selected is defined %}{% set ultra_is_grid = ultra_is_grid.selected %}{% endif %}
+{% if ultra_is_grid is iterable %}{% set ultra_is_grid = ultra_is_grid|first %}{% endif %}
+{% if ultra_is_grid.value is defined %}{% set ultra_is_grid = ultra_is_grid.value %}{% endif %}
+{% set ultra_is_grid = ultra_is_grid == true or ultra_is_grid == 1 or ultra_is_grid == '1' or ultra_is_grid == 'true' or ultra_is_grid == 'on' %}
+
+{% set ultra_is_masonry = component.ultra_masonry_layout %}
+{% if ultra_is_masonry.value is defined %}{% set ultra_is_masonry = ultra_is_masonry.value %}{% endif %}
+{% if ultra_is_masonry.selected is defined %}{% set ultra_is_masonry = ultra_is_masonry.selected %}{% endif %}
+{% if ultra_is_masonry is iterable %}{% set ultra_is_masonry = ultra_is_masonry|first %}{% endif %}
+{% if ultra_is_masonry.value is defined %}{% set ultra_is_masonry = ultra_is_masonry.value %}{% endif %}
+{% set ultra_is_masonry = ultra_is_masonry == true or ultra_is_masonry == 1 or ultra_is_masonry == '1' or ultra_is_masonry == 'true' or ultra_is_masonry == 'on' %}
+
+{% set ultra_peek = component.ultra_slider_show_partial %}
+{% if ultra_peek.value is defined %}{% set ultra_peek = ultra_peek.value %}{% endif %}
+{% if ultra_peek.selected is defined %}{% set ultra_peek = ultra_peek.selected %}{% endif %}
+{% if ultra_peek is iterable %}{% set ultra_peek = ultra_peek|first %}{% endif %}
+{% if ultra_peek.value is defined %}{% set ultra_peek = ultra_peek.value %}{% endif %}
+{% set ultra_peek = ultra_peek == true or ultra_peek == 1 or ultra_peek == '1' or ultra_peek == 'true' or ultra_peek == 'on' %}
 
 {% set radius_map = {
   'sharp': '0px',
@@ -92,8 +119,8 @@
 {% set section_classes = [
   's-block',
   'ultra-square-images',
-  component.ultra_display_grid ? 'is-grid' : 'is-slider',
-  component.ultra_masonry_layout and component.ultra_display_grid ? 'is-masonry' : '',
+  ultra_is_grid ? 'is-grid' : 'is-slider',
+  ultra_is_masonry and ultra_is_grid ? 'is-masonry' : '',
   component.ultra_custom_horizontal_spacing ? 'has-spacing' : '',
   component.ultra_show_mobile_only ? 'ultra-mobile-only' : '',
   component.ultra_show_desktop_only ? 'ultra-desktop-only' : '',
@@ -103,6 +130,8 @@
 {% if not component.ultra_hide_section %}
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="{{ section_classes }}"
+  data-ultra-cols="{{ ultra_mcols }}/{{ ultra_dcols }}"
+  data-ultra-mode="{{ ultra_is_grid ? (ultra_is_masonry ? 'masonry' : 'grid') : 'slider' }}"
   style="
     --ultra-gap: {{ component.ultra_images_gap|default(16) }}px;
     --ultra-radius: {{ radius_map[radius_key]|default((radius_key ~ '' == '' ? '16' : radius_key) ~ 'px') }};
@@ -133,7 +162,7 @@
       </div>
     {% endif %}
 
-    {% if component.ultra_display_grid %}
+    {% if ultra_is_grid %}
       <div
         class="ultra-square-images__grid"
         style="justify-content: {{ component.ultra_rows_center ? 'center' : 'flex-start' }};"
@@ -197,13 +226,15 @@
         {{ component.ultra_slider_hide_arrows ? 'show-controls="false"' : '' }}
         static-when-single
         slider-config='{
-          "slidesPerView": {{ component.ultra_slider_show_partial ? 1.35 : ultra_mcols }},
+          {# «إظهار جزء من التالية» كان يفرض 1.35 على الجوال مهما كان العدد،
+             فيبتلع الإعداد تماماً. صار يضيف كسراً للعدد المختار لا يستبدله. #}
+          "slidesPerView": {{ ultra_peek ? ultra_mcols + 0.35 : ultra_mcols }},
           "spaceBetween": {{ component.ultra_images_gap|default(16) }},
           "freeMode": {{ component.ultra_slider_free_mode ? "true" : "false" }},
           "autoplay": {{ component.ultra_slider_autoplay ? "{\"delay\": 1200, \"disableOnInteraction\": false}" : "false" }},
           "breakpoints": {
             "768": {
-              "slidesPerView": {{ component.ultra_slider_show_partial ? ultra_dcols + 0.35 : ultra_dcols }},
+              "slidesPerView": {{ ultra_peek ? ultra_dcols + 0.35 : ultra_dcols }},
               "spaceBetween": {{ component.ultra_images_gap|default(16) }}
             }
           }
