@@ -12433,6 +12433,17 @@
           "required": false,
           "minLength": "4",
           "maxLength": 300
+        },
+        {
+          "id": "ultra_debug",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار شريط التشخيص (مؤقت)",
+          "description": "يعرض شريطاً صغيراً أعلى القسم يطبع القيم الواصلة فعلاً. أطفئه بعد الفحص.",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
         }
       ]
     },

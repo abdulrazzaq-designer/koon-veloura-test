@@ -64,6 +64,16 @@
 
 {% set ultra_id = 'veloura-ultra-' ~ position %}
 
+{# ختم نسخة: يظهر في شريط التشخيص، فيثبت أن هذا الملف هو المنشور فعلاً. #}
+{% set ultra_build = 'V-2026-09-15-b' %}
+
+{% set ultra_debug = component.ultra_debug %}
+{% if ultra_debug.value is defined %}{% set ultra_debug = ultra_debug.value %}{% endif %}
+{% if ultra_debug.selected is defined %}{% set ultra_debug = ultra_debug.selected %}{% endif %}
+{% if ultra_debug is iterable %}{% set ultra_debug = ultra_debug|first %}{% endif %}
+{% if ultra_debug.value is defined %}{% set ultra_debug = ultra_debug.value %}{% endif %}
+{% set ultra_debug = ultra_debug == true or ultra_debug == 1 or ultra_debug == '1' or ultra_debug == 'true' or ultra_debug == 'on' %}
+
 {% set radius_map = {
   'sharp': '0px',
   'soft': '8px',
@@ -169,6 +179,25 @@
     --ultra-horizontal-spacing: {{ component.ultra_custom_horizontal_spacing ? component.ultra_horizontal_spacing|default(0) : 0 }}px;
   "
 >
+  {% if ultra_debug %}
+    <div style="
+      margin: 0 0 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px dashed #f59e0b;
+      background: #fff7ed;
+      color: #7c2d12;
+      font: 700 12px/1.6 system-ui;
+      direction: ltr;
+      text-align: left;
+    ">
+      ULTRA {{ ultra_build }} &nbsp;|&nbsp; mobile: {{ ultra_mcols }} &nbsp; desktop: {{ ultra_dcols }} &nbsp; gap: {{ ultra_gap }}
+      &nbsp;|&nbsp; mode: {{ ultra_is_grid ? (ultra_is_masonry ? 'masonry' : 'grid') : 'slider' }}
+      &nbsp;|&nbsp; peek: {{ ultra_peek ? 'on' : 'off' }}
+      &nbsp;|&nbsp; id: {{ ultra_id }}
+    </div>
+  {% endif %}
+
   {% if component.ultra_custom_horizontal_spacing %}
     <div class="ultra-square-images__container">
   {% else %}
