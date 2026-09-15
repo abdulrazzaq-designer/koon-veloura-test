@@ -29,6 +29,29 @@
 {% if sp_d.value is defined %}{% set sp_d = sp_d.value %}{% endif %}
 {% if sp_d is iterable or sp_d ~ '' == '' %}{% set sp_d = 60 %}{% endif %}
 
+<style>
+/* الارتفاع يُكتب هنا لا في ملف الستايل: ملفات SCSS تمر ببناء ورفع على CDN،
+   وأي متجر ستايله المبني أقدم من القالب لا يجد قاعدة .veloura-spacer أصلاً،
+   فيبقى القسم فارغاً بلا ارتفاع مهما غيّرت الإعداد. القالب ينشر فوراً. */
+.veloura-spacer {
+  display: block !important;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  height: var(--veloura-spacer-mobile, 60px) !important;
+  min-height: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .veloura-spacer { height: var(--veloura-spacer-tablet, 60px) !important; }
+}
+
+@media (min-width: 1024px) {
+  .veloura-spacer { height: var(--veloura-spacer-desktop, 60px) !important; }
+}
+</style>
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="s-block veloura-spacer {{ component.veloura_spacer_custom_classes }}"
   style="

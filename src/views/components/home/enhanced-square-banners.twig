@@ -16,6 +16,22 @@
 | position                        | int      | Sorting number start from zero                                               |
 #}
 
+<style>
+/* الأعمدة تُكتب هنا لا في ملف الستايل المبني — انظر الشرح في العنصر المجاور. */
+.pro-square-images__grid {
+  display: grid !important;
+  grid-template-columns: repeat(var(--mobile-columns, 2), minmax(0, 1fr)) !important;
+  gap: var(--images-gap, 16px) !important;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .pro-square-images__grid {
+    grid-template-columns: repeat(var(--desktop-columns, 3), minmax(0, 1fr)) !important;
+  }
+}
+</style>
+
 {# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
    لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
    للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ

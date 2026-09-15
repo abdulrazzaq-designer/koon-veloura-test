@@ -4,6 +4,40 @@
 {% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
+<style>
+/* الأعمدة تُكتب هنا للسبب نفسه: القاعدة التي تقرأ --ultra-*-columns تعيش في
+   ملف الستايل المبني، وأي متجر عليه نسخة أقدم لا يرى العدد مهما غيّرته. */
+.ultra-square-images.is-grid:not(.is-masonry) .ultra-square-images__grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: var(--ultra-gap, 16px) !important;
+  align-items: stretch;
+}
+
+.ultra-square-images.is-grid:not(.is-masonry) .ultra-square-images__item {
+  width: calc((100% - (var(--ultra-gap, 16px) * (var(--ultra-mobile-columns, 2) - 1))) / var(--ultra-mobile-columns, 2)) !important;
+  flex: 0 0 auto;
+}
+
+.ultra-square-images.is-masonry .ultra-square-images__grid {
+  display: grid !important;
+  grid-template-columns: repeat(var(--ultra-mobile-columns, 2), minmax(0, 1fr)) !important;
+  gap: var(--ultra-gap, 16px) !important;
+}
+
+.ultra-square-images.is-masonry .ultra-square-images__item { width: auto !important; }
+
+@media (min-width: 768px) {
+  .ultra-square-images.is-grid:not(.is-masonry) .ultra-square-images__item {
+    width: calc((100% - (var(--ultra-gap, 16px) * (var(--ultra-desktop-columns, 4) - 1))) / var(--ultra-desktop-columns, 4)) !important;
+  }
+
+  .ultra-square-images.is-masonry .ultra-square-images__grid {
+    grid-template-columns: repeat(var(--ultra-desktop-columns, 4), minmax(0, 1fr)) !important;
+  }
+}
+</style>
+
 {# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
    لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
    للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ
