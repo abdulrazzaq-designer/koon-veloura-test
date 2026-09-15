@@ -64,6 +64,15 @@
 {% set sp_t_h = sp_t > 0 ? sp_t : 0 %}{% set sp_t_pull = sp_t < 0 ? sp_t : 0 %}
 {% set sp_d_h = sp_d > 0 ? sp_d : 0 %}{% set sp_d_pull = sp_d < 0 ? sp_d : 0 %}
 
+{# أيّ القسمين يعلو الآخر عند الاندماج. #}
+{% set sp_order = component.veloura_spacer_overlap_order %}
+{% if sp_order.selected is defined %}{% set sp_order = sp_order.selected %}{% endif %}
+{% if sp_order is iterable and sp_order.value is not defined %}{% set sp_order = sp_order|first %}{% endif %}
+{% if sp_order.value is defined %}{% set sp_order = sp_order.value %}{% endif %}
+{% if sp_order not in ['below', 'above'] %}{% set sp_order = 'below' %}{% endif %}
+
+{% set sp_pulls = sp_m_pull < 0 or sp_t_pull < 0 or sp_d_pull < 0 %}
+
 {% set sp_id = 'veloura-spacer-' ~ position %}
 
 <style>
@@ -99,6 +108,7 @@
       overflow: {{ sp_d_pull < 0 ? 'visible' : 'hidden' }} !important;
     }
   }
+
 </style>
 
 <section
@@ -108,3 +118,51 @@
   class="s-block veloura-spacer {{ component.veloura_spacer_custom_classes }}"
   aria-hidden="true"
 ></section>
+
+{% if sp_pulls %}
+<script>
+/* ترتيب الطبقات عند الاندماج.
+
+   في التدفّق الطبيعي يرسم المتصفح العنصر المتأخر فوق المتقدّم، فالقسم
+   الصاعد يغطي ما قبله ويحجبه — وهذا ما يبدو كخطأ في z-index.
+
+   ولا يصلح اختيار الجارين بـ CSS هنا: القالب يطبع وسم <style> قبل القسم،
+   فيصير هو «الجار السابق» في المستند لا القسم الحقيقي. لذلك يُبحث عن الجار
+   الحقيقي هنا مع تخطّي الوسوم غير المرئية. */
+(function () {
+  var el = document.getElementById('{{ sp_id }}');
+  if (!el) return;
+
+  var SKIP = { STYLE: 1, SCRIPT: 1, LINK: 1, TEMPLATE: 1, META: 1 };
+
+  function sibling(node, dir) {
+    var n = node[dir];
+    while (n) {
+      if (n.nodeType === 1 && !SKIP[n.tagName]) return n;
+      n = n[dir];
+    }
+    return null;
+  }
+
+  function layer(node, z) {
+    if (!node) return;
+    /* لا نلمس عنصراً له تموضع خاص (لاصق مثلاً) حتى لا نكسره. */
+    if (getComputedStyle(node).position === 'static') node.style.position = 'relative';
+    node.style.zIndex = z;
+  }
+
+  function run() {
+    layer(sibling(el, 'previousElementSibling'), '{{ sp_order == 'below' ? 2 : 1 }}');
+    layer(sibling(el, 'nextElementSibling'), '{{ sp_order == 'below' ? 1 : 2 }}');
+  }
+
+  /* السكربت يعمل أثناء التحليل، والقسم التالي لم يُقرأ بعد — فيُؤجَّل حتى
+     تكتمل الصفحة، مع تمريرتين قصيرتين لالتقاط ما يُضاف متأخراً. */
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+
+  setTimeout(run, 300);
+  setTimeout(run, 1200);
+})();
+</script>
+{% endif %}

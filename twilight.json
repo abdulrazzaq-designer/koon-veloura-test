@@ -14301,6 +14301,37 @@
           "description": "الموجب يباعد بين القسمين، والسالب يسحب القسم التالي فوق السابق فيندمجان."
         },
         {
+          "id": "veloura_spacer_overlap_order",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "ترتيب التداخل",
+          "description": "يهم فقط مع القيم السالبة: أيّ القسمين يظهر فوق الآخر عند اندماجهما.",
+          "icon": "sicon-layers",
+          "source": "Manual",
+          "required": true,
+          "value": "below",
+          "default": "below",
+          "selected": [
+            {
+              "label": "القسم التالي يمر تحت السابق",
+              "value": "below",
+              "key": "veloura_spacer_overlap_order-below"
+            }
+          ],
+          "options": [
+            {
+              "label": "القسم التالي يمر تحت السابق",
+              "value": "below",
+              "key": "veloura_spacer_overlap_order-below"
+            },
+            {
+              "label": "القسم التالي يمر فوق السابق",
+              "value": "above",
+              "key": "veloura_spacer_overlap_order-above"
+            }
+          ]
+        },
+        {
           "id": "veloura_spacer_custom_classes",
           "type": "string",
           "format": "text",
