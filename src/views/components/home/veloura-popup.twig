@@ -31,7 +31,7 @@
     '40': '999px'
   } %}
 
-  {% set popup_radius = radius_map[radius_key]|default((radius_key|trim == '' ? '28' : radius_key) ~ 'px') %}
+  {% set popup_radius = radius_map[radius_key]|default((radius_key ~ '' == '' ? '28' : radius_key) ~ 'px') %}
 
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-popup-{{ position }}"

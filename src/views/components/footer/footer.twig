@@ -64,10 +64,10 @@
 {% set footer_bottom_text_color = theme.settings.get('veloura_footer_bottom_text_color_2026', '#334155') %}
 {% if footer_bottom_text_color.value is defined %}{% set footer_bottom_text_color = footer_bottom_text_color.value %}{% endif %}
 
-{% set footer_radius = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_radius_2026', 'medium'), 'medium')|trim %}
+{% set footer_radius = (_self.veloura_footer_select_value(theme.settings.get('veloura_footer_radius_2026', 'medium'), 'medium') ~ '')|trim %}
 {# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
 {% set footer_radius_px_map = {'sharp':'0px','soft':'14px','medium':'28px','large':'46px','round':'999px','pill':'999px','xl':'46px','40':'999px'} %}
-{% set footer_radius_px = footer_radius_px_map[footer_radius]|default((footer_radius|trim == '' ? '20' : footer_radius) ~ 'px') %}
+{% set footer_radius_px = footer_radius_px_map[footer_radius]|default((footer_radius ~ '' == '' ? '20' : footer_radius) ~ 'px') %}
 
 {% set footer_contact_display = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_contact_display_2026', 'icon_text'), 'icon_text')|trim %}
 {% set footer_title_size_key = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_title_size_2026', 'large'), 'large')|trim %}

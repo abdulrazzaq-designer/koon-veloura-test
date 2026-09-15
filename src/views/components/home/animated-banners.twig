@@ -20,7 +20,7 @@
 
 {% set effect = component.animated_transition_type|default('slide') %}
 {% set safe_effect = effect == 'cards' ? 'slide' : effect %}
-{% set animated_radius = radius_map[component.animated_image_radius|default('sharp')]|default((component.animated_image_radius|default('sharp')|trim == '' ? '0' : component.animated_image_radius|default('sharp')) ~ 'px') %}
+{% set animated_radius = radius_map[component.animated_image_radius|default('sharp')]|default((component.animated_image_radius|default('sharp') ~ '' == '' ? '0' : component.animated_image_radius|default('sharp')) ~ 'px') %}
 {% set is_full = component.animated_full_width ? true : false %}
 {% set has_mobile_spacing = component.use_h_spacing and not is_full ? true : false %}
 

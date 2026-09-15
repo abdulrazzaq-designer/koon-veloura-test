@@ -15,7 +15,7 @@
     '40': '999px'
   } %}
 
-  {% set brand_radius = radius_map[component.veloura_brands_radius|default('medium')]|default((component.veloura_brands_radius|default('medium')|trim == '' ? '16' : component.veloura_brands_radius|default('medium')) ~ 'px') %}
+  {% set brand_radius = radius_map[component.veloura_brands_radius|default('medium')]|default((component.veloura_brands_radius|default('medium') ~ '' == '' ? '16' : component.veloura_brands_radius|default('medium')) ~ 'px') %}
   {% set image_fit = component.veloura_brands_fit|default('cover') %}
   {% set brands_gap = component.veloura_brands_gap|default(6) %}
 

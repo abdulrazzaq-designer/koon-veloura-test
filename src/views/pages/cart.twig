@@ -104,7 +104,7 @@
         {% set vcart_radius_key = vcart_radius_choice %}
     {% endif %}
 
-    {% set vcart_radius_key = vcart_radius_key|trim %}
+    {% set vcart_radius_key = (vcart_radius_key ~ '')|trim %}
 
     {% set vcart_radius_map = {
         'sharp': '0px',
@@ -115,7 +115,7 @@
         '40': '999px'
     } %}
 
-    {% set vcart_radius = vcart_radius_map[vcart_radius_key]|default((vcart_radius_key|trim == '' ? '28' : vcart_radius_key) ~ 'px') %}
+    {% set vcart_radius = vcart_radius_map[vcart_radius_key]|default((vcart_radius_key ~ '' == '' ? '28' : vcart_radius_key) ~ 'px') %}
 
     <div
         class="container veloura-cart-page{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}"

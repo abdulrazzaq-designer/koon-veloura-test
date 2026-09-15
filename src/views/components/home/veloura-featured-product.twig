@@ -565,7 +565,7 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
       {{ component.veloura_fp_desktop_only ? 'veloura-desktop-only' : '' }}
       {{ component.veloura_fp_custom_classes }}"
     style="
-      --fp2-radius: {{ fp_radius_map[fp_radius_key]|default((fp_radius_key|trim == '' ? '22' : fp_radius_key) ~ 'px') }};
+      --fp2-radius: {{ fp_radius_map[fp_radius_key]|default((fp_radius_key ~ '' == '' ? '22' : fp_radius_key) ~ 'px') }};
       --fp2-accent: {{ component.veloura_fp_accent_color|default('#004956') }};
       {# The merchant's colours are written as *-light custom properties, not as
          the ones the component paints with: an inline style outranks any

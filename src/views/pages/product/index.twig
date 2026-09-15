@@ -113,13 +113,13 @@
     {% set vcat_images_location = _self.veloura_select(theme.settings.get('veloura_category_images_location_2026', 'sidebar_and_page'), 'sidebar_and_page')|trim %}
     {% set vcat_image_position = _self.veloura_select(theme.settings.get('veloura_category_image_position_2026', 'top'), 'top')|trim %}
     {% set vcat_title_size = _self.veloura_select(theme.settings.get('veloura_category_title_size_2026', 'medium'), 'medium')|trim %}
-    {% set vcat_image_radius = _self.veloura_select(theme.settings.get('veloura_category_image_radius_2026', 'round'), 'round')|trim %}
+    {% set vcat_image_radius = (_self.veloura_select(theme.settings.get('veloura_category_image_radius_2026', 'round'), 'round') ~ '')|trim %}
     {% set vcat_image_shape = _self.veloura_select(theme.settings.get('veloura_category_image_shape_2026', 'square'), 'square')|trim %}
     {% set vcat_image_fit = _self.veloura_select(theme.settings.get('veloura_category_image_fit_2026', 'cover'), 'cover')|trim %}
-    {% set vcat_banner_radius = _self.veloura_select(theme.settings.get('veloura_cat_banner_radius_2026', 'medium'), 'medium')|trim %}
+    {% set vcat_banner_radius = (_self.veloura_select(theme.settings.get('veloura_cat_banner_radius_2026', 'medium'), 'medium') ~ '')|trim %}
 {# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
 {% set vcat_banner_radius_px_map = {'sharp':'0px','soft':'10px','medium':'16px','large':'24px','round':'999px','pill':'999px','xl':'30px','40':'999px'} %}
-{% set vcat_banner_radius_px = vcat_banner_radius_px_map[vcat_banner_radius]|default((vcat_banner_radius|trim == '' ? '16' : vcat_banner_radius) ~ 'px') %}
+{% set vcat_banner_radius_px = vcat_banner_radius_px_map[vcat_banner_radius]|default((vcat_banner_radius ~ '' == '' ? '16' : vcat_banner_radius) ~ 'px') %}
 
 
     {% set vcat_mobile_cols = _self.veloura_select(theme.settings.get('veloura_category_mobile_cols_2026', 4), 4)|trim + 0 %}
@@ -147,7 +147,7 @@
         'round': '999px',
         '40': '999px'
     } %}
-    {% set vcat_image_radius_px = vcat_image_radius_map[vcat_image_radius]|default((vcat_image_radius|trim == '' ? '40' : vcat_image_radius) ~ 'px') %}
+    {% set vcat_image_radius_px = vcat_image_radius_map[vcat_image_radius]|default((vcat_image_radius ~ '' == '' ? '40' : vcat_image_radius) ~ 'px') %}
 
     {% set vcat_page_images_allowed = vcat_images_location != 'sidebar_only' %}
     {% set vcat_render_images = vcat_show_images and vcat_page_images_allowed %}

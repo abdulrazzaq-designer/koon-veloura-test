@@ -351,9 +351,7 @@
       "description": "يتحكم بتدوير كروت تفاصيل المنتج، الوصف، الخيارات، الأزرار والأجزاء العامة التي تدعم متغير Veloura — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 28,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -1791,9 +1789,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -2841,9 +2837,7 @@
       "description": "في الوضع العادي تؤثر الحواف على الزاويتين العلويتين فقط، وعند تفعيل تصغير القسم السفلي تؤثر على الزوايا الأربع — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 20,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -3341,9 +3335,7 @@
       "description": "اختر شكل حواف القائمة الجانبية — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -3487,9 +3479,7 @@
       "description": "اختر شكل حواف صور التصنيفات — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -4316,9 +4306,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 40,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -4485,9 +4473,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -4600,9 +4586,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -4842,9 +4826,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -4977,9 +4959,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -5271,9 +5251,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 14,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -5661,9 +5639,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 40,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -5883,9 +5859,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 28,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -6214,9 +6188,7 @@
       "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 16,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -8533,9 +8505,7 @@
       "description": "اختر شكل حواف القائمة العامة — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
       "icon": "sicon-border-radius",
       "value": 40,
-      "min": 0,
-      "max": 40,
-      "step": 1,
+      "step": "1",
       "minimum": "0",
       "maximum": "40",
       "required": false,
@@ -9411,9 +9381,7 @@
           "label": "استدارة الحواف",
           "icon": "sicon-border-radius",
           "value": 28,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false,
@@ -9532,9 +9500,7 @@
           "label": "قوة التعتيم فوق الخلفية",
           "icon": "sicon-resize",
           "value": 45,
-          "min": 0,
-          "max": 90,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "90",
           "required": false
@@ -10208,9 +10174,7 @@
           "label": "سرعة الشريط",
           "icon": "sicon-timer",
           "value": 28,
-          "min": 10,
-          "max": 90,
-          "step": 1,
+          "step": "1",
           "minimum": "10",
           "maximum": "90",
           "required": false,
@@ -11021,9 +10985,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 18,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -11652,9 +11614,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -12207,9 +12167,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -13114,9 +13072,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 18,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -13334,9 +13290,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 22,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -14399,9 +14353,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -14734,9 +14686,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -15008,9 +14958,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -15259,9 +15207,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -15399,9 +15345,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -15607,9 +15551,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -15979,9 +15921,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 28,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -16559,9 +16499,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 28,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -16831,9 +16769,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 20,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -17536,9 +17472,7 @@
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
           "icon": "sicon-border-radius",
           "value": 22,
-          "min": 0,
-          "max": 40,
-          "step": 1,
+          "step": "1",
           "minimum": "0",
           "maximum": "40",
           "required": false
@@ -17567,9 +17501,7 @@
           "label": "مقدار المسافة",
           "icon": "sicon-move-horizontal",
           "value": 0,
-          "min": 0,
-          "max": 60,
-          "step": 2,
+          "step": "2",
           "required": false,
           "conditions": [
             {
@@ -17578,7 +17510,9 @@
               "value": true,
               "description": "بدون تفعيلها يأخذ العنصر مسافة الكونتينر الافتراضية. صفر يعني ملاصقًا للحواف."
             }
-          ]
+          ],
+          "minimum": "0",
+          "maximum": "60"
         },
         {
           "id": "veloura_fp_mobile_only",
@@ -17687,10 +17621,10 @@
           "label": "ارتفاع الشريط",
           "icon": "sicon-move-vertical",
           "value": 46,
-          "min": 32,
-          "max": 90,
-          "step": 2,
-          "required": false
+          "step": "2",
+          "required": false,
+          "minimum": "32",
+          "maximum": "90"
         },
         {
           "id": "veloura_tkr_font_size",
@@ -17699,10 +17633,10 @@
           "label": "حجم الخط",
           "icon": "sicon-format-text",
           "value": 14,
-          "min": 10,
-          "max": 22,
-          "step": 1,
-          "required": false
+          "step": "1",
+          "required": false,
+          "minimum": "10",
+          "maximum": "22"
         },
         {
           "id": "veloura_tkr_gap",
@@ -17711,10 +17645,10 @@
           "label": "المسافة بين العبارات",
           "icon": "sicon-move-horizontal",
           "value": 26,
-          "min": 10,
-          "max": 80,
-          "step": 2,
-          "required": false
+          "step": "2",
+          "required": false,
+          "minimum": "10",
+          "maximum": "80"
         },
         {
           "id": "veloura_tkr_radius",
@@ -17723,11 +17657,11 @@
           "label": "استدارة الحواف",
           "icon": "sicon-border-radius",
           "value": 16,
-          "min": 0,
-          "max": 40,
-          "step": 2,
+          "step": "2",
           "required": false,
-          "description": "لا تظهر في وضع «عرض الشاشة كاملًا»."
+          "description": "لا تظهر في وضع «عرض الشاشة كاملًا».",
+          "minimum": "0",
+          "maximum": "40"
         },
         {
           "id": "veloura_tkr_border",
@@ -17745,9 +17679,7 @@
           "label": "سماكة الإطار",
           "icon": "sicon-border-radius",
           "value": 1,
-          "min": 1,
-          "max": 4,
-          "step": 1,
+          "step": "1",
           "required": false,
           "conditions": [
             {
@@ -17755,7 +17687,9 @@
               "operation": "=",
               "value": true
             }
-          ]
+          ],
+          "minimum": "1",
+          "maximum": "4"
         },
         {
           "id": "veloura_tkr_border_color",
@@ -17909,11 +17843,11 @@
           "label": "مدة الدورة (ثانية)",
           "icon": "sicon-clock",
           "value": 26,
-          "min": 8,
-          "max": 90,
-          "step": 1,
+          "step": "1",
           "required": false,
-          "description": "كلما زادت صار الشريط أبطأ. يتوقف عند مرور المؤشر."
+          "description": "كلما زادت صار الشريط أبطأ. يتوقف عند مرور المؤشر.",
+          "minimum": "8",
+          "maximum": "90"
         },
         {
           "id": "veloura_tkr_mobile_speed",
@@ -17923,10 +17857,10 @@
           "description": "نسخة القائمة أضيق على الجوال، فنفس المدة تعني حركة أبطأ. 50% تجعلها ضعف السرعة تقريبًا؛ أقل = أسرع.",
           "icon": "sicon-clock",
           "value": 50,
-          "min": 25,
-          "max": 100,
-          "step": 2,
-          "required": false
+          "step": "2",
+          "required": false,
+          "minimum": "25",
+          "maximum": "100"
         },
         {
           "id": "veloura_tkr_color_from",
@@ -17980,9 +17914,7 @@
           "label": "شدة اللون فوق الزجاج",
           "icon": "sicon-brush",
           "value": 70,
-          "min": 20,
-          "max": 100,
-          "step": 5,
+          "step": "5",
           "required": false,
           "description": "كلما زادت صار اللون أقوى والزجاج أخفت.",
           "conditions": [
@@ -17991,7 +17923,9 @@
               "operation": "=",
               "value": true
             }
-          ]
+          ],
+          "minimum": "20",
+          "maximum": "100"
         },
         {
           "id": "veloura_tkr_title_band2",
@@ -18077,9 +18011,7 @@
           "label": "مدة دورة الشريط الثاني (ثانية)",
           "icon": "sicon-clock",
           "value": 26,
-          "min": 8,
-          "max": 90,
-          "step": 1,
+          "step": "1",
           "required": false,
           "conditions": [
             {
@@ -18087,7 +18019,9 @@
               "operation": "=",
               "value": "cross"
             }
-          ]
+          ],
+          "minimum": "8",
+          "maximum": "90"
         },
         {
           "id": "veloura_tkr2_color_from",
@@ -18159,9 +18093,7 @@
           "label": "شدة اللون فوق الزجاج",
           "icon": "sicon-brush",
           "value": 70,
-          "min": 20,
-          "max": 100,
-          "step": 5,
+          "step": "5",
           "required": false,
           "conditions": [
             {
@@ -18169,7 +18101,9 @@
               "operation": "=",
               "value": true
             }
-          ]
+          ],
+          "minimum": "20",
+          "maximum": "100"
         },
         {
           "id": "veloura_tkr_title_general",
@@ -18194,9 +18128,7 @@
           "label": "مقدار المسافة",
           "icon": "sicon-move-horizontal",
           "value": 20,
-          "min": 0,
-          "max": 80,
-          "step": 2,
+          "step": "2",
           "required": false,
           "description": "تُضاف داخل الكونتينر. لا أثر لها في وضع «عرض الشاشة كاملًا».",
           "conditions": [
@@ -18205,7 +18137,9 @@
               "operation": "=",
               "value": true
             }
-          ]
+          ],
+          "minimum": "0",
+          "maximum": "80"
         },
         {
           "id": "veloura_tkr_mobile_only",

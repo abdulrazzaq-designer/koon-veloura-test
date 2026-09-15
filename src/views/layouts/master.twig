@@ -114,7 +114,7 @@
   {% set vglobal_radius_key = vglobal_radius_choice %}
 {% endif %}
 
-{% set vglobal_radius_key = vglobal_radius_key|trim %}
+{% set vglobal_radius_key = (vglobal_radius_key ~ '')|trim %}
 
 {# القيمة صارت رقماً بالبيكسل من شريط تمرير. المفاتيح القديمة تبقى مفهومة حتى
    لا ينكسر أي متجر محفوظ عليه إعداد قديم، و«40» تعني دائري بالكامل. #}
@@ -127,7 +127,7 @@
   '40': '999px'
 } %}
 
-{% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default((vglobal_radius_key|trim == '' ? '28' : vglobal_radius_key) ~ 'px') %}
+{% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default((vglobal_radius_key ~ '' == '' ? '28' : vglobal_radius_key) ~ 'px') %}
 
 <!DOCTYPE html>
 <html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}" class="{{ vdm_initial_dark ? 'dark' : '' }}" data-theme="{{ vdm_initial_dark ? 'dark' : 'light' }}" data-veloura-dark-enabled="{{ vdm_enabled ? 'true' : 'false' }}" data-veloura-dark-mode="{{ vdm_mode }}">
@@ -1014,7 +1014,7 @@
   or vbn_glass_raw == 'on'
 %}
 
-{% set vbn_radius = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_radius_2026', 'pill'), 'pill')|trim %}
+{% set vbn_radius = (_self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_radius_2026', 'pill'), 'pill') ~ '')|trim %}
 {% set vbn_radius_map = {
   'sharp': '0px',
   'soft': '14px',
@@ -1139,8 +1139,8 @@
 
         {% if vpc_enabled %}
           --veloura-product-card-bg: {{ vpc_card_bg }};
-          --veloura-product-card-radius: {{ vpc_radius_map[vpc_card_radius_key]|default((vpc_card_radius_key|trim == '' ? '16' : vpc_card_radius_key) ~ 'px') }};
-          --veloura-product-image-radius: {{ vpc_radius_map[vpc_image_radius_key]|default((vpc_image_radius_key|trim == '' ? '16' : vpc_image_radius_key) ~ 'px') }};
+          --veloura-product-card-radius: {{ vpc_radius_map[vpc_card_radius_key]|default((vpc_card_radius_key ~ '' == '' ? '16' : vpc_card_radius_key) ~ 'px') }};
+          --veloura-product-image-radius: {{ vpc_radius_map[vpc_image_radius_key]|default((vpc_image_radius_key ~ '' == '' ? '16' : vpc_image_radius_key) ~ 'px') }};
           --veloura-product-image-padding-top: {{ vpc_image_padding_top }}px;
           --veloura-product-image-padding-x: {{ vpc_image_padding_x }}px;
           --veloura-product-image-outside-offset: {{ vpc_image_outside_offset }}px;
@@ -1148,7 +1148,7 @@
           --veloura-product-title-size: {{ vpc_title_size_map[vpc_title_size_key]|default('15px') }};
           --veloura-product-price-size: {{ vpc_price_size_map[vpc_price_size_key]|default('15px') }};
 
-          --veloura-product-button-radius: {{ vpc_radius_map[vpc_button_radius_key]|default((vpc_button_radius_key|trim == '' ? '16' : vpc_button_radius_key) ~ 'px') }};
+          --veloura-product-button-radius: {{ vpc_radius_map[vpc_button_radius_key]|default((vpc_button_radius_key ~ '' == '' ? '16' : vpc_button_radius_key) ~ 'px') }};
           --veloura-product-button-margin-x: {{ vpc_button_margin_x }}px;
           --veloura-qv-under-cart-gap: {{ vqv_under_cart_gap }}px;
           --veloura-qv-under-cart-margin-x: {{ vqv_under_cart_margin_x }}px;
@@ -1160,7 +1160,7 @@
           --veloura-pc-promo-bg: {{ vpc_promo_bg }};
           --veloura-pc-promo-text: {{ vpc_promo_text }};
           --veloura-pc-promo-size: {{ vpc_promo_size }}px;
-          --veloura-pc-promo-radius: {{ vpc_promo_radius_map[vpc_promo_radius_key]|default((vpc_promo_radius_key|trim == '' ? '14' : vpc_promo_radius_key) ~ 'px') }};
+          --veloura-pc-promo-radius: {{ vpc_promo_radius_map[vpc_promo_radius_key]|default((vpc_promo_radius_key ~ '' == '' ? '14' : vpc_promo_radius_key) ~ 'px') }};
           --veloura-pc-overlay-offset: {{ vpc_overlay_offset }}px;
           --veloura-pc-actions-gap: {{ vpc_actions_gap }}px;
 
@@ -1168,12 +1168,12 @@
             --veloura-quick-view-button-bg: {{ vqv_button_bg_color }};
             --veloura-product-action-size: {{ vpc_action_size }}px;
             --veloura-quick-view-button-text: {{ vqv_button_text_color }};
-            --veloura-quick-view-button-radius: {{ vpc_radius_map[vqv_button_radius_key]|default((vqv_button_radius_key|trim == '' ? '40' : vqv_button_radius_key) ~ 'px') }};
+            --veloura-quick-view-button-radius: {{ vpc_radius_map[vqv_button_radius_key]|default((vqv_button_radius_key ~ '' == '' ? '40' : vqv_button_radius_key) ~ 'px') }};
             --veloura-quick-view-button-height: {{ vqv_button_height }}px;
 
             --veloura-quick-view-modal-bg: {{ vqv_modal_bg_color }};
             --veloura-quick-view-modal-text-light: {{ vqv_modal_text_color }};
-            --veloura-quick-view-modal-radius: {{ vpc_radius_map[vqv_modal_radius_key]|default((vqv_modal_radius_key|trim == '' ? '28' : vqv_modal_radius_key) ~ 'px') }};
+            --veloura-quick-view-modal-radius: {{ vpc_radius_map[vqv_modal_radius_key]|default((vqv_modal_radius_key ~ '' == '' ? '28' : vqv_modal_radius_key) ~ 'px') }};
             --veloura-quick-view-image-fit: {{ vqv_image_fit }};
           {% endif %}
 {% endif %}
@@ -2918,7 +2918,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
 {% set vht_top_border_px_map = {'sharp':'0px','soft':'14px','medium':'24px','large':'38px','round':'999px','pill':'999px','xl':'44px','40':'999px'} %}
-{% set vht_top_border_px = vht_top_border_px_map[vht_top_border]|default((vht_top_border|trim == '' ? '16' : vht_top_border) ~ 'px') %}
+{% set vht_top_border_px = vht_top_border_px_map[vht_top_border]|default((vht_top_border ~ '' == '' ? '16' : vht_top_border) ~ 'px') %}
 
 
 {% if is_page('index') %}
@@ -3036,16 +3036,27 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 
 <style>
-  /* حواف الهيدر: القيمة رقم بالبيكسل الآن، وتُكتب متغيراً على هذا العنصر.
-     القاعدتان تحت تكرران ما في ملف الستايل لكن بـ important، حتى تشتغل حتى لو
-     كان الملف المبني على المتجر نسخة أقدم — وهذا هو سطح الهيدر الذي يظهر في
-     الوضع العائم، حيث يكون الشريط الداخلي شفافاً بلا إطار. */
-  html body .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
-    border-radius: var(--veloura-radius, 24px) !important;
+  /* حواف الهيدر.
+
+     القيمة تُكتب هنا رقماً صريحاً، لا عبر متغيّر: المتغيّر يمكن أن يُعاد
+     تعريفه على عنصر أقرب فيبتلع القيمة، وهذا ما كان يحصل. وفي الوضع العائم
+     يكون الشريط الداخلي شفافاً بلا إطار، والصندوق المدوّر الظاهر فعلاً هو
+     سطح الطبقة (stack__surface) — فيأخذ الحواف من جهاته الأربع. في الوضع
+     العادي الهيدر ملتصق بأعلى الصفحة فيأخذها من الأسفل فقط. */
+  html body .veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface,
+  html body .veloura-header-tabs-stack--floating .veloura-header-tabs-stack__surface > .store-header,
+  html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container,
+  html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner,
+  html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav,
+  html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav > .inner,
+  html body .store-header.veloura-top-enabled #mainnav.fixed-pinned > .inner {
+    border-radius: {{ vht_top_border_px }} !important;
   }
 
-  html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) .veloura-header-tabs-stack__surface {
-    border-radius: 0 0 var(--veloura-radius, 24px) var(--veloura-radius, 24px) !important;
+  html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) .veloura-header-tabs-stack__surface,
+  html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container,
+  html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container > .inner {
+    border-radius: 0 0 {{ vht_top_border_px }} {{ vht_top_border_px }} !important;
   }
 </style>
 
@@ -3157,9 +3168,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vsc_menu_radius_px = '34px' %}
 {% elseif vsc_menu_radius == 'xl' %}
   {% set vsc_menu_radius_px = '44px' %}
-{% elseif vsc_menu_radius|trim == '40' %}
+{% elseif vsc_menu_radius ~ '' == '40' %}
   {% set vsc_menu_radius_px = '999px' %}
-{% elseif vsc_menu_radius|trim != '' %}
+{% elseif vsc_menu_radius ~ '' != '' %}
   {% set vsc_menu_radius_px = vsc_menu_radius ~ 'px' %}
 {% endif %}
 
@@ -3209,9 +3220,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vsc_img_radius_px = '24px' %}
 {% elseif vsc_img_radius == 'round' %}
   {% set vsc_img_radius_px = '999px' %}
-{% elseif vsc_img_radius|trim == '40' %}
+{% elseif vsc_img_radius ~ '' == '40' %}
   {% set vsc_img_radius_px = '999px' %}
-{% elseif vsc_img_radius|trim != '' %}
+{% elseif vsc_img_radius ~ '' != '' %}
   {% set vsc_img_radius_px = vsc_img_radius ~ 'px' %}
 {% endif %}
 
@@ -3414,7 +3425,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       --vbn-bg: {{ vbn_bg }};
       --vbn-text: {{ vbn_text }};
       --vbn-active: {{ vbn_active }};
-      --vbn-radius: {{ vbn_radius_map[vbn_radius]|default((vbn_radius|trim == '' ? '40' : vbn_radius) ~ 'px') }};
+      --vbn-radius: {{ vbn_radius_map[vbn_radius]|default((vbn_radius ~ '' == '' ? '40' : vbn_radius) ~ 'px') }};
       --vbn-icon-size: {{ vbn_icon_size }}px;
       --vbn-font-size: {{ vbn_font_size }}px;
       --vbn-active-scale: {{ vbn_active_scale }};

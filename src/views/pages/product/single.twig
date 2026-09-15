@@ -327,7 +327,7 @@
     {% set vpp_dark_second_bg = theme.settings.get('veloura_dark_secondary_bg_2026', '#111111') %}
     {% if vpp_dark_second_bg.value is defined %}{% set vpp_dark_second_bg = vpp_dark_second_bg.value %}{% endif %}
 
-    {% set vpp_general_radius_key = _self.veloura_select(theme.settings.get('veloura_global_radius_2026', 'large'), 'large')|trim %}
+    {% set vpp_general_radius_key = (_self.veloura_select(theme.settings.get('veloura_global_radius_2026', 'large'), 'large') ~ '')|trim %}
     {% set vpp_radius_map = {
       'sharp': '0px',
       'soft': '10px',
@@ -336,7 +336,7 @@
       'xl': '36px',
       '40': '999px'
     } %}
-    {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default((vpp_general_radius_key|trim == '' ? '28' : vpp_general_radius_key) ~ 'px') %}
+    {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default((vpp_general_radius_key ~ '' == '' ? '28' : vpp_general_radius_key) ~ 'px') %}
 
 {# VELOURA PRODUCT DATA V98 CRITICAL START #}
 <style id="veloura-product-data-v98-critical">

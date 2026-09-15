@@ -15,7 +15,7 @@
     '40': '999px'
   } %}
 
-  {% set testimonial_radius = radius_map[component.veloura_testimonials_radius|default('medium')]|default((component.veloura_testimonials_radius|default('medium')|trim == '' ? '16' : component.veloura_testimonials_radius|default('medium')) ~ 'px') %}
+  {% set testimonial_radius = radius_map[component.veloura_testimonials_radius|default('medium')]|default((component.veloura_testimonials_radius|default('medium') ~ '' == '' ? '16' : component.veloura_testimonials_radius|default('medium')) ~ 'px') %}
 
   {% set section_classes = [
     's-block',

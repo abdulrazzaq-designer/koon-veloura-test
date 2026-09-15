@@ -30,7 +30,7 @@
   "
   style="
     --quick-spacing: {{ component.veloura_quick_custom_spacing ? component.veloura_quick_spacing_amount|default(16) : 0 }}px;
-    --quick-radius: {{ radius_map[component.veloura_quick_radius|default('medium')]|default((component.veloura_quick_radius|default('medium')|trim == '' ? '16' : component.veloura_quick_radius|default('medium')) ~ 'px') }};
+    --quick-radius: {{ radius_map[component.veloura_quick_radius|default('medium')]|default((component.veloura_quick_radius|default('medium') ~ '' == '' ? '16' : component.veloura_quick_radius|default('medium')) ~ 'px') }};
   "
 >
   {% if component.veloura_quick_custom_spacing %}

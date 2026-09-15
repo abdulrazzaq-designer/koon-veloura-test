@@ -15,7 +15,7 @@
     '40': '999px'
   } %}
 
-  {% set article_radius = radius_map[component.veloura_articles_radius|default('medium')]|default((component.veloura_articles_radius|default('medium')|trim == '' ? '16' : component.veloura_articles_radius|default('medium')) ~ 'px') %}
+  {% set article_radius = radius_map[component.veloura_articles_radius|default('medium')]|default((component.veloura_articles_radius|default('medium') ~ '' == '' ? '16' : component.veloura_articles_radius|default('medium')) ~ 'px') %}
 
   {% set section_classes = [
     's-block',

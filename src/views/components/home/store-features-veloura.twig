@@ -5,7 +5,7 @@
 {% if sf_radius_key is iterable and sf_radius_key.value is not defined %}{% set sf_radius_key = sf_radius_key|first %}{% endif %}
 {% if sf_radius_key.value is defined %}{% set sf_radius_key = sf_radius_key.value %}{% endif %}
 {% set sf_radius_map = {'sharp':'0px','soft':'8px','medium':'16px','large':'28px','round':'999px','40':'999px'} %}
-{% set sf_radius_px = sf_radius_map[sf_radius_key]|default((sf_radius_key|trim == '' ? '18' : sf_radius_key) ~ 'px') %}
+{% set sf_radius_px = sf_radius_map[sf_radius_key]|default((sf_radius_key ~ '' == '' ? '18' : sf_radius_key) ~ 'px') %}
 
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}

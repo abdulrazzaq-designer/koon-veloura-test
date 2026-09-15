@@ -29,7 +29,7 @@
     '40': '999px'
   } %}
 
-  {% set about_radius = radius_map[radius_key]|default((radius_key|trim == '' ? '28' : radius_key) ~ 'px') %}
+  {% set about_radius = radius_map[radius_key]|default((radius_key ~ '' == '' ? '28' : radius_key) ~ 'px') %}
   {% set about_image = component.veloura_about_image.url|default(component.veloura_about_image) %}
 
   {% set section_classes = [

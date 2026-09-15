@@ -140,7 +140,7 @@
    الهيدر بلا حواف — ولهذا صارت القيمة تُكتب متغيراً على العنصر نفسه، والقاعدة
    تحت تطبّقه. المفاتيح القديمة تبقى مفهومة، و«40» = دائري. #}
 {% set top_border_px_map = {'sharp':'0px','soft':'12px','medium':'24px','large':'42px','xl':'48px','round':'999px','40':'999px'} %}
-{% set top_border_px = top_border_px_map[top_border]|default((top_border|trim == '' ? '16' : top_border) ~ 'px') %}
+{% set top_border_px = top_border_px_map[top_border]|default((top_border ~ '' == '' ? '16' : top_border) ~ 'px') %}
 
 {% set icons_size = theme.settings.get('veloura_top_icons_size_2026', 'small') %}
 {% if icons_size.selected is defined %}
@@ -428,6 +428,7 @@
   data-veloura-blur="{{ top_blur ? 'true' : 'false' }}"
   data-veloura-hide-scroll="{{ top_hide_on_scroll ? 'true' : 'false' }}"
   data-veloura-search-detached="{{ search_detached ? 'true' : 'false' }}"
+  data-veloura-top-radius="{{ top_border_px }}"
   style="
     --veloura-top-bg: {{ top_bg }};
     --veloura-header-solid-bg: {{ top_bg }};
@@ -438,15 +439,19 @@
   "
 >
   <style>
-    html body .store-header.veloura-top-enabled .main-nav-container,
-    html body .store-header.veloura-top-enabled .main-nav-container > .inner {
-      border-radius: 0 0 var(--veloura-header-surface-radius, 24px) var(--veloura-header-surface-radius, 24px) !important;
+    /* الحواف مكتوبة رقماً صريحاً لا متغيّراً — انظر الشرح في القالب العام.
+       الوضع العائم صندوق مستقل فيأخذها من جهاته الأربع، والعادي من الأسفل. */
+    html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container,
+    html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner,
+    html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav,
+    html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav > .inner,
+    html body .store-header.veloura-top-enabled #mainnav.fixed-pinned > .inner {
+      border-radius: {{ top_border_px }} !important;
     }
 
-    /* الهيدر العائم أو المثبّت يصير صندوقاً مستقلاً، فيأخذ الحواف من جهاته الأربع. */
-    html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner,
-    html body .store-header.veloura-top-enabled #mainnav.fixed-pinned > .inner {
-      border-radius: var(--veloura-header-surface-radius, 24px) !important;
+    html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container,
+    html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container > .inner {
+      border-radius: 0 0 {{ top_border_px }} {{ top_border_px }} !important;
     }
   </style>
 
