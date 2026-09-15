@@ -1112,6 +1112,27 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     var INK = '{{ component.hero_merge_ink|default('') }}';
     var MERGE_LOGO = '{{ component.hero_merge_logo|default('') }}';
 
+    /* شريط الهيدر وحده — لا شيء آخر.
+
+       القائمة الجانبية ونصوصها وأيقوناتها وشعارها تُكتب داخل قالب الهيدر ثم
+       ينقلها السكربت إلى الدرج بعد التحميل. تلوينُ كل ما تحت .store-header
+       كان يصبغها قبل أن تُنقل، فتذهب معها الألوان إلى الدرج — وهو ما ظهر
+       في القائمة الجانبية. الحل تحديد الجذر بشبكة الهيدر نفسها، واستثناء
+       كل ما ينتمي إلى درج أو لوحة منقولة. */
+    var INK_ROOTS = ['.store-header .veloura-header-grid', '.veloura-header-tabs-stack__surface .veloura-home-tabs'];
+    var INK_PARTS = ['a', 'button', 'i', 'span', '.veloura-header-icon'];
+
+    var INK_SEL = INK_ROOTS.map(function (root) {
+      return INK_PARTS.map(function (part) { return root + ' ' + part; }).join(', ');
+    }).join(', ');
+
+    var OUTSIDE = '[data-veloura-side-menu-extras], #mobile-menu, .mm-menu, .mm-panels,' +
+                  ' .veloura-side-menu, [data-veloura-side-menu], [data-veloura-search-slot], #veloura-search-park';
+
+    function outside(node) {
+      return !!(node.closest && node.closest(OUTSIDE));
+    }
+
     var dissolve = function (on) {
       HEADER_PARTS.forEach(function (sel) {
         var nodes = document.querySelectorAll(sel);
@@ -1143,10 +1164,18 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
           }
         }
 
-        var inks = document.querySelectorAll('.store-header a, .store-header button, .store-header i, .store-header .veloura-header-icon, .veloura-home-tabs button');
+        var inks = document.querySelectorAll(INK_SEL);
         for (var k = 0; k < inks.length; k++) {
-          if (on) inks[k].style.setProperty('color', INK, 'important');
-          else inks[k].style.removeProperty('color');
+          var node = inks[k];
+          if (outside(node)) continue;
+
+          if (on) {
+            node.style.setProperty('color', INK, 'important');
+            node.setAttribute('data-veloura-merge-ink', '');
+          } else if (node.hasAttribute('data-veloura-merge-ink')) {
+            node.style.removeProperty('color');
+            node.removeAttribute('data-veloura-merge-ink');
+          }
         }
       }
 
@@ -1154,6 +1183,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
         var logos = document.querySelectorAll('.veloura-store-logo');
         for (var g = 0; g < logos.length; g++) {
           var lg = logos[g];
+          if (outside(lg)) continue;
           if (on) {
             if (!lg.hasAttribute('data-veloura-logo-was')) lg.setAttribute('data-veloura-logo-was', lg.getAttribute('src') || '');
             if (lg.getAttribute('src') !== MERGE_LOGO) lg.setAttribute('src', MERGE_LOGO);
