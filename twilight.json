@@ -14240,7 +14240,8 @@
           "required": false,
           "step": "1",
           "minimum": "-200",
-          "maximum": "200"
+          "maximum": "200",
+          "description": "الموجب يباعد بين القسمين، والسالب يسحب القسم التالي فوق السابق فيندمجان."
         },
         {
           "id": "veloura_spacer_desktop",
@@ -14253,7 +14254,8 @@
           "required": false,
           "step": "1",
           "minimum": "-250",
-          "maximum": "200"
+          "maximum": "200",
+          "description": "الموجب يباعد بين القسمين، والسالب يسحب القسم التالي فوق السابق فيندمجان."
         },
         {
           "id": "veloura_spacer_enable_tablet",
@@ -14284,7 +14286,8 @@
               "operation": "=",
               "value": true
             }
-          ]
+          ],
+          "description": "الموجب يباعد بين القسمين، والسالب يسحب القسم التالي فوق السابق فيندمجان."
         },
         {
           "id": "veloura_spacer_custom_classes",

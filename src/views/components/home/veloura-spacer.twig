@@ -52,6 +52,18 @@
 
 {% if not sp_tablet_on %}{% set sp_t = sp_d %}{% endif %}
 
+{# الأرقام قد تصل كنصوص، والمقارنة تحتاجها أعداداً. #}
+{% set sp_m = sp_m + 0 %}
+{% set sp_t = sp_t + 0 %}
+{% set sp_d = sp_d + 0 %}
+
+{# القيمة السالبة لا تُكتب ارتفاعاً: الارتفاع السالب غير موجود في CSS فيُهمل
+   السطر كله، وهذا سبب «السالب بلا تأثير». السالب دمج لا مسافة — فيُكتب
+   هامشاً سفلياً سالباً يسحب القسم التالي فوق السابق، والارتفاع يصير صفراً. #}
+{% set sp_m_h = sp_m > 0 ? sp_m : 0 %}{% set sp_m_pull = sp_m < 0 ? sp_m : 0 %}
+{% set sp_t_h = sp_t > 0 ? sp_t : 0 %}{% set sp_t_pull = sp_t < 0 ? sp_t : 0 %}
+{% set sp_d_h = sp_d > 0 ? sp_d : 0 %}{% set sp_d_pull = sp_d < 0 ? sp_d : 0 %}
+
 {% set sp_id = 'veloura-spacer-' ~ position %}
 
 <style>
@@ -60,21 +72,32 @@
     width: 100% !important;
     max-width: none !important;
     padding: 0 !important;
-    margin: 0 !important;
     border: 0 !important;
     background: transparent !important;
-    overflow: hidden !important;
     min-height: 0 !important;
-    height: {{ sp_m }}px !important;
     flex: 0 0 auto !important;
+    height: {{ sp_m_h }}px !important;
+    margin: 0 0 {{ sp_m_pull }}px !important;
+    /* مع السحب يجب ألا يقص القسمَ الصاعد فوقه. */
+    overflow: {{ sp_m_pull < 0 ? 'visible' : 'hidden' }} !important;
+    position: relative;
+    z-index: 0;
   }
 
   @media (min-width: 768px) {
-    #{{ sp_id }} { height: {{ sp_t }}px !important; }
+    #{{ sp_id }} {
+      height: {{ sp_t_h }}px !important;
+      margin: 0 0 {{ sp_t_pull }}px !important;
+      overflow: {{ sp_t_pull < 0 ? 'visible' : 'hidden' }} !important;
+    }
   }
 
   @media (min-width: 1024px) {
-    #{{ sp_id }} { height: {{ sp_d }}px !important; }
+    #{{ sp_id }} {
+      height: {{ sp_d_h }}px !important;
+      margin: 0 0 {{ sp_d_pull }}px !important;
+      overflow: {{ sp_d_pull < 0 ? 'visible' : 'hidden' }} !important;
+    }
   }
 </style>
 
