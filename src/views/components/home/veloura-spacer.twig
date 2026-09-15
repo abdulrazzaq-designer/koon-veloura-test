@@ -4,23 +4,29 @@
 {% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
-{# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
-   لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
-   للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ
-   أولاً، ثم تُطبع. #}
+{# ==========================================================================
+   فاصل (فيلورا)
+
+   الارتفاع يُكتب رقماً صريحاً في قاعدة تخص هذا الفاصل وحده (بمعرّفه)، لا
+   عبر متغيّر CSS ولا اعتماداً على ملف الستايل المبني:
+
+   • ملف الستايل يمر ببناء ورفع على CDN، وأي متجر نسخته أقدم من القالب لا
+     يجد قاعدة .veloura-spacer أصلاً فيبقى القسم بلا ارتفاع.
+   • المتغيّر يمكن أن يُعاد تعريفه على عنصر أقرب فيبتلع القيمة.
+   • ومعرّف العنصر مع important يعلو على أي قاعدة أخرى في الصفحة.
+
+   ولو بقي الفاصل بلا تأثير، فالسمة data-veloura-spacer تطبع الأرقام الواصلة
+   فعلاً (جوال/تابلت/لابتوب) — وهي تحسم إن كانت المشكلة في وصول القيمة أم في
+   تطبيقها.
+   ========================================================================== #}
+
+{# القيم تصل أحياناً ملفوفة في كائن ({value: 40}) لا كرقم مجرّد. #}
 {% set sp_m = component.veloura_spacer_mobile %}
 {% if sp_m.value is defined %}{% set sp_m = sp_m.value %}{% endif %}
 {% if sp_m.selected is defined %}{% set sp_m = sp_m.selected %}{% endif %}
 {% if sp_m is iterable %}{% set sp_m = sp_m|first %}{% endif %}
 {% if sp_m.value is defined %}{% set sp_m = sp_m.value %}{% endif %}
 {% if sp_m is iterable or sp_m ~ '' == '' %}{% set sp_m = 60 %}{% endif %}
-
-{% set sp_t = component.veloura_spacer_tablet %}
-{% if sp_t.value is defined %}{% set sp_t = sp_t.value %}{% endif %}
-{% if sp_t.selected is defined %}{% set sp_t = sp_t.selected %}{% endif %}
-{% if sp_t is iterable %}{% set sp_t = sp_t|first %}{% endif %}
-{% if sp_t.value is defined %}{% set sp_t = sp_t.value %}{% endif %}
-{% if sp_t is iterable or sp_t ~ '' == '' %}{% set sp_t = 60 %}{% endif %}
 
 {% set sp_d = component.veloura_spacer_desktop %}
 {% if sp_d.value is defined %}{% set sp_d = sp_d.value %}{% endif %}
@@ -29,34 +35,53 @@
 {% if sp_d.value is defined %}{% set sp_d = sp_d.value %}{% endif %}
 {% if sp_d is iterable or sp_d ~ '' == '' %}{% set sp_d = 60 %}{% endif %}
 
+{% set sp_t = component.veloura_spacer_tablet %}
+{% if sp_t.value is defined %}{% set sp_t = sp_t.value %}{% endif %}
+{% if sp_t.selected is defined %}{% set sp_t = sp_t.selected %}{% endif %}
+{% if sp_t is iterable %}{% set sp_t = sp_t|first %}{% endif %}
+{% if sp_t.value is defined %}{% set sp_t = sp_t.value %}{% endif %}
+{% if sp_t is iterable or sp_t ~ '' == '' %}{% set sp_t = 60 %}{% endif %}
+
+{# مفتاح التابلت قد يصل ككائن، والكائن «صحيح» دائماً في الشرط. #}
+{% set sp_tablet_on = component.veloura_spacer_enable_tablet %}
+{% if sp_tablet_on.value is defined %}{% set sp_tablet_on = sp_tablet_on.value %}{% endif %}
+{% if sp_tablet_on.selected is defined %}{% set sp_tablet_on = sp_tablet_on.selected %}{% endif %}
+{% if sp_tablet_on is iterable %}{% set sp_tablet_on = sp_tablet_on|first %}{% endif %}
+{% if sp_tablet_on.value is defined %}{% set sp_tablet_on = sp_tablet_on.value %}{% endif %}
+{% set sp_tablet_on = sp_tablet_on == true or sp_tablet_on == 1 or sp_tablet_on == '1' or sp_tablet_on == 'true' or sp_tablet_on == 'on' %}
+
+{% if not sp_tablet_on %}{% set sp_t = sp_d %}{% endif %}
+
+{% set sp_id = 'veloura-spacer-' ~ position %}
+
 <style>
-/* الارتفاع يُكتب هنا لا في ملف الستايل: ملفات SCSS تمر ببناء ورفع على CDN،
-   وأي متجر ستايله المبني أقدم من القالب لا يجد قاعدة .veloura-spacer أصلاً،
-   فيبقى القسم فارغاً بلا ارتفاع مهما غيّرت الإعداد. القالب ينشر فوراً. */
-.veloura-spacer {
-  display: block !important;
-  width: 100%;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden;
-  height: var(--veloura-spacer-mobile, 60px) !important;
-  min-height: 0 !important;
-}
+  #{{ sp_id }} {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+    height: {{ sp_m }}px !important;
+    flex: 0 0 auto !important;
+  }
 
-@media (min-width: 768px) {
-  .veloura-spacer { height: var(--veloura-spacer-tablet, 60px) !important; }
-}
+  @media (min-width: 768px) {
+    #{{ sp_id }} { height: {{ sp_t }}px !important; }
+  }
 
-@media (min-width: 1024px) {
-  .veloura-spacer { height: var(--veloura-spacer-desktop, 60px) !important; }
-}
+  @media (min-width: 1024px) {
+    #{{ sp_id }} { height: {{ sp_d }}px !important; }
+  }
 </style>
 
-<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+<section
+  id="{{ sp_id }}"
+  data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  data-veloura-spacer="{{ sp_m }}/{{ sp_t }}/{{ sp_d }}"
   class="s-block veloura-spacer {{ component.veloura_spacer_custom_classes }}"
-  style="
-    --veloura-spacer-mobile: {{ sp_m }}px;
-    --veloura-spacer-tablet: {{ component.veloura_spacer_enable_tablet ? sp_t : sp_d }}px;
-    --veloura-spacer-desktop: {{ sp_d }}px;
-  "
+  aria-hidden="true"
 ></section>
