@@ -941,7 +941,9 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         root.classList.add('is-inview');
-        startCounters();
+        /* ربع ثانية قبل البدء: يمنح الصفحة وقتاً لتستقر فيرى الزائر الرقم
+           وهو يصعد من الصفر بدل أن يجده وقد وصل. */
+        setTimeout(startCounters, 260);
         io.unobserve(root);
       });
     }, { threshold: 0.15 });
@@ -959,7 +961,9 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       if (!isFinite(target)) return;
       var suffix = el.textContent.replace(/^0/, '');
       if (reduced) { el.textContent = raw + suffix; return; }
-      var start = performance.now(), dur = 1400;
+      /* بطيء بما يكفي ليُرى: القسم في أعلى الصفحة فيبدأ العدّ أثناء التحميل،
+         ومع 1.4 ثانية كان ينتهي قبل أن تستقر عين الزائر عليه. */
+      var start = performance.now(), dur = 2600;
       (function step(now) {
         var p = Math.min(1, (now - start) / dur);
         var eased = 1 - Math.pow(1 - p, 3);

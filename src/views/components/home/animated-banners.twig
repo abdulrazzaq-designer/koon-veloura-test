@@ -290,6 +290,11 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 
   .animated-banners.is-mob-slider .animated-banners__feature::-webkit-scrollbar { display: none; }
 
+  .animated-banners.is-mob-slider .animated-banners__feature img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+
   .animated-banners.is-mob-slider .animated-banners__row,
   .animated-banners.is-mob-slider .animated-banners__side { display: contents; }
 
@@ -401,7 +406,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     {% if ab_layout == 'feature' %}
       {# كل ثلاثة بنرات صف: الأول بالثلثين، والاثنان بعده فوق بعضهما في الثلث.
          الصف الناقص يتصرف من نفسه — بنر واحد يأخذ العرض كله. #}
-      <div class="animated-banners__feature">
+      <div class="animated-banners__feature" id="animated-banners-feature-{{ position }}">
         {% for group in component.animated_banners|batch(3) %}
           <div class="animated-banners__row {{ group|length > 1 ? 'has-side' : '' }}">
             <div class="animated-banners__main">{{ _self.ab_card(group[0]) }}</div>
@@ -492,4 +497,114 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
       setInterval(updateTimer, 1000);
     });
   });
+</script>
+
+<script>
+/* شريط البنرات على الجوال.
+
+   التمرير باللمس يعمل من المتصفح نفسه، لكن على سطح المكتب (وفي وضع معاينة
+   الجوال داخل المتصفح) سحب الفأرة لا يحرّك أي حاوية — فيبدو الشريط جامداً.
+   هنا نضيف السحب بالفأرة، ونحرّك الشريط تلقائياً إن كان «التشغيل التلقائي»
+   مفعّلاً، ويتوقف فور أن يلمسه الزائر ويعود بعد أن يتركه.
+
+   بلا مكتبة وبلا مراقب: الالتقاط عند كل بنر يبقى من المتصفح (scroll-snap). */
+(function () {
+  var strip = document.getElementById('animated-banners-feature-{{ position }}');
+  if (!strip) return;
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isStrip = function () { return getComputedStyle(strip).overflowX === 'auto' && strip.scrollWidth > strip.clientWidth + 4; };
+
+  var cards = function () {
+    return Array.prototype.slice.call(
+      strip.querySelectorAll('.animated-banners__main, .animated-banners__side > *')
+    );
+  };
+
+  /* ------------------------------------------------------ السحب بالفأرة -- */
+  var down = false, moved = false, startX = 0, startScroll = 0, snap = '';
+
+  /* البطاقات روابط تحوي صوراً، والمتصفح يبدأ عليها سحب رابط أصلياً بمجرد
+     ضغط الفأرة وتحريكها — فيلتهم حركة السحب كلها ويبقى الشريط جامداً. */
+  strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  strip.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'touch' || !isStrip()) return;
+    down = true; moved = false;
+    startX = e.clientX;
+    startScroll = strip.scrollLeft;
+    snap = strip.style.scrollSnapType;
+    stopAuto();
+  });
+
+  strip.addEventListener('pointermove', function (e) {
+    if (!down) return;
+    var dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) < 5) return;
+    /* الالتقاط يُعطَّل أثناء السحب فقط، وإلا شدّ الشريط من تحت الإصبع. */
+    if (!moved) { moved = true; strip.style.scrollSnapType = 'none'; strip.setPointerCapture(e.pointerId); }
+    strip.scrollLeft = startScroll - dx;
+  });
+
+  var release = function (e) {
+    if (!down) return;
+    down = false;
+    if (moved) {
+      strip.style.scrollSnapType = snap || '';
+      /* ابتلاع النقرة التالية: السحب لا يجب أن يفتح رابط البنر. */
+      strip.addEventListener('click', function swallow(ev) {
+        ev.preventDefault(); ev.stopPropagation();
+        strip.removeEventListener('click', swallow, true);
+      }, true);
+    }
+    startAuto();
+  };
+
+  strip.addEventListener('pointerup', release);
+  strip.addEventListener('pointercancel', release);
+  strip.addEventListener('pointerleave', release);
+
+  /* ------------------------------------------------------ الحركة التلقائية -- */
+  var timer = null;
+
+  function step() {
+    if (!isStrip()) return;
+    var list = cards();
+    if (list.length < 2) return;
+
+    var box = strip.getBoundingClientRect();
+    var mid = box.left + box.width / 2;
+
+    var current = 0, best = Infinity;
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i].getBoundingClientRect();
+      var d = Math.abs((r.left + r.width / 2) - mid);
+      if (d < best) { best = d; current = i; }
+    }
+
+    var next = list[(current + 1) % list.length];
+    /* scrollIntoView يتولى الاتجاه بنفسه، فلا فرق بين متجر عربي وإنجليزي. */
+    next.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
+
+  function startAuto() {
+    {% if component.animated_autoplay %}
+    if (reduced || timer) return;
+    timer = setInterval(step, 4000);
+    {% endif %}
+  }
+
+  function stopAuto() {
+    if (!timer) return;
+    clearInterval(timer);
+    timer = null;
+  }
+
+  strip.addEventListener('touchstart', stopAuto, { passive: true });
+  strip.addEventListener('touchend', function () { setTimeout(startAuto, 4000); }, { passive: true });
+  strip.addEventListener('mouseenter', stopAuto);
+  strip.addEventListener('mouseleave', startAuto);
+
+  startAuto();
+})();
 </script>
