@@ -16,6 +16,24 @@
 | position                        | int      | Sorting number start from zero                                               |
 #}
 
+{# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
+   لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
+   للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ
+   أولاً، ثم تُطبع. #}
+{% set esb_mcols = component.mobile_columns %}
+{% if esb_mcols.value is defined %}{% set esb_mcols = esb_mcols.value %}{% endif %}
+{% if esb_mcols.selected is defined %}{% set esb_mcols = esb_mcols.selected %}{% endif %}
+{% if esb_mcols is iterable %}{% set esb_mcols = esb_mcols|first %}{% endif %}
+{% if esb_mcols.value is defined %}{% set esb_mcols = esb_mcols.value %}{% endif %}
+{% if esb_mcols is iterable or esb_mcols ~ '' == '' %}{% set esb_mcols = 2 %}{% endif %}
+
+{% set esb_dcols = component.desktop_columns %}
+{% if esb_dcols.value is defined %}{% set esb_dcols = esb_dcols.value %}{% endif %}
+{% if esb_dcols.selected is defined %}{% set esb_dcols = esb_dcols.selected %}{% endif %}
+{% if esb_dcols is iterable %}{% set esb_dcols = esb_dcols|first %}{% endif %}
+{% if esb_dcols.value is defined %}{% set esb_dcols = esb_dcols.value %}{% endif %}
+{% if esb_dcols is iterable or esb_dcols ~ '' == '' %}{% set esb_dcols = 3 %}{% endif %}
+
 {% set radius_map = {
   'sharp': '0px',
   'soft': '8px',
@@ -44,8 +62,8 @@
     {{ component.display_grid ? 'is-grid' : 'is-slider' }}
   "
   style="
-    --desktop-columns: {{ component.desktop_columns|default(3) }};
-    --mobile-columns: {{ component.mobile_columns|default(2) }};
+    --desktop-columns: {{ esb_dcols }};
+    --mobile-columns: {{ esb_mcols }};
     --images-gap: {{ component.images_gap|default(16) }}px;
     --image-radius: {{ radius_map[component.image_radius|default('medium')]|default((component.image_radius|default('medium') ~ '' == '' ? '18' : component.image_radius|default('medium')) ~ 'px') }};
     padding-inline: {{ component.custom_horizontal_spacing ? component.horizontal_spacing|default(25) ~ 'px' : '0px' }};
@@ -109,12 +127,12 @@
   </div>
 {% else %}
   <salla-slider id="pro-square-images-{{ position }}" {% if component.slider_autoplay %}auto-play{% endif %} {% if component.slider_loop %}loop{% endif %} {{ component.slider_hide_arrows ? 'show-controls="false"' : '' }} static-when-single slider-config='{
-    "slidesPerView": {{ component.mobile_columns|default(2) }},
+    "slidesPerView": {{ esb_mcols }},
     "spaceBetween": {{ component.images_gap|default(16) }},
     "freeMode": {{ component.slider_free_mode ? "true" : "false" }},
     "breakpoints": {
       "768": {
-        "slidesPerView": {{ component.desktop_columns|default(3) }},
+        "slidesPerView": {{ esb_dcols }},
         "spaceBetween": {{ component.images_gap|default(16) }}
       }
     }

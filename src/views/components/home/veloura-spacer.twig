@@ -4,11 +4,36 @@
 {% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
+{# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
+   لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
+   للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ
+   أولاً، ثم تُطبع. #}
+{% set sp_m = component.veloura_spacer_mobile %}
+{% if sp_m.value is defined %}{% set sp_m = sp_m.value %}{% endif %}
+{% if sp_m.selected is defined %}{% set sp_m = sp_m.selected %}{% endif %}
+{% if sp_m is iterable %}{% set sp_m = sp_m|first %}{% endif %}
+{% if sp_m.value is defined %}{% set sp_m = sp_m.value %}{% endif %}
+{% if sp_m is iterable or sp_m ~ '' == '' %}{% set sp_m = 60 %}{% endif %}
+
+{% set sp_t = component.veloura_spacer_tablet %}
+{% if sp_t.value is defined %}{% set sp_t = sp_t.value %}{% endif %}
+{% if sp_t.selected is defined %}{% set sp_t = sp_t.selected %}{% endif %}
+{% if sp_t is iterable %}{% set sp_t = sp_t|first %}{% endif %}
+{% if sp_t.value is defined %}{% set sp_t = sp_t.value %}{% endif %}
+{% if sp_t is iterable or sp_t ~ '' == '' %}{% set sp_t = 60 %}{% endif %}
+
+{% set sp_d = component.veloura_spacer_desktop %}
+{% if sp_d.value is defined %}{% set sp_d = sp_d.value %}{% endif %}
+{% if sp_d.selected is defined %}{% set sp_d = sp_d.selected %}{% endif %}
+{% if sp_d is iterable %}{% set sp_d = sp_d|first %}{% endif %}
+{% if sp_d.value is defined %}{% set sp_d = sp_d.value %}{% endif %}
+{% if sp_d is iterable or sp_d ~ '' == '' %}{% set sp_d = 60 %}{% endif %}
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="s-block veloura-spacer {{ component.veloura_spacer_custom_classes }}"
   style="
-    --veloura-spacer-mobile: {{ component.veloura_spacer_mobile|default(60) }}px;
-    --veloura-spacer-tablet: {{ component.veloura_spacer_enable_tablet ? component.veloura_spacer_tablet|default(60) : component.veloura_spacer_desktop|default(60) }}px;
-    --veloura-spacer-desktop: {{ component.veloura_spacer_desktop|default(60) }}px;
+    --veloura-spacer-mobile: {{ sp_m }}px;
+    --veloura-spacer-tablet: {{ component.veloura_spacer_enable_tablet ? sp_t : sp_d }}px;
+    --veloura-spacer-desktop: {{ sp_d }}px;
   "
 ></section>

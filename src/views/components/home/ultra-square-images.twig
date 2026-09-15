@@ -4,6 +4,24 @@
 {% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
+{# القيم الرقمية من لوحة الإعدادات تصل أحياناً ملفوفة في كائن ({value: 4})
+   لا كرقم. طباعتها كما هي تنتج «px» بلا رقم، فتسقط الخاصية ويعود المتصفح
+   للقيمة الافتراضية — وهذا هو سبب «الإعداد لا يعطي أي تأثير». هنا تُفكّ
+   أولاً، ثم تُطبع. #}
+{% set ultra_mcols = component.ultra_mobile_columns %}
+{% if ultra_mcols.value is defined %}{% set ultra_mcols = ultra_mcols.value %}{% endif %}
+{% if ultra_mcols.selected is defined %}{% set ultra_mcols = ultra_mcols.selected %}{% endif %}
+{% if ultra_mcols is iterable %}{% set ultra_mcols = ultra_mcols|first %}{% endif %}
+{% if ultra_mcols.value is defined %}{% set ultra_mcols = ultra_mcols.value %}{% endif %}
+{% if ultra_mcols is iterable or ultra_mcols ~ '' == '' %}{% set ultra_mcols = 2 %}{% endif %}
+
+{% set ultra_dcols = component.ultra_desktop_columns %}
+{% if ultra_dcols.value is defined %}{% set ultra_dcols = ultra_dcols.value %}{% endif %}
+{% if ultra_dcols.selected is defined %}{% set ultra_dcols = ultra_dcols.selected %}{% endif %}
+{% if ultra_dcols is iterable %}{% set ultra_dcols = ultra_dcols|first %}{% endif %}
+{% if ultra_dcols.value is defined %}{% set ultra_dcols = ultra_dcols.value %}{% endif %}
+{% if ultra_dcols is iterable or ultra_dcols ~ '' == '' %}{% set ultra_dcols = 4 %}{% endif %}
+
 {% set radius_map = {
   'sharp': '0px',
   'soft': '8px',
@@ -54,8 +72,8 @@
   style="
     --ultra-gap: {{ component.ultra_images_gap|default(16) }}px;
     --ultra-radius: {{ radius_map[radius_key]|default((radius_key ~ '' == '' ? '16' : radius_key) ~ 'px') }};
-    --ultra-mobile-columns: {{ component.ultra_mobile_columns|default(2) }};
-    --ultra-desktop-columns: {{ component.ultra_desktop_columns|default(4) }};
+    --ultra-mobile-columns: {{ ultra_mcols }};
+    --ultra-desktop-columns: {{ ultra_dcols }};
     --ultra-horizontal-spacing: {{ component.ultra_custom_horizontal_spacing ? component.ultra_horizontal_spacing|default(0) : 0 }}px;
   "
 >
@@ -145,13 +163,13 @@
         {{ component.ultra_slider_hide_arrows ? 'show-controls="false"' : '' }}
         static-when-single
         slider-config='{
-          "slidesPerView": {{ component.ultra_slider_show_partial ? 1.35 : component.ultra_mobile_columns|default(2) }},
+          "slidesPerView": {{ component.ultra_slider_show_partial ? 1.35 : ultra_mcols }},
           "spaceBetween": {{ component.ultra_images_gap|default(16) }},
           "freeMode": {{ component.ultra_slider_free_mode ? "true" : "false" }},
           "autoplay": {{ component.ultra_slider_autoplay ? "{\"delay\": 1200, \"disableOnInteraction\": false}" : "false" }},
           "breakpoints": {
             "768": {
-              "slidesPerView": {{ component.ultra_slider_show_partial ? component.ultra_desktop_columns|default(4) + 0.35 : component.ultra_desktop_columns|default(4) }},
+              "slidesPerView": {{ component.ultra_slider_show_partial ? ultra_dcols + 0.35 : ultra_dcols }},
               "spaceBetween": {{ component.ultra_images_gap|default(16) }}
             }
           }
