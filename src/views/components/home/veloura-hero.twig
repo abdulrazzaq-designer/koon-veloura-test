@@ -111,7 +111,30 @@
 
 .veloura-hero.hero--h-tall { min-height: clamp(480px, 70vh, 740px); }
 .veloura-hero.hero--h-full { min-height: 100vh; min-height: 100svh; }
+
+/* شكل الهيرو:
+   — بعرض الشاشة (الافتراضي): الخلفية تلتصق بالحافتين، ولا معنى لاستدارة
+     جانبية هنا فتُلغى، ويبقى المحتوى وحده داخل الكونتينر.
+   — صندوق داخل الكونتينر: القسم كله — خلفيته معه — يدخل على مقاس كونتينر
+     المتجر، فتظهر استدارته وتبقى له مسافة من الحافتين. وهنا فقط تعني
+     «استدارة حواف الهيرو» شيئاً مرئياً. */
 .veloura-hero.hero--full-width { border-radius: 0; }
+
+.veloura-hero.hero--boxed {
+  width: 100%;
+  max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px));
+  margin-inline: auto;
+}
+
+@media (max-width: 1023px) {
+  .veloura-hero.hero--boxed {
+    max-width: none;
+    width: calc(100% - (var(--hero-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) * 2));
+  }
+}
+
+/* الدمج مع الهيدر يفترض التصاق الهيرو بالأعلى وبالحافتين، فالصندوق لا يجتمع معه. */
+.veloura-hero.hero--merged.hero--boxed { max-width: none; width: 100%; border-radius: 0; }
 
 /* ----------------------------------------------------------- الخلفية --- */
 .veloura-hero .hero__bg {
@@ -257,7 +280,7 @@ html[dir="ltr"] .veloura-hero.hero--align-left .hero__body { align-items: flex-s
   align-items: center;
   gap: 8px;
   padding: 7px 16px;
-  border-radius: 999px;
+  border-radius: var(--hero-inner, 999px);
   border: 1px solid color-mix(in srgb, var(--hero-chip, #22d3ee) 45%, transparent);
   background: color-mix(in srgb, var(--hero-chip, #22d3ee) 16%, transparent);
   color: var(--hero-chip, #22d3ee);
@@ -405,7 +428,7 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
   font-family: inherit;
   cursor: pointer;
   padding: 6px 13px;
-  border-radius: 999px;
+  border-radius: var(--hero-inner, 999px);
   border: 1px solid rgba(255, 255, 255, .2);
   background: rgba(255, 255, 255, .08);
   color: var(--hero-ink);
@@ -658,7 +681,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     hero--malign-{{ hero_align_m }}
     hero--h-{{ hero_h }}
     hero--bg-{{ hero_bg }}
-    {{ component.hero_full_width ? 'hero--full-width' : '' }}
+    {{ component.hero_full_width ? 'hero--full-width' : 'hero--boxed' }}
     {{ component.hero_merge_header ? 'hero--merged' : '' }}
     {{ component.hero_logos_animate ? 'hero--logos-move' : '' }}
     {{ component.hero_grad_animate ? 'hero--grad-animate' : '' }}
@@ -886,36 +909,55 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     });
   }
 
-  /* الكلمة المتبدّلة */
-  var rot = root.querySelector('[data-hero-words]');
-  if (rot && !reduced) {
-    var words = (rot.getAttribute('data-hero-words') || '').split('|')
-      .map(function (w) { return w.trim(); }).filter(Boolean);
-    if (words.length > 1) {
-      var i = 0;
-      setInterval(function () {
-        i = (i + 1) % words.length;
-        rot.innerHTML = '<span>' + words[i].replace(/[<>&]/g, '') + '</span>';
-      }, 2600);
-    }
+  /* الكلمة المتبدّلة — يُعاد العثور على العنصر في كل دورة، لا يُحتفظ به:
+     لو نُقل القسم أو أُعيد رسمه (تبويبات الصفحة الرئيسية تفعل ذلك) بقي
+     المؤقت يكتب في عنصر لم يعد ظاهراً، فيبدو كأنه متوقف. */
+  if (!reduced) {
+    var wi = 0;
+    setInterval(function () {
+      var el = document.querySelector('[data-hero-words]');
+      if (!el) return;
+      var words = (el.getAttribute('data-hero-words') || '').split('|')
+        .map(function (w) { return w.trim(); }).filter(Boolean);
+      if (words.length < 2) return;
+      wi = (wi + 1) % words.length;
+      el.innerHTML = '<span>' + words[wi].replace(/[<>&]/g, '') + '</span>';
+    }, 2600);
   }
 
-  /* العدّاد التنازلي — نفس صيغة تاريخ سلة المستعملة في البنرات */
-  var cd = root.querySelector('[data-hero-countdown]');
-  if (cd) {
-    var parts = String(cd.getAttribute('data-hero-countdown')).replace(/"/g, '').trim().split('-');
-    var end = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10), 23, 59, 59).getTime();
-    var tick = function () {
-      var left = end - Date.now();
-      if (!isFinite(left) || left <= 0) { cd.style.display = 'none'; return; }
-      cd.querySelector('[data-days]').textContent = Math.floor(left / 86400000);
-      cd.querySelector('[data-hours]').textContent = Math.floor(left / 3600000) % 24;
-      cd.querySelector('[data-minutes]').textContent = Math.floor(left / 60000) % 60;
-      cd.querySelector('[data-seconds]').textContent = Math.floor(left / 1000) % 60;
-    };
-    tick();
-    setInterval(tick, 1000);
+  /* العدّاد التنازلي.
+
+     يُبحث عن العنصر من المستند في كل ثانية بدل الاحتفاظ به: هذا يجعل العدّاد
+     يعمل حتى لو أُعيد رسم القسم أو نُقل مكانه. وصيغة التاريخ تُقرأ بالاتجاهين
+     (يوم-شهر-سنة أو سنة-شهر-يوم) لأن حقل التاريخ يختلف بين الإصدارات. */
+  function heroCountdownTick() {
+    var el = document.querySelector('[data-hero-countdown]');
+    if (!el) return;
+
+    var raw = String(el.getAttribute('data-hero-countdown') || '').replace(/"/g, '').trim();
+    var parts = raw.split(/[-/]/);
+    if (parts.length < 3) return;
+
+    var y, m, dd;
+    if (parts[0].length === 4) { y = +parts[0]; m = +parts[1]; dd = +parts[2]; }
+    else { dd = +parts[0]; m = +parts[1]; y = +parts[2]; }
+
+    var end = new Date(y, m - 1, dd, 23, 59, 59).getTime();
+    var left = end - Date.now();
+
+    if (!isFinite(left) || left <= 0) { el.style.display = 'none'; return; }
+
+    var set = function (sel, v) { var n = el.querySelector(sel); if (n) n.textContent = v; };
+    set('[data-days]', Math.floor(left / 86400000));
+    set('[data-hours]', Math.floor(left / 3600000) % 24);
+    set('[data-minutes]', Math.floor(left / 60000) % 60);
+    set('[data-seconds]', Math.floor(left / 1000) % 60);
   }
+
+  heroCountdownTick();
+  setInterval(heroCountdownTick, 1000);
+  /* بعض المتصفحات تبطئ المؤقتات في التبويب الخامل، فنصحّح فور العودة. */
+  document.addEventListener('visibilitychange', heroCountdownTick);
 
   /* البحث: نستدعي بحث المتجر نفسه — نفس ما يفعله زر البحث في الهيدر
      بالضبط، فلا نسخة ثانية من <salla-search> ولا صفحة نتائج بديلة. */
@@ -937,17 +979,58 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       if (h > 0) root.style.setProperty('--hero-header-h', h + 'px');
     };
 
+    /* إذابة خلفية الهيدر تُكتب inline بـ important على العناصر نفسها.
+
+       القاعدة في ملف الستايل لا تكفي هنا: خلفية الهيدر يرسمها أكثر من ملف،
+       وبعضها يُحقن في نهاية الصفحة بـ important وبانتقائية أعلى — فتفوز
+       عليها مهما كتبنا. والسطر inline لا يعلوه شيء. */
+    var HEADER_PARTS = [
+      '.veloura-header-tabs-stack__surface',
+      '.store-header',
+      '.store-header #mainnav',
+      '.store-header .main-nav-container',
+      '.store-header .main-nav-container > .inner',
+      '.store-header #mainnav > .inner'
+    ];
+
+    var CLEARED = ['background', 'background-color', 'background-image', 'box-shadow',
+                   'border-color', 'backdrop-filter', '-webkit-backdrop-filter'];
+
+    var dissolve = function (on) {
+      HEADER_PARTS.forEach(function (sel) {
+        var nodes = document.querySelectorAll(sel);
+        for (var i = 0; i < nodes.length; i++) {
+          var el = nodes[i];
+          if (on) {
+            el.style.setProperty('background', 'transparent', 'important');
+            el.style.setProperty('background-color', 'transparent', 'important');
+            el.style.setProperty('background-image', 'none', 'important');
+            el.style.setProperty('box-shadow', 'none', 'important');
+            el.style.setProperty('border-color', 'transparent', 'important');
+            el.style.setProperty('backdrop-filter', 'none', 'important');
+            el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+          } else {
+            for (var c = 0; c < CLEARED.length; c++) el.style.removeProperty(CLEARED[c]);
+          }
+        }
+      });
+    };
+
     var atTop = null;
     var paint = function () {
       var top = (window.pageYOffset || document.documentElement.scrollTop) < 8;
       if (top === atTop) return;
       atTop = top;
       document.body.classList.toggle('veloura-hero-merged', top);
+      dissolve(top);
     };
 
     measure();
     paint();
-    [200, 900, 2500].forEach(function (t) { setTimeout(measure, t); });
+    /* العناصر المتأخرة (الهيدر المثبّت، لوحات تُحقن بعد التحميل) تُلتقط هنا. */
+    [200, 900, 2500].forEach(function (t) {
+      setTimeout(function () { measure(); if (atTop) dissolve(true); }, t);
+    });
 
     var rafPending = false;
     addEventListener('scroll', function () {

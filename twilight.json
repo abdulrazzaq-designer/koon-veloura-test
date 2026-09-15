@@ -9419,36 +9419,12 @@
           "id": "hero_full_width",
           "type": "boolean",
           "format": "switch",
-          "label": "عرض كامل بلا كونتينر",
+          "label": "الهيرو بعرض الشاشة كاملاً",
           "icon": "sicon-toggle-off",
-          "value": false,
-          "selected": false,
+          "value": true,
+          "selected": true,
           "required": false,
-          "description": "مطفأً يبقى الهيرو داخل كونتينر المتجر مثل بقية الأقسام، ومشغّلاً يمتد من حافة الشاشة إلى حافتها."
-        },
-        {
-          "id": "hero_custom_spacing",
-          "type": "boolean",
-          "format": "switch",
-          "label": "مسافة مخصصة يمين ويسار",
-          "icon": "sicon-toggle-off",
-          "value": false,
-          "selected": false,
-          "required": false,
-          "description": "تُطبَّق على الجوال واللوحي. على اللابتوب يبقى الهيرو على مقاس كونتينر المتجر."
-        },
-        {
-          "id": "hero_spacing",
-          "type": "number",
-          "format": "slider",
-          "inputType": "range",
-          "label": "مقدار المسافة الجانبية",
-          "icon": "sicon-resize",
-          "value": 10,
-          "step": "1",
-          "minimum": "0",
-          "maximum": "80",
-          "required": false
+          "description": "مشغّلاً تلتصق خلفية الهيرو بحافتي الشاشة ويبقى المحتوى داخل الكونتينر. مطفأً يصير الهيرو صندوقاً داخل كونتينر المتجر بخلفيته وحوافه المستديرة — وعندها فقط تظهر «استدارة حواف الهيرو»."
         },
         {
           "id": "hero_radius",
@@ -10312,6 +10288,37 @@
           "value": true,
           "selected": true,
           "required": false
+        },
+        {
+          "id": "hero_custom_spacing",
+          "type": "boolean",
+          "format": "switch",
+          "label": "مسافة مخصصة يمين ويسار",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
+          "description": "تُطبَّق على الجوال واللوحي. على اللابتوب يبقى الهيرو على مقاس كونتينر المتجر."
+        },
+        {
+          "id": "hero_spacing",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "مقدار المسافة الجانبية",
+          "icon": "sicon-resize",
+          "value": 10,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "80",
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_custom_spacing",
+              "operation": "=",
+              "value": true
+            }
+          ]
         },
         {
           "id": "hero_mobile_only",
