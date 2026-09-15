@@ -62,6 +62,8 @@
   {% set hero_logo_speed %}{{ _self.pick(component.hero_logos_speed, 28) }}{% endset %}
   {% set hero_logo_speed = hero_logo_speed|trim %}
   {% if hero_logo_speed == '' %}{% set hero_logo_speed = '28' %}{% endif %}
+  {# أقل من ثماني ثوانٍ يصير الشريط ضبابياً، فنرفعه مهما كتب في الإعداد. #}
+  {% if hero_logo_speed in ['0','1','2','3','4','5','6','7'] %}{% set hero_logo_speed = '8' %}{% endif %}
 
   {% set hero_bg_image = component.hero_bg_image %}
   {% set hero_bg_image_m = component.hero_bg_image_mobile ?: hero_bg_image %}

@@ -10175,7 +10175,7 @@
           "icon": "sicon-timer",
           "value": 28,
           "step": "1",
-          "minimum": "10",
+          "minimum": "0",
           "maximum": "90",
           "required": false,
           "description": "كل ما زاد الرقم صار أبطأ."
@@ -17623,7 +17623,7 @@
           "value": 46,
           "step": "2",
           "required": false,
-          "minimum": "32",
+          "minimum": "0",
           "maximum": "90"
         },
         {
@@ -17635,7 +17635,7 @@
           "value": 14,
           "step": "1",
           "required": false,
-          "minimum": "10",
+          "minimum": "0",
           "maximum": "22"
         },
         {
@@ -17647,7 +17647,7 @@
           "value": 26,
           "step": "2",
           "required": false,
-          "minimum": "10",
+          "minimum": "0",
           "maximum": "80"
         },
         {
@@ -17846,7 +17846,7 @@
           "step": "1",
           "required": false,
           "description": "كلما زادت صار الشريط أبطأ. يتوقف عند مرور المؤشر.",
-          "minimum": "8",
+          "minimum": "0",
           "maximum": "90"
         },
         {
@@ -17859,7 +17859,7 @@
           "value": 50,
           "step": "2",
           "required": false,
-          "minimum": "25",
+          "minimum": "0",
           "maximum": "100"
         },
         {
@@ -17924,7 +17924,7 @@
               "value": true
             }
           ],
-          "minimum": "20",
+          "minimum": "0",
           "maximum": "100"
         },
         {
@@ -18020,7 +18020,7 @@
               "value": "cross"
             }
           ],
-          "minimum": "8",
+          "minimum": "0",
           "maximum": "90"
         },
         {
@@ -18102,7 +18102,7 @@
               "value": true
             }
           ],
-          "minimum": "20",
+          "minimum": "0",
           "maximum": "100"
         },
         {

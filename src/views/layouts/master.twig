@@ -3060,6 +3060,54 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   }
 </style>
 
+<script>
+/* حواف الهيدر — الضمانة الأخيرة.
+
+   القواعد فوق تكفي نظرياً، لكن هذا الهيدر تتقاذفه عدة ملفات ستايل بعضها
+   مبني على المتجر بنسخة أقدم، وبعضها يضيف كلاسات عند التمرير. هنا تُكتب
+   القيمة inline على العناصر نفسها بـ important، وهذا أعلى ما في الترتيب
+   ولا يعلوه أي ملف. بلا مراقب DOM وبلا مؤقت دائم: أربع تمريرات قصيرة تكفي
+   لالتقاط الكلاسات التي تُضاف متأخرة، ثم يتوقف كل شيء. */
+(function () {
+  var R = '{{ vht_top_border_px }}';
+  var SELECTORS = [
+    '.veloura-header-tabs-stack__surface',
+    '.veloura-header-tabs-stack__surface > .store-header',
+    '.store-header',
+    '.store-header #mainnav',
+    '.store-header .main-nav-container',
+    '.store-header .main-nav-container > .inner',
+    '.store-header #mainnav > .inner'
+  ];
+
+  function apply() {
+    /* «عائم» يعني الخيار نفسه، لا مجرد كون الهيدر مثبّتاً عند التمرير:
+       الهيدر غير العائم يبقى ملتصقاً بأعلى الصفحة فيأخذ حوافه من الأسفل. */
+    var floating = !!document.querySelector('.veloura-header-tabs-stack--floating, .store-header.veloura-top-floating');
+    var value = floating ? R : '0 0 ' + R + ' ' + R;
+    SELECTORS.forEach(function (sel) {
+      var nodes = document.querySelectorAll(sel);
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].style.setProperty('border-radius', value, 'important');
+      }
+    });
+  }
+
+  apply();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+  [200, 900, 2500].forEach(function (t) { setTimeout(apply, t); });
+
+  /* التمرير يبدّل بين «ملتصق» و«مثبّت عائم»، فتُعاد الكتابة مرة كل نصف ثانية
+     على الأكثر — ولا شيء يعمل وقت السكون. */
+  var pending = false;
+  addEventListener('scroll', function () {
+    if (pending) return;
+    pending = true;
+    setTimeout(function () { pending = false; apply(); }, 500);
+  }, { passive: true });
+})();
+</script>
+
 <div
   id="veloura-header-tabs-stack"
   class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }}{{ vh_compact ? ' veloura-header-tabs-stack--compact-enabled' : ' veloura-header-tabs-stack--compact-disabled' }}{{ vht_full_width ? ' veloura-header-tabs-stack--full-width-desktop' : ' veloura-header-tabs-stack--container-desktop' }}{{ vht_search_detached ? ' veloura-header-tabs-stack--search-detached' : '' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_has_tabs ? ' veloura-header-tabs-stack--has-tabs' : '' }}"
