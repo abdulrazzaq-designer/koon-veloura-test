@@ -9224,6 +9224,17 @@
           "icon": "sicon-format-text"
         },
         {
+          "id": "hero_merge_header",
+          "type": "boolean",
+          "format": "switch",
+          "label": "الدمج مع الهيدر",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
+          "description": "يذيب خلفية الهيدر فوق الهيرو ويمدّ الهيرو تحته. يشترط أن يكون هذا القسم أول عنصر في الصفحة الرئيسية، وإلا اندمج الهيدر مع القسم الخطأ."
+        },
+        {
           "id": "hero_media_side",
           "type": "items",
           "format": "dropdown-list",
@@ -9297,12 +9308,13 @@
           "id": "hero_text_align",
           "type": "items",
           "format": "dropdown-list",
-          "label": "محاذاة النصوص",
+          "label": "محاذاة المحتوى على اللابتوب",
           "icon": "sicon-list",
           "source": "Manual",
           "required": true,
           "value": "right",
           "default": "right",
+          "description": "التوسيط الكامل يضع كل شيء في المنتصف: العنوان والبحث والأزرار والشارات والأرقام.",
           "selected": [
             {
               "label": "يمين",
@@ -9317,7 +9329,7 @@
               "key": "hero_text_align-right"
             },
             {
-              "label": "منتصف",
+              "label": "توسيط كامل",
               "value": "center",
               "key": "hero_text_align-center"
             },
@@ -9325,6 +9337,46 @@
               "label": "يسار",
               "value": "left",
               "key": "hero_text_align-left"
+            }
+          ]
+        },
+        {
+          "id": "hero_text_align_mobile",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "محاذاة المحتوى على الجوال",
+          "icon": "sicon-list",
+          "source": "Manual",
+          "required": true,
+          "value": "inherit",
+          "default": "inherit",
+          "selected": [
+            {
+              "label": "مثل اللابتوب",
+              "value": "inherit",
+              "key": "hero_text_align_mobile-inherit"
+            }
+          ],
+          "options": [
+            {
+              "label": "مثل اللابتوب",
+              "value": "inherit",
+              "key": "hero_text_align_mobile-inherit"
+            },
+            {
+              "label": "يمين",
+              "value": "right",
+              "key": "hero_text_align_mobile-right"
+            },
+            {
+              "label": "توسيط كامل",
+              "value": "center",
+              "key": "hero_text_align_mobile-center"
+            },
+            {
+              "label": "يسار",
+              "value": "left",
+              "key": "hero_text_align_mobile-left"
             }
           ]
         },
@@ -9367,10 +9419,35 @@
           "id": "hero_full_width",
           "type": "boolean",
           "format": "switch",
-          "label": "عرض كامل بلا حواف جانبية",
+          "label": "عرض كامل بلا كونتينر",
           "icon": "sicon-toggle-off",
           "value": false,
           "selected": false,
+          "required": false,
+          "description": "مطفأً يبقى الهيرو داخل كونتينر المتجر مثل بقية الأقسام، ومشغّلاً يمتد من حافة الشاشة إلى حافتها."
+        },
+        {
+          "id": "hero_custom_spacing",
+          "type": "boolean",
+          "format": "switch",
+          "label": "مسافة مخصصة يمين ويسار",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
+          "description": "تُطبَّق على الجوال واللوحي. على اللابتوب يبقى الهيرو على مقاس كونتينر المتجر."
+        },
+        {
+          "id": "hero_spacing",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "مقدار المسافة الجانبية",
+          "icon": "sicon-resize",
+          "value": 10,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "80",
           "required": false
         },
         {
@@ -9378,7 +9455,7 @@
           "type": "number",
           "format": "slider",
           "inputType": "range",
-          "label": "استدارة الحواف",
+          "label": "استدارة حواف الهيرو",
           "icon": "sicon-border-radius",
           "value": 28,
           "step": "1",
@@ -9386,6 +9463,20 @@
           "maximum": "40",
           "required": false,
           "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل."
+        },
+        {
+          "id": "hero_inner_radius",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "استدارة العناصر الداخلية",
+          "icon": "sicon-border-radius",
+          "value": 16,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "40",
+          "required": false,
+          "description": "البحث والأزرار والشارات والعدّاد والصورة الجانبية — بالبيكسل، و٤٠ يعني دائري بالكامل."
         },
         {
           "id": "hero_h_bg",
@@ -9615,7 +9706,8 @@
           "icon": "sicon-toggle-off",
           "value": true,
           "selected": true,
-          "required": false
+          "required": false,
+          "description": "الضغط عليه يفتح بحث سلة نفسه بنتائجه الحقيقية — لا صفحة بحث بديلة."
         },
         {
           "id": "hero_search_placeholder",
@@ -9642,7 +9734,7 @@
           "type": "collection",
           "format": "collection",
           "label": null,
-          "description": null,
+          "description": "كل شريحة رابط: منتج أو تصنيف أو رابط خارجي. إن تركت الرابط فارغًا فتحت الشريحة بحث المتجر.",
           "item_label": "كلمة رقم",
           "icon": "sicon-list-add",
           "value": [],
@@ -9658,17 +9750,6 @@
               "value": "",
               "required": false,
               "maxLength": 40
-            },
-            {
-              "id": "hero_top_searches.query",
-              "type": "string",
-              "format": "text",
-              "label": "كلمة البحث",
-              "icon": "sicon-format-text-alt",
-              "value": "",
-              "required": false,
-              "maxLength": 60,
-              "description": "إن تركتها فارغة يُستخدم نص الكلمة نفسه."
             },
             {
               "type": "items",
@@ -9951,6 +10032,17 @@
           "icon": "sicon-format-text"
         },
         {
+          "id": "hero_badges_title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان فوق الشارات",
+          "icon": "sicon-format-text-alt",
+          "value": "",
+          "required": false,
+          "maxLength": 60,
+          "placeholder": "مثال: ليش تشتري من عندنا؟"
+        },
+        {
           "id": "hero_badges",
           "type": "collection",
           "format": "collection",
@@ -10144,6 +10236,17 @@
           "icon": "sicon-format-text"
         },
         {
+          "id": "hero_logos_title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان فوق الشعارات",
+          "icon": "sicon-format-text-alt",
+          "value": "",
+          "required": false,
+          "maxLength": 60,
+          "placeholder": "مثال: شركاؤنا"
+        },
+        {
           "id": "hero_logos",
           "type": "collection",
           "format": "collection",
@@ -10165,6 +10268,17 @@
               "required": false
             }
           ]
+        },
+        {
+          "id": "hero_logos_animate",
+          "type": "boolean",
+          "format": "switch",
+          "label": "تحريك الشريط",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
+          "description": "مطفأً يظهر صفًا ثابتًا هادئًا في المنتصف — وهو الأنسب لعدد قليل من الشعارات."
         },
         {
           "id": "hero_logos_speed",

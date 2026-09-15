@@ -55,6 +55,19 @@
   {% set hero_radius_map = {'sharp':'0px','soft':'10px','medium':'18px','large':'28px','round':'999px','40':'999px'} %}
   {% set hero_radius = hero_radius_map[hero_radius_key]|default((hero_radius_key == '' ? '28' : hero_radius_key) ~ 'px') %}
 
+  {% set hero_align_m %}{{ _self.pick(component.hero_text_align_mobile, 'inherit') }}{% endset %}
+  {% set hero_align_m = hero_align_m|trim %}
+  {% if hero_align_m not in ['inherit', 'right', 'center', 'left'] %}{% set hero_align_m = 'inherit' %}{% endif %}
+  {% if hero_align_m == 'inherit' %}{% set hero_align_m = hero_align %}{% endif %}
+
+  {% set hero_inner_key %}{{ _self.pick(component.hero_inner_radius, 16) }}{% endset %}
+  {% set hero_inner_key = hero_inner_key|trim %}
+  {% set hero_inner = hero_radius_map[hero_inner_key]|default((hero_inner_key == '' ? '16' : hero_inner_key) ~ 'px') %}
+
+  {% set hero_gutter_raw %}{{ _self.pick(component.hero_spacing, 10) }}{% endset %}
+  {% set hero_gutter = hero_gutter_raw|trim %}
+  {% if hero_gutter == '' %}{% set hero_gutter = '10' %}{% endif %}
+
   {% set hero_overlay_raw %}{{ _self.pick(component.hero_overlay, 45) }}{% endset %}
   {% set hero_overlay = hero_overlay_raw|trim %}
   {% if hero_overlay == '' %}{% set hero_overlay = '45' %}{% endif %}
@@ -138,7 +151,60 @@
 
 /* ------------------------------------------------------------ الشبكة --- */
 .veloura-hero .hero__wrap { position: relative; z-index: 1; width: 100%; }
+
+/* الكونتينر يُكتب هنا بدل الاعتماد على .container وحده: قواعد المتجر العامة
+   تفرض حشوة بـ important على كل .container تحت 1024، فلو تُركت المسافة
+   المخصصة لها ما وصلت أبداً. */
+body .veloura-hero.veloura-hero > .hero__wrap.container {
+  width: 100%;
+  margin-inline: auto !important;
+  box-sizing: border-box;
+  max-width: var(--veloura-global-container, 1280px) !important;
+  padding-inline: var(--veloura-global-spacing, 10px) !important;
+}
+
+@media (max-width: 1023px) {
+  body .veloura-hero.veloura-hero > .hero__wrap.container {
+    max-width: none !important;
+    padding-inline: var(--hero-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  body .veloura-hero.veloura-hero > .hero__wrap.container {
+    max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
+    padding-inline: var(--veloura-global-spacing, 10px) !important;
+  }
+}
+
 .veloura-hero.hero--full-width .hero__wrap { max-width: none; padding-inline: clamp(16px, 4vw, 48px); }
+
+/* ------------------------------------------------- الدمج مع الهيدر --- */
+/* الهيرو يُسحب لأعلى بمقدار ارتفاع الهيدر ويعوّضه حشوة علوية بنفس المقدار،
+   فيمر الهيدر فوقه بلا خلفية. الارتفاع يُقاس بالسكربت لأنه يختلف بين
+   اللابتوب والجوال وبين المتاجر. وعند أول تمرير تعود خلفية الهيدر حتى
+   يبقى مقروءاً فوق بقية الصفحة. */
+.veloura-hero.hero--merged {
+  margin-top: calc(var(--hero-header-h, 0px) * -1);
+  padding-top: calc(var(--hero-header-h, 0px) + clamp(28px, 5vw, 72px)) !important;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+body.veloura-hero-merged .veloura-header-tabs-stack__surface,
+body.veloura-hero-merged .store-header,
+body.veloura-hero-merged .store-header #mainnav,
+body.veloura-hero-merged .store-header .main-nav-container,
+body.veloura-hero-merged .store-header .main-nav-container > .inner,
+body.veloura-hero-merged .store-header #mainnav > .inner {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 
 .veloura-hero .hero__grid {
   display: flex;
@@ -174,6 +240,13 @@ html[dir="ltr"] .veloura-hero.hero--media-left .hero__body { order: 1; }
 .veloura-hero.hero--align-right .hero__body { align-items: flex-start; text-align: right; }
 .veloura-hero.hero--align-left .hero__body { align-items: flex-end; text-align: left; }
 .veloura-hero.hero--align-center .hero__body { align-items: center; text-align: center; }
+
+/* «توسيط كامل» يعني كل شيء: الصفوف الداخلية تتوسط هي الأخرى لا محتواها فقط. */
+.veloura-hero.hero--align-center .hero__cta,
+.veloura-hero.hero--align-center .hero__badges,
+.veloura-hero.hero--align-center .hero__stats,
+.veloura-hero.hero--align-center .hero__countdown,
+.veloura-hero.hero--align-center .hero__searchwrap { justify-content: center; margin-inline: auto; }
 
 html[dir="ltr"] .veloura-hero.hero--align-right .hero__body { align-items: flex-end; }
 html[dir="ltr"] .veloura-hero.hero--align-left .hero__body { align-items: flex-start; }
@@ -256,7 +329,7 @@ html[dir="ltr"] .veloura-hero.hero--align-left .hero__body { align-items: flex-s
   gap: 3px;
   min-width: clamp(52px, 6vw, 76px);
   padding: clamp(7px, .9vw, 12px) clamp(8px, 1vw, 14px);
-  border-radius: var(--hero-radius, 16px);
+  border-radius: var(--hero-inner, 16px);
   border: 1px solid rgba(255, 255, 255, .2);
   background: rgba(0, 0, 0, .34);
   -webkit-backdrop-filter: blur(10px);
@@ -277,7 +350,11 @@ html[dir="ltr"] .veloura-hero.hero--align-left .hero__body { align-items: flex-s
   width: 100%;
   padding: 7px 7px 7px 7px;
   padding-inline-start: 16px;
-  border-radius: var(--hero-radius, 999px);
+  font-family: inherit;
+  color: var(--hero-ink);
+  cursor: pointer;
+  text-align: start;
+  border-radius: var(--hero-inner, 999px);
   border: 1px solid rgba(255, 255, 255, .22);
   background: rgba(255, 255, 255, .12);
   -webkit-backdrop-filter: blur(14px);
@@ -287,31 +364,30 @@ html[dir="ltr"] .veloura-hero.hero--align-left .hero__body { align-items: flex-s
 
 .veloura-hero .hero__search i { font-size: 18px; opacity: .8; flex: 0 0 auto; }
 
-.veloura-hero .hero__search input {
+.veloura-hero .hero__search .hero__searchtext {
   flex: 1 1 auto;
   min-width: 0;
   padding: 10px 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--hero-ink);
   font-size: 15px;
-  font-family: inherit;
+  color: color-mix(in srgb, var(--hero-ink) 62%, transparent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.veloura-hero .hero__search input::placeholder { color: color-mix(in srgb, var(--hero-ink) 62%, transparent); }
+.veloura-hero .hero__search:hover { border-color: rgba(255, 255, 255, .4); }
 
-.veloura-hero .hero__search button {
+.veloura-hero .hero__search .hero__searchgo {
   flex: 0 0 auto;
   padding: 11px 22px;
   border: 0;
-  border-radius: var(--hero-radius, 999px);
+  border-radius: var(--hero-inner, 999px);
   background: var(--hero-btn1-bg, #7c3aed);
   color: var(--hero-btn1-color, #fff);
   font-size: 14px;
   font-weight: 800;
   font-family: inherit;
-  cursor: pointer;
+  line-height: 1;
 }
 
 .veloura-hero .hero__tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; }
@@ -326,6 +402,8 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
 .veloura-hero .hero__tag {
   display: inline-flex;
   align-items: center;
+  font-family: inherit;
+  cursor: pointer;
   padding: 6px 13px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, .2);
@@ -346,7 +424,7 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
   align-items: center;
   gap: 9px;
   padding: clamp(11px, 1.3vw, 15px) clamp(20px, 2.4vw, 30px);
-  border-radius: var(--hero-radius, 14px);
+  border-radius: var(--hero-inner, 14px);
   border: 1.5px solid transparent;
   font-size: clamp(13px, 1.4vw, 15px);
   font-weight: 800;
@@ -361,14 +439,28 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
 .veloura-hero .hero__btn--2.is-outline { background: transparent; border-color: rgba(255, 255, 255, .55); }
 
 /* ------------------------------------------------------- شارات الثقة --- */
-.veloura-hero .hero__badges { display: flex; flex-wrap: wrap; gap: clamp(10px, 1.6vw, 20px); }
+.veloura-hero .hero__group { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+
+.veloura-hero .hero__grouptitle {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .6;
+}
+
+.veloura-hero .hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1.6vw, 20px);
+}
 
 .veloura-hero .hero__badge {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 9px 14px;
-  border-radius: var(--hero-radius, 14px);
+  border-radius: var(--hero-inner, 14px);
   border: 1px solid rgba(255, 255, 255, .14);
   background: rgba(255, 255, 255, .07);
   -webkit-backdrop-filter: blur(8px);
@@ -389,7 +481,7 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--hero-radius, 28px);
+  border-radius: var(--hero-inner, 28px);
   position: relative;
   z-index: 1;
 }
@@ -414,18 +506,39 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
 .veloura-hero .hero__logos {
   position: relative;
   margin-top: clamp(22px, 3.4vw, 44px);
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to left, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(to left, transparent, #000 8%, #000 92%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+  color: var(--hero-ink);
 }
 
+/* الحالة الهادئة (الافتراضية): صف ثابت متوسط يلتفّ عند الضيق — بلا قناع
+   ولا حركة. الحركة تُشغَّل من الإعدادات وحدها، ووقتها فقط يصير شريطاً. */
 .veloura-hero .hero__logos-track {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: clamp(26px, 4vw, 60px);
+  gap: clamp(20px, 3.4vw, 52px);
+}
+
+.veloura-hero .hero__logos-track .is-dup { display: none; }
+
+.veloura-hero.hero--logos-move .hero__logos {
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to left, transparent, #000 8%, #000 92%, transparent);
+  overflow: hidden;
+}
+
+.veloura-hero.hero--logos-move .hero__logos-track {
+  flex-wrap: nowrap;
   width: max-content;
   animation: hero-marquee var(--hero-logo-speed, 28s) linear infinite;
 }
+
+.veloura-hero.hero--logos-move .hero__logos-track .is-dup { display: block; }
 
 .veloura-hero .hero__logos img { height: clamp(22px, 2.6vw, 34px); width: auto; opacity: .62; filter: grayscale(1) brightness(1.7); }
 
@@ -434,7 +547,7 @@ html[dir="ltr"] .veloura-hero.hero--align-right .hero__tags { justify-content: f
   to { transform: translateX(-50%); }
 }
 
-html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-rtl; }
+html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-name: hero-marquee-rtl; }
 
 @keyframes hero-marquee-rtl {
   from { transform: translateX(0); }
@@ -494,6 +607,21 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
 
 /* ------------------------------------------------------------- الجوال --- */
 @media (max-width: 1023px) {
+  /* محاذاة الجوال مستقلة عن اللابتوب. */
+  .veloura-hero.hero--malign-right .hero__body { align-items: flex-start; text-align: right; }
+  .veloura-hero.hero--malign-left .hero__body { align-items: flex-end; text-align: left; }
+  .veloura-hero.hero--malign-center .hero__body { align-items: center; text-align: center; }
+  .veloura-hero.hero--malign-center .hero__tags,
+  .veloura-hero.hero--malign-center .hero__cta,
+  .veloura-hero.hero--malign-center .hero__badges,
+  .veloura-hero.hero--malign-center .hero__stats,
+  .veloura-hero.hero--malign-center .hero__countdown { justify-content: center; }
+  .veloura-hero.hero--malign-right .hero__tags { justify-content: flex-start; }
+  .veloura-hero.hero--malign-left .hero__tags { justify-content: flex-end; }
+
+  html[dir="ltr"] .veloura-hero.hero--malign-right .hero__body { align-items: flex-end; }
+  html[dir="ltr"] .veloura-hero.hero--malign-left .hero__body { align-items: flex-start; }
+
   .veloura-hero .hero__grid { flex-direction: column; align-items: stretch; }
   .veloura-hero .hero__media,
   .veloura-hero .hero__body { flex: 1 1 auto; order: 0 !important; }
@@ -501,7 +629,7 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
   .veloura-hero.hero--mob-hidden .hero__media { display: none; }
   .veloura-hero.hero--h-tall { min-height: clamp(440px, 76vh, 640px); }
   .veloura-hero .hero__sub { font-size: 13px; }
-  .veloura-hero .hero__search button { padding: 10px 16px; font-size: 13px; }
+  .veloura-hero .hero__search .hero__searchgo { padding: 10px 16px; font-size: 13px; }
   .veloura-hero .hero__badge span { display: none; }
   .veloura-hero .hero__cue { display: none; }
 }
@@ -527,9 +655,12 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
     hero--media-{{ hero_side }}
     hero--mob-{{ hero_mob }}
     hero--align-{{ hero_align }}
+    hero--malign-{{ hero_align_m }}
     hero--h-{{ hero_h }}
     hero--bg-{{ hero_bg }}
     {{ component.hero_full_width ? 'hero--full-width' : '' }}
+    {{ component.hero_merge_header ? 'hero--merged' : '' }}
+    {{ component.hero_logos_animate ? 'hero--logos-move' : '' }}
     {{ component.hero_grad_animate ? 'hero--grad-animate' : '' }}
     {{ component.hero_media_float ? 'hero--float' : '' }}
     {{ component.hero_mobile_only ? 'veloura-mobile-only' : '' }}
@@ -537,7 +668,9 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
     {{ component.hero_custom_classes }}"
   style="
     --hero-radius: {{ hero_radius }};
+    --hero-inner: {{ hero_inner }};
     --hero-overlay: {{ hero_overlay }};
+    {% if component.hero_custom_spacing %}--hero-gutter: {{ hero_gutter }}px;{% endif %}
     --hero-grad-from: {{ component.hero_grad_from|default('#1e1b4b') }};
     --hero-grad-to: {{ component.hero_grad_to|default('#0f172a') }};
     --hero-chip: {{ component.hero_chip_color|default('#22d3ee') }};
@@ -600,20 +733,27 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
 
         {% if component.hero_search_enabled %}
           <div class="hero__searchwrap">
-            <form class="hero__search" action="/search" method="get" role="search">
+            {# ليس نموذجاً يذهب لصفحة بحث بديلة — تلك كانت تعطي «لا توجد منتجات»
+               لأن سلة لا تملك صفحة نتائج مستقلة أصلاً: البحث عندها نافذة
+               بمكوّنها الخاص. هذا الحقل يفتح بحث المتجر نفسه بنتائجه الحقيقية،
+               وبنسخته الوحيدة في الصفحة — بلا أي مكوّن بحث ثانٍ. #}
+            <button type="button" class="hero__search" data-hero-search
+              aria-label="{{ component.hero_search_placeholder|default('بحث') }}">
               <i class="sicon-search" aria-hidden="true"></i>
-              <input type="search" name="q" autocomplete="off"
-                placeholder="{{ component.hero_search_placeholder|default('ابحث عن منتج أو خدمة…') }}"
-                aria-label="{{ component.hero_search_placeholder|default('بحث') }}">
-              <button type="submit">بحث</button>
-            </form>
+              <span class="hero__searchtext">{{ component.hero_search_placeholder|default('ابحث عن منتج أو خدمة…') }}</span>
+              <span class="hero__searchgo">بحث</span>
+            </button>
 
             {% if component.hero_top_searches|length %}
               <div class="hero__tags">
                 {% if component.hero_top_searches_title %}<b>{{ component.hero_top_searches_title }}</b>{% endif %}
                 {% for tag in component.hero_top_searches %}
                   {% if tag.label %}
-                    <a class="hero__tag" href="{{ tag.url ?: ('/search?q=' ~ (tag.query ?: tag.label)|url_encode) }}">{{ tag.label }}</a>
+                    {% if tag.url %}
+                      <a class="hero__tag" href="{{ tag.url }}">{{ tag.label }}</a>
+                    {% else %}
+                      <button type="button" class="hero__tag" data-hero-search>{{ tag.label }}</button>
+                    {% endif %}
                   {% endif %}
                 {% endfor %}
               </div>
@@ -640,6 +780,8 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
         {% endif %}
 
         {% if component.hero_badges|length %}
+          <div class="hero__group">
+            {% if component.hero_badges_title %}<span class="hero__grouptitle">{{ component.hero_badges_title }}</span>{% endif %}
           <div class="hero__badges">
             {% for badge in component.hero_badges %}
               {% if badge.title %}
@@ -652,6 +794,7 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
                 </div>
               {% endif %}
             {% endfor %}
+          </div>
           </div>
         {% endif %}
 
@@ -680,13 +823,14 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
 
     {% if component.hero_logos|length %}
       <div class="hero__logos">
+        {% if component.hero_logos_title %}<span class="hero__grouptitle">{{ component.hero_logos_title }}</span>{% endif %}
         <div class="hero__logos-track">
           {% for logo in component.hero_logos %}
             {% if logo.image %}<img src="{{ logo.image }}" alt="" loading="lazy" decoding="async">{% endif %}
           {% endfor %}
-          {# نسخة ثانية حتى يدور الشريط بلا فجوة #}
+          {# نسخة ثانية للدوران بلا فجوة — مخفية تماماً في الحالة الثابتة #}
           {% for logo in component.hero_logos %}
-            {% if logo.image %}<img src="{{ logo.image }}" alt="" aria-hidden="true" loading="lazy" decoding="async">{% endif %}
+            {% if logo.image %}<img class="is-dup" src="{{ logo.image }}" alt="" aria-hidden="true" loading="lazy" decoding="async">{% endif %}
           {% endfor %}
         </div>
       </div>
@@ -771,6 +915,52 @@ html[dir="rtl"] .veloura-hero .hero__logos-track { animation-name: hero-marquee-
     };
     tick();
     setInterval(tick, 1000);
+  }
+
+  /* البحث: نستدعي بحث المتجر نفسه — نفس ما يفعله زر البحث في الهيدر
+     بالضبط، فلا نسخة ثانية من <salla-search> ولا صفحة نتائج بديلة. */
+  root.querySelectorAll('[data-hero-search]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      if (typeof window.__velouraOpenSearch === 'function') { window.__velouraOpenSearch(); return; }
+      if (window.salla && salla.event && salla.event.dispatch) { salla.event.dispatch('search::open'); }
+    });
+  });
+
+  /* الدمج مع الهيدر: نقيس ارتفاع الهيدر الحقيقي ونكتبه متغيراً، فالهيرو
+     يُسحب تحته بالضبط. وعند أول تمرير ترجع خلفية الهيدر حتى يبقى مقروءاً. */
+  if (root.classList.contains('hero--merged')) {
+    var headerEl = document.querySelector('.veloura-header-tabs-stack') || document.querySelector('.store-header');
+
+    var measure = function () {
+      if (!headerEl) return;
+      var h = Math.round(headerEl.getBoundingClientRect().height);
+      if (h > 0) root.style.setProperty('--hero-header-h', h + 'px');
+    };
+
+    var atTop = null;
+    var paint = function () {
+      var top = (window.pageYOffset || document.documentElement.scrollTop) < 8;
+      if (top === atTop) return;
+      atTop = top;
+      document.body.classList.toggle('veloura-hero-merged', top);
+    };
+
+    measure();
+    paint();
+    [200, 900, 2500].forEach(function (t) { setTimeout(measure, t); });
+
+    var rafPending = false;
+    addEventListener('scroll', function () {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(function () { rafPending = false; paint(); });
+    }, { passive: true });
+
+    var resizeTimer;
+    addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(measure, 200);
+    }, { passive: true });
   }
 
   /* الفيديو: لا يُحمَّل على الجوال ولا لمن يفضّل تقليل الحركة */
