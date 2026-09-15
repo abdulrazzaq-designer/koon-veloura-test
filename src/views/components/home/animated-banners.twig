@@ -206,6 +206,9 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 /* النقاط تخص شريط الجوال وحده: لا معنى لها والبنرات كلها ظاهرة دفعة واحدة. */
 .animated-banners .veloura-dots { display: none !important; }
 
+/* نسخ الدوران اللانهائي لا وجود لها خارج شريط الجوال. */
+.animated-banners .ab-clone { display: none; }
+
 /* ==========================================================================
    تخطيط «بنر كبير + بنرين جانبيين»
 
@@ -294,6 +297,13 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   .animated-banners.is-mob-slider .animated-banners__feature::-webkit-scrollbar { display: none; }
 
   .animated-banners.is-mob-slider .veloura-dots { display: flex !important; }
+
+  .animated-banners.is-mob-slider .ab-clone {
+    display: block;
+    flex: 0 0 calc(100% - var(--ab-peek, 12%));
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
 
   .animated-banners.is-mob-slider .animated-banners__feature img {
     -webkit-user-drag: none;
@@ -532,11 +542,16 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isStrip = function () { return getComputedStyle(strip).overflowX === 'auto' && strip.scrollWidth > strip.clientWidth + 4; };
 
+  var SEL = '.animated-banners__main, .animated-banners__side > *, .ab-clone';
+
+  /* البنرات الحقيقية وحدها — النقاط والعدّ يعتمدان عليها. */
   var cards = function () {
-    return Array.prototype.slice.call(
-      strip.querySelectorAll('.animated-banners__main, .animated-banners__side > *')
-    );
+    return Array.prototype.slice.call(strip.querySelectorAll(SEL))
+      .filter(function (el) { return !el.classList.contains('ab-clone'); });
   };
+
+  /* كل ما في الشريط: الحقيقي والنسخ، بترتيب ظهورها. */
+  var items = function () { return Array.prototype.slice.call(strip.querySelectorAll(SEL)); };
 
   /* --------------------------------------------- الانتقال من بنر إلى بنر -- */
   /* الالتقاط الأصلي (scroll-snap) يطالب بسحب نصف البنر قبل أن ينتقل، وهو ما
@@ -567,7 +582,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   }
 
   function nearest(projection) {
-    var list = cards();
+    var list = items();
     if (!list.length) return null;
 
     var target = edgeOf(strip.getBoundingClientRect());
@@ -639,37 +654,124 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   var timer = null;
 
   function currentIndex() {
+    var all = items();
     var list = cards();
     var target = edgeOf(strip.getBoundingClientRect());
-    var current = 0, best = Infinity;
+    var near = null, best = Infinity;
 
-    for (var i = 0; i < list.length; i++) {
-      var d = Math.abs(edgeOf(list[i].getBoundingClientRect()) - target);
-      if (d < best) { best = d; current = i; }
+    for (var i = 0; i < all.length; i++) {
+      var d = Math.abs(edgeOf(all[i].getBoundingClientRect()) - target);
+      if (d < best) { best = d; near = all[i]; }
     }
-    return current;
+
+    /* النسخة تُحسب كأصلها، فالنقطة المضيئة تبقى صحيحة داخل منطقة النسخ. */
+    var real = twinOf(near) || near;
+    var idx = list.indexOf(real);
+    return idx < 0 ? 0 : idx;
   }
 
   function step() {
     if (!isStrip()) return;
-    var list = cards();
-    if (list.length < 2) return;
 
-    var current = currentIndex();
+    var all = items();
+    if (all.length < 2) return;
 
-    if (current >= list.length - 1) {
-      /* «الدوران بلا نهاية»: يرجع للبنر الأول بدل أن يقف عند الأخير. وبدونه
-         يتوقّف الشريط عند نهايته — وهذا هو الفرق الذي يحدثه الخيار هنا. */
-      {% if component.animated_loop %}
-      strip.scrollTo({ left: 0, behavior: 'smooth' });
-      {% else %}
+    var target = edgeOf(strip.getBoundingClientRect());
+    var at = 0, best = Infinity;
+
+    for (var i = 0; i < all.length; i++) {
+      var d = Math.abs(edgeOf(all[i].getBoundingClientRect()) - target);
+      if (d < best) { best = d; at = i; }
+    }
+
+    if (at >= all.length - 1) {
+      /* بلا نسخ (الدوران مطفأ) يقف الشريط عند آخر بنر. */
       stopAuto();
-      {% endif %}
       return;
     }
 
-    slideTo(list[current + 1]);
+    slideTo(all[at + 1]);
   }
+
+  /* ------------------------------------------------- الدوران بلا نهاية -- */
+  /* «يرجع للأول» ليس دوراناً. الدوران الحقيقي أن تستمر البنرات في التكرار
+     في الاتجاهين بلا قفزة مرئية — ولهذا نضع نسخة كاملة من البنرات قبلها
+     وأخرى بعدها. حين يستقر التمرير على نسخة ننتقل فوراً (بلا حركة) إلى
+     البنر الأصلي المطابق لها: الصورة نفسها في المكان نفسه، فلا يرى الزائر
+     شيئاً — بينما يصبح أمامه وخلفه شريط لا ينتهي. */
+  var cloned = false;
+
+  function buildClones() {
+    {% if component.animated_loop %}
+    if (cloned || !isStrip()) return;
+
+    var list = cards();
+    if (list.length < 2) return;
+
+    var before = document.createDocumentFragment();
+    var after = document.createDocumentFragment();
+
+    list.forEach(function (card) {
+      [before, after].forEach(function (frag) {
+        var copy = card.cloneNode(true);
+        copy.classList.add('ab-clone');
+        copy.setAttribute('aria-hidden', 'true');
+        copy.__twin = card;
+        frag.appendChild(copy);
+      });
+    });
+
+    strip.appendChild(after);
+    strip.insertBefore(before, strip.firstChild);
+    cloned = true;
+
+    /* البداية عند أول بنر حقيقي لا عند أول نسخة. */
+    var first = cards()[0];
+    if (first) {
+      var prev = strip.style.scrollBehavior;
+      strip.style.scrollBehavior = 'auto';
+      strip.scrollLeft = strip.scrollLeft + (edgeOf(first.getBoundingClientRect()) - edgeOf(strip.getBoundingClientRect()));
+      strip.style.scrollBehavior = prev || '';
+    }
+    {% endif %}
+  }
+
+  function twinOf(el) { return el && el.__twin ? el.__twin : null; }
+
+  function normalize() {
+    if (!cloned) return;
+
+    var all = items();
+    if (!all.length) return;
+
+    var target = edgeOf(strip.getBoundingClientRect());
+    var near = null, best = Infinity;
+
+    for (var i = 0; i < all.length; i++) {
+      var d = Math.abs(edgeOf(all[i].getBoundingClientRect()) - target);
+      if (d < best) { best = d; near = all[i]; }
+    }
+
+    var twin = twinOf(near);
+    if (!twin) return;
+
+    var delta = edgeOf(twin.getBoundingClientRect()) - target;
+
+    /* قفزة فورية بلا حركة: 'instant' غير معروف لبعض المتصفحات القديمة
+       فيرمي خطأ، والطريقة المضمونة أن نطفئ سلوك التمرير للحظة. */
+    var prevBehavior = strip.style.scrollBehavior;
+    strip.style.scrollSnapType = 'none';
+    strip.style.scrollBehavior = 'auto';
+    strip.scrollLeft = strip.scrollLeft + delta;
+    strip.style.scrollBehavior = prevBehavior || '';
+    strip.style.scrollSnapType = '';
+  }
+
+  var settle = null;
+  strip.addEventListener('scroll', function () {
+    clearTimeout(settle);
+    settle = setTimeout(normalize, 160);
+  }, { passive: true });
 
   /* ------------------------------------------------------------ النقاط -- */
   var dotsBox = strip.parentNode ? strip.parentNode.querySelector('[data-ab-dots]') : null;
@@ -709,8 +811,10 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 
   addEventListener('resize', function () { buildDots(); paintDots(); }, { passive: true });
 
+  buildClones();
   buildDots();
   paintDots();
+  addEventListener('resize', function () { buildClones(); }, { passive: true });
 
   function startAuto() {
     {% if component.animated_autoplay %}

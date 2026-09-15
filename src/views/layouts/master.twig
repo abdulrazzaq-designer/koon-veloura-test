@@ -3060,10 +3060,15 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   /* ========================================================================
      نقاط الشرائح — الشكل الموحّد
 
-     تُطبَّق على نقاط سلة الأصلية (.swiper-pagination-bullet) وعلى نقاطنا
-     (.veloura-dots__dot) معاً، فيخرج كل شريط في المتجر بنفس الشكل. الـ
-     important وانتقائية html body ضروريان: القالب المبني يلوّن هذه النقاط
-     في أكثر من مكان بقواعد important خاصة بكل قسم.
+     تُطبَّق على نقاط سلة الأصلية وعلى نقاطنا معاً، فيخرج كل شريط في المتجر
+     بنفس الشكل. الكلاس مكرّر ثلاثاً عن قصد: القالب المبني يلوّن هذه النقاط
+     في كل قسم على حدة بقواعد important وانتقائية أعلى، وبدون هذا التكرار
+     كان العرض وحده يتغيّر ويبقى اللون لقاعدة القسم — وهو ما جعل النقاط
+     تبدو كلها فاتحة في بعض الأقسام.
+
+     الخامل ليس «نشطاً شفافاً»: له لون خافت وحد داخلي رفيع يجعله يُقرأ كخانة
+     فارغة تنتظر دورها، والنشط له عمق خفيف تحته. هذا ما يفرق بين نقاط
+     افتراضية ونقاط مصمّمة.
      ======================================================================== */
   html body {
     --veloura-dot-size: {{ vdots_size }}px;
@@ -3071,8 +3076,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     --veloura-dot-off: {{ vdots_idle }};
   }
 
-  html body .swiper-pagination-bullet,
-  html body .veloura-dots__dot {
+  html body .swiper-pagination-bullet.swiper-pagination-bullet.swiper-pagination-bullet,
+  html body .veloura-dots__dot.veloura-dots__dot {
     width: var(--veloura-dot-size) !important;
     height: var(--veloura-dot-size) !important;
     min-width: var(--veloura-dot-size) !important;
@@ -3080,64 +3085,79 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     padding: 0 !important;
     border: 0 !important;
     border-radius: 999px !important;
-    background: var(--veloura-dot-off) !important;
-    opacity: .3 !important;
+    background: color-mix(in srgb, var(--veloura-dot-off) 24%, transparent) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--veloura-dot-off) 34%, transparent) !important;
+    opacity: 1 !important;
     transform: none !important;
-    transition: width .32s cubic-bezier(.4, 0, .2, 1), opacity .32s ease, background-color .32s ease, transform .32s ease !important;
+    transition: width .34s cubic-bezier(.4, 0, .2, 1),
+                background-color .34s ease,
+                box-shadow .34s ease,
+                transform .34s cubic-bezier(.34, 1.4, .64, 1) !important;
     cursor: pointer;
   }
 
-  html body .swiper-pagination-bullet-active,
-  html body .veloura-dots__dot.is-on {
+  html body .swiper-pagination-bullet-active.swiper-pagination-bullet-active.swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on.is-on {
     background: var(--veloura-dot-on) !important;
-    opacity: 1 !important;
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--veloura-dot-on) 38%, transparent) !important;
   }
 
   html body .swiper-pagination,
   html body .veloura-dots {
     display: flex !important;
-    gap: calc(var(--veloura-dot-size) * .75) !important;
+    gap: calc(var(--veloura-dot-size) * .85) !important;
     align-items: center;
     justify-content: center;
+    line-height: 0;
   }
 
-  html body .veloura-dots { margin-top: 14px; }
+  html body .veloura-dots { margin-top: 16px; }
 
 {% if vdots_style == 'bar' %}
-  /* شريط يتمدد: الخامل قصير والنشط يمتد — أوضح مؤشر موضع بأقل ضجيج. */
-  html body .swiper-pagination-bullet,
-  html body .veloura-dots__dot {
-    width: calc(var(--veloura-dot-size) * 2.6) !important;
-    min-width: calc(var(--veloura-dot-size) * 2.6) !important;
-    height: calc(var(--veloura-dot-size) * .8) !important;
-    opacity: .28 !important;
+  /* شريط يتمدد: الخامل خانة قصيرة، والنشط يمتد ويأخذ تدرّجاً خفيفاً يوحي
+     بالاتجاه. أوضح مؤشر موضع بأقل ضجيج. */
+  html body .swiper-pagination-bullet.swiper-pagination-bullet.swiper-pagination-bullet,
+  html body .veloura-dots__dot.veloura-dots__dot {
+    width: calc(var(--veloura-dot-size) * 2.4) !important;
+    min-width: calc(var(--veloura-dot-size) * 2.4) !important;
+    height: calc(var(--veloura-dot-size) * .72) !important;
   }
 
-  html body .swiper-pagination-bullet-active,
-  html body .veloura-dots__dot.is-on {
-    width: calc(var(--veloura-dot-size) * 5) !important;
-    min-width: calc(var(--veloura-dot-size) * 5) !important;
+  html body .swiper-pagination-bullet-active.swiper-pagination-bullet-active.swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on.is-on {
+    width: calc(var(--veloura-dot-size) * 5.2) !important;
+    min-width: calc(var(--veloura-dot-size) * 5.2) !important;
+    background: linear-gradient(to left,
+      var(--veloura-dot-on),
+      color-mix(in srgb, var(--veloura-dot-on) 62%, transparent)) !important;
   }
 {% elseif vdots_style == 'ring' %}
-  /* نقطة داخل حلقة: الحلقة تظهر حول النشطة وحدها. */
-  html body .swiper-pagination-bullet-active,
-  html body .veloura-dots__dot.is-on {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--veloura-dot-on) 28%, transparent) !important;
+  /* حلقة حول النشطة: النقطة تصغر قليلاً وتحيطها هالة، فتبدو كأنها محدّدة. */
+  html body .swiper-pagination-bullet-active.swiper-pagination-bullet-active.swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on.is-on {
+    transform: scale(.82) !important;
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--veloura-dot-on) 26%, transparent),
+      0 2px 8px color-mix(in srgb, var(--veloura-dot-on) 30%, transparent) !important;
   }
 {% elseif vdots_style == 'diamond' %}
-  html body .swiper-pagination-bullet,
-  html body .veloura-dots__dot {
+  html body .swiper-pagination-bullet.swiper-pagination-bullet.swiper-pagination-bullet,
+  html body .veloura-dots__dot.veloura-dots__dot {
     border-radius: 3px !important;
     transform: rotate(45deg) !important;
   }
 
-  html body .swiper-pagination-bullet-active,
-  html body .veloura-dots__dot.is-on {
-    transform: rotate(45deg) scale(1.35) !important;
-  }
+  html body .swiper-pagination-bullet-active.swiper-pagination-bullet-active.swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on.is-on { transform: rotate(45deg) scale(1.34) !important; }
 
   html body .swiper-pagination,
-  html body .veloura-dots { gap: calc(var(--veloura-dot-size) * 1.1) !important; }
+  html body .veloura-dots { gap: calc(var(--veloura-dot-size) * 1.25) !important; }
+{% else %}
+  html body .swiper-pagination-bullet-active.swiper-pagination-bullet-active.swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on.is-on { transform: scale(1.32) !important; }
+
+  html body .swiper-pagination,
+  html body .veloura-dots { gap: calc(var(--veloura-dot-size) * 1.05) !important; }
 {% endif %}
 </style>
 

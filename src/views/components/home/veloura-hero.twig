@@ -1106,6 +1106,12 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     var CLEARED = ['background', 'background-color', 'background-image', 'box-shadow',
                    'border-color', 'backdrop-filter', '-webkit-backdrop-filter'];
 
+    /* لون نصوص الهيدر وأيقوناته فوق الهيرو: يُكتب على متغيّر الهيدر نفسه
+       (--veloura-top-text) وعلى اللون المباشر معاً، لأن بعض الأيقونات ترث
+       والبعض يقرأ المتغيّر. */
+    var INK = '{{ component.hero_merge_ink|default('') }}';
+    var MERGE_LOGO = '{{ component.hero_merge_logo|default('') }}';
+
     var dissolve = function (on) {
       HEADER_PARTS.forEach(function (sel) {
         var nodes = document.querySelectorAll(sel);
@@ -1124,6 +1130,43 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
           }
         }
       });
+
+      if (INK) {
+        var head = document.querySelector('.store-header');
+        if (head) {
+          if (on) {
+            head.style.setProperty('--veloura-top-text', INK, 'important');
+            head.style.setProperty('color', INK, 'important');
+          } else {
+            head.style.removeProperty('--veloura-top-text');
+            head.style.removeProperty('color');
+          }
+        }
+
+        var inks = document.querySelectorAll('.store-header a, .store-header button, .store-header i, .store-header .veloura-header-icon, .veloura-home-tabs button');
+        for (var k = 0; k < inks.length; k++) {
+          if (on) inks[k].style.setProperty('color', INK, 'important');
+          else inks[k].style.removeProperty('color');
+        }
+      }
+
+      if (MERGE_LOGO) {
+        var logos = document.querySelectorAll('.veloura-store-logo');
+        for (var g = 0; g < logos.length; g++) {
+          var lg = logos[g];
+          if (on) {
+            if (!lg.hasAttribute('data-veloura-logo-was')) lg.setAttribute('data-veloura-logo-was', lg.getAttribute('src') || '');
+            if (lg.getAttribute('src') !== MERGE_LOGO) lg.setAttribute('src', MERGE_LOGO);
+          } else if (lg.hasAttribute('data-veloura-logo-was')) {
+            /* الرجوع لما كان: ولو كان الوضع الداكن قد بدّله بينهما نأخذ
+               نسخته هو لا نسخة محفوظة قديمة. */
+            var dark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
+            var back = (dark ? lg.getAttribute('data-dark-logo') : lg.getAttribute('data-light-logo')) || lg.getAttribute('data-veloura-logo-was');
+            if (back) lg.setAttribute('src', back);
+            lg.removeAttribute('data-veloura-logo-was');
+          }
+        }
+      }
     };
 
     var atTop = null;

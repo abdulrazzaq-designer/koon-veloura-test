@@ -9337,6 +9337,41 @@
           "description": "يذيب خلفية الهيدر فوق الهيرو ويمدّ الهيرو تحته. يشترط أن يكون هذا القسم أول عنصر في الصفحة الرئيسية، وإلا اندمج الهيدر مع القسم الخطأ."
         },
         {
+          "id": "hero_merge_ink",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون نصوص وأيقونات الهيدر عند الدمج",
+          "description": "يُطبَّق ما دام الهيرو في أعلى الصفحة، ويعود لون الهيدر الأصلي فور أول تمرير.",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_merge_header",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "hero_merge_logo",
+          "type": "string",
+          "format": "image",
+          "label": "شعار بديل عند الدمج",
+          "description": "اختياري — لشعار فاتح فوق خلفية داكنة أو العكس. يعود الشعار الأصلي فور أول تمرير.",
+          "icon": "sicon-image",
+          "value": null,
+          "required": false,
+          "conditions": [
+            {
+              "id": "hero_merge_header",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
           "id": "hero_media_side",
           "type": "items",
           "format": "dropdown-list",
