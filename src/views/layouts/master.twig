@@ -129,6 +129,27 @@
 
 {% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default((vglobal_radius_key ~ '' == '' ? '28' : vglobal_radius_key) ~ 'px') %}
 
+{# ==========================================================================
+   نقاط الشرائح — شكل واحد لكل المتجر
+
+   نقاط سلة الافتراضية موجودة فعلاً في الصفحة (وليست داخل Shadow DOM)، لكن
+   كل مكوّن في القالب كان يلوّنها ويقيسها بنفسه، فاختلف شكلها من قسم لآخر.
+   هنا تُكتب مرة واحدة بانتقائية عالية لتغلب قواعد الملف المبني، فتخرج كل
+   الشرائح — الصور والمميزات والروابط السريعة وآراء العملاء والبنرات — بنفس
+   النقاط. والقيم من الإعدادات العامة.
+   ========================================================================== #}
+{% set vdots_style = _self.veloura_dm_value(theme.settings.get('veloura_dots_style_2026', 'bar'), 'bar') %}
+{% set vdots_style = (vdots_style ~ '')|trim %}
+{% if vdots_style not in ['bar', 'ring', 'diamond', 'dot'] %}{% set vdots_style = 'bar' %}{% endif %}
+
+{% set vdots_color = theme.settings.get('veloura_dots_color_2026', '#004956') %}
+{% if vdots_color.value is defined %}{% set vdots_color = vdots_color.value %}{% endif %}
+{% set vdots_idle = theme.settings.get('veloura_dots_inactive_2026', '#004956') %}
+{% if vdots_idle.value is defined %}{% set vdots_idle = vdots_idle.value %}{% endif %}
+{% set vdots_size = theme.settings.get('veloura_dots_size_2026', 7) %}
+{% if vdots_size.value is defined %}{% set vdots_size = vdots_size.value %}{% endif %}
+{% if vdots_size is iterable or vdots_size ~ '' == '' %}{% set vdots_size = 7 %}{% endif %}
+
 <!DOCTYPE html>
 <html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}" class="{{ vdm_initial_dark ? 'dark' : '' }}" data-theme="{{ vdm_initial_dark ? 'dark' : 'light' }}" data-veloura-dark-enabled="{{ vdm_enabled ? 'true' : 'false' }}" data-veloura-dark-mode="{{ vdm_mode }}">
 <!-- بسم الله الرحمن الرحيم -->
@@ -3034,6 +3055,91 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     </nav>
   {% endset %}
 {% endif %}
+
+<style>
+  /* ========================================================================
+     نقاط الشرائح — الشكل الموحّد
+
+     تُطبَّق على نقاط سلة الأصلية (.swiper-pagination-bullet) وعلى نقاطنا
+     (.veloura-dots__dot) معاً، فيخرج كل شريط في المتجر بنفس الشكل. الـ
+     important وانتقائية html body ضروريان: القالب المبني يلوّن هذه النقاط
+     في أكثر من مكان بقواعد important خاصة بكل قسم.
+     ======================================================================== */
+  html body {
+    --veloura-dot-size: {{ vdots_size }}px;
+    --veloura-dot-on: {{ vdots_color }};
+    --veloura-dot-off: {{ vdots_idle }};
+  }
+
+  html body .swiper-pagination-bullet,
+  html body .veloura-dots__dot {
+    width: var(--veloura-dot-size) !important;
+    height: var(--veloura-dot-size) !important;
+    min-width: var(--veloura-dot-size) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--veloura-dot-off) !important;
+    opacity: .3 !important;
+    transform: none !important;
+    transition: width .32s cubic-bezier(.4, 0, .2, 1), opacity .32s ease, background-color .32s ease, transform .32s ease !important;
+    cursor: pointer;
+  }
+
+  html body .swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on {
+    background: var(--veloura-dot-on) !important;
+    opacity: 1 !important;
+  }
+
+  html body .swiper-pagination,
+  html body .veloura-dots {
+    display: flex !important;
+    gap: calc(var(--veloura-dot-size) * .75) !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  html body .veloura-dots { margin-top: 14px; }
+
+{% if vdots_style == 'bar' %}
+  /* شريط يتمدد: الخامل قصير والنشط يمتد — أوضح مؤشر موضع بأقل ضجيج. */
+  html body .swiper-pagination-bullet,
+  html body .veloura-dots__dot {
+    width: calc(var(--veloura-dot-size) * 2.6) !important;
+    min-width: calc(var(--veloura-dot-size) * 2.6) !important;
+    height: calc(var(--veloura-dot-size) * .8) !important;
+    opacity: .28 !important;
+  }
+
+  html body .swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on {
+    width: calc(var(--veloura-dot-size) * 5) !important;
+    min-width: calc(var(--veloura-dot-size) * 5) !important;
+  }
+{% elseif vdots_style == 'ring' %}
+  /* نقطة داخل حلقة: الحلقة تظهر حول النشطة وحدها. */
+  html body .swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--veloura-dot-on) 28%, transparent) !important;
+  }
+{% elseif vdots_style == 'diamond' %}
+  html body .swiper-pagination-bullet,
+  html body .veloura-dots__dot {
+    border-radius: 3px !important;
+    transform: rotate(45deg) !important;
+  }
+
+  html body .swiper-pagination-bullet-active,
+  html body .veloura-dots__dot.is-on {
+    transform: rotate(45deg) scale(1.35) !important;
+  }
+
+  html body .swiper-pagination,
+  html body .veloura-dots { gap: calc(var(--veloura-dot-size) * 1.1) !important; }
+{% endif %}
+</style>
 
 <style>
   /* حواف الهيدر.

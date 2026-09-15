@@ -364,6 +364,108 @@
       ]
     },
     {
+      "id": "veloura_dots_style_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "شكل نقاط الشرائح",
+      "icon": "sicon-more-horizontal",
+      "source": "Manual",
+      "required": true,
+      "value": "bar",
+      "default": "bar",
+      "description": "شكل واحد يسري على كل عناصر المتجر: الصور، المميزات، الروابط السريعة، آراء العملاء، والبنرات.",
+      "selected": [
+        {
+          "label": "شريط يتمدد عند النشاط",
+          "value": "bar",
+          "key": "veloura_dots_style_2026-bar"
+        }
+      ],
+      "options": [
+        {
+          "label": "شريط يتمدد عند النشاط",
+          "value": "bar",
+          "key": "veloura_dots_style_2026-bar"
+        },
+        {
+          "label": "نقطة داخل حلقة",
+          "value": "ring",
+          "key": "veloura_dots_style_2026-ring"
+        },
+        {
+          "label": "معيّن",
+          "value": "diamond",
+          "key": "veloura_dots_style_2026-diamond"
+        },
+        {
+          "label": "دائرة بسيطة",
+          "value": "dot",
+          "key": "veloura_dots_style_2026-dot"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_dots_color_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون النقطة النشطة",
+      "icon": "sicon-format-fill",
+      "value": "#004956",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_dots_inactive_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون النقاط الخاملة",
+      "icon": "sicon-format-fill",
+      "value": "#004956",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_dots_size_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "حجم النقاط",
+      "icon": "sicon-resize",
+      "value": 7,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "16",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_site_bg_color_2026",
       "type": "string",
       "format": "color",

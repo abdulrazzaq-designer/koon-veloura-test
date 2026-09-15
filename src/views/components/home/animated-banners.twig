@@ -203,6 +203,9 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   .animated-banners__content p { display: none; }
 }
 
+/* النقاط تخص شريط الجوال وحده: لا معنى لها والبنرات كلها ظاهرة دفعة واحدة. */
+.animated-banners .veloura-dots { display: none !important; }
+
 /* ==========================================================================
    تخطيط «بنر كبير + بنرين جانبيين»
 
@@ -289,6 +292,8 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   }
 
   .animated-banners.is-mob-slider .animated-banners__feature::-webkit-scrollbar { display: none; }
+
+  .animated-banners.is-mob-slider .veloura-dots { display: flex !important; }
 
   .animated-banners.is-mob-slider .animated-banners__feature img {
     -webkit-user-drag: none;
@@ -428,6 +433,10 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
           </div>
         {% endfor %}
       </div>
+
+      {% if not component.animated_hide_dots %}
+        <div class="veloura-dots" data-ab-dots></div>
+      {% endif %}
     {% else %}
       <salla-slider
         class="animated-banners__slider {{ is_full ? 'fullwidth-slider' : '' }}"
@@ -538,9 +547,21 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 
   function edgeOf(rect) { return rtl ? rect.right : rect.left; }
 
+  var snapRestore = null;
+
   function slideTo(card) {
     if (!card) return;
+
     var delta = edgeOf(card.getBoundingClientRect()) - edgeOf(strip.getBoundingClientRect());
+    if (!delta) return;
+
+    /* scroll-snap-stop: always يوقف أي انتقال عند أول بنر يمر به، فالقفزة
+       إلى بنر بعيد (نقطة، أو سحبة طويلة) كانت تقف بعد بنر واحد. نطفئ
+       الالتقاط أثناء الانزلاق ونعيده بعد أن يستقر. */
+    strip.style.scrollSnapType = 'none';
+    clearTimeout(snapRestore);
+    snapRestore = setTimeout(function () { strip.style.scrollSnapType = ''; }, 520);
+
     /* scrollBy يعمل بالإحداثي الفيزيائي في الاتجاهين، فلا حاجة لحساب إشارة. */
     strip.scrollBy({ left: delta, behavior: 'smooth' });
   }
@@ -600,7 +621,6 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
     if (moved) {
       /* اندفاعة تقديرية: سحبة سريعة تنقل بنراً كاملاً، وبطيئة ترجع لمكانها. */
       slideTo(nearest(vel * 160));
-      setTimeout(function () { strip.style.scrollSnapType = snap || ''; }, 420);
 
       strip.addEventListener('click', function swallow(ev) {
         ev.preventDefault(); ev.stopPropagation();
@@ -618,11 +638,8 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   /* ------------------------------------------------------ الحركة التلقائية -- */
   var timer = null;
 
-  function step() {
-    if (!isStrip()) return;
+  function currentIndex() {
     var list = cards();
-    if (list.length < 2) return;
-
     var target = edgeOf(strip.getBoundingClientRect());
     var current = 0, best = Infinity;
 
@@ -630,14 +647,70 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
       var d = Math.abs(edgeOf(list[i].getBoundingClientRect()) - target);
       if (d < best) { best = d; current = i; }
     }
+    return current;
+  }
+
+  function step() {
+    if (!isStrip()) return;
+    var list = cards();
+    if (list.length < 2) return;
+
+    var current = currentIndex();
 
     if (current >= list.length - 1) {
-      strip.scrollTo({ left: rtl ? 0 : 0, behavior: 'smooth' });
+      /* «الدوران بلا نهاية»: يرجع للبنر الأول بدل أن يقف عند الأخير. وبدونه
+         يتوقّف الشريط عند نهايته — وهذا هو الفرق الذي يحدثه الخيار هنا. */
+      {% if component.animated_loop %}
+      strip.scrollTo({ left: 0, behavior: 'smooth' });
+      {% else %}
+      stopAuto();
+      {% endif %}
       return;
     }
 
     slideTo(list[current + 1]);
   }
+
+  /* ------------------------------------------------------------ النقاط -- */
+  var dotsBox = strip.parentNode ? strip.parentNode.querySelector('[data-ab-dots]') : null;
+  var dotEls = [];
+
+  function buildDots() {
+    if (!dotsBox) return;
+    var list = cards();
+
+    if (list.length < 2) { dotsBox.style.display = 'none'; return; }
+    if (dotEls.length === list.length) return;
+
+    dotsBox.innerHTML = '';
+    dotEls = list.map(function (card, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'veloura-dots__dot';
+      b.setAttribute('aria-label', 'بنر ' + (i + 1));
+      b.addEventListener('click', function () { stopAuto(); slideTo(cards()[i]); setTimeout(startAuto, 4500); });
+      dotsBox.appendChild(b);
+      return b;
+    });
+  }
+
+  function paintDots() {
+    if (!dotEls.length) return;
+    var i = currentIndex();
+    for (var k = 0; k < dotEls.length; k++) dotEls[k].classList.toggle('is-on', k === i);
+  }
+
+  var dotsPending = false;
+  strip.addEventListener('scroll', function () {
+    if (dotsPending) return;
+    dotsPending = true;
+    requestAnimationFrame(function () { dotsPending = false; paintDots(); });
+  }, { passive: true });
+
+  addEventListener('resize', function () { buildDots(); paintDots(); }, { passive: true });
+
+  buildDots();
+  paintDots();
 
   function startAuto() {
     {% if component.animated_autoplay %}
