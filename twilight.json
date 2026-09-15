@@ -11548,6 +11548,23 @@
               "required": false
             },
             {
+              "id": "animated_banners.button_icon",
+              "type": "string",
+              "format": "icon",
+              "label": "أيقونة الزر",
+              "description": "تظهر فقط إذا كانت أيقونة الزر غير مخفية.",
+              "icon": "sicon-star",
+              "value": "sicon-arrow-left",
+              "required": false,
+              "conditions": [
+                {
+                  "id": "animated_banners.button_hide_icon",
+                  "operation": "=",
+                  "value": false
+                }
+              ]
+            },
+            {
               "id": "animated_banners.button_no_bg",
               "type": "boolean",
               "format": "switch",

@@ -135,6 +135,13 @@
   {% set top_border = top_border[0].value %}
 {% endif %}
 
+{# الحواف صارت رقماً بالبيكسل من شريط تمرير. الأنماط القديمة كانت مربوطة بأسماء
+   كلاسات في ملف SCSS (veloura-top-border-medium…)، وأي رقم ما يوافق كلاس فيبقى
+   الهيدر بلا حواف — ولهذا صارت القيمة تُكتب متغيراً على العنصر نفسه، والقاعدة
+   تحت تطبّقه. المفاتيح القديمة تبقى مفهومة، و«40» = دائري. #}
+{% set top_border_px_map = {'sharp':'0px','soft':'12px','medium':'24px','large':'42px','xl':'48px','round':'999px','40':'999px'} %}
+{% set top_border_px = top_border_px_map[top_border]|default((top_border|trim == '' ? '16' : top_border) ~ 'px') %}
+
 {% set icons_size = theme.settings.get('veloura_top_icons_size_2026', 'small') %}
 {% if icons_size.selected is defined %}
   {% if icons_size.selected.value is defined %}
@@ -427,8 +434,22 @@
     --veloura-top-text: {{ top_text }};
     --veloura-top-cart-bg: {{ top_cart_bg }};
     --veloura-top-logo-size: {{ top_logo_size_px }}px;
+    --veloura-header-surface-radius: {{ top_border_px }};
   "
 >
+  <style>
+    html body .store-header.veloura-top-enabled .main-nav-container,
+    html body .store-header.veloura-top-enabled .main-nav-container > .inner {
+      border-radius: 0 0 var(--veloura-header-surface-radius, 24px) var(--veloura-header-surface-radius, 24px) !important;
+    }
+
+    /* الهيدر العائم أو المثبّت يصير صندوقاً مستقلاً، فيأخذ الحواف من جهاته الأربع. */
+    html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner,
+    html body .store-header.veloura-top-enabled #mainnav.fixed-pinned > .inner {
+      border-radius: var(--veloura-header-surface-radius, 24px) !important;
+    }
+  </style>
+
   <div id="mainnav" class="main-nav-container">
     <div class="inner w-full">
       <div class="veloura-header-container">

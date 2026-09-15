@@ -116,7 +116,8 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   gap: 2px;
   min-width: clamp(42px, 5.2vw, 66px);
   padding: clamp(5px, .8vw, 10px) clamp(6px, .9vw, 12px);
-  border-radius: clamp(8px, 1vw, 14px);
+  /* الحواف تتبع حواف البنر نفسه: حاد يعطي حاداً، ودائري يعطي دائرياً. */
+  border-radius: var(--animated-radius, 14px);
   border: 1px solid rgba(255, 255, 255, .22);
   background: rgba(0, 0, 0, .34);
   -webkit-backdrop-filter: blur(10px);
@@ -144,7 +145,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   gap: 8px;
   margin-top: clamp(2px, .6vw, 8px);
   padding: clamp(7px, 1vw, 13px) clamp(14px, 1.8vw, 26px);
-  border-radius: 12px;
+  border-radius: var(--animated-radius, 12px);
   border: 1.5px solid transparent;
   background: var(--color-primary, #004956);
   color: #fff;
@@ -182,7 +183,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   .animated-banners__countdown > div {
     min-width: 34px;
     padding: 4px 6px;
-    border-radius: 8px;
+    border-radius: var(--animated-radius, 8px);
   }
 
   .animated-banners__countdown strong { font-size: 13px; }
@@ -191,7 +192,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
   .animated-banners__button {
     margin-top: 2px;
     padding: 6px 13px;
-    border-radius: 10px;
+    border-radius: var(--animated-radius, 10px);
     font-size: 11px;
   }
 
@@ -219,23 +220,55 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 
 .animated-banners__side { display: grid; gap: var(--ab-gap, 14px); grid-template-columns: minmax(0, 1fr); }
 
+/* البطاقات الجانبية تملأ خانتها دائماً — على اللابتوب وعلى الجوال — فالصفّ
+   يخرج بارتفاع واحد والصور تُقصّ بدل أن تتمدد. الـ important مقصود: ملف
+   الستايل المبني يفرض height:auto على كل صورة داخل البطاقة. */
+.animated-banners__side > * { min-height: 0; height: 100%; }
+
+.animated-banners__side .animated-banners__card,
+.animated-banners__side .animated-banners__card picture {
+  display: block;
+  height: 100% !important;
+}
+
+.animated-banners__side .animated-banners__card img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
 @media (min-width: 1024px) {
-  .animated-banners__row.has-side { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
-  .animated-banners__side { grid-auto-rows: 1fr; }
-
-  .animated-banners__side .animated-banners__card,
-  .animated-banners__side picture {
-    height: 100%;
+  /* الارتفاع يحدده البنر الكبير وحده. لو ترك العمود الجانبي داخل الشبكة كان
+     ارتفاعه الطبيعي (صورتان فوق بعضهما) هو اللي يفرض ارتفاع الصف أحياناً،
+     فيطلع الكبير أقصر ويبقى فراغ تحته. هنا الصف صندوق عادي: الكبير يأخذ
+     الثلثين بنسبته الطبيعية، والعمود الجانبي مثبّت على حافته من الأعلى
+     للأسفل — فما في فرق ولا بكسل واحد. */
+  .animated-banners__row.has-side {
+    display: block;
+    position: relative;
   }
 
-  .animated-banners__side img {
-    height: 100%;
-    object-fit: cover;
+  .animated-banners__row.has-side .animated-banners__main {
+    width: calc((100% - var(--ab-gap, 14px)) * 2 / 3);
   }
+
+  .animated-banners__row.has-side .animated-banners__side {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: calc((100% - var(--ab-gap, 14px)) / 3);
+    grid-auto-rows: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
 }
 
 @media (max-width: 1023px) {
-  .animated-banners__side { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .animated-banners__side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+  }
+
   .animated-banners__side:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
 }
 
