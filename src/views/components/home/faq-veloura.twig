@@ -56,10 +56,34 @@
   .veloura-faq .veloura-faq__item { margin-bottom: 0 !important; }
 }
 
+/* الجواب بدرجة مختلفة قليلاً عن السؤال: كانت rgba(255,255,255,.08) — بياض
+   ثابت لا علاقة له باللون المختار، فهو يختفي تماماً على بطاقة فاتحة. الآن
+   الدرجة تُشتق من لون البطاقة نفسه بمزج خفيف من لون نصّها: على بطاقة داكنة
+   تخرج أفتح، وعلى بطاقة فاتحة جداً تخرج أعمق قليلاً — إذ لا يوجد أفتح من
+   الأبيض — فتبقى مرئية مع أي لون يختاره التاجر. */
+.veloura-faq .veloura-faq__answer {
+  background: color-mix(in srgb, var(--faq-text, #323232) 7%, var(--faq-bg, #eeeeee)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--faq-text, #323232) 10%, transparent) !important;
+}
+
+/* الدارك: ألوان القسم مكتوبة inline من إعدادات التاجر وهي مختارة للّايت،
+   فتبقى البطاقة فاتحة على صفحة داكنة. important يغلب inline، فتتحوّل هنا
+   إلى لون الخلفية الثانوي للدارك ونصوصه — والجواب يتبعها تلقائياً لأنه
+   مشتقّ من المتغيّرين نفسيهما. */
+html.dark .veloura-faq {
+  --faq-bg: var(--veloura-dark-secondary-bg, #010612) !important;
+  --faq-text: var(--veloura-dark-primary-text, #ffffff) !important;
+  --faq-title-color: var(--veloura-dark-primary-text, #ffffff) !important;
+{% if not component.veloura_faq_hide_border %}
+  --faq-border: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 14%, transparent) !important;
+{% endif %}
+}
+
 /* العنوان: مسافة أوسع بينه وبين الأسئلة، والعنوان الفرعي ملتصق به أكثر. */
 .veloura-faq .veloura-faq__heading { margin-bottom: clamp(32px, 4.2vw, 56px) !important; }
 .veloura-faq .veloura-faq__heading h2 { margin-bottom: 6px !important; }
 .veloura-faq .veloura-faq__heading p { margin-top: 0 !important; }
+html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
 </style>
 
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"

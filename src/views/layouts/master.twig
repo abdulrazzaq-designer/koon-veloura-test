@@ -5279,5 +5279,152 @@ function markCard(card) {
 
 
 
+<style>
+/* ==========================================================================
+   VELOURA — الدارك: أدوار النصوص وأسطح الأقسام
+
+   تُكتب هنا في القالب لا في ملف الستايل: الملف المبني على المتجر قد يكون
+   نسخة أقدم، وهذا الوسم آخر ما يُقرأ في الصفحة فيعلو على ما سبقه.
+
+   المبدأ: العنوان الرئيسي لأي قسم يأخذ لون النص الأساسي، والعنوان الفرعي
+   يأخذ اللون الثانوي — في اللايت من إعدادات العنصر نفسه (وهي تعمل)، وفي
+   الدارك من ألوان الدارك المعرّفة في إعدادات الثيم. ألوان العنصر تُكتب
+   inline فلا يغلبها إلا important.
+   ========================================================================== */
+
+html.dark :is(
+  .veloura-component-title,
+  [data-veloura-section-heading],
+  .section-main-title,
+  .s-block__title,
+  .veloura-products__heading-content,
+  .veloura-products__texts,
+  .veloura-store-features__heading,
+  .veloura-faq__heading,
+  .ultra-square-images__heading,
+  .veloura-animated-articles__heading,
+  .veloura-before-after__heading,
+  .veloura-branches__heading,
+  .veloura-brands__heading,
+  .veloura-purchase-steps__heading,
+  .veloura-quick-links__heading,
+  .veloura-testimonials__heading,
+  .veloura-title__inner
+) :is(h1, h2, h3, h4, .veloura-title__heading, .veloura-title__text) {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.dark :is(
+  .veloura-component-title,
+  [data-veloura-section-heading],
+  .section-main-title,
+  .veloura-products__heading-content,
+  .veloura-products__texts,
+  .veloura-store-features__heading,
+  .veloura-faq__heading,
+  .ultra-square-images__heading,
+  .veloura-animated-articles__heading,
+  .veloura-before-after__heading,
+  .veloura-branches__heading,
+  .veloura-brands__heading,
+  .veloura-purchase-steps__heading,
+  .veloura-quick-links__heading,
+  .veloura-testimonials__heading,
+  .veloura-title__inner
+) :is(p, .veloura-title__subtitle, .section-sub-title) {
+  color: var(--veloura-dark-secondary-text, #ededed) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* الأيقونة المجاورة للعنوان جزء من العنوان، فتتبع لونه. */
+html.dark .veloura-title__icon {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+/* الخطّان يمين العنوان المميز ويساره: امتداد بصري للعنوان، فيأخذان لونه
+   نفسه في الوضعين بدل اللون المعدّ للّايت. */
+html.dark .veloura-title__line {
+  background: var(--veloura-dark-primary-text, #ffffff) !important;
+  opacity: .55 !important;
+}
+</style>
+
+<script>
+/* ==========================================================================
+   أسطح فاتحة داخل الدارك.
+
+   بعض الأقسام تكتب لون خلفيتها inline من إعدادات التاجر (المميزات مثلاً)،
+   وهو لون اختير للّايت. في الدارك تبقى تلك البطاقة فاتحة فتشذّ عن الصفحة —
+   أو تختفي نصوصها إن تبعت ألوان الدارك.
+
+   ولا يمكن حسم ذلك في CSS: لا وسيلة فيه لسؤال «هل هذا اللون فاتح؟»، والقاعدة
+   العمياء ستطمس أيضاً البطاقات الملوّنة بلون العلامة وهي سليمة في الوضعين.
+   لذلك يُقاس السطوع هنا، ولا يُستبدل إلا السطح الفاتح فعلاً — واللون الأصلي
+   يُحفظ ليعود كما هو عند الرجوع للّايت.
+   ========================================================================== */
+(function () {
+  if (window.__velouraDarkSurfaces) return;
+  window.__velouraDarkSurfaces = true;
+
+  var SELECTOR = [
+    '.veloura-store-features__item',
+    '.veloura-store-features__icon'
+  ].join(',');
+
+  function luminance(color) {
+    var m = String(color).match(/(-?[\d.]+)/g);
+    if (!m || m.length < 3) return null;
+    /* شفاف تماماً: لا سطح هنا أصلاً. */
+    if (m.length > 3 && parseFloat(m[3]) < 0.08) return null;
+    var c = [+m[0], +m[1], +m[2]].map(function (v) {
+      v = v / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+
+  function apply() {
+    var dark = document.documentElement.classList.contains('dark');
+
+    document.querySelectorAll(SELECTOR).forEach(function (el) {
+      if (!dark) {
+        if (el.dataset.velouraDarkSurface === '1') {
+          el.style.background = el.dataset.velouraLightBg || '';
+          if (el.dataset.velouraLightFg !== undefined) el.style.color = el.dataset.velouraLightFg;
+          el.dataset.velouraDarkSurface = '0';
+        }
+        return;
+      }
+
+      if (el.dataset.velouraDarkSurface === '1') return;
+
+      var l = luminance(getComputedStyle(el).backgroundColor);
+      if (l === null || l < 0.55) return;
+
+      el.dataset.velouraLightBg = el.style.background || '';
+      el.dataset.velouraLightFg = el.style.color || '';
+      el.dataset.velouraDarkSurface = '1';
+
+      el.style.setProperty('background', 'var(--veloura-dark-secondary-bg, #010612)', 'important');
+      el.style.setProperty('color', 'var(--veloura-dark-primary-text, #ffffff)', 'important');
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+  else apply();
+
+  document.addEventListener('theme::ready', apply);
+  setTimeout(apply, 400);
+  setTimeout(apply, 1400);
+
+  /* تبديل الوضع يغيّر صنف <html> فقط، بلا حدث نعتمد عليه. */
+  new MutationObserver(apply).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+})();
+</script>
+
 </body>
 </html>
