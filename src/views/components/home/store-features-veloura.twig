@@ -37,6 +37,14 @@
   {% set section_classes = section_classes|merge(['veloura-show-desktop-only']) %}
 {% endif %}
 
+<style>
+/* خلفية الأيقونة تتبع حواف الميزة: حادة مع الحادة، ودائرية مع الدائرية. */
+.veloura-store-features .veloura-store-features__icon {
+  border-radius: min(var(--veloura-radius, 18px), 50%) !important;
+  overflow: hidden;
+}
+</style>
+
 {% if sf_horizontal %}
 <style>
 /* مميزات المتجر — العرض الأفقي */

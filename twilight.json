@@ -13755,6 +13755,52 @@
           "required": false
         },
         {
+          "id": "veloura_faq_toggle_custom_color",
+          "type": "boolean",
+          "format": "switch",
+          "label": "لون مخصص لزر فتح السؤال",
+          "description": "إذا كان مطفأ يأخذ الزر لون المتجر الأساسي.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "veloura_faq_toggle_bg",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون خلفية زر الفتح",
+          "icon": "sicon-format-fill",
+          "value": "#004956",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_faq_toggle_custom_color",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_faq_toggle_icon_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون علامة زر الفتح",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_faq_toggle_custom_color",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
           "id": "veloura_faq_radius",
           "type": "number",
           "format": "slider",
@@ -14866,6 +14912,56 @@
           "required": false
         },
         {
+          "id": "veloura_quick_icon_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون الأيقونة (وخلفيتها الشفافة)",
+          "icon": "sicon-format-fill",
+          "value": "#004956",
+          "required": false
+        },
+        {
+          "id": "veloura_quick_card_bg",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون خلفية الرابط (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false
+        },
+        {
+          "id": "veloura_quick_card_text",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون نص الرابط (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#1f1f1f",
+          "required": false
+        },
+        {
+          "id": "veloura_quick_title_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون العنوان الرئيسي (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#111111",
+          "required": false
+        },
+        {
+          "id": "veloura_quick_subtitle_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون العنوان الفرعي (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#6b6b6b",
+          "required": false
+        },
+        {
           "id": "veloura_quick_desktop_cols",
           "type": "number",
           "format": "slider",
@@ -14886,6 +14982,18 @@
           "step": "1",
           "minimum": "1",
           "maximum": "4"
+        },
+        {
+          "id": "veloura_quick_peek_next",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار جزء من الرابط التالي",
+          "description": "عند الإطفاء تظهر الروابط كاملة بالعدد المحدد بدون أجزاء مقطوعة.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
         },
         {
           "id": "veloura_quick_merge_previous",

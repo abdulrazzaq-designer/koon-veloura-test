@@ -16,12 +16,109 @@
 {% set quick_mobile_cols = component.veloura_quick_mobile_cols|default(3, true) %}
 {% set quick_desktop_cols = component.veloura_quick_desktop_cols|default(5, true) %}
 
+{# إظهار جزء من الرابط التالي: عند الإطفاء يُعرض العدد المحدد كاملاً بلا أجزاء مقطوعة. #}
+{% set quick_peek = component.veloura_quick_peek_next|default(false) %}
+{% if quick_peek.value is defined %}{% set quick_peek = quick_peek.value %}{% endif %}
+{% set quick_peek = quick_peek is same as(true) or quick_peek in ['true', '1', 1, 'on'] %}
+{% set quick_mobile_view = quick_peek ? (quick_mobile_cols + 0.35) : quick_mobile_cols %}
+{% set quick_desktop_view = quick_peek ? (quick_desktop_cols + 0.35) : quick_desktop_cols %}
+
 {% if not component.veloura_quick_hide_section %}
+<style>
+/* ---------- الروابط السريعة ---------- */
+
+/* الشريط محاذٍ للكونتينر: أول رابط يبدأ من حافته وآخر رابط ينتهي عند حافته. */
+.veloura-quick-links.is-slider salla-slider,
+.veloura-quick-links.is-slider .s-slider-wrapper,
+.veloura-quick-links.is-slider .s-slider-container,
+.veloura-quick-links.is-slider .swiper,
+.veloura-quick-links.is-slider .carousel-slider .swiper {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.veloura-quick-links .veloura-quick-links__heading h2 {
+  color: var(--quick-title-color, #111111);
+}
+
+.veloura-quick-links .veloura-quick-links__heading p {
+  color: var(--quick-subtitle-color, #6b6b6b);
+  opacity: 1;
+}
+
+.veloura-quick-links .veloura-quick-links__card {
+  background: var(--quick-card-bg, #ffffff);
+  color: var(--quick-card-text, #1f1f1f);
+}
+
+/* الأيقونة بخلفية من لونها نفسه بشفافية خفيفة، وحوافها تتبع حواف الروابط. */
+.veloura-quick-links .veloura-quick-links__icon-wrap {
+  --quick-icon-box: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--quick-icon-box);
+  height: var(--quick-icon-box);
+  flex: 0 0 auto;
+  border-radius: min(var(--quick-radius, 16px), 50%);
+  background: color-mix(in srgb, var(--quick-icon-color, #004956) 14%, transparent);
+  color: var(--quick-icon-color, #004956);
+  overflow: hidden;
+  transition: background-color .25s ease, transform .25s ease;
+}
+
+.veloura-quick-links .veloura-quick-links__card:hover .veloura-quick-links__icon-wrap {
+  background: color-mix(in srgb, var(--quick-icon-color, #004956) 22%, transparent);
+  transform: translateY(-2px);
+}
+
+.veloura-quick-links .veloura-quick-links__icon-wrap i,
+.veloura-quick-links .veloura-quick-links__icon-wrap .veloura-quick-links__icon {
+  font-size: 30px !important;
+  line-height: 1;
+  color: inherit !important;
+}
+
+.veloura-quick-links .veloura-quick-links__icon-wrap img {
+  width: 62% !important;
+  height: 62% !important;
+  margin: 0 !important;
+  object-fit: contain;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .veloura-quick-links .veloura-quick-links__icon-wrap { --quick-icon-box: 52px; }
+  .veloura-quick-links .veloura-quick-links__icon-wrap i,
+  .veloura-quick-links .veloura-quick-links__icon-wrap .veloura-quick-links__icon { font-size: 24px !important; }
+}
+
+/* الوضع الداكن: البطاقة بالخلفية الثانوية، والنصوص بألوان الداكن. */
+html.dark .veloura-quick-links,
+body.dark .veloura-quick-links {
+  /* important لأن ألوان الفاتح مكتوبة inline على القسم نفسه. */
+  --quick-card-bg: var(--veloura-dark-secondary-bg, #010612) !important;
+  --quick-card-text: var(--veloura-dark-primary-text, #ffffff) !important;
+  --quick-title-color: var(--veloura-dark-primary-text, #ffffff) !important;
+  --quick-subtitle-color: var(--veloura-dark-secondary-text, #ededed) !important;
+}
+
+html.dark .veloura-quick-links .veloura-quick-links__card,
+body.dark .veloura-quick-links .veloura-quick-links__card {
+  background: var(--quick-card-bg) !important;
+  color: var(--quick-card-text) !important;
+  border-color: color-mix(in srgb, var(--quick-card-text) 10%, transparent) !important;
+}
+</style>
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="
     s-block
     veloura-quick-links
     is-slider
+    {{ quick_peek ? 'has-peek' : '' }}
     {{ component.veloura_quick_custom_spacing ? 'has-spacing has-custom-spacing' : '' }}
     {{ component.veloura_quick_merge_previous ? 'is-merged' : '' }}
     {{ component.veloura_quick_mobile_only ? 'veloura-mobile-only' : '' }}
@@ -30,6 +127,11 @@
   "
   style="
     --quick-spacing: {{ component.veloura_quick_custom_spacing ? component.veloura_quick_spacing_amount|default(16) : 0 }}px;
+    --quick-icon-color: {{ component.veloura_quick_icon_color|default('#004956') }};
+    --quick-card-bg: {{ component.veloura_quick_card_bg|default('#ffffff') }};
+    --quick-card-text: {{ component.veloura_quick_card_text|default('#1f1f1f') }};
+    --quick-title-color: {{ component.veloura_quick_title_color|default('#111111') }};
+    --quick-subtitle-color: {{ component.veloura_quick_subtitle_color|default('#6b6b6b') }};
     --quick-radius: {{ radius_map[component.veloura_quick_radius|default('medium')]|default((component.veloura_quick_radius|default('medium') ~ '' == '' ? '16' : component.veloura_quick_radius|default('medium')) ~ 'px') }};
   "
 >
@@ -59,14 +161,14 @@
   show-controls="{{ component.veloura_quick_hide_arrows ? 'false' : 'true' }}"
   static-when-single
   slider-config='{
-  "slidesPerView": {{ quick_mobile_cols }},
+  "slidesPerView": {{ quick_mobile_view }},
   "spaceBetween": 14,
   "autoplay": {{ component.veloura_quick_autoplay ? "{\"delay\": 2500, \"disableOnInteraction\": false}" : "false" }},
   "observer": true,
   "observeParents": true,
   "breakpoints": {
     "768": {
-      "slidesPerView": {{ quick_desktop_cols }},
+      "slidesPerView": {{ quick_desktop_view }},
       "spaceBetween": 20
     }
   }
@@ -80,11 +182,13 @@
 
           <div class="swiper-slide">
             <a href="{{ link.url ?: '#' }}" class="veloura-quick-links__card">
-              {% if image_src %}
-                <img src="{{ image_src }}" alt="{{ link.title ?: 'quick-link' }}" loading="lazy">
-              {% else %}
-                <i class="{{ icon_class }} veloura-quick-links__icon"></i>
-              {% endif %}
+              <span class="veloura-quick-links__icon-wrap" aria-hidden="true">
+                {% if image_src %}
+                  <img src="{{ image_src }}" alt="{{ link.title ?: 'quick-link' }}" loading="lazy">
+                {% else %}
+                  <i class="{{ icon_class }} veloura-quick-links__icon"></i>
+                {% endif %}
+              </span>
 
               {% if link.title %}
                 <h2>{{ link.title }}</h2>

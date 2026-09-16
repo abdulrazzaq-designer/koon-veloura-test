@@ -87,7 +87,10 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
 /* ---------- السؤال وزر الفتح ---------- */
 .veloura-faq .veloura-faq__question {
   gap: 16px;
+  /* جهة الزر (اليسار) بنفس مسافة الأعلى والأسفل. */
   padding: 18px 24px !important;
+  padding-inline-end: 18px !important;
+  min-height: calc(34px + 36px);
 }
 
 .veloura-faq .veloura-faq__question-text {
@@ -111,9 +114,9 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
   width: var(--faq-toggle-size);
   height: var(--faq-toggle-size);
   border-radius: min(calc(var(--faq-radius, 22px) * .5), 50%);
-  background: var(--color-primary, #004956);
-  color: var(--color-primary-reverse, #ffffff);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary, #004956) 30%, transparent);
+  background: var(--faq-toggle-bg, #004956);
+  color: var(--faq-toggle-fg, #ffffff);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--faq-toggle-bg, #004956) 30%, transparent);
   transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), background-color .3s ease, box-shadow .3s ease;
 }
 
@@ -142,8 +145,8 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
 
 .veloura-faq .veloura-faq__item.is-open .veloura-faq__toggle {
   transform: rotate(180deg);
-  background: color-mix(in srgb, var(--color-primary, #004956) 82%, #000);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary, #004956) 22%, transparent);
+  background: color-mix(in srgb, var(--faq-toggle-bg, #004956) 82%, #000);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--faq-toggle-bg, #004956) 22%, transparent);
 }
 
 .veloura-faq .veloura-faq__item.is-open .veloura-faq__toggle::after {
@@ -152,7 +155,7 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
 }
 
 .veloura-faq .veloura-faq__question:focus-visible .veloura-faq__toggle {
-  outline: 2px solid var(--color-primary, #004956);
+  outline: 2px solid var(--faq-toggle-bg, #004956);
   outline-offset: 3px;
 }
 
@@ -162,7 +165,7 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
 }
 
 @media (max-width: 767px) {
-  .veloura-faq .veloura-faq__question { padding: 16px 18px !important; gap: 12px; }
+  .veloura-faq .veloura-faq__question { padding: 16px 18px !important; padding-inline-end: 16px !important; gap: 12px; min-height: calc(30px + 32px); }
   .veloura-faq .veloura-faq__toggle { --faq-toggle-size: 30px; }
   .veloura-faq .veloura-faq__answer-inner { padding: 16px 18px 18px !important; }
 }
@@ -183,6 +186,8 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
     --faq-text: {{ component.veloura_faq_text_color|default('#323232') }};
     --faq-border: {{ component.veloura_faq_hide_border ? 'transparent' : component.veloura_faq_border_color|default('#323232') }};
     --faq-radius: {{ radius_map[component.veloura_faq_radius|default('large')]|default((component.veloura_faq_radius|default('large') ~ '' == '' ? '22' : component.veloura_faq_radius|default('large')) ~ 'px') }};
+    --faq-toggle-bg: {{ component.veloura_faq_toggle_custom_color ? component.veloura_faq_toggle_bg|default('#004956') : 'var(--color-primary, #004956)' }};
+    --faq-toggle-fg: {{ component.veloura_faq_toggle_custom_color ? component.veloura_faq_toggle_icon_color|default('#ffffff') : 'var(--color-primary-reverse, #ffffff)' }};
     --faq-spacing: {{ component.veloura_faq_enable_custom_spacing ? component.veloura_faq_custom_spacing|default(0) : 0 }}px;
   "
 >
