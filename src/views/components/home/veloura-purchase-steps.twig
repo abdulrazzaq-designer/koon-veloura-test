@@ -34,6 +34,17 @@
   {% set stp_items = component.veloura_steps_collection|default([]) %}
   {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}
 
+  {# حركة الشريط الواصل: ومضة تمشي من الخطوة الأولى إلى الأخيرة وتتكرر.
+     كل مقطع له خانة زمنية من الدورة، والدورة = عدد المقاطع + خانة توقف.
+     نسب المفاتيح تُحسب هنا لأن @keyframes لا تقرأ متغيرات CSS. #}
+  {% set stp_n = stp_items|length %}
+  {% set stp_x_slots = max(stp_n, 2) %}
+  {% set stp_y_slots = stp_n + 1 %}
+  {% set stp_x_pct = (100 / stp_x_slots)|round(3) %}
+  {% set stp_y_pct = (100 / stp_y_slots)|round(3) %}
+  {% set stp_y_half = (50 / stp_y_slots)|round(3) %}
+  {% set stp_anim = 'stp' ~ (position|default(0)) %}
+
   {# The connector used to be withheld whenever there were more steps than
      columns — which is why a five-step section with four columns showed no
      join at all. It is drawn between neighbours instead, and the first card of
@@ -428,13 +439,106 @@ html.dark .veloura-stp, html body.dark .veloura-stp {
   --stp-title: #f8fafc;
   --stp-text: #cbd5e1;
   --stp-second: var(--veloura-dark-secondary-bg, #010612);
-  --stp-page: var(--veloura-dark-bg, #05070f);
+  --stp-page: var(--veloura-dark-body-bg, var(--veloura-dark-bg, #010202));
   --stp-line: color-mix(in srgb, #ffffff 42%, transparent);
 }
 
 html.dark .veloura-stp .stp__dot,
 html body.dark .veloura-stp .stp__dot {
   color: color-mix(in srgb, var(--step-color, var(--stp-accent)) 45%, #ffffff);
+}
+/* ============================================================ the flow ====
+   ومضة ضوء تمشي على الشريط الواصل من الخطوة الأولى إلى الأخيرة، ثم تتوقف
+   لحظة وتعيد — على اللابتوب أفقياً وعلى الجوال نزولاً على العمود. كل مقطع
+   يأخذ دوره بالتأخير (--i)، فتبدو ومضة واحدة متصلة. وعند وصولها لخطوة
+   تتوهّج أيقونتها (لابتوب) أو تنبض دائرتها (جوال). */
+.veloura-stp {
+  --stp-flow-step: .9s;
+  --stp-flow: color-mix(in srgb, var(--stp-accent) 35%, #ffffff);
+}
+
+html.dark .veloura-stp, html body.dark .veloura-stp {
+  --stp-flow: color-mix(in srgb, var(--stp-accent) 30%, #ffffff);
+}
+
+@keyframes {{ stp_anim }}-x {
+  0% { background-position: 170% 0; }
+  {{ stp_x_pct }}% { background-position: -70% 0; }
+  100% { background-position: -70% 0; }
+}
+
+@keyframes {{ stp_anim }}-y {
+  0% { background-position: 0 -100%; }
+  {{ stp_y_pct }}% { background-position: 0 200%; }
+  100% { background-position: 0 200%; }
+}
+
+@keyframes {{ stp_anim }}-tile {
+  0%, {{ (stp_x_pct * 0.2)|round(3) }}% { box-shadow: 0 0 0 0 transparent; }
+  {{ stp_x_pct }}% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--step-color, var(--stp-accent)) 35%, transparent), 0 10px 26px color-mix(in srgb, var(--step-color, var(--stp-accent)) 30%, transparent); }
+  {{ (stp_x_pct * 1.9)|round(3) }}%, 100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes {{ stp_anim }}-pin {
+  0%, {{ (stp_y_half * 0.3)|round(3) }}% { transform: translate(50%, -50%) scale(1); box-shadow: 0 0 0 0 transparent; }
+  {{ stp_y_half }}% { transform: translate(50%, -50%) scale(1.3); box-shadow: 0 0 0 6px color-mix(in srgb, var(--step-color, var(--stp-accent)) 30%, transparent); }
+  {{ stp_y_pct }}%, 100% { transform: translate(50%, -50%) scale(1); box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (min-width: 768px) {
+  /* تذهب الومضة من يمين المقطع إلى يساره (من الخطوة السابقة إلى التالية). */
+  .veloura-stp.has-line .stp__step::after {
+    background-image: linear-gradient(90deg, transparent, var(--stp-flow) 35%, #ffffff 50%, var(--stp-flow) 65%, transparent);
+    background-size: 45% 100%;
+    background-repeat: no-repeat;
+    background-position: 170% 0;
+  }
+  html[dir="ltr"] .veloura-stp.has-line .stp__step::after { transform: scaleX(-1); }
+
+  .veloura-stp.has-line.is-inview .stp__step::after {
+    animation: {{ stp_anim }}-x calc(var(--stp-flow-step) * {{ stp_x_slots }}) linear infinite;
+    animation-delay: calc((var(--i, 1) - 1) * var(--stp-flow-step));
+  }
+
+  .veloura-stp.has-line.is-inview .stp__dot {
+    animation: {{ stp_anim }}-tile calc(var(--stp-flow-step) * {{ stp_x_slots }}) ease-out infinite;
+    animation-delay: calc((var(--i, 0) - 1) * var(--stp-flow-step));
+  }
+}
+
+@media (max-width: 767px) {
+  /* دائرة أكبر، وإطارها بلون خلفية المتجر (فاتح وداكن) لتندمج معها. */
+  .veloura-stp .stp__pin {
+    width: 18px !important;
+    height: 18px !important;
+    border: 4px solid var(--stp-page) !important;
+    box-sizing: border-box;
+    z-index: 2;
+  }
+
+  .veloura-stp.has-line .stp__step::before {
+    background-image: linear-gradient(180deg, transparent, var(--stp-flow) 35%, #ffffff 50%, var(--stp-flow) 65%, transparent);
+    background-size: 100% 60%;
+    background-repeat: no-repeat;
+    background-position: 0 -100%;
+  }
+
+  .veloura-stp.has-line.is-inview .stp__step::before {
+    animation: {{ stp_anim }}-y calc(var(--stp-flow-step) * {{ stp_y_slots }}) linear infinite;
+    animation-delay: calc(var(--i, 0) * var(--stp-flow-step));
+  }
+
+  .veloura-stp.has-line.is-inview .stp__pin {
+    animation: {{ stp_anim }}-pin calc(var(--stp-flow-step) * {{ stp_y_slots }}) ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * var(--stp-flow-step));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-stp .stp__step::before,
+  .veloura-stp .stp__step::after,
+  .veloura-stp .stp__dot,
+  .veloura-stp .stp__pin { animation: none !important; }
 }
 </style>
 
