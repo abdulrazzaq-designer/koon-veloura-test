@@ -145,15 +145,30 @@
   }
 
   function layer(node, z) {
-    if (!node) return;
+    if (!node) return '-';
+
     /* لا نلمس عنصراً له تموضع خاص (لاصق مثلاً) حتى لا نكسره. */
     if (getComputedStyle(node).position === 'static') node.style.position = 'relative';
+
     node.style.zIndex = z;
+
+    /* الأهم: جعل القسم طبقة واحدة مغلقة.
+
+       أقسام مثل الهيرو تعطي محتواها الداخلي z-index خاصاً به (الغلاف 1
+       والخلفية -2). وما لم يكن القسم نفسه سياقَ تكديس، ينفلت ذلك المحتوى
+       ويرتفع فوق القسم المجاور بينما تبقى خلفيته تحته — وهو بالضبط ما يبدو
+       كأن «محتوى البنر في طبقة أعلى من الجميع». isolate يغلق السياق فيتحرك
+       القسم ككتلة واحدة. */
+    node.style.isolation = 'isolate';
+
+    return (node.tagName + '.' + (node.className || '').toString().trim().split(/\s+/)[0] + ':' + z);
   }
 
   function run() {
-    layer(sibling(el, 'previousElementSibling'), '{{ sp_order == 'below' ? 2 : 1 }}');
-    layer(sibling(el, 'nextElementSibling'), '{{ sp_order == 'below' ? 1 : 2 }}');
+    var a = layer(sibling(el, 'previousElementSibling'), '{{ sp_order == 'below' ? 2 : 1 }}');
+    var b = layer(sibling(el, 'nextElementSibling'), '{{ sp_order == 'below' ? 1 : 2 }}');
+    /* أثر مرئي للتحقق: أي قسمين طُبّق عليهما وبأي ترتيب. */
+    el.setAttribute('data-veloura-layers', a + ' | ' + b);
   }
 
   /* السكربت يعمل أثناء التحليل، والقسم التالي لم يُقرأ بعد — فيُؤجَّل حتى
