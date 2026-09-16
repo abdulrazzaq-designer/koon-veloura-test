@@ -290,6 +290,26 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   .veloura-tkr.tkr--cross .tkr__wrap { height: max(calc(var(--tkr-height) * 2.6), calc(var(--tkr-height) + 9vw)); }
 }
 
+/* الشريطان المتقاطعان على الجوال: بدل تقاطع X في المنتصف، يلتقيان عند
+   الطرف الأيسر فقط وينطلقان منه — العلوي يصعد والسفلي ينزل باتجاه اليمين —
+   فيظهر جزء أكبر من الشريط الخلفي.
+   محور الدوران هو الحافة اليسرى للإطار: الشريط أعرض من الإطار بـ 15% من كل
+   جهة (عرضه 130%)، فالحافة تقع عند 15/130 = 11.54% من عرضه. الارتفاع يتسع
+   لافتراق الطرفين عند اليمين: 2 × العرض × tan(3°) ≈ 10.5% من العرض. */
+@media (max-width: 767px) {
+  .veloura-tkr.tkr--cross .tkr__wrap {
+    height: calc(var(--tkr-height) + 11vw + 10px) !important;
+  }
+
+  .veloura-tkr.tkr--cross .tkr__band--a,
+  .veloura-tkr.tkr--cross .tkr__band--b {
+    transform-origin: 11.54% 50%;
+  }
+
+  .veloura-tkr.tkr--cross .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); }
+  .veloura-tkr.tkr--cross .tkr__band--b { transform: translateY(-50%) rotate(var(--tkr-angle)); }
+}
+
 /* Motion off in the system means a readable band, not a frozen half-scrolled
    one: the animation stops at the start. */
 @media (prefers-reduced-motion: reduce) {
