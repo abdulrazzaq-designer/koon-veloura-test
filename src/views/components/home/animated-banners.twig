@@ -33,7 +33,23 @@
    على الـ CDN، والقالب ينشر فوراً.
    ========================================================================== #}
 <style>
-.animated-banners__card { position: relative; }
+/* القسم طبقة مغلقة.
+
+   طبقة النصوص فوق البنر لها z-index خاص بها (2). وما دام القسم نفسه ليس
+   سياق تكديس، فذلك الرقم لا يُقاس داخل القسم بل في جذر الصفحة — فترتفع
+   النصوص فوق الأقسام التالية كلها بينما تبقى صورة البنر تحتها، فيبدو
+   المحتوى «طائراً» فوق كل شيء. isolate يحبس الترتيب داخل القسم، فيتحرك
+   ككتلة واحدة مع جيرانه. */
+.animated-banners {
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
+}
+
+.animated-banners__card {
+  position: relative;
+  isolation: isolate;
+}
 
 .animated-banners__content {
   position: absolute;
