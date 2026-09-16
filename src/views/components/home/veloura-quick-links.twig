@@ -66,7 +66,11 @@
   margin-right: calc(var(--quick-gap) / -2) !important;
   width: auto !important;
   max-width: none !important;
-  overflow: visible !important;
+  /* القص عند حدود الكونتينر بالضبط: الشريط أعرض منه بنصف فجوة من كل جهة،
+     فيُقص نصف الفجوة هذا — لا يظهر شيء خارج الكونتينر، سواء كان خيار إظهار
+     جزء من الرابط التالي مفعّلاً أو لا (الجزء يظهر داخل الكونتينر فقط). */
+  overflow: hidden !important;
+  clip-path: inset(0 calc(var(--quick-gap) / 2));
 }
 
 .veloura-quick-links.is-slider .swiper-wrapper > .swiper-slide,

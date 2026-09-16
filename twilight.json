@@ -17834,34 +17834,6 @@
           "required": false
         },
         {
-          "id": "veloura_fp_promo_title",
-          "type": "string",
-          "format": "text",
-          "label": "عنوان ترويجي بجانب الصورة",
-          "description": "يظهر في العمود المقابل للمميزات، فوق وصف المنتج.",
-          "icon": "sicon-format-text-alt",
-          "value": "عرض هذا الشهر",
-          "required": false,
-          "maxLength": 80
-        },
-        {
-          "id": "veloura_fp_more_text",
-          "type": "string",
-          "format": "text",
-          "label": "نص رابط الوصف",
-          "icon": "sicon-link",
-          "value": "عرض المزيد",
-          "required": false,
-          "maxLength": 40,
-          "conditions": [
-            {
-              "id": "veloura_fp_show_excerpt",
-              "operation": "=",
-              "value": true
-            }
-          ]
-        },
-        {
           "id": "veloura_fp_link_text",
           "type": "string",
           "format": "text",
@@ -17966,13 +17938,34 @@
         {
           "id": "veloura_fp_countdown_date",
           "type": "string",
-          "format": "text",
-          "label": "تاريخ ووقت انتهاء العرض",
+          "format": "date",
+          "inputType": "date",
+          "label": "تاريخ انتهاء العرض",
           "icon": "sicon-calendar",
           "value": null,
           "required": false,
-          "placeholder": "2026-12-31 23:59",
-          "description": "بصيغة سنة-شهر-يوم ساعة:دقيقة. اتركه فارغًا لاستخدام تاريخ انتهاء خصم المنتج نفسه.",
+          "description": "اختر اليوم من التقويم، وحدد الساعة من الخيار التالي. اتركه فارغًا لاستخدام تاريخ انتهاء خصم المنتج نفسه.",
+          "conditions": [
+            {
+              "id": "veloura_fp_countdown_enabled",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "veloura_fp_countdown_hour",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "ساعة انتهاء العرض",
+          "description": "بنظام 24 ساعة — مثلاً 23 يعني الساعة 11 مساءً (ينتهي في آخر دقيقة منها).",
+          "icon": "sicon-clock",
+          "value": 23,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "23",
+          "required": false,
           "conditions": [
             {
               "id": "veloura_fp_countdown_enabled",
@@ -18011,23 +18004,6 @@
               "value": true
             }
           ]
-        },
-        {
-          "id": "veloura_fp_title_sticky",
-          "type": "static",
-          "format": "title",
-          "label": "Title",
-          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">شريط الشراء في الجوال</strong></span></div>",
-          "variant": "h6"
-        },
-        {
-          "id": "veloura_fp_sticky_enabled",
-          "type": "boolean",
-          "format": "switch",
-          "label": "إظهار شريط شراء ثابت أسفل الجوال",
-          "value": true,
-          "required": false,
-          "description": "يظهر السعر وزر الشراء عند تمرير الزائر لما بعد العنصر، في شاشات الجوال فقط."
         },
         {
           "id": "veloura_fp_title_design",

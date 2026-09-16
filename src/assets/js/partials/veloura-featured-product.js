@@ -44,6 +44,14 @@ const imageUrl = image => {
   return image.url || image.src || image.path || '';
 };
 
+/* Salla's rating: {stars, count} on most endpoints, sometimes {rate, total}. */
+const readRating = rating => {
+  if (!rating || typeof rating !== 'object') return null;
+  const stars = Number(rating.stars ?? rating.rate ?? rating.average ?? 0) || 0;
+  const count = Number(rating.count ?? rating.total ?? rating.reviews ?? 0) || 0;
+  return { stars, count };
+};
+
 const normalize = product => {
   if (!product || typeof product !== 'object') return null;
 
@@ -69,7 +77,7 @@ const normalize = product => {
        paragraph came out empty on the store: a list product carries a
        description full of tags and no `subtitle` at all. */
     excerpt: text(product.subtitle || product.promotion_title || plain(product.description) || '').trim(),
-    rating: product.rating && product.rating.stars ? product.rating : null,
+    rating: readRating(product.rating),
     discountEnds: product.discount_ends || '',
   };
 };
@@ -128,14 +136,7 @@ const paint = (section, product) => {
 
   paintExcerpt(section, product.excerpt);
 
-  set('data-vfp-rating', el => {
-    if (!product.rating) return;
-    const stars = Math.round(product.rating.stars);
-    el.innerHTML =
-      `<span class="fp2__stars" aria-hidden="true">${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 5 - stars))}</span>` +
-      `<span class="fp2__rating-count">(${product.rating.count || 0})</span>`;
-    el.hidden = false;
-  });
+  paintRating(section, product.rating || { stars: 0, count: 0 });
 
   set('data-vfp-add', el => {
     el.setAttribute('product-id', product.id);
@@ -156,11 +157,18 @@ const paint = (section, product) => {
 const loadGallery = async (section, product) => {
   const wantsThumbs = Boolean(section.querySelector('[data-vfp-thumbs]')) && product.images.length <= 1;
   const wantsText = Boolean(section.querySelector('[data-vfp-excerpt]')) && !product.excerpt;
-  if (!wantsThumbs && !wantsText) return;
+  /* The list endpoint often leaves the rating out; the details one has it. */
+  const wantsRating = Boolean(section.querySelector('[data-vfp-rating]')) && !(product.rating && product.rating.count);
+  if (!wantsThumbs && !wantsText && !wantsRating) return;
 
   try {
-    const response = await salla.product.getDetails(product.id, ['images']);
+    const response = await salla.product.getDetails(product.id, ['images', 'rating']);
     const details = response?.data || response;
+
+    if (wantsRating) {
+      const rating = readRating(details?.rating);
+      if (rating) paintRating(section, rating);
+    }
 
     if (wantsThumbs) {
       const images = (details?.images || [])
@@ -177,6 +185,20 @@ const loadGallery = async (section, product) => {
       if (description) paintExcerpt(section, description);
     }
   } catch (_) {}
+};
+
+/* The stars are Salla's own <salla-rating-stars>, with the number of reviews
+   beside them — at the start edge the stars, the count to their left. Shown
+   even at zero, so the row does not appear and disappear between products. */
+const paintRating = (section, rating) => {
+  section.querySelectorAll('[data-vfp-rating]').forEach(el => {
+    const stars = Math.max(0, Math.min(5, Number(rating?.stars) || 0));
+    const count = Math.max(0, Number(rating?.count) || 0);
+    el.innerHTML =
+      `<salla-rating-stars size="small" value="${stars}"></salla-rating-stars>` +
+      `<span class="fp2__rating-count">(${count} ${count === 1 ? 'تقييم' : 'تقييمات'})</span>`;
+    el.hidden = false;
+  });
 };
 
 /* Two lines under the name; "عرض المزيد" is a link to the product page, so
@@ -329,16 +351,39 @@ const paintThumbs = (section, images) => {
 
 /* The countdown takes the merchant's date, or the product's own discount_ends
    when they asked for that — a date they never have to keep in sync. */
+/* The calendar hands back a day in whichever order it likes (2026-12-31,
+   31-12-2026, sometimes with a time). The numbers are read and ordered by
+   their size instead of trusting one format; the hour setting then fixes the
+   time, ending at the last second of that hour. */
+const parseEnd = (raw, hourSetting) => {
+  const nums = String(raw).match(/\d+/g) || [];
+  if (nums.length >= 3) {
+    let y, m, d;
+    if (nums[0].length === 4) { y = +nums[0]; m = +nums[1]; d = +nums[2]; }
+    else { d = +nums[0]; m = +nums[1]; y = +nums[2]; }
+    if (y && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+      const hasHour = hourSetting !== null && hourSetting !== undefined && hourSetting !== '';
+      const hour = hasHour ? Math.max(0, Math.min(23, parseInt(hourSetting, 10) || 0))
+        : (nums.length > 3 ? +nums[3] : 23);
+      const minute = hasHour ? 59 : (nums.length > 4 ? +nums[4] : 59);
+      const second = hasHour ? 59 : (nums.length > 5 ? +nums[5] : 59);
+      return new Date(y, m - 1, d, hour, minute, second).getTime();
+    }
+  }
+  /* "2026-12-31 23:59" is not parsable by Safari; ISO with T is. */
+  return new Date(String(raw).replace(' ', 'T')).getTime();
+};
+
 const startCountdown = (section, product) => {
   const box = section.querySelector('[data-vfp-countdown]');
   if (!box) return;
 
   let raw = (section.dataset.vfpCountdownDate || '').trim();
-  if (!raw && section.dataset.vfpCountdownFallback === '1') raw = product.discountEnds || '';
+  const fromPicker = Boolean(raw);
+  if (!raw && section.dataset.vfpCountdownFallback === '1') raw = text(product.discountEnds);
   if (!raw) return;
 
-  /* "2026-12-31 23:59" is not parsable by Safari; ISO with T is. */
-  const end = new Date(raw.replace(' ', 'T')).getTime();
+  const end = parseEnd(raw, fromPicker ? section.dataset.vfpCountdownHour : null);
   if (!Number.isFinite(end)) return;
 
   const units = {
@@ -370,27 +415,6 @@ const startCountdown = (section, product) => {
   const timer = setInterval(tick, 1000);
 };
 
-/* The sticky bar is moved to <body>: position:fixed resolves against the
-   nearest transformed ancestor, and home sections animate on scroll. */
-const setupSticky = section => {
-  const bar = section.querySelector('[data-vfp-sticky]');
-  if (!bar || section.dataset.vfpStickyEnabled !== '1') return;
-
-  document.body.appendChild(bar);
-  bar.removeAttribute('aria-hidden');
-
-  const card = section.querySelector('[data-vfp-card]');
-  if (!card || !('IntersectionObserver' in window)) return;
-
-  new IntersectionObserver(([entry]) => {
-    /* Visible only while the card is scrolled past, never while the buyer can
-       already see the real button. */
-    const passed = entry.boundingClientRect.top < 0 && !entry.isIntersecting;
-    bar.hidden = !passed;
-    bar.classList.toggle('is-visible', passed);
-  }, { threshold: 0 }).observe(card);
-};
-
 const initSection = async section => {
   if (section.dataset.vfpReady === '1') return;
   section.dataset.vfpReady = '1';
@@ -405,7 +429,6 @@ const initSection = async section => {
   paint(section, product);
   section.classList.add('is-loaded');
   startCountdown(section, product);
-  setupSticky(section);
   loadGallery(section, product);
 };
 
