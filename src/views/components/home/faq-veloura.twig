@@ -30,6 +30,38 @@
   {% set faq_classes = faq_classes|merge(['veloura-faq-desktop-only']) %}
 {% endif %}
 
+<style>
+/* الأسئلة الشائعة — تُكتب هنا لا في ملف الستايل، فالملف المبني قد يكون على
+   المتجر نسخة أقدم من القالب. */
+
+/* عمودان على اللابتوب: العناصر أبناء مباشرون للغلاف، فيكفي أن يصير شبكة
+   ويمتد العنوان على العمودين. */
+@media (min-width: 1024px) {
+  .veloura-faq .veloura-faq__inner {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px 20px !important;
+    align-items: start !important;
+  }
+
+  /* الانتقائية أعلى عن قصد: القاعدة العامة للعنوان مكتوبة بعد هذا الاستعلام،
+     ولو تساوت الانتقائيتان لفازت هي. */
+  .veloura-faq .veloura-faq__inner > .veloura-faq__heading {
+    grid-column: 1 / -1 !important;
+    /* فجوة الشبكة تُضاف للهامش، فيُقلَّص هنا حتى تبقى المسافة الكلية واحدة. */
+    margin-bottom: clamp(20px, 2.6vw, 38px) !important;
+  }
+
+  /* الفجوة صارت من الشبكة، فالهوامش القديمة تتضاعف معها. */
+  .veloura-faq .veloura-faq__item { margin-bottom: 0 !important; }
+}
+
+/* العنوان: مسافة أوسع بينه وبين الأسئلة، والعنوان الفرعي ملتصق به أكثر. */
+.veloura-faq .veloura-faq__heading { margin-bottom: clamp(32px, 4.2vw, 56px) !important; }
+.veloura-faq .veloura-faq__heading h2 { margin-bottom: 6px !important; }
+.veloura-faq .veloura-faq__heading p { margin-top: 0 !important; }
+</style>
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="{{ faq_classes|join(' ') }}"
   

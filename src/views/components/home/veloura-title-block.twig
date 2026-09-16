@@ -105,6 +105,20 @@
 {% endif %}
 
 {% if component.veloura_title_text or component.veloura_title_subtitle or show_icon %}
+<style>
+/* العنوان المميز — تُكتب هنا لا في ملف الستايل، فالمبني على المتجر قد يكون
+   نسخة أقدم من القالب. */
+
+/* الوصف ألصق بعنوانه: سطران يقرآن ككتلة واحدة لا كسطرين منفصلين. */
+.veloura-title .veloura-title__subtitle { margin-top: 5px !important; }
+
+/* ومسافة أوسع بينه وبين القسم الذي يعنونه. */
+.veloura-title { padding-bottom: clamp(26px, 2.4vw, 34px) !important; }
+
+/* حين يكون العنوان «لقسم تالٍ»، القسم التالي هو من يملك المسافة — والسكربت
+   تحت يكتبها عليه مباشرة لأنه عنصر لا نعرف اسمه مسبقاً. */
+</style>
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="{{ title_classes|join(' ') }}"
   style="
@@ -170,7 +184,8 @@
 
         titleBlock.dataset.velouraTitleNextDone = '1';
         next.classList.add('has-veloura-title-before');
-        next.style.setProperty('margin-top', '1rem', 'important');
+        /* كان 1rem وهو قريب جداً من العنوان؛ المسافة تكبر مع الشاشة. */
+        next.style.setProperty('margin-top', 'clamp(18px, 2vw, 28px)', 'important');
         next.style.setProperty('padding-top', '0', 'important');
 
         const selectors = [
