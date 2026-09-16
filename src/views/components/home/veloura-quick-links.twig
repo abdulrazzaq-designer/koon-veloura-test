@@ -27,16 +27,55 @@
 <style>
 /* ---------- الروابط السريعة ---------- */
 
-/* الشريط محاذٍ للكونتينر: أول رابط يبدأ من حافته وآخر رابط ينتهي عند حافته. */
-.veloura-quick-links.is-slider salla-slider,
+/* ---------- مقاس الشريط ----------
+   الفجوة بين الروابط مصنوعة من حشوة داخل كل شريحة (نصفها يمين ونصفها يسار)،
+   والشريط نفسه ممدود بنصف فجوة من الجهتين ثم يُقص عند حدود الكونتينر.
+   النتيجة: أول بطاقة تبدأ من حافة الكونتينر وآخر بطاقة تنتهي عند حافته
+   بالضبط، ولا يظهر أي جزء من الرابط التالي إلا إذا فُعّل خياره.
+   (spaceBetween في إعداد السلايدر = 0؛ فجوة سوايبر كانت تُلغى بالـ CSS
+   فتترك فراغاً يظهر منه طرف الرابط التالي.) */
+.veloura-quick-links {
+  --quick-gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .veloura-quick-links { --quick-gap: 20px; }
+}
+
+.veloura-quick-links.is-slider salla-slider {
+  display: block;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .veloura-quick-links.is-slider .s-slider-wrapper,
-.veloura-quick-links.is-slider .s-slider-container,
-.veloura-quick-links.is-slider .swiper,
-.veloura-quick-links.is-slider .carousel-slider .swiper {
+.veloura-quick-links.is-slider .s-slider-container {
   padding-left: 0 !important;
   padding-right: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+  overflow: visible !important;
+}
+
+.veloura-quick-links.is-slider .swiper,
+.veloura-quick-links.is-slider .carousel-slider .swiper {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: calc(var(--quick-gap) / -2) !important;
+  margin-right: calc(var(--quick-gap) / -2) !important;
+  width: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+.veloura-quick-links.is-slider .swiper-wrapper > .swiper-slide,
+.veloura-quick-links.is-slider .carousel-slider .swiper-wrapper > div {
+  padding-left: calc(var(--quick-gap) / 2) !important;
+  padding-right: calc(var(--quick-gap) / 2) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .veloura-quick-links .veloura-quick-links__heading h2 {
@@ -56,6 +95,7 @@
 /* الأيقونة بخلفية من لونها نفسه بشفافية خفيفة، وحوافها تتبع حواف الروابط. */
 .veloura-quick-links .veloura-quick-links__icon-wrap {
   --quick-icon-box: 64px;
+  --quick-icon-color: #004956;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -127,7 +167,6 @@ body.dark .veloura-quick-links .veloura-quick-links__card {
   "
   style="
     --quick-spacing: {{ component.veloura_quick_custom_spacing ? component.veloura_quick_spacing_amount|default(16) : 0 }}px;
-    --quick-icon-color: {{ component.veloura_quick_icon_color|default('#004956') }};
     --quick-card-bg: {{ component.veloura_quick_card_bg|default('#ffffff') }};
     --quick-card-text: {{ component.veloura_quick_card_text|default('#1f1f1f') }};
     --quick-title-color: {{ component.veloura_quick_title_color|default('#111111') }};
@@ -162,14 +201,14 @@ body.dark .veloura-quick-links .veloura-quick-links__card {
   static-when-single
   slider-config='{
   "slidesPerView": {{ quick_mobile_view }},
-  "spaceBetween": 14,
+  "spaceBetween": 0,
   "autoplay": {{ component.veloura_quick_autoplay ? "{\"delay\": 2500, \"disableOnInteraction\": false}" : "false" }},
   "observer": true,
   "observeParents": true,
   "breakpoints": {
     "768": {
       "slidesPerView": {{ quick_desktop_view }},
-      "spaceBetween": 20
+      "spaceBetween": 0
     }
   }
 }'
@@ -179,10 +218,11 @@ body.dark .veloura-quick-links .veloura-quick-links__card {
         {% for link in component.veloura_quick_links %}
           {% set image_src = link.image_url ?: link.image.url ?: link.image %}
           {% set icon_class = link.icon.value ?: link.icon ?: 'sicon-box' %}
+          {% set icon_color = link.icon_color.value ?? link.icon_color %}
 
           <div class="swiper-slide">
             <a href="{{ link.url ?: '#' }}" class="veloura-quick-links__card">
-              <span class="veloura-quick-links__icon-wrap" aria-hidden="true">
+              <span class="veloura-quick-links__icon-wrap" aria-hidden="true"{% if icon_color %} style="--quick-icon-color: {{ icon_color|e }};"{% endif %}>
                 {% if image_src %}
                   <img src="{{ image_src }}" alt="{{ link.title ?: 'quick-link' }}" loading="lazy">
                 {% else %}

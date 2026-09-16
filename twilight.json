@@ -14912,16 +14912,6 @@
           "required": false
         },
         {
-          "id": "veloura_quick_icon_color",
-          "type": "string",
-          "format": "color",
-          "inputType": "color",
-          "label": "لون الأيقونة (وخلفيتها الشفافة)",
-          "icon": "sicon-format-fill",
-          "value": "#004956",
-          "required": false
-        },
-        {
           "id": "veloura_quick_card_bg",
           "type": "string",
           "format": "color",
@@ -15046,6 +15036,7 @@
             {
               "title": "منتج جاهز",
               "icon": "sicon-box",
+              "icon_color": "#004956",
               "image_url": "",
               "image": null,
               "url": "#"
@@ -15053,6 +15044,7 @@
             {
               "title": "خدمة حسب الطلب",
               "icon": "sicon-medal",
+              "icon_color": "#004956",
               "image_url": "",
               "image": null,
               "url": "#"
@@ -15060,6 +15052,7 @@
             {
               "title": "حجوزات",
               "icon": "sicon-calendar",
+              "icon_color": "#004956",
               "image_url": "",
               "image": null,
               "url": "#"
@@ -15083,6 +15076,17 @@
               "description": "اختر أيقونة تظهر إذا لم يتم رفع صورة",
               "icon": "sicon-star",
               "value": "sicon-link",
+              "required": false
+            },
+            {
+              "id": "icon_color",
+              "type": "string",
+              "format": "color",
+              "inputType": "color",
+              "label": "لون الأيقونة وخلفيتها",
+              "description": "الخلفية تأخذ نفس اللون بشفافية خفيفة.",
+              "icon": "sicon-format-fill",
+              "value": "#004956",
               "required": false
             },
             {
