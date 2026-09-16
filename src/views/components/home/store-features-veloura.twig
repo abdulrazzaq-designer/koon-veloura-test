@@ -14,10 +14,18 @@
 
 {% if not component.veloura_hide_section %}
 
+{# العرض الأفقي: الأيقونة يمين، والعنوان ثم الفرعي بجانبها. الأيقونة العائمة لا تُطبَّق معه. #}
+{% set sf_horizontal = component.veloura_features_horizontal|default(false) %}
+{% if sf_horizontal.value is defined %}{% set sf_horizontal = sf_horizontal.value %}{% endif %}
+{% set sf_horizontal = sf_horizontal is same as(true) or sf_horizontal in ['true', '1', 1, 'on'] %}
+{% set sf_floating = component.veloura_floating_icon and not sf_horizontal %}
+
 {% set section_classes = [
   's-block',
   'veloura-store-features',
   component.veloura_enable_custom_spacing ? 'has-spacing' : '',
+  sf_horizontal ? 'is-horizontal' : '',
+  component.veloura_center_features ? 'is-centered-layout' : '',
   component.veloura_custom_classes ?: ''
 ] %}
 
@@ -27,6 +35,60 @@
 
 {% if component.veloura_show_desktop_only %}
   {% set section_classes = section_classes|merge(['veloura-show-desktop-only']) %}
+{% endif %}
+
+{% if sf_horizontal %}
+<style>
+/* مميزات المتجر — العرض الأفقي */
+.veloura-store-features.is-horizontal .veloura-store-features__item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 14px !important;
+  min-height: 0 !important;
+  margin-top: 0 !important;
+  padding: 20px !important;
+}
+
+.veloura-store-features.is-horizontal .veloura-store-features__icon {
+  position: static !important;
+  transform: none !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+.veloura-store-features.is-horizontal .veloura-store-features__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: right !important;
+}
+
+.veloura-store-features.is-horizontal .veloura-store-features__content h3,
+.veloura-store-features.is-horizontal .veloura-store-features__content p {
+  text-align: inherit !important;
+}
+
+.veloura-store-features.is-horizontal .veloura-store-features__content h3 {
+  margin: 0 0 2px !important;
+}
+
+/* التوسيط مفعّل: المجموعة (أيقونة + نصوص) في منتصف البطاقة، والعنوان في منتصف الفرعي. */
+.veloura-store-features.is-horizontal .veloura-store-features__item.is-centered {
+  justify-content: center !important;
+}
+
+.veloura-store-features.is-horizontal .veloura-store-features__item.is-centered .veloura-store-features__content {
+  flex: 0 1 auto;
+  text-align: center !important;
+}
+
+@media (max-width: 767px) {
+  .veloura-store-features.is-horizontal .veloura-store-features__item {
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+}
+</style>
 {% endif %}
 
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
@@ -68,7 +130,7 @@
       {% for item in component.veloura_features_collection %}
 
         <div
-          class="veloura-store-features__item {{ component.veloura_floating_icon ? 'has-floating-icon' : '' }} {{ component.veloura_center_features ? 'is-centered' : '' }}"
+          class="veloura-store-features__item {{ sf_floating ? 'has-floating-icon' : '' }} {{ component.veloura_center_features ? 'is-centered' : '' }}"
           style="
             background: {{ item.veloura_feature_background_transparent ? 'transparent' : item.veloura_feature_background|default('#004956') }};
             color: {{ item.veloura_feature_text_color|default('#ffffff') }};

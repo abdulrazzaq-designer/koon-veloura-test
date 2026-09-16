@@ -49,7 +49,7 @@
   .veloura-faq .veloura-faq__inner > .veloura-faq__heading {
     grid-column: 1 / -1 !important;
     /* فجوة الشبكة تُضاف للهامش، فيُقلَّص هنا حتى تبقى المسافة الكلية واحدة. */
-    margin-bottom: clamp(20px, 2.6vw, 38px) !important;
+    margin-bottom: 8px !important;
   }
 
   /* الفجوة صارت من الشبكة، فالهوامش القديمة تتضاعف معها. */
@@ -79,11 +79,99 @@ html.dark .veloura-faq {
 {% endif %}
 }
 
-/* العنوان: مسافة أوسع بينه وبين الأسئلة، والعنوان الفرعي ملتصق به أكثر. */
-.veloura-faq .veloura-faq__heading { margin-bottom: clamp(32px, 4.2vw, 56px) !important; }
+/* العنوان: قريب من الأسئلة (على اللابتوب تُضاف له فجوة الشبكة 16px). */
+.veloura-faq .veloura-faq__heading { margin-bottom: 20px !important; }
 .veloura-faq .veloura-faq__heading h2 { margin-bottom: 6px !important; }
 .veloura-faq .veloura-faq__heading p { margin-top: 0 !important; }
 html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
+/* ---------- السؤال وزر الفتح ---------- */
+.veloura-faq .veloura-faq__question {
+  gap: 16px;
+  padding: 18px 24px !important;
+}
+
+.veloura-faq .veloura-faq__question-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: right;
+}
+
+/* علامة + القديمة من ملف الستايل تُلغى، والزر الجديد يحل محلها. */
+.veloura-faq .veloura-faq__question::after,
+.veloura-faq .veloura-faq__question::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* الزر بلون المتجر، وحوافه نصف حواف السؤال: حاد مع الحاد، ودائري مع الدائري. */
+.veloura-faq .veloura-faq__toggle {
+  --faq-toggle-size: 34px;
+  position: relative;
+  flex: 0 0 var(--faq-toggle-size);
+  width: var(--faq-toggle-size);
+  height: var(--faq-toggle-size);
+  border-radius: min(calc(var(--faq-radius, 22px) * .5), 50%);
+  background: var(--color-primary, #004956);
+  color: var(--color-primary-reverse, #ffffff);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary, #004956) 30%, transparent);
+  transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), background-color .3s ease, box-shadow .3s ease;
+}
+
+/* خطّان يرسمان +، وعند الفتح يدور العمودي وينطبق على الأفقي فيصير −. */
+.veloura-faq .veloura-faq__toggle::before,
+.veloura-faq .veloura-faq__toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), opacity .3s ease;
+}
+
+.veloura-faq .veloura-faq__toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.veloura-faq .veloura-faq__question:hover .veloura-faq__toggle {
+  transform: scale(1.08);
+}
+
+.veloura-faq .veloura-faq__item.is-open .veloura-faq__toggle {
+  transform: rotate(180deg);
+  background: color-mix(in srgb, var(--color-primary, #004956) 82%, #000);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary, #004956) 22%, transparent);
+}
+
+.veloura-faq .veloura-faq__item.is-open .veloura-faq__toggle::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 0;
+}
+
+.veloura-faq .veloura-faq__question:focus-visible .veloura-faq__toggle {
+  outline: 2px solid var(--color-primary, #004956);
+  outline-offset: 3px;
+}
+
+/* ---------- الجواب: مسافة متناسقة من كل الجهات ---------- */
+.veloura-faq .veloura-faq__answer-inner {
+  padding: 18px 24px 20px !important;
+}
+
+@media (max-width: 767px) {
+  .veloura-faq .veloura-faq__question { padding: 16px 18px !important; gap: 12px; }
+  .veloura-faq .veloura-faq__toggle { --faq-toggle-size: 30px; }
+  .veloura-faq .veloura-faq__answer-inner { padding: 16px 18px 18px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-faq .veloura-faq__toggle,
+  .veloura-faq .veloura-faq__toggle::before,
+  .veloura-faq .veloura-faq__toggle::after { transition: none; }
+}
 </style>
 
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
@@ -121,7 +209,8 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
     {% for item in component.veloura_faq_items %}
       <div class="veloura-faq__item">
         <button type="button" class="veloura-faq__question">
-          {{ item.veloura_faq_question }}
+          <span class="veloura-faq__question-text">{{ item.veloura_faq_question }}</span>
+          <span class="veloura-faq__toggle" aria-hidden="true"></span>
         </button>
 
         <div class="veloura-faq__answer">

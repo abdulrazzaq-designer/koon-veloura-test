@@ -13444,6 +13444,18 @@
           "required": false
         },
         {
+          "id": "veloura_features_horizontal",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض المميزات أفقيًا",
+          "description": "الأيقونة على اليمين وبجانبها العنوان ثم العنوان الفرعي تحته. يتبع خيار التوسيط، ولا تُطبَّق معه الأيقونة العائمة.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "veloura_floating_icon",
           "type": "boolean",
           "format": "switch",
