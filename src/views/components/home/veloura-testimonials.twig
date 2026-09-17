@@ -19,16 +19,18 @@
 
   {% set t_loop = component.veloura_testimonials_infinite ? true : false %}
   {% set t_peek = component.veloura_testimonials_peek ? true : false %}
-  {% set t_bar = component.veloura_testimonials_show_scrollbar ? true : false %}
+  {# شريط التنقل = نقاط فيلورا الموحّدة (شكلها من إعدادات الثيم العامة). #}
+  {% set t_dots = component.veloura_testimonials_show_scrollbar ? true : false %}
+  {% set t_center = component.veloura_testimonials_center_titles is defined ? component.veloura_testimonials_center_titles : true %}
 
   {# لا نهائي بدون تقطيع: سوايبر يحتاج عدداً كافياً من الشرائح ليكرر بسلاسة،
      ومع ثلاثة آراء وشريحتين في الشاشة كان يقفز ويكرر قطعاً. نكرر القائمة
-     هنا حتى 8 شرائح على الأقل. #}
+     هنا حتى 6 شرائح على الأقل. #}
   {% set t_src = component.veloura_testimonials_items|default([]) %}
   {% set t_items = t_src %}
-  {% if t_loop and t_src|length > 0 and t_src|length < 8 %}
+  {% if t_loop and t_src|length > 0 and t_src|length < 6 %}
     {% set t_items = [] %}
-    {% for r in 1..((8 / t_src|length)|round(0, 'ceil')) %}
+    {% for r in 1..((6 / t_src|length)|round(0, 'ceil')) %}
       {% set t_items = t_items|merge(t_src) %}
     {% endfor %}
   {% endif %}
@@ -83,41 +85,59 @@
 /* بدون ظل. */
 .veloura-testimonials .veloura-testimonials__card { box-shadow: none !important; }
 
-/* شريط التمرير: تحت البطاقات، بعرض الكونتينر، وقابل للسحب. */
-.veloura-testimonials .veloura-testimonials__slider .swiper-scrollbar {
-  display: block !important;
-  position: absolute !important;
-  top: auto !important;
-  bottom: 8px !important;
-  left: calc(var(--t-gap) / 2) !important;
-  right: auto !important;
-  width: calc(100% - var(--t-gap)) !important;
-  height: 5px !important;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--veloura-testimonials-text, #323232) 12%, transparent) !important;
-  opacity: 1 !important;
-  z-index: 5;
-  cursor: grab;
-}
-.veloura-testimonials .veloura-testimonials__slider .swiper-scrollbar-drag {
-  border-radius: 999px;
-  background: var(--color-primary, #004956) !important;
-}
-.veloura-testimonials .veloura-testimonials__slider:not(.has-bar) .swiper-scrollbar { display: none !important; }
-
+/* نقاط التنقل: الشكل الموحّد للمتجر، تحت البطاقات في وسطها. */
 .veloura-testimonials .veloura-testimonials__slider :is(.swiper-pagination, .s-slider-pagination) {
   position: absolute !important;
   top: auto !important;
-  bottom: 6px !important;
+  bottom: 8px !important;
   left: 0 !important;
   right: 0 !important;
   transform: none !important;
   width: 100% !important;
-  display: flex !important;
   justify-content: center;
-  gap: 6px;
 }
-.veloura-testimonials .veloura-testimonials__slider.has-bar :is(.swiper-pagination, .s-slider-pagination) { display: none !important; }
+.veloura-testimonials .veloura-testimonials__slider:not(.has-nav) :is(.swiper-pagination, .s-slider-pagination, .swiper-scrollbar) { display: none !important; }
+
+/* ---------- العنوان: مثل الروابط السريعة ---------- */
+.veloura-testimonials .veloura-testimonials__heading {
+  margin-bottom: 24px !important;
+  text-align: start;
+}
+.veloura-testimonials.is-centered .veloura-testimonials__heading { text-align: center !important; }
+.veloura-testimonials .veloura-testimonials__heading h2 {
+  margin: 0 0 6px !important;
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  line-height: 1.35;
+  color: var(--veloura-testimonials-title-color, #111111) !important;
+}
+.veloura-testimonials .veloura-testimonials__heading p {
+  margin: 0 !important;
+  font-size: 15px !important;
+  opacity: 1;
+  color: var(--veloura-testimonials-subtitle-color, #6b6b6b) !important;
+}
+
+/* ---------- الوضع الداكن ----------
+   البطاقة بالخلفية الثانوية للداكن ونصوصها بألوانه (لون الإعداد مكتوب inline
+   على القسم، فيُتجاوز هنا بـ important). */
+html.dark .veloura-testimonials,
+html body.dark .veloura-testimonials {
+  --veloura-testimonials-bg: var(--veloura-dark-secondary-bg, #010612) !important;
+  --veloura-testimonials-text: var(--veloura-dark-primary-text, #ffffff) !important;
+  --veloura-testimonials-title-color: var(--veloura-dark-primary-text, #ffffff) !important;
+  --veloura-testimonials-subtitle-color: var(--veloura-dark-secondary-text, #ededed) !important;
+}
+html.dark .veloura-testimonials .veloura-testimonials__card,
+html body.dark .veloura-testimonials .veloura-testimonials__card {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  border-color: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 8%, transparent) !important;
+}
+html.dark .veloura-testimonials .veloura-testimonials__info span,
+html body.dark .veloura-testimonials .veloura-testimonials__info span {
+  color: var(--veloura-dark-secondary-text, #ededed) !important;
+}
 
 @media (max-width: 767px) {
   .veloura-testimonials .veloura-testimonials__slider { padding-top: 75px !important; }
@@ -134,6 +154,7 @@
     component.veloura_testimonials_desktop_only ? 'veloura-testimonials--desktop-only' : '',
     component.veloura_testimonials_hide_arrows_desktop ? 'veloura-testimonials--hide-arrows-desktop' : '',
     component.veloura_testimonials_custom_spacing ? 'has-spacing' : '',
+    t_center ? 'is-centered' : '',
     component.veloura_testimonials_custom_classes ?: ''
   ]|join(' ') %}
 
@@ -144,6 +165,7 @@
       --veloura-testimonials-spacing: {{ component.veloura_testimonials_custom_spacing ? component.veloura_testimonials_spacing|default(0) : 0 }}px;
       --veloura-testimonials-title-color: {{ component.veloura_testimonials_title_color|default('#383838') }};
       --veloura-testimonials-bg: {{ component.veloura_testimonials_bg_color|default('#eeeeee') }};
+      --veloura-testimonials-subtitle-color: {{ component.veloura_testimonials_subtitle_color|default('#6b6b6b') }};
       --veloura-testimonials-text: {{ component.veloura_testimonials_text_color|default('#323232') }};
     "
   >
@@ -169,9 +191,9 @@
       {% if component.veloura_testimonials_items|length %}
         <salla-slider
           id="veloura-testimonials-{{ position }}"
-          class="veloura-testimonials__slider has-nav {{ t_bar ? 'has-bar' : '' }}"
+          class="veloura-testimonials__slider {{ t_dots ? 'has-nav' : '' }}"
           type="carousel"
-          {% if not t_bar %}pagination{% endif %}
+          {% if t_dots %}pagination{% endif %}
           show-controls="{{ component.veloura_testimonials_hide_arrows ? 'false' : 'true' }}"
           {% if component.veloura_testimonials_autoplay %}auto-play{% endif %}
           slider-config='{
@@ -181,10 +203,6 @@
             "loop": {{ t_loop ? "true" : "false" }},
             {% if t_loop %}"loopAdditionalSlides": 2,{% endif %}
             "watchOverflow": true,
-            {% if t_bar %}
-            "createElements": true,
-            "scrollbar": { "auto": true, "enabled": true, "draggable": true, "hide": false, "snapOnRelease": true },
-            {% endif %}
             "allowTouchMove": true,
             {% if component.veloura_testimonials_autoplay %}
             "autoplay": {

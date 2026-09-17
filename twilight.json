@@ -16205,12 +16205,33 @@
           "required": false
         },
         {
+          "id": "veloura_testimonials_center_titles",
+          "type": "boolean",
+          "format": "switch",
+          "label": "توسيط العناوين",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": true,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "veloura_testimonials_title_color",
           "type": "string",
           "format": "color",
           "label": "لون عناوين القسم",
           "icon": "sicon-format-fill",
           "value": "#383838",
+          "required": false
+        },
+        {
+          "id": "veloura_testimonials_subtitle_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون العنوان الفرعي (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#6b6b6b",
           "required": false
         },
         {
@@ -16240,7 +16261,7 @@
           "id": "veloura_testimonials_show_scrollbar",
           "type": "boolean",
           "format": "switch",
-          "label": "إظهار شريط التمرير",
+          "label": "إظهار نقاط التنقل",
           "icon": "sicon-toggle-off",
           "value": true,
           "selected": true
