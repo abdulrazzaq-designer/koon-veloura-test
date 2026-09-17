@@ -33,6 +33,31 @@
 
   {% set popup_radius = radius_map[radius_key]|default((radius_key ~ '' == '' ? '28' : radius_key) ~ 'px') %}
 
+<style>
+/* ---------- البوب اب الإعلاني ---------- */
+
+/* الخلفية حول البوب اب تعتيم فقط — بدون بلور على الصفحة كلها. */
+.veloura-popup .veloura-popup__overlay {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* البلور خلف البوب اب نفسه فقط: الصندوق يطمس ما تحته مباشرة. */
+.veloura-popup .veloura-popup__box {
+  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+  backdrop-filter: blur(18px) saturate(160%) !important;
+}
+
+/* زر الإغلاق والزر الكبير بنفس حواف البوب اب: حاد مع الحاد، ودائري مع الدائري. */
+.veloura-popup .veloura-popup__button {
+  border-radius: var(--veloura-popup-radius, 28px) !important;
+}
+.veloura-popup .veloura-popup__close {
+  border-radius: min(var(--veloura-popup-radius, 28px), 50%) !important;
+}
+</style>
+
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-popup-{{ position }}"
     class="
