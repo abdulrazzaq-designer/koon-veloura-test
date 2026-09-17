@@ -14887,6 +14887,459 @@
       ]
     },
     {
+      "key": "4d8e2b7a-1c35-4f9e-b6a2-7e0c9d51f3a8",
+      "title": {
+        "ar": "عرض مميز للمنتجات (فيلورا)",
+        "en": "Products Showcase - Veloura"
+      },
+      "icon": "sicon-star2",
+      "path": "home.veloura-showcase",
+      "fields": [
+        {
+          "id": "veloura_home_tab_name_2026",
+          "type": "string",
+          "format": "text",
+          "label": "اسم التبويب الذي يظهر فيه العنصر",
+          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
+          "placeholder": "مثال: العطور",
+          "icon": "sicon-layout-grid",
+          "value": "",
+          "required": false,
+          "maxLength": 40
+        },
+        {
+          "id": "vsc_title_content",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;display:flex;align-items:center;gap:10px\"><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5\">المحتوى</strong><span style=\"display:block;font-size:12px;opacity:.72;margin-top:2px\">العبارة والعنوان والزر</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vsc_eyebrow",
+          "type": "string",
+          "format": "text",
+          "label": "عبارة صغيرة فوق العنوان",
+          "icon": "sicon-format-text-alt",
+          "value": "مختارات الموسم",
+          "required": false
+        },
+        {
+          "id": "vsc_title",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان الرئيسي",
+          "icon": "sicon-format-text-alt",
+          "value": "تشكيلة مميزة لك",
+          "required": false
+        },
+        {
+          "id": "vsc_subtitle",
+          "type": "string",
+          "format": "textarea",
+          "label": "الوصف",
+          "icon": "sicon-format-text-alt",
+          "value": "اكتشف منتجات مختارة بعناية، بجودة تستحقها.",
+          "required": false
+        },
+        {
+          "id": "vsc_show_button",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار الزر",
+          "icon": "sicon-toggle-off",
+          "value": true,
+          "selected": true,
+          "required": false
+        },
+        {
+          "id": "vsc_button_text",
+          "type": "string",
+          "format": "text",
+          "label": "نص الزر",
+          "icon": "sicon-link",
+          "value": "تسوق الآن",
+          "required": false,
+          "conditions": [
+            {
+              "id": "vsc_show_button",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vsc_button_link",
+          "type": "items",
+          "icon": "sicon-link",
+          "label": "رابط الزر",
+          "value": [],
+          "required": false,
+          "format": "variable-list",
+          "searchable": true,
+          "source": "custom",
+          "sources": [
+            {"label": "منتج", "key": "products", "value": "products"},
+            {"label": "تصنيف", "key": "categories", "value": "categories"},
+            {"label": "ماركة تجارية", "key": "brands", "value": "brands"},
+            {"label": "صفحة تعريفية", "key": "pages", "value": "pages"},
+            {"label": "مقالة", "key": "blog_articles", "value": "blog_articles"},
+            {"label": "تصنيف ضمن المدونة", "key": "blog_categories", "value": "blog_categories"},
+            {"label": "التخفيضات", "key": "offers_link", "value": "offers_link"},
+            {"label": "الماركات التجارية", "key": "brands_link", "value": "brands_link"},
+            {"label": "المدونة", "key": "blog_link", "value": "blog_link"},
+            {"label": "رابط خارجي", "key": "custom", "value": "custom"}
+          ],
+          "conditions": [
+            {
+              "id": "vsc_show_button",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vsc_info_left",
+          "type": "boolean",
+          "format": "switch",
+          "label": "النص على اليسار والمنتجات على اليمين (كمبيوتر)",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_title_products",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;display:flex;align-items:center;gap:10px\"><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5\">المنتجات</strong><span style=\"display:block;font-size:12px;opacity:.72;margin-top:2px\">المصدر وطريقة العرض</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vsc_source",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "نوع المنتجات",
+          "icon": "sicon-keyboard_arrow_down",
+          "selected": [
+            {"label": "أحدث المنتجات", "value": "latest", "key": "vsc-src-latest"}
+          ],
+          "options": [
+            {"label": "منتجات من تصنيف", "value": "categories", "key": "vsc-src-categories"},
+            {"label": "الأكثر مبيعا", "value": "sales", "key": "vsc-src-sales"},
+            {"label": "أحدث المنتجات", "value": "latest", "key": "vsc-src-latest"},
+            {"label": "المنتجات المخفضة", "value": "offers", "key": "vsc-src-offers"},
+            {"label": "منتجات مختارة", "value": "selected", "key": "vsc-src-selected"}
+          ],
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
+          "required": true
+        },
+        {
+          "id": "vsc_chosen",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "اختر المنتجات",
+          "icon": "sicon-shopping-bag",
+          "source": "products",
+          "searchable": true,
+          "multichoice": true,
+          "value": [],
+          "selected": [],
+          "options": [],
+          "required": false,
+          "conditions": [
+            {
+              "id": "vsc_source",
+              "operation": "=",
+              "value": "selected"
+            }
+          ]
+        },
+        {
+          "id": "vsc_category",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "اختر التصنيف",
+          "icon": "sicon-folder",
+          "source": "categories",
+          "searchable": true,
+          "multichoice": true,
+          "value": [],
+          "selected": [],
+          "options": [],
+          "required": false,
+          "conditions": [
+            {
+              "id": "vsc_source",
+              "operation": "=",
+              "value": "categories"
+            }
+          ]
+        },
+        {
+          "id": "vsc_limit",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "حدد عدد المنتجات",
+          "description": "الحد المسموح من 1 إلى 32 منتج.",
+          "icon": "sicon-list",
+          "value": "8",
+          "step": "1",
+          "minimum": "1",
+          "maximum": "32",
+          "required": false
+        },
+        {
+          "id": "vsc_desktop_cols",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "عدد المنتجات الظاهرة في الكمبيوتر",
+          "icon": "sicon-grid",
+          "value": 3,
+          "step": "1",
+          "minimum": "1",
+          "maximum": "4",
+          "required": false
+        },
+        {
+          "id": "vsc_mobile_cols",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "عدد المنتجات الظاهرة في الجوال",
+          "icon": "sicon-grid",
+          "value": 2,
+          "step": "1",
+          "minimum": "1",
+          "maximum": "3",
+          "required": false
+        },
+        {
+          "id": "vsc_peek",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار جزء من المنتج التالي",
+          "icon": "sicon-toggle-off",
+          "value": true,
+          "selected": true,
+          "required": false
+        },
+        {
+          "id": "vsc_show_dots",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار نقاط التنقل",
+          "icon": "sicon-toggle-off",
+          "value": true,
+          "selected": true,
+          "required": false
+        },
+        {
+          "id": "vsc_autoplay",
+          "type": "boolean",
+          "format": "switch",
+          "label": "تحريك تلقائي",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_title_design",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;display:flex;align-items:center;gap:10px\"><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5\">التصميم</strong><span style=\"display:block;font-size:12px;opacity:.72;margin-top:2px\">الخلفية والألوان والحواف</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vsc_bg_image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة الخلفية (اختياري)",
+          "description": "بدون صورة تُستخدم الخلفية المتدرجة. المقاس المناسب 1600×700.",
+          "icon": "sicon-image",
+          "value": null,
+          "required": false
+        },
+        {
+          "id": "vsc_bg_from",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون التدرج الأول",
+          "icon": "sicon-format-fill",
+          "value": "#004956",
+          "required": false
+        },
+        {
+          "id": "vsc_bg_to",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون التدرج الثاني",
+          "icon": "sicon-format-fill",
+          "value": "#0b1f2a",
+          "required": false
+        },
+        {
+          "id": "vsc_overlay",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "قوة التعتيم فوق الخلفية",
+          "description": "نسبة مئوية — تساعد على وضوح النص فوق الصور.",
+          "icon": "sicon-toggle-off",
+          "value": 35,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "80",
+          "required": false
+        },
+        {
+          "id": "vsc_text_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون النصوص",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false
+        },
+        {
+          "id": "vsc_button_bg",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون خلفية الزر",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false
+        },
+        {
+          "id": "vsc_button_text_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون نص الزر",
+          "icon": "sicon-format-fill",
+          "value": "#004956",
+          "required": false
+        },
+        {
+          "id": "vsc_radius",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "حواف العنصر",
+          "description": "بالبيكسل — صفر حاد تمامًا، و٤٠ دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 28,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
+        },
+        {
+          "id": "vsc_dark_bg",
+          "type": "boolean",
+          "format": "switch",
+          "label": "خلفية الوضع الداكن",
+          "description": "في الوضع الداكن (وبدون صورة) تأخذ اللوحة اللون الثانوي للداكن.",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_title_general",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;display:flex;align-items:center;gap:10px\"><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5\">عام</strong><span style=\"display:block;font-size:12px;opacity:.72;margin-top:2px\">المسافات والظهور</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vsc_custom_spacing",
+          "type": "boolean",
+          "format": "switch",
+          "label": "مسافة أفقية مخصصة (يمين ويسار القسم)",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_spacing",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "مقدار المسافة",
+          "icon": "sicon-resize-full",
+          "value": 16,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "60",
+          "required": false,
+          "conditions": [
+            {
+              "id": "vsc_custom_spacing",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vsc_mobile_only",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض العنصر في الجوال فقط",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_desktop_only",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض العنصر في الكمبيوتر والتابلت فقط",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_hide",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء هذا العنصر بالكامل",
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vsc_custom_classes",
+          "type": "string",
+          "format": "text",
+          "label": "Classes",
+          "icon": "sicon-format-text-alt",
+          "value": "",
+          "required": false
+        }
+      ]
+    },
+    {
       "key": "f1c0f4a9-7a92-4f1c-a8f6-6d8f4a7b9c21",
       "title": {
         "ar": "روابط سريعة (فيلورا)",

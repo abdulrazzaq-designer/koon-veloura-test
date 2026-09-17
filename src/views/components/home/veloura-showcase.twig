@@ -1,0 +1,392 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
+{% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
+{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
+{# ==========================================================================
+   عرض مميز للمنتجات (فيلورا)
+
+   لوحة بخلفية (صورة أو تدرّج لوني) مع كرات ضوء متحركة بهدوء، فيها من جهة:
+   عبارة صغيرة + عنوان + وصف + زر، ومن الجهة الأخرى سلايدر منتجات سلة.
+   لابتوب: ثلث للنص وثلثان للمنتجات. جوال: النص فوق والمنتجات تحته.
+   الستايل هنا في الملف نفسه مثل بقية عناصر فيلورا.
+   ========================================================================== #}
+
+{% if not component.vsc_hide %}
+
+  {# ---------- مصدر المنتجات ---------- #}
+  {% set vsc_source = component.vsc_source|default('latest') %}
+  {% if vsc_source.value is defined %}{% set vsc_source = vsc_source.value %}{% endif %}
+  {% if vsc_source is iterable and vsc_source[0].value is defined %}{% set vsc_source = vsc_source[0].value %}{% endif %}
+  {% if vsc_source is iterable or vsc_source == '' %}{% set vsc_source = 'latest' %}{% endif %}
+
+  {% set vsc_source_value = null %}
+  {% if vsc_source == 'selected' and component.vsc_chosen %}
+    {% set vsc_ids = [] %}
+    {% for p in component.vsc_chosen %}{% set vsc_ids = vsc_ids|merge([p.id]) %}{% endfor %}
+    {% set vsc_source_value = vsc_ids %}
+  {% elseif vsc_source == 'categories' and component.vsc_category %}
+    {% set vsc_ids = [] %}
+    {% for c in component.vsc_category %}{% set vsc_ids = vsc_ids|merge([c.id]) %}{% endfor %}
+    {% set vsc_source_value = vsc_ids %}
+  {% endif %}
+
+  {# ---------- الإعدادات ---------- #}
+  {% set vsc_desk = component.vsc_desktop_cols|default(3) %}
+  {% set vsc_mob = component.vsc_mobile_cols|default(2) %}
+  {% set vsc_peek = component.vsc_peek is defined ? component.vsc_peek : true %}
+  {% set vsc_dots = component.vsc_show_dots is defined ? component.vsc_show_dots : true %}
+  {% set vsc_desk_view = vsc_peek ? vsc_desk + 0.3 : vsc_desk %}
+  {% set vsc_mob_view = vsc_peek ? vsc_mob + 0.3 : vsc_mob %}
+  {% set vsc_radius = component.vsc_radius|default(28) %}
+  {% if vsc_radius.value is defined %}{% set vsc_radius = vsc_radius.value %}{% endif %}
+  {% set vsc_radius_px = (vsc_radius ~ '') == '40' ? '999px' : ((vsc_radius ~ '' == '' ? '28' : vsc_radius) ~ 'px') %}
+  {% set vsc_overlay = component.vsc_overlay|default(35) %}
+  {% set vsc_bg_image = component.vsc_bg_image.url|default(component.vsc_bg_image) %}
+
+  {% set vsc_classes = [
+    's-block',
+    'vsc',
+    component.vsc_info_left ? 'vsc--info-left' : '',
+    vsc_bg_image ? 'vsc--has-image' : '',
+    component.vsc_dark_bg ? 'vsc--dark-bg' : '',
+    vsc_dots ? 'vsc--dots' : '',
+    component.vsc_custom_spacing ? 'has-spacing' : '',
+    component.vsc_mobile_only ? 'veloura-mobile-only' : '',
+    component.vsc_desktop_only ? 'veloura-desktop-only' : '',
+    component.vsc_custom_classes ?: ''
+  ]|join(' ') %}
+
+<style>
+/* ==========================================================================
+   عرض مميز للمنتجات — كل شيء داخل .vsc
+   ========================================================================== */
+.vsc {
+  --vsc-radius: 28px;
+  --vsc-from: #004956;
+  --vsc-to: #0b1f2a;
+  --vsc-text: #ffffff;
+  --vsc-btn-bg: #ffffff;
+  --vsc-btn-text: #004956;
+  --vsc-overlay: .35;
+  padding-block: 40px;
+  background: transparent !important;
+}
+
+.vsc [hidden] { display: none !important; }
+
+/* الحواف الداخلية مشتقة من حواف اللوحة: حاد مع الحاد، دائري مع الدائري. */
+.vsc .vsc__panel {
+  --vsc-r-inner: min(var(--vsc-radius), 22px);
+  --vsc-r-pill: min(calc(var(--vsc-radius) * 40), 999px);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: min(var(--vsc-radius), 48px);
+  padding: 26px 18px 22px;
+  color: var(--vsc-text);
+  background: linear-gradient(135deg, var(--vsc-from), var(--vsc-to));
+}
+
+@media (min-width: 1024px) {
+  .vsc .vsc__panel { padding: 44px; }
+}
+
+/* ---------- الخلفية ---------- */
+.vsc .vsc__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  animation: vsc-zoom 18s ease-in-out infinite alternate;
+}
+
+/* تعتيم يقوى في جهة النص حتى يبقى مقروءاً فوق أي صورة. */
+.vsc .vsc__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, var(--vsc-overlay)),
+    rgba(0, 0, 0, calc(var(--vsc-overlay) * .35))
+  );
+}
+.vsc.vsc--info-left .vsc__panel::before {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, var(--vsc-overlay)),
+    rgba(0, 0, 0, calc(var(--vsc-overlay) * .35))
+  );
+}
+@media (max-width: 1023px) {
+  .vsc .vsc__panel::before,
+  .vsc.vsc--info-left .vsc__panel::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, var(--vsc-overlay)),
+      rgba(0, 0, 0, calc(var(--vsc-overlay) * .35))
+    );
+  }
+}
+
+/* كرات ضوء تتحرك ببطء — هي ما يعطي اللوحة حياتها بدون صورة. */
+.vsc .vsc__orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: .55;
+  pointer-events: none;
+}
+.vsc .vsc__orb--a {
+  width: 340px; height: 340px;
+  inset-inline-start: -90px; top: -120px;
+  background: color-mix(in srgb, var(--vsc-from) 45%, #ffffff);
+  animation: vsc-float-a 14s ease-in-out infinite alternate;
+}
+.vsc .vsc__orb--b {
+  width: 280px; height: 280px;
+  inset-inline-end: 12%; bottom: -140px;
+  background: color-mix(in srgb, var(--vsc-to) 30%, var(--vsc-from));
+  opacity: .7;
+  animation: vsc-float-b 17s ease-in-out infinite alternate;
+}
+.vsc.vsc--has-image .vsc__orb { opacity: .28; }
+
+@keyframes vsc-zoom { to { transform: scale(1.12); } }
+@keyframes vsc-float-a { to { transform: translate(60px, 40px) scale(1.15); } }
+@keyframes vsc-float-b { to { transform: translate(-70px, -30px) scale(.9); } }
+
+/* ---------- التوزيع ---------- */
+.vsc .vsc__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .vsc .vsc__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-template-areas: "info products";
+    gap: 40px;
+  }
+  .vsc.vsc--info-left .vsc__grid { grid-template-areas: "products info"; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  .vsc .vsc__info { grid-area: info; }
+  .vsc .vsc__products { grid-area: products; }
+}
+
+/* ---------- النص ---------- */
+.vsc .vsc__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+@media (min-width: 1024px) {
+  .vsc .vsc__info { align-items: flex-start; text-align: start; gap: 14px; }
+}
+
+.vsc .vsc__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--vsc-r-pill);
+  background: rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.vsc .vsc__eyebrow::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: vsc-pulse 1.8s ease-in-out infinite;
+}
+@keyframes vsc-pulse { 50% { opacity: .35; transform: scale(.7); } }
+
+.vsc .vsc__title {
+  margin: 0;
+  color: inherit;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+@media (min-width: 1024px) { .vsc .vsc__title { font-size: 38px; } }
+
+.vsc .vsc__text {
+  margin: 0;
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.9;
+  opacity: .85;
+  max-width: 38ch;
+}
+@media (min-width: 1024px) { .vsc .vsc__text { font-size: 15px; } }
+
+.vsc .vsc__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 22px;
+  border-radius: var(--vsc-r-pill);
+  background: var(--vsc-btn-bg);
+  color: var(--vsc-btn-text) !important;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none !important;
+  transition: transform .25s ease, gap .25s ease;
+}
+.vsc .vsc__button:hover { transform: translateY(-2px); gap: 12px; }
+.vsc .vsc__button i { font-size: 16px; }
+
+/* ---------- المنتجات ---------- */
+.vsc .vsc__products { min-width: 0; }
+
+.vsc .vsc__products :is(salla-products-slider, salla-slider) { display: block; }
+
+/* فجوة السلايدر من إعداده (spaceBetween)، ونلغي حشوات سلة الافتراضية حتى
+   تبدأ المنتجات وتنتهي عند حدود العمود بالضبط. */
+.vsc .vsc__products .carousel-slider .swiper,
+.vsc .vsc__products .swiper {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  overflow: hidden !important;
+}
+.vsc .vsc__products .carousel-slider .swiper-wrapper > div {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.vsc .vsc__products .swiper-wrapper { align-items: stretch; }
+.vsc .vsc__products .swiper-slide { height: auto; }
+
+.vsc .vsc__products :is(.s-slider-block__title, .s-slider-block__title-nav, .s-slider-nav-arrow, .swiper-button-next, .swiper-button-prev) {
+  display: none !important;
+}
+
+/* نقاط التنقل تحت المنتجات. */
+.vsc.vsc--dots .vsc__products .swiper { padding-bottom: 30px !important; }
+.vsc.vsc--dots .vsc__products .swiper-pagination {
+  position: absolute !important;
+  inset: auto 0 4px 0 !important;
+  width: 100% !important;
+  transform: none !important;
+  display: flex !important;
+  justify-content: center;
+}
+.vsc:not(.vsc--dots) .vsc__products .swiper-pagination { display: none !important; }
+
+/* ---------- الوضع الداكن ----------
+   مع الخيار، ومن غير صورة: اللوحة تأخذ اللون الثانوي للداكن مع لمسة من
+   لون العنصر في الكرات. */
+html.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel,
+html body.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel::before,
+html body.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel::before { opacity: 0; }
+html.dark .vsc.vsc--dark-bg .vsc__text,
+html body.dark .vsc.vsc--dark-bg .vsc__text { color: var(--veloura-dark-secondary-text, #ededed); opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vsc .vsc__bg, .vsc .vsc__orb, .vsc .vsc__eyebrow::before { animation: none; }
+}
+</style>
+
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    id="veloura-showcase-{{ position }}"
+    class="{{ vsc_classes }}"
+    style="
+      --vsc-radius: {{ vsc_radius_px }};
+      --vsc-from: {{ component.vsc_bg_from|default('#004956') }};
+      --vsc-to: {{ component.vsc_bg_to|default('#0b1f2a') }};
+      --vsc-text: {{ component.vsc_text_color|default('#ffffff') }};
+      --vsc-btn-bg: {{ component.vsc_button_bg|default('#ffffff') }};
+      --vsc-btn-text: {{ component.vsc_button_text_color|default('#004956') }};
+      --vsc-overlay: {{ (vsc_overlay / 100)|round(2) }};
+    "
+  >
+    {% if component.vsc_custom_spacing %}
+      <div class="vsc__container" style="padding-inline: {{ component.vsc_spacing|default(0) }}px;">
+    {% else %}
+      <div class="container vsc__container">
+    {% endif %}
+
+      <div class="vsc__panel">
+        {% if vsc_bg_image %}
+          <img class="vsc__bg" src="{{ vsc_bg_image }}" alt="" loading="lazy" decoding="async">
+        {% endif %}
+        <span class="vsc__orb vsc__orb--a" aria-hidden="true"></span>
+        <span class="vsc__orb vsc__orb--b" aria-hidden="true"></span>
+
+        <div class="vsc__grid">
+          <div class="vsc__info">
+            {% if component.vsc_eyebrow %}
+              <span class="vsc__eyebrow">{{ component.vsc_eyebrow }}</span>
+            {% endif %}
+
+            {% if component.vsc_title %}
+              <h2 class="vsc__title">{{ component.vsc_title }}</h2>
+            {% endif %}
+
+            {% if component.vsc_subtitle %}
+              <p class="vsc__text">{{ component.vsc_subtitle|nl2br }}</p>
+            {% endif %}
+
+            {% if component.vsc_show_button and component.vsc_button_text %}
+              <a class="vsc__button" href="{{ component.vsc_button_link ?: '#' }}">
+                {{ component.vsc_button_text }}
+                <i class="sicon-arrow-left" aria-hidden="true"></i>
+              </a>
+            {% endif %}
+          </div>
+
+          <div class="vsc__products">
+            <salla-products-slider
+              source="{{ vsc_source }}"
+              limit="{{ component.vsc_limit ?: 8 }}"
+              source-value="{{ vsc_source_value|json_encode }}"
+              display-all-url=""
+              block-title=""
+              slider-id="veloura-showcase-slider-{{ position }}"
+              {% if component.vsc_autoplay %}autoplay{% endif %}
+              slider-config='{
+                "observer": true,
+                "observeParents": true,
+                "slidesPerView": {{ vsc_mob_view }},
+                "spaceBetween": 12,
+                "speed": 650,
+                "watchOverflow": true,
+                {% if component.vsc_autoplay %}"autoplay": { "delay": 3200, "disableOnInteraction": false, "pauseOnMouseEnter": true },{% endif %}
+                {% if vsc_dots %}"createElements": true,
+                "pagination": { "enabled": true, "clickable": true },{% endif %}
+                "breakpoints": {
+                  "768": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 16 },
+                  "1024": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 18 }
+                }
+              }'
+            ></salla-products-slider>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+{% endif %}
