@@ -16651,15 +16651,6 @@
           "icon": "sicon-paint-bucket"
         },
         {
-          "id": "veloura_about_background",
-          "type": "string",
-          "format": "color",
-          "label": "لون الخلفية",
-          "icon": "sicon-paint-bucket",
-          "value": "#ffffff",
-          "required": false
-        },
-        {
           "id": "veloura_about_text_color",
           "type": "string",
           "format": "color",

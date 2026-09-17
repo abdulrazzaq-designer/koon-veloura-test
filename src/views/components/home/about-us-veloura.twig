@@ -45,13 +45,61 @@
     
   ]|join(' ') %}
 
+<style>
+/* ---------- من نحن ---------- */
+
+/* خلفية الصندوق = اللون الثانوي للخلفية (فاتح وداكن). */
+.veloura-about .veloura-about__box {
+  background: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7)) !important;
+}
+html.dark .veloura-about .veloura-about__box,
+html body.dark .veloura-about .veloura-about__box {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  color: var(--veloura-dark-primary-text, #ffffff);
+}
+
+/* في الداكن تبقى المميزات والإحصائيات مميّزة عن الصندوق بدرجة أفتح قليلاً. */
+html.dark .veloura-about :is(.veloura-about__feature, .veloura-about__stat),
+html body.dark .veloura-about :is(.veloura-about__feature, .veloura-about__stat) {
+  background: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 7%, var(--veloura-dark-secondary-bg, #010612)) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-about .veloura-about__feature-border::after,
+html body.dark .veloura-about .veloura-about__feature-border::after {
+  background: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 7%, var(--veloura-dark-secondary-bg, #010612)) !important;
+}
+html.dark .veloura-about :is(.veloura-about__stat strong, .veloura-about__feature i, .veloura-about__stat-icon i),
+html body.dark .veloura-about :is(.veloura-about__stat strong, .veloura-about__feature i, .veloura-about__stat-icon i) {
+  color: color-mix(in srgb, var(--veloura-about-accent, #004956) 45%, #ffffff) !important;
+}
+html.dark .veloura-about .veloura-about__description,
+html body.dark .veloura-about .veloura-about__description {
+  color: var(--veloura-dark-secondary-text, #ededed) !important;
+}
+
+/* التوسيط: المميزات والإحصائيات تتوسط مهما كان عددها — عنصران في صف من
+   ثلاثة يقفان في المنتصف بدل أن يلتصقا باليمين. */
+.veloura-about.is-title-centered :is(.veloura-about__features, .veloura-about__stats) {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.veloura-about.is-title-centered :is(.veloura-about__feature, .veloura-about__stat) {
+  flex: 0 0 calc((100% - 24px) / 3);
+  max-width: calc((100% - 24px) / 3);
+  box-sizing: border-box;
+}
+.veloura-about.is-title-centered .veloura-about__button {
+  margin-inline: auto;
+}
+</style>
+
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     class="{{ section_classes }}"
     style="
       --veloura-about-radius: {{ about_radius }};
       {# القيمة صارت رقماً واحداً يحكم القسم كله، فما عاد في داعي لجدول ثانٍ. #}
       --veloura-about-radius-md: {{ about_radius }};
-      --veloura-about-bg: {{ component.veloura_about_background|default('#ffffff') }};
       --veloura-about-text: {{ component.veloura_about_text_color|default('#222222') }};
       --veloura-about-accent: {{ component.veloura_about_accent_color|default('#004956') }};
       --veloura-about-soft: color-mix(in srgb, var(--veloura-about-accent) 9%, transparent);
