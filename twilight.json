@@ -15331,6 +15331,18 @@
           "required": false
         },
         {
+          "id": "veloura_articles_hide_pagination",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء نقاط التنقل",
+          "description": "تخفي النقاط أسفل المقالات وتزيل المسافة المحجوزة لها.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "veloura_articles_collection",
           "type": "collection",
           "format": "collection",

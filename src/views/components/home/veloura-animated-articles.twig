@@ -17,6 +17,96 @@
 
   {% set article_radius = radius_map[component.veloura_articles_radius|default('medium')]|default((component.veloura_articles_radius|default('medium') ~ '' == '' ? '16' : component.veloura_articles_radius|default('medium')) ~ 'px') %}
 
+  {% set art_no_dots = component.veloura_articles_hide_pagination|default(false) %}
+  {% if art_no_dots.value is defined %}{% set art_no_dots = art_no_dots.value %}{% endif %}
+  {% set art_no_dots = art_no_dots is same as(true) or art_no_dots in ['true', '1', 1, 'on'] %}
+
+<style>
+/* ---------- المقالات المتحركة ----------
+   داخل الكونتينر تماماً على الجوال واللابتوب: الفجوة بين البطاقات حشوة داخل
+   كل شريحة، والشريط ممدود بنصف فجوة من كل جهة ثم يُقص عند حدود الكونتينر
+   بالضبط (clip-path يعمل حتى لو لم يُطبَّق overflow على عنصر سلة). القص
+   مفتوح من الأعلى والأسفل ليتسع لارتفاع الصورة فوق البطاقة وظلها ونقاط
+   التنقل. */
+.veloura-animated-articles { --art-gap: 16px; }
+@media (min-width: 768px) { .veloura-animated-articles { --art-gap: 24px; } }
+
+.veloura-animated-articles .veloura-animated-articles__slider {
+  display: block !important;
+  overflow: visible !important;
+  padding: 26px 0 0 !important;
+  margin: 0 !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__slider.has-dots {
+  padding-bottom: 44px !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__slider:not(.has-dots) {
+  padding-bottom: 28px !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__slider .s-slider-wrapper,
+.veloura-animated-articles .veloura-animated-articles__slider .s-slider-block {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__slider .swiper,
+.veloura-animated-articles .veloura-animated-articles__slider.carousel-slider .swiper {
+  width: auto !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin-left: calc(var(--art-gap) / -2) !important;
+  margin-right: calc(var(--art-gap) / -2) !important;
+  overflow: visible !important;
+  clip-path: inset(-30px calc(var(--art-gap) / 2) -60px calc(var(--art-gap) / 2));
+}
+
+.veloura-animated-articles .veloura-animated-articles__slider .swiper-wrapper > .swiper-slide,
+.veloura-animated-articles .veloura-animated-articles__slider.carousel-slider .swiper-wrapper > div {
+  padding-left: calc(var(--art-gap) / 2) !important;
+  padding-right: calc(var(--art-gap) / 2) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* نقاط التنقل: تحت البطاقات داخل المساحة المحجوزة لها، أو مخفية بالخيار. */
+.veloura-animated-articles .veloura-animated-articles__slider:not(.has-dots) :is(.swiper-pagination, .s-slider-pagination) {
+  display: none !important;
+}
+
+/* ---------- الوضع الداكن ----------
+   البطاقة بالخلفية الثانوية للداكن، والعناوين والنصوص بألوانه. */
+html.dark .veloura-animated-articles .veloura-animated-articles__card,
+html body.dark .veloura-animated-articles .veloura-animated-articles__card {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  border-color: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 8%, transparent) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .35) !important;
+}
+
+html.dark .veloura-animated-articles .veloura-animated-articles__card h3 a,
+html body.dark .veloura-animated-articles .veloura-animated-articles__card h3 a,
+html.dark .veloura-animated-articles .veloura-animated-articles__heading h2,
+html body.dark .veloura-animated-articles .veloura-animated-articles__heading h2 {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+html.dark .veloura-animated-articles .veloura-animated-articles__card p,
+html body.dark .veloura-animated-articles .veloura-animated-articles__card p,
+html.dark .veloura-animated-articles .veloura-animated-articles__heading p,
+html body.dark .veloura-animated-articles .veloura-animated-articles__heading p {
+  color: var(--veloura-dark-secondary-text, #ededed) !important;
+}
+
+html.dark .veloura-animated-articles .veloura-animated-articles__image,
+html body.dark .veloura-animated-articles .veloura-animated-articles__image {
+  background: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 6%, transparent);
+}
+</style>
+
   {% set section_classes = [
     's-block',
   'veloura-animated-articles',
@@ -54,30 +144,27 @@
       {% if component.veloura_articles_collection|length %}
         <salla-slider
           id="veloura-animated-articles-{{ position }}"
-          class="veloura-animated-articles__slider"
+          class="veloura-animated-articles__slider {{ art_no_dots ? '' : 'has-dots' }}"
           type="carousel"
-          pagination
+          {% if not art_no_dots %}pagination{% endif %}
           {% if component.veloura_articles_autoplay %}auto-play{% endif %}
           {% if component.veloura_articles_hide_arrows %}show-controls="false"{% endif %}
           slider-config='{
-            "slidesPerView": 1.12,
-            "spaceBetween": 16,
+            "slidesPerView": 1,
+            "spaceBetween": 0,
             "speed": 700,
             "loop": false,
-            "watchOverflow": false,
+            "watchOverflow": true,
             "allowTouchMove": true,
-            "autoplay": {
-              "delay": 2600,
-              "disableOnInteraction": false
-            },
+            "autoplay": {{ component.veloura_articles_autoplay ? '{"delay": 2600, "disableOnInteraction": false}' : 'false' }},
             "breakpoints": {
               "768": {
                 "slidesPerView": 2,
-                "spaceBetween": 20
+                "spaceBetween": 0
               },
               "1024": {
                 "slidesPerView": 3,
-                "spaceBetween": 24
+                "spaceBetween": 0
               }
             }
           }'
