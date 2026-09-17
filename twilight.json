@@ -15297,6 +15297,26 @@
           "maxLength": "200"
         },
         {
+          "id": "veloura_articles_title_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون العنوان الرئيسي (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#111111",
+          "required": false
+        },
+        {
+          "id": "veloura_articles_subtitle_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون العنوان الفرعي (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#6b6b6b",
+          "required": false
+        },
+        {
           "id": "veloura_articles_radius",
           "type": "number",
           "format": "slider",

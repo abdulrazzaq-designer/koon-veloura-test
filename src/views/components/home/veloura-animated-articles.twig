@@ -101,6 +101,22 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__heading p 
   color: var(--veloura-dark-secondary-text, #ededed) !important;
 }
 
+/* ---------- العنوان ----------
+   بلون النصوص (من إعدادات العنصر في الفاتح، وألوان الداكن في الداكن) مثل
+   الروابط السريعة، لا بلون المتجر، وأقرب إلى المقالات. */
+.veloura-animated-articles .veloura-animated-articles__heading {
+  margin-bottom: 12px !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__heading h2 {
+  margin: 0 0 6px !important;
+  color: var(--art-title-color, #111111) !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__heading p {
+  color: var(--art-subtitle-color, #6b6b6b) !important;
+}
+
 /* ---------- الوضع الفاتح ----------
    البطاقة بالخلفية الثانوية للفاتح (نفس المتغير الذي تقرأه بقية عناصر فيلورا). */
 .veloura-animated-articles .veloura-animated-articles__card {
@@ -133,6 +149,8 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__heading p 
     class="{{ section_classes }}"
     style="
       --article-radius: {{ article_radius }};
+      --art-title-color: {{ component.veloura_articles_title_color|default('#111111') }};
+      --art-subtitle-color: {{ component.veloura_articles_subtitle_color|default('#6b6b6b') }};
       --veloura-articles-spacing: {{ component.veloura_articles_custom_spacing ? component.veloura_articles_spacing|default(0) : 0 }}px;
     "
   >
@@ -163,7 +181,7 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__heading p 
           {% if component.veloura_articles_autoplay %}auto-play{% endif %}
           {% if component.veloura_articles_hide_arrows %}show-controls="false"{% endif %}
           slider-config='{
-            "slidesPerView": 1.15,
+            "slidesPerView": 1.3,
             "spaceBetween": 0,
             "speed": 700,
             "loop": false,
@@ -172,11 +190,11 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__heading p 
             "autoplay": {{ component.veloura_articles_autoplay ? '{"delay": 2600, "disableOnInteraction": false}' : 'false' }},
             "breakpoints": {
               "768": {
-                "slidesPerView": 2,
+                "slidesPerView": 2.3,
                 "spaceBetween": 0
               },
               "1024": {
-                "slidesPerView": 3,
+                "slidesPerView": 3.3,
                 "spaceBetween": 0
               }
             }
