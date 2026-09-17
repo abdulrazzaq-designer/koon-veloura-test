@@ -44,6 +44,7 @@
   b_auto ? 'vbr--auto' : 'vbr--manual',
   b_two ? 'vbr--two' : '',
   component.veloura_brands_dark_bg ? 'vbr--dark-bg' : '',
+  component.veloura_brands_show_names ? 'vbr--names' : '',
   component.veloura_brands_mobile_only ? 'veloura-brands--mobile-only' : '',
   component.veloura_brands_desktop_only ? 'veloura-brands--desktop-only' : '',
   component.veloura_brands_custom_spacing ? 'has-spacing' : '',
@@ -140,6 +141,27 @@ html body.dark .vbr .veloura-brands__heading p { color: var(--veloura-dark-secon
 .vbr .vbr__drag.is-settling { transition: transform .45s cubic-bezier(.22, .61, .36, 1); }
 .vbr .vbr__viewport img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
 
+/* اسم الماركة تحت الشعار مباشرة: سطر واحد، يُختصر إذا طال. */
+.vbr .vbr__name {
+  display: block;
+  margin-top: 8px;
+  padding-inline: 4px;
+  direction: rtl;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--veloura-brands-title-color, #111111);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+@media (max-width: 767px) { .vbr .vbr__name { font-size: 12px; margin-top: 6px; } }
+html.dark .vbr .vbr__name,
+html body.dark .vbr .vbr__name { color: var(--veloura-dark-primary-text, #ffffff); }
+.vbr .vbr__viewport.is-dragging .vbr__name { pointer-events: none; }
+
 /* نقاط التنقل تحت الصف. */
 .vbr .vbr__dots { margin-top: 16px; }
 
@@ -201,6 +223,9 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
                         <span>{{ brand_name }}</span>
                       {% endif %}
                     </a>
+                    {% if component.veloura_brands_show_names and brand_logo %}
+                      <a href="{{ brand_url }}" class="vbr__name" {% if copy > 1 %}tabindex="-1"{% endif %}>{{ brand_name }}</a>
+                    {% endif %}
                   </div>
                 {% endfor %}
               {% endfor %}

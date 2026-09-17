@@ -15810,6 +15810,17 @@
           "options": []
         },
         {
+          "id": "veloura_brands_show_names",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار اسم الماركة تحت الشعار",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "veloura_brands_autoplay",
           "type": "boolean",
           "format": "switch",
