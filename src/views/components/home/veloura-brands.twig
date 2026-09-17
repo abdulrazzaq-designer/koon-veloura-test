@@ -17,17 +17,130 @@
 
   {% set brand_radius = radius_map[component.veloura_brands_radius|default('medium')]|default((component.veloura_brands_radius|default('medium') ~ '' == '' ? '16' : component.veloura_brands_radius|default('medium')) ~ 'px') %}
   {% set image_fit = component.veloura_brands_fit|default('cover') %}
+  {% if image_fit.value is defined %}{% set image_fit = image_fit.value %}{% endif %}
+  {% if image_fit is iterable and image_fit[0].value is defined %}{% set image_fit = image_fit[0].value %}{% endif %}
+  {% if image_fit not in ['cover', 'contain'] %}{% set image_fit = 'cover' %}{% endif %}
   {% set brands_gap = component.veloura_brands_gap|default(6) %}
+
+  {# ---------- الحركة ----------
+     شريط متحرك بـ CSS بدل سلايدر سلة: القائمة تتكرر عدداً كافياً من المرات
+     والشريط يتحرك بمقدار نسخة واحدة بالضبط، فتلتقي النهاية بالبداية بلا
+     انقطاع مهما كان عدد الماركات. «مستمر» = حركة ناعمة ثابتة، وبدونه =
+     خطوة لكل ماركة ثم توقف. بدون تحريك تلقائي = صف يُسحب باليد. #}
+  {% set b_items = component.veloura_brands_items|default([]) %}
+  {% set b_n = b_items|length %}
+  {% set b_auto = component.veloura_brands_autoplay ? true : false %}
+  {% set b_smooth = component.veloura_brands_continuous ? true : false %}
+  {% set b_two = component.veloura_brands_two_rows and b_auto ? true : false %}
+  {% set b_copies = b_n > 0 ? ((5 / b_n)|round(0, 'ceil') + 1) : 1 %}
+  {% if b_copies < 2 %}{% set b_copies = 2 %}{% endif %}
+  {% set b_anim = 'vbr' ~ (position|default(0)) %}
+  {% set b_duration = b_smooth ? (b_n * 2.6) : (b_n * 2.4) %}
 
   {% set section_classes = [
     's-block',
   'veloura-brands',
+  'vbr',
+  b_auto ? 'vbr--auto' : 'vbr--manual',
+  b_two ? 'vbr--two' : '',
+  component.veloura_brands_dark_bg ? 'vbr--dark-bg' : '',
   component.veloura_brands_mobile_only ? 'veloura-brands--mobile-only' : '',
   component.veloura_brands_desktop_only ? 'veloura-brands--desktop-only' : '',
-  component.veloura_brands_continuous ? 'veloura-brands--continuous' : '',
   component.veloura_brands_custom_spacing ? 'has-spacing' : '',
   component.veloura_brands_custom_classes ?: ''
   ]|join(' ') %}
+
+<style>
+/* ---------- الماركات التجارية ---------- */
+.vbr .vbr__viewport {
+  container-type: inline-size;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* مع الحركة يبدأ الشريط من الحافة اليسرى ويتحرك يساراً، فيبقى الإطار ممتلئاً دائماً. */
+.vbr.vbr--auto .vbr__viewport { direction: ltr; }
+
+.vbr .vbr__viewport + .vbr__viewport { margin-top: var(--veloura-brands-gap, 6px); }
+
+/* عدد الماركات الظاهرة: 3 جوال، 4 تابلت، 5 لابتوب — بعرض الكونتينر بالضبط. */
+.vbr { --vbr-cols: 3; }
+@media (min-width: 768px) { .vbr { --vbr-cols: 4; } }
+@media (min-width: 1024px) { .vbr { --vbr-cols: 5; } }
+
+.vbr .vbr__track {
+  display: flex;
+  width: max-content;
+  direction: ltr;
+  will-change: transform;
+}
+
+.vbr .vbr__cell {
+  flex: 0 0 auto;
+  width: calc((100cqi - (var(--vbr-cols) - 1) * var(--veloura-brands-gap, 6px)) / var(--vbr-cols));
+  margin-right: var(--veloura-brands-gap, 6px);
+  box-sizing: border-box;
+}
+
+.vbr .veloura-brands__item {
+  box-shadow: none !important;
+  direction: rtl;
+}
+
+/* بدون تحريك: صف يُسحب باليد، يبدأ من اليمين، بلا شريط تمرير ظاهر. */
+.vbr.vbr--manual .vbr__viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  direction: rtl;
+}
+.vbr.vbr--manual .vbr__viewport::-webkit-scrollbar { display: none; }
+.vbr.vbr--manual .vbr__track { direction: rtl; }
+.vbr.vbr--manual .vbr__cell { scroll-snap-align: start; margin-right: 0; margin-left: var(--veloura-brands-gap, 6px); }
+.vbr.vbr--manual .vbr__cell:last-child { margin-left: 0; }
+
+/* الحركة: الشريط يتحرك نسخة واحدة من القائمة ثم يعيد — نقطة الإعادة مطابقة
+   تماماً لنقطة البداية فلا يظهر انقطاع. الصف الثاني بالاتجاه المعاكس. */
+@keyframes {{ b_anim }}-smooth {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% / {{ b_copies }})); }
+}
+
+@keyframes {{ b_anim }}-step {
+  {% for i in 0..(b_n > 0 ? b_n : 1) %}
+    {% set t0 = (i * 100 / (b_n > 0 ? b_n : 1)) %}
+    {% set t1 = ((i + 0.72) * 100 / (b_n > 0 ? b_n : 1)) %}
+    {{ t0|round(3) }}% { transform: translateX(calc(-100% / {{ b_copies }} * {{ i }} / {{ b_n > 0 ? b_n : 1 }})); }
+    {% if i < b_n %}{{ t1|round(3) }}% { transform: translateX(calc(-100% / {{ b_copies }} * {{ i }} / {{ b_n }})); }{% endif %}
+  {% endfor %}
+}
+
+.vbr.vbr--auto .vbr__track {
+  animation: {{ b_anim }}-{{ b_smooth ? 'smooth' : 'step' }} {{ b_duration }}s {{ b_smooth ? 'linear' : 'ease-in-out' }} infinite;
+}
+.vbr.vbr--auto .vbr__viewport--b .vbr__track { animation-direction: reverse; }
+.vbr.vbr--auto .vbr__viewport:hover .vbr__track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vbr.vbr--auto .vbr__track { animation: none; }
+  .vbr.vbr--auto .vbr__viewport { overflow-x: auto; }
+}
+
+/* العنوان في الداكن بألوان نصوص الداكن. */
+html.dark .vbr .veloura-brands__heading h2,
+html body.dark .vbr .veloura-brands__heading h2 { color: var(--veloura-dark-primary-text, #ffffff) !important; }
+html.dark .vbr .veloura-brands__heading p,
+html body.dark .vbr .veloura-brands__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
+
+/* خيار الوضع الداكن: في الداكن تأخذ الماركات الخلفية الثانوية للداكن. */
+html.dark .vbr.vbr--dark-bg .veloura-brands__item,
+html body.dark .vbr.vbr--dark-bg .veloura-brands__item {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  border-color: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 8%, transparent) !important;
+}
+html.dark .vbr.vbr--dark-bg .veloura-brands__item span,
+html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--veloura-dark-primary-text, #ffffff) !important; }
+</style>
 
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     class="{{ section_classes }}"
@@ -57,64 +170,31 @@
         </div>
       {% endif %}
 
-      {% if component.veloura_brands_items|length %}
-        <salla-slider
-          id="veloura-brands-{{ position }}"
-          class="veloura-brands__slider"
-          type="carousel"
-          pagination
-          show-controls="false"
-          {% if component.veloura_brands_autoplay %}auto-play{% endif %}
-          slider-config='{
-            "slidesPerView": 2.2,
-            "spaceBetween": {{ brands_gap }},
-            "speed": {{ component.veloura_brands_continuous ? 4500 : 700 }},
-            "loop": true,
-            "watchOverflow": false,
-            "allowTouchMove": true,
-            "autoplay": {
-              "delay": {{ component.veloura_brands_continuous ? 0 : 2200 }},
-              "disableOnInteraction": false,
-              "pauseOnMouseEnter": false
-            },
-            "breakpoints": {
-              "640": {
-                "slidesPerView": 3,
-                "spaceBetween": {{ brands_gap }}
-              },
-              "768": {
-                "slidesPerView": 4,
-                "spaceBetween": {{ brands_gap }}
-              },
-              "1024": {
-                "slidesPerView": 5,
-                "spaceBetween": {{ brands_gap }}
-              }
-            }
-          }'
-        >
-          <div slot="items">
-            {% for brand in component.veloura_brands_items %}
-              {% set brand_name = brand.name|default(brand.title|default('brand')) %}
-              {% set brand_url = brand.url|default(link('brands')) %}
-              {% set brand_logo = brand.logo|default(brand.image|default(brand.avatar|default(null))) %}
-
-              <div class="swiper-slide">
-                <a href="{{ brand_url }}" class="veloura-brands__item" aria-label="{{ brand_name }}">
-                  {% if brand_logo %}
-                    <img
-                      src="{{ brand_logo }}"
-                      alt="{{ brand_name }}"
-                      loading="lazy"
-                    >
-                  {% else %}
-                    <span>{{ brand_name }}</span>
-                  {% endif %}
-                </a>
-              </div>
-            {% endfor %}
+      {% if b_n %}
+        {% set b_rows = b_two ? ['a', 'b'] : ['a'] %}
+        {% for row in b_rows %}
+          {% set row_items = row == 'b' ? b_items|reverse : b_items %}
+          <div class="vbr__viewport vbr__viewport--{{ row }}">
+            <div class="vbr__track">
+              {% for copy in 1..(b_auto ? b_copies : 1) %}
+                {% for brand in row_items %}
+                  {% set brand_name = brand.name|default(brand.title|default('brand')) %}
+                  {% set brand_url = brand.url|default(link('brands')) %}
+                  {% set brand_logo = brand.logo|default(brand.image|default(brand.avatar|default(null))) %}
+                  <div class="vbr__cell" {% if copy > 1 %}aria-hidden="true"{% endif %}>
+                    <a href="{{ brand_url }}" class="veloura-brands__item" aria-label="{{ brand_name }}" {% if copy > 1 %}tabindex="-1"{% endif %}>
+                      {% if brand_logo %}
+                        <img src="{{ brand_logo }}" alt="{{ brand_name }}" loading="lazy">
+                      {% else %}
+                        <span>{{ brand_name }}</span>
+                      {% endif %}
+                    </a>
+                  </div>
+                {% endfor %}
+              {% endfor %}
+            </div>
           </div>
-        </salla-slider>
+        {% endfor %}
       {% endif %}
 
     </div>

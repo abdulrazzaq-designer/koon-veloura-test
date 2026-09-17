@@ -15828,6 +15828,30 @@
           "selected": false
         },
         {
+          "id": "veloura_brands_two_rows",
+          "type": "boolean",
+          "format": "switch",
+          "label": "صفّان متحركان باتجاهين",
+          "description": "صف ثانٍ تحت الأول يتحرك بالاتجاه المعاكس (يعمل مع التحريك التلقائي).",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "veloura_brands_dark_bg",
+          "type": "boolean",
+          "format": "switch",
+          "label": "خلفية الوضع الداكن للماركات",
+          "description": "في الوضع الداكن تأخذ خلفية الماركات اللون الثانوي للداكن.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "veloura_brands_fit",
           "type": "items",
           "format": "dropdown-list",
