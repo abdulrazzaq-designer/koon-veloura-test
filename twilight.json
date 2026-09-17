@@ -16265,6 +16265,18 @@
           "selected": false
         },
         {
+          "id": "veloura_testimonials_peek",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار جزء من الرأي التالي",
+          "description": "يظهر طرف من التقييم التالي داخل حدود القسم.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "veloura_testimonials_bg_color",
           "type": "string",
           "format": "color",

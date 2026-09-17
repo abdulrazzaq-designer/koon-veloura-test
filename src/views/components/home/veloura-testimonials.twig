@@ -17,6 +17,113 @@
 
   {% set testimonial_radius = radius_map[component.veloura_testimonials_radius|default('medium')]|default((component.veloura_testimonials_radius|default('medium') ~ '' == '' ? '16' : component.veloura_testimonials_radius|default('medium')) ~ 'px') %}
 
+  {% set t_loop = component.veloura_testimonials_infinite ? true : false %}
+  {% set t_peek = component.veloura_testimonials_peek ? true : false %}
+  {% set t_bar = component.veloura_testimonials_show_scrollbar ? true : false %}
+
+  {# لا نهائي بدون تقطيع: سوايبر يحتاج عدداً كافياً من الشرائح ليكرر بسلاسة،
+     ومع ثلاثة آراء وشريحتين في الشاشة كان يقفز ويكرر قطعاً. نكرر القائمة
+     هنا حتى 8 شرائح على الأقل. #}
+  {% set t_src = component.veloura_testimonials_items|default([]) %}
+  {% set t_items = t_src %}
+  {% if t_loop and t_src|length > 0 and t_src|length < 8 %}
+    {% set t_items = [] %}
+    {% for r in 1..((8 / t_src|length)|round(0, 'ceil')) %}
+      {% set t_items = t_items|merge(t_src) %}
+    {% endfor %}
+  {% endif %}
+
+<style>
+/* ---------- قالوا عنا ----------
+   داخل الكونتينر تماماً: الفجوة حشوة داخل كل شريحة، والشريط ممدود بنصف
+   فجوة من كل جهة ثم يُقص عند حدود الكونتينر (clip-path)، والقص مفتوح من
+   الأعلى لصورة العميل على الجوال ومن الأسفل لشريط التمرير أو النقاط. */
+.veloura-testimonials { --t-gap: 16px; }
+@media (min-width: 768px) { .veloura-testimonials { --t-gap: 24px; } }
+
+.veloura-testimonials .veloura-testimonials__slider {
+  display: block !important;
+  overflow: visible !important;
+  margin: 0 !important;
+  padding-bottom: 0 !important;
+}
+.veloura-testimonials .veloura-testimonials__slider.has-nav { padding-bottom: 0 !important; }
+
+.veloura-testimonials .veloura-testimonials__slider .s-slider-wrapper,
+.veloura-testimonials .veloura-testimonials__slider .s-slider-block {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.veloura-testimonials .veloura-testimonials__slider .swiper,
+.veloura-testimonials .veloura-testimonials__slider.carousel-slider .swiper {
+  width: auto !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin-left: calc(var(--t-gap) / -2) !important;
+  margin-right: calc(var(--t-gap) / -2) !important;
+  overflow: visible !important;
+  clip-path: inset(-100px calc(var(--t-gap) / 2) -60px calc(var(--t-gap) / 2));
+}
+
+.veloura-testimonials .veloura-testimonials__slider.has-nav .swiper {
+  padding-bottom: 34px !important;
+}
+
+.veloura-testimonials .veloura-testimonials__slider .swiper-wrapper > .swiper-slide,
+.veloura-testimonials .veloura-testimonials__slider.carousel-slider .swiper-wrapper > div {
+  padding-left: calc(var(--t-gap) / 2) !important;
+  padding-right: calc(var(--t-gap) / 2) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* بدون ظل. */
+.veloura-testimonials .veloura-testimonials__card { box-shadow: none !important; }
+
+/* شريط التمرير: تحت البطاقات، بعرض الكونتينر، وقابل للسحب. */
+.veloura-testimonials .veloura-testimonials__slider .swiper-scrollbar {
+  display: block !important;
+  position: absolute !important;
+  top: auto !important;
+  bottom: 8px !important;
+  left: calc(var(--t-gap) / 2) !important;
+  right: auto !important;
+  width: calc(100% - var(--t-gap)) !important;
+  height: 5px !important;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--veloura-testimonials-text, #323232) 12%, transparent) !important;
+  opacity: 1 !important;
+  z-index: 5;
+  cursor: grab;
+}
+.veloura-testimonials .veloura-testimonials__slider .swiper-scrollbar-drag {
+  border-radius: 999px;
+  background: var(--color-primary, #004956) !important;
+}
+.veloura-testimonials .veloura-testimonials__slider:not(.has-bar) .swiper-scrollbar { display: none !important; }
+
+.veloura-testimonials .veloura-testimonials__slider :is(.swiper-pagination, .s-slider-pagination) {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 6px !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center;
+  gap: 6px;
+}
+.veloura-testimonials .veloura-testimonials__slider.has-bar :is(.swiper-pagination, .s-slider-pagination) { display: none !important; }
+
+@media (max-width: 767px) {
+  .veloura-testimonials .veloura-testimonials__slider { padding-top: 75px !important; }
+}
+</style>
+
   {% set section_classes = [
     's-block',
     'veloura-testimonials',
@@ -62,17 +169,22 @@
       {% if component.veloura_testimonials_items|length %}
         <salla-slider
           id="veloura-testimonials-{{ position }}"
-          class="veloura-testimonials__slider"
+          class="veloura-testimonials__slider has-nav {{ t_bar ? 'has-bar' : '' }}"
           type="carousel"
-          {% if component.veloura_testimonials_show_scrollbar %}scrollbar{% else %}pagination{% endif %}
+          {% if not t_bar %}pagination{% endif %}
           show-controls="{{ component.veloura_testimonials_hide_arrows ? 'false' : 'true' }}"
           {% if component.veloura_testimonials_autoplay %}auto-play{% endif %}
           slider-config='{
-            "slidesPerView": 1.05,
-            "spaceBetween": 16,
+            "slidesPerView": {{ t_peek ? 1.25 : 1 }},
+            "spaceBetween": 0,
             "speed": 700,
-            "loop": {{ component.veloura_testimonials_infinite ? "true" : "false" }},
-            "watchOverflow": false,
+            "loop": {{ t_loop ? "true" : "false" }},
+            {% if t_loop %}"loopAdditionalSlides": 2,{% endif %}
+            "watchOverflow": true,
+            {% if t_bar %}
+            "createElements": true,
+            "scrollbar": { "auto": true, "enabled": true, "draggable": true, "hide": false, "snapOnRelease": true },
+            {% endif %}
             "allowTouchMove": true,
             {% if component.veloura_testimonials_autoplay %}
             "autoplay": {
@@ -85,12 +197,12 @@
             {% endif %}
             "breakpoints": {
               "768": {
-                "slidesPerView": 2,
-                "spaceBetween": 20
+                "slidesPerView": {{ t_peek ? 2.3 : 2 }},
+                "spaceBetween": 0
               },
               "1024": {
-                "slidesPerView": 2,
-                "spaceBetween": 24
+                "slidesPerView": {{ t_peek ? 2.3 : 2 }},
+                "spaceBetween": 0
               }
             }
           }'
@@ -98,7 +210,7 @@
 
           <div slot="items">
 
-            {% for item in component.veloura_testimonials_items %}
+            {% for item in t_items %}
 
               {% set stars_value = item.stars|default(5) %}
               {% if item.stars is iterable and item.stars[0].value is defined %}
