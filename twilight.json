@@ -15231,6 +15231,24 @@
           ]
         },
         {
+          "id": "vsc_media_height",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "ارتفاع الوسيط في الكمبيوتر",
+          "icon": "sicon-resize-full",
+          "selected": [
+            {"label": "بطول العناوين والمنتجات", "value": "match", "key": "vsc_media_height-match"}
+          ],
+          "options": [
+            {"label": "بطول العناوين والمنتجات", "value": "match", "key": "vsc_media_height-match"},
+            {"label": "تلقائي حسب أبعاد الوسيط", "value": "auto", "key": "vsc_media_height-auto"}
+          ],
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
+          "required": true
+        },
+        {
           "id": "vsc_media_ratio",
           "type": "items",
           "format": "dropdown-list",

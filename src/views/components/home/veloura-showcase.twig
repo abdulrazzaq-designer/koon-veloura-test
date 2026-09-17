@@ -72,6 +72,12 @@
     or (vsc_media == 'youtube' and vsc_yt_id)
   %}
 
+  {% set vsc_mh = component.vsc_media_height|default('match') %}
+  {% if vsc_mh.selected is defined %}{% set vsc_mh = vsc_mh.selected %}{% endif %}
+  {% if vsc_mh is iterable and vsc_mh.value is not defined %}{% set vsc_mh = vsc_mh|first %}{% endif %}
+  {% if vsc_mh.value is defined %}{% set vsc_mh = vsc_mh.value %}{% endif %}
+  {% if vsc_mh not in ['match', 'auto'] %}{% set vsc_mh = 'match' %}{% endif %}
+
   {% set vsc_ratio = component.vsc_media_ratio|default('16-9') %}
   {% if vsc_ratio.selected is defined %}{% set vsc_ratio = vsc_ratio.selected %}{% endif %}
   {% if vsc_ratio is iterable and vsc_ratio.value is not defined %}{% set vsc_ratio = vsc_ratio|first %}{% endif %}
@@ -106,6 +112,7 @@
     'vsc--media-' ~ (vsc_has_media ? vsc_media : 'none'),
     component.vsc_media_left ? 'vsc--media-left' : '',
     component.vsc_center_titles ? 'is-centered' : '',
+    'vsc--mh-' ~ vsc_mh,
     component.vsc_dark_bg ? 'vsc--dark-bg' : '',
     vsc_dots ? 'vsc--dots' : '',
     component.vsc_custom_spacing ? 'has-spacing' : '',
@@ -185,8 +192,14 @@
   .vsc .vsc__media { grid-area: media; align-self: stretch; }
   .vsc .vsc__content { grid-area: content; }
 
-  /* الوسيط يملأ طول العمود المقابل بدل نسبة ثابتة. */
-  .vsc:not(.vsc--ratio-auto) .vsc__media .vsc__frame { height: 100%; aspect-ratio: auto; min-height: 320px; }
+  /* ارتفاع الوسيط على اللابتوب: إمّا بأبعاده (تلقائي) أو بطول العمود
+     المقابل (النص + المنتجات) فتستوي حافتا اللوحة. */
+  .vsc.vsc--mh-match:not(.vsc--ratio-auto) .vsc__media .vsc__frame {
+    height: 100%;
+    aspect-ratio: auto;
+    min-height: 300px;
+  }
+  .vsc.vsc--mh-auto .vsc__media { align-self: start; }
 }
 
 .vsc .vsc__content {
@@ -386,10 +399,10 @@
   display: none !important;
 }
 
-.vsc.vsc--dots .vsc__products .swiper { padding-bottom: 30px !important; }
+.vsc.vsc--dots .vsc__products .swiper { padding-bottom: 22px !important; }
 .vsc.vsc--dots .vsc__products .swiper-pagination {
   position: absolute !important;
-  inset: auto 0 4px 0 !important;
+  inset: auto 0 0 0 !important;
   width: 100% !important;
   transform: none !important;
   display: flex !important;
