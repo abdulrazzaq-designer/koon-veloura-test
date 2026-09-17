@@ -132,6 +132,9 @@ html body.dark .vbr .veloura-brands__heading h2 { color: var(--veloura-dark-prim
 html.dark .vbr .veloura-brands__heading p,
 html body.dark .vbr .veloura-brands__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
 
+/* نقاط التنقل تحت الصف. */
+.vbr .vbr__dots { margin-top: 16px; }
+
 /* خيار الوضع الداكن: في الداكن تأخذ الماركات الخلفية الثانوية للداكن. */
 html.dark .vbr.vbr--dark-bg .veloura-brands__item,
 html body.dark .vbr.vbr--dark-bg .veloura-brands__item {
@@ -143,6 +146,7 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
 </style>
 
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+    id="veloura-brands-{{ position }}"
     class="{{ section_classes }}"
     style="
       --veloura-brands-radius: {{ brand_radius }};
@@ -195,9 +199,90 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
             </div>
           </div>
         {% endfor %}
+
+        {% if not b_two and b_n > 1 %}
+          {# نقاط التنقل الموحّدة للمتجر (شكلها من إعدادات الثيم). #}
+          <div class="veloura-dots vbr__dots" data-vbr-dots></div>
+        {% endif %}
       {% endif %}
 
     </div>
   </section>
+
+  {% if not b_two and b_n > 1 %}
+  <script>
+  (function () {
+    var section = document.getElementById('veloura-brands-{{ position }}');
+    if (!section || !section.classList.contains('vbr')) return;
+    var box = section.querySelector('[data-vbr-dots]');
+    var viewport = section.querySelector('.vbr__viewport');
+    var track = section.querySelector('.vbr__track');
+    if (!box || !viewport || !track) return;
+
+    var n = {{ b_n }};
+    var auto = section.classList.contains('vbr--auto');
+    var dots = [];
+
+    for (var i = 0; i < n; i++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'veloura-dots__dot';
+      b.setAttribute('aria-label', 'ماركة ' + (i + 1));
+      (function (k) { b.addEventListener('click', function () { go(k); }); })(i);
+      box.appendChild(b);
+      dots.push(b);
+    }
+
+    function anim() {
+      var list = track.getAnimations ? track.getAnimations() : [];
+      return list[0] || null;
+    }
+
+    function current() {
+      if (auto) {
+        var a = anim();
+        if (!a) return 0;
+        var d = a.effect.getTiming().duration;
+        var t = (a.currentTime || 0) % d;
+        return Math.floor((t / d) * n + 0.14) % n;
+      }
+      var max = viewport.scrollWidth - viewport.clientWidth;
+      if (max <= 0) return 0;
+      return Math.round((Math.abs(viewport.scrollLeft) / max) * (n - 1));
+    }
+
+    function go(k) {
+      if (auto) {
+        var a = anim();
+        if (!a) return;
+        var d = a.effect.getTiming().duration;
+        var iter = Math.floor((a.currentTime || 0) / d);
+        a.currentTime = iter * d + (k / n) * d;
+      } else {
+        var max = viewport.scrollWidth - viewport.clientWidth;
+        var rtl = getComputedStyle(viewport).direction === 'rtl';
+        var x = (k / (n - 1)) * max;
+        viewport.scrollTo({ left: rtl ? -x : x, behavior: 'smooth' });
+      }
+      paint();
+    }
+
+    var last = -1;
+    function paint() {
+      var i = current();
+      if (i === last) return;
+      last = i;
+      for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('is-on', k === i);
+    }
+
+    paint();
+    if (auto) {
+      (function loop() { paint(); requestAnimationFrame(loop); })();
+    } else {
+      viewport.addEventListener('scroll', function () { requestAnimationFrame(paint); }, { passive: true });
+    }
+  })();
+  </script>
+  {% endif %}
 
 {% endif %}
