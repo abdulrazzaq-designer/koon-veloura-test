@@ -15634,11 +15634,31 @@
             {
               "id": "map_url",
               "type": "string",
-              "format": "url",
+              "format": "text",
               "label": "رابط خريطة جوجل",
+              "description": "من خرائط جوجل: مشاركة ← تضمين خريطة ← انسخ HTML والصقه هنا كاملاً (أو رابط src منه). الروابط المختصرة maps.app.goo.gl لا تُعرض داخل الصفحة؛ للعرض استخدم حقل العنوان أو الإحداثيات التالي.",
               "icon": "sicon-link",
               "value": "",
-              "required": true
+              "required": false
+            },
+            {
+              "id": "map_query",
+              "type": "string",
+              "format": "text",
+              "label": "العنوان أو الإحداثيات (للخريطة)",
+              "description": "مثال: 24.7136,46.6753 أو «حي العليا، الرياض». يكفي هذا الحقل لعرض الخريطة بدون رابط التضمين.",
+              "icon": "sicon-location",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "address",
+              "type": "string",
+              "format": "text",
+              "label": "وصف مختصر تحت اسم الفرع (اختياري)",
+              "icon": "sicon-format-text-alt",
+              "value": "",
+              "required": false
             }
           ]
         },

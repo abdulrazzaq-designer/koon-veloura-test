@@ -26,6 +26,109 @@
   component.veloura_branches_custom_classes ?: ''
   ]|join(' ') %}
 
+<style>
+/* ---------- زورونا في فروعنا ----------
+   اللابتوب: العنوان والفروع يميناً، والخريطة يساراً. الجوال: فوق بعض. */
+.veloura-branches .vb__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+.veloura-branches [hidden] { display: none !important; }
+
+.veloura-branches .veloura-branches__tab { text-align: start; }
+.veloura-branches .vb__tab-text { display: flex; flex-direction: column; line-height: 1.35; }
+.veloura-branches .vb__tab-address { font-size: 12px; font-weight: 500; opacity: .75; }
+
+.veloura-branches .vb__open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: var(--color-primary);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.veloura-branches .vb__open:hover { text-decoration: underline; }
+
+.veloura-branches .veloura-branches__map { position: relative; }
+
+.veloura-branches .vb__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--color-primary);
+  font-size: 15px;
+  text-align: center;
+  padding: 20px;
+}
+.veloura-branches .vb__fallback i { font-size: 42px; }
+
+@media (max-width: 1023px) {
+  .veloura-branches .vb__info { text-align: center; }
+  .veloura-branches .vb__open { width: 100%; }
+}
+
+@media (min-width: 1024px) {
+  .veloura-branches .vb__layout {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: 40px;
+  }
+
+  .veloura-branches .vb__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    text-align: start;
+  }
+
+  .veloura-branches .veloura-branches__heading {
+    text-align: start !important;
+    margin-bottom: 0 !important;
+  }
+
+  .veloura-branches .veloura-branches__tabs {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 0 !important;
+    gap: 10px;
+  }
+
+  .veloura-branches .veloura-branches__tab {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 52px;
+    padding: 8px 18px;
+    border-radius: min(var(--veloura-branches-radius, 16px), 14px);
+  }
+
+  .veloura-branches .veloura-branches__map { height: 460px; }
+}
+
+/* الوضع الداكن */
+html.dark .veloura-branches .veloura-branches__heading h2,
+html body.dark .veloura-branches .veloura-branches__heading h2 { color: var(--veloura-dark-primary-text, #fff) !important; }
+html.dark .veloura-branches .veloura-branches__heading p,
+html body.dark .veloura-branches .veloura-branches__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
+html.dark .veloura-branches .veloura-branches__tab:not(.is-active),
+html body.dark .veloura-branches .veloura-branches__tab:not(.is-active) {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  color: var(--veloura-dark-primary-text, #fff) !important;
+}
+html.dark .veloura-branches .veloura-branches__map,
+html body.dark .veloura-branches .veloura-branches__map { background: var(--veloura-dark-secondary-bg, #010612); }
+</style>
+
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     class="{{ section_classes }}"
     style="
@@ -39,71 +142,147 @@
   <div class="container veloura-branches__container">
 {% endif %}
 
-      {% if component.veloura_branches_title or component.veloura_branches_subtitle %}
-        <div class="veloura-branches__heading veloura-component-title" data-veloura-section-heading>
-          {% if component.veloura_branches_title %}
-            <h2>{{ component.veloura_branches_title }}</h2>
+      {# ---------- تجهيز روابط الخرائط ----------
+         جوجل لا يسمح بعرض الروابط العادية أو المختصرة (maps.app.goo.gl) داخل
+         إطار، فتظهر صفحة مكسورة. المقبول للعرض:
+         1) رابط التضمين من «مشاركة ← تضمين خريطة» (فيه /maps/embed)، أو كود
+            الـ iframe كاملاً — يُستخرج منه الرابط تلقائياً.
+         2) أو حقل «العنوان أو الإحداثيات» — يُبنى منه رابط تضمين.
+         3) أو رابط جوجل الكامل الذي فيه @خط العرض,خط الطول.
+         الرابط المختصر يبقى زر «فتح في خرائط جوجل» فقط. #}
+      {% set vb_list = [] %}
+      {% for branch in component.veloura_branches_items %}
+        {% set raw = branch.map_url.url ?? branch.map_url %}
+        {% if raw is iterable %}{% set raw = '' %}{% endif %}
+        {% set raw = raw|default('')|trim %}
+        {% set query = branch.map_query|default('')|trim %}
+        {% set embed = '' %}
+
+        {% if 'src="' in raw %}
+          {% set raw = (raw|split('src="'))[1]|split('"')|first %}
+        {% endif %}
+
+        {% if '/maps/embed' in raw or 'output=embed' in raw %}
+          {% set embed = raw %}
+        {% elseif query %}
+          {% set embed = 'https://maps.google.com/maps?q=' ~ (query|url_encode) ~ '&z=15&output=embed' %}
+        {% elseif 'google.' in raw and '/@' in raw %}
+          {% set coords = ((raw|split('/@'))[1]|split(',')) %}
+          {% if coords|length >= 2 %}
+            {% set embed = 'https://maps.google.com/maps?q=' ~ coords[0] ~ ',' ~ coords[1] ~ '&z=15&output=embed' %}
+          {% endif %}
+        {% endif %}
+
+        {% set link = raw %}
+        {% if not link or '/maps/embed' in link %}
+          {% set link = query ? 'https://www.google.com/maps/search/?api=1&query=' ~ (query|url_encode) : '' %}
+        {% endif %}
+
+        {% set vb_list = vb_list|merge([{ name: branch.name, address: branch.address|default(''), embed: embed, link: link }]) %}
+      {% endfor %}
+
+      <div class="vb__layout">
+        <div class="vb__info">
+          {% if component.veloura_branches_title or component.veloura_branches_subtitle %}
+            <div class="veloura-branches__heading veloura-component-title" data-veloura-section-heading>
+              {% if component.veloura_branches_title %}
+                <h2>{{ component.veloura_branches_title }}</h2>
+              {% endif %}
+
+              {% if component.veloura_branches_subtitle %}
+                <p>{{ component.veloura_branches_subtitle }}</p>
+              {% endif %}
+            </div>
           {% endif %}
 
-          {% if component.veloura_branches_subtitle %}
-            <p>{{ component.veloura_branches_subtitle }}</p>
+          {% if vb_list|length %}
+            <div class="veloura-branches__tabs">
+              {% for b in vb_list %}
+                <button
+                  type="button"
+                  class="veloura-branches__tab {{ loop.first ? 'is-active' : '' }}"
+                  data-map="{{ b.embed|e('html_attr') }}"
+                  data-link="{{ b.link|e('html_attr') }}"
+                >
+                  <i class="sicon-location"></i>
+                  <span class="vb__tab-text">
+                    <span class="vb__tab-name">{{ b.name }}</span>
+                    {% if b.address %}<small class="vb__tab-address">{{ b.address }}</small>{% endif %}
+                  </span>
+                </button>
+              {% endfor %}
+            </div>
+
+            <a class="vb__open" href="{{ vb_list[0].link ?: '#' }}" target="_blank" rel="noopener" {% if not vb_list[0].link %}hidden{% endif %}>
+              <i class="sicon-share-alt"></i>
+              <span>فتح في خرائط جوجل</span>
+            </a>
           {% endif %}
         </div>
-      {% endif %}
 
-      {% if component.veloura_branches_items|length %}
-        <div class="veloura-branches__tabs">
-          {% for branch in component.veloura_branches_items %}
-            <button
-              type="button"
-              class="veloura-branches__tab {{ loop.first ? 'is-active' : '' }}"
-              data-map="{{ branch.map_url }}"
-            >
+        {% if vb_list|length %}
+          <div class="veloura-branches__map">
+            <iframe
+              src="{{ vb_list[0].embed }}"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              title="{{ vb_list[0].name|e('html_attr') }}"
+              {% if not vb_list[0].embed %}hidden{% endif %}
+            ></iframe>
+
+            <a class="vb__fallback" href="{{ vb_list[0].link ?: '#' }}" target="_blank" rel="noopener" {% if vb_list[0].embed %}hidden{% endif %}>
               <i class="sicon-location"></i>
-              <span>{{ branch.name }}</span>
-            </button>
-          {% endfor %}
-        </div>
-
-        <div class="veloura-branches__map">
-          <iframe
-            src="{{ component.veloura_branches_items[0].map_url }}"
-            loading="lazy"
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-      {% endif %}
+              <strong>اضغط لعرض الموقع في خرائط جوجل</strong>
+            </a>
+          </div>
+        {% endif %}
+      </div>
 
     </div>
   </section>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const sections = document.querySelectorAll('.veloura-branches');
+    (function () {
+      function initBranches() {
+        document.querySelectorAll('.veloura-branches').forEach(function (section) {
+          if (section.dataset.vbReady === '1') return;
+          section.dataset.vbReady = '1';
 
-      sections.forEach(function (section) {
-        const tabs = section.querySelectorAll('.veloura-branches__tab');
-        const iframe = section.querySelector('.veloura-branches__map iframe');
+          var tabs = section.querySelectorAll('.veloura-branches__tab');
+          var iframe = section.querySelector('.veloura-branches__map iframe');
+          var fallback = section.querySelector('.vb__fallback');
+          var open = section.querySelector('.vb__open');
+          if (!tabs.length) return;
 
-        if (!tabs.length || !iframe) return;
+          tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+              var mapUrl = tab.getAttribute('data-map') || '';
+              var link = tab.getAttribute('data-link') || '';
 
-        tabs.forEach(function (tab) {
-          tab.addEventListener('click', function () {
-            const mapUrl = tab.getAttribute('data-map');
+              tabs.forEach(function (item) { item.classList.remove('is-active'); });
+              tab.classList.add('is-active');
 
-            if (!mapUrl) return;
-
-            tabs.forEach(function (item) {
-              item.classList.remove('is-active');
+              if (iframe) {
+                if (mapUrl) { iframe.setAttribute('src', mapUrl); iframe.hidden = false; }
+                else { iframe.hidden = true; }
+              }
+              if (fallback) {
+                fallback.hidden = Boolean(mapUrl);
+                fallback.setAttribute('href', link || '#');
+              }
+              if (open) {
+                open.hidden = !link;
+                open.setAttribute('href', link || '#');
+              }
             });
-
-            tab.classList.add('is-active');
-            iframe.setAttribute('src', mapUrl);
           });
         });
-      });
-    });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initBranches);
+      else initBranches();
+    })();
   </script>
 
 {% endif %}
