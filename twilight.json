@@ -15283,6 +15283,18 @@
           "required": false
         },
         {
+          "id": "vsc_center_titles",
+          "type": "boolean",
+          "format": "switch",
+          "label": "توسيط العناوين",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-align-center",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "vsc_title_products",
           "type": "static",
           "format": "title",

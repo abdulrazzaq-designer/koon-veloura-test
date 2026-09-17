@@ -105,6 +105,7 @@
     'vsc--bg-' ~ vsc_bg,
     'vsc--media-' ~ (vsc_has_media ? vsc_media : 'none'),
     component.vsc_media_left ? 'vsc--media-left' : '',
+    component.vsc_center_titles ? 'is-centered' : '',
     component.vsc_dark_bg ? 'vsc--dark-bg' : '',
     vsc_dots ? 'vsc--dots' : '',
     component.vsc_custom_spacing ? 'has-spacing' : '',
@@ -159,27 +160,52 @@
    والوصف يأخذ درجة منه. */
 .vsc .vsc__muted { color: var(--vsc-muted); }
 
-/* ---------- الصف الأعلى: الوسيط والنص ---------- */
-.vsc .vsc__top {
+/* ---------- التوزيع ----------
+   الجوال: الوسيط، ثم النص، ثم المنتجات.
+   اللابتوب: الوسيط في عمود على اليمين (أو اليسار بالخيار)، وفي العمود
+   المقابل النص وتحته سلايدر المنتجات — فالصورة تصير بجانب المنتجات لا
+   فوقها، والعمودان يبدآن من الأعلى. */
+.vsc .vsc__cols {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 20px;
-  align-items: center;
 }
 
 @media (min-width: 1024px) {
-  .vsc .vsc__top {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
-    grid-template-areas: "media info";
-    gap: 34px;
+  .vsc .vsc__cols {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-areas: "media content";
+    gap: 32px;
+    align-items: stretch;
   }
-  .vsc.vsc--media-left .vsc__top { grid-template-areas: "info media"; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); }
-  .vsc .vsc__media { grid-area: media; }
-  .vsc .vsc__info { grid-area: info; }
+  .vsc.vsc--media-left .vsc__cols {
+    grid-template-areas: "content media";
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+  .vsc .vsc__media { grid-area: media; align-self: stretch; }
+  .vsc .vsc__content { grid-area: content; }
+
+  /* الوسيط يملأ طول العمود المقابل بدل نسبة ثابتة. */
+  .vsc:not(.vsc--ratio-auto) .vsc__media .vsc__frame { height: 100%; aspect-ratio: auto; min-height: 320px; }
 }
 
-/* بلا وسيط: النص وحده بعرض اللوحة. */
-.vsc.vsc--media-none .vsc__top { grid-template-columns: minmax(0, 1fr) !important; grid-template-areas: "info" !important; }
+.vsc .vsc__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* بلا وسيط: النص والمنتجات بعرض اللوحة. */
+.vsc.vsc--media-none .vsc__cols {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas: "content" !important;
+}
+
+/* ---------- التوسيط ---------- */
+.vsc.is-centered .vsc__info { align-items: center; text-align: center; }
+.vsc.is-centered .vsc__points { justify-items: center; }
+.vsc.is-centered .vsc__products-head { justify-content: center; }
 
 /* ---------- الوسيط: صورة شرح أو فيديو ---------- */
 .vsc .vsc__media {
@@ -324,7 +350,7 @@
 
 /* ---------- المنتجات ---------- */
 .vsc .vsc__products {
-  margin-top: 24px;
+  margin-top: 0;
   min-width: 0;
 }
 
@@ -412,7 +438,7 @@ html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
 
       <div class="vsc__panel">
 
-        <div class="vsc__top">
+        <div class="vsc__cols">
 
           {% if vsc_has_media %}
             <div class="vsc__media" data-vsc-media>
@@ -452,6 +478,8 @@ html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
             </div>
           {% endif %}
 
+          <div class="vsc__content">
+
           <div class="vsc__info">
             {% if component.vsc_eyebrow %}
               <span class="vsc__eyebrow">{{ component.vsc_eyebrow }}</span>
@@ -486,9 +514,7 @@ html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
             {% endif %}
           </div>
 
-        </div>
-
-        <div class="vsc__products">
+          <div class="vsc__products">
           {% if component.vsc_products_title %}
             <div class="vsc__products-head">
               <h3>{{ component.vsc_products_title }}</h3>
@@ -518,7 +544,10 @@ html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
                 "1024": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 18 }
               }
             }'
-          ></salla-products-slider>
+            ></salla-products-slider>
+          </div>
+
+          </div>
         </div>
 
       </div>
