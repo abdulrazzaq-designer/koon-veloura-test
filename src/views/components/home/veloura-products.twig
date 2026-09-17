@@ -25,7 +25,57 @@
   {% set source_value = category_ids %}
 {% endif %}
 
+{% set vp_slider = not component.veloura_products_grid_mode %}
+{% set vp_dots = vp_slider and component.veloura_products_show_dots %}
+{% set vp_no_arrows = vp_slider and component.veloura_products_hide_arrows %}
+
 {% if not component.veloura_products_hide_section %}
+<style>
+/* ---------- المنتجات ---------- */
+
+/* بدون توسيط: زر «عرض الكل» مقابل العنوان في نفس السطر، على الجوال أيضاً. */
+.veloura-products:not(.is-centered):not(.has-veloura-title-before) .veloura-products__heading {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+.veloura-products:not(.is-centered) .veloura-products__heading-content { min-width: 0; }
+.veloura-products:not(.is-centered) .veloura-products__button {
+  flex-shrink: 0;
+  margin-top: 0 !important;
+  white-space: nowrap;
+}
+
+/* نقاط التنقل (عرض السلايدر فقط): تحت المنتجات بشكل النقاط الموحّد. */
+.veloura-products.as-slider.has-dots .swiper {
+  padding-bottom: 30px !important;
+}
+.veloura-products.as-slider.has-dots .swiper-pagination {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 4px !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  transform: none !important;
+  display: flex !important;
+  justify-content: center;
+}
+.veloura-products.as-slider:not(.has-dots) .swiper-pagination,
+.veloura-products.as-grid .swiper-pagination { display: none !important; }
+
+/* «توسيط المنتجات» صار عبر إعداد السلايدر نفسه (centerInsufficientSlides)،
+   فيُلغى توسيط CSS القديم الذي كان يزيح المنتجات عند السحب. */
+section.veloura-products.as-slider.is-products-centered .swiper-wrapper.s-slider-swiper-wrapper {
+  justify-content: flex-start !important;
+}
+
+/* إخفاء أسهم التنقل على اللابتوب. */
+.veloura-products.as-slider.no-arrows :is(.s-slider-block__title-nav, .s-slider-nav-arrow, .s-slider-prev, .s-slider-next) {
+  display: none !important;
+}
+</style>
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="
     s-block
@@ -37,6 +87,8 @@
     {{ component.veloura_products_desktop_only ? 'veloura-desktop-only' : '' }}
     {{ component.veloura_products_custom_classes }}
     {{ component.veloura_products_center_desktop ? 'is-products-centered' : '' }}
+    {{ vp_dots ? 'has-dots' : '' }}
+    {{ vp_no_arrows ? 'no-arrows' : '' }}
     {{ component.veloura_products_wide_desktop ? 'is-products-wide' : '' }}
   "
   style="
@@ -94,6 +146,9 @@
           slider-config='{
             "observer": true,
             "observeParents": true,
+            {% if component.veloura_products_center_desktop %}"centerInsufficientSlides": true,{% endif %}
+            {% if vp_dots %}"createElements": true,
+            "pagination": { "enabled": true, "clickable": true },{% endif %}
             "slidesPerView": {{ mobile_slides }},
             "speed": 600,
             "spaceBetween": 14,

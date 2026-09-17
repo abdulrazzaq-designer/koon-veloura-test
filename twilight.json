@@ -14627,6 +14627,7 @@
           "id": "veloura_products_center_desktop",
           "type": "boolean",
           "format": "switch",
+          "description": "إذا كانت المنتجات أقل من عدد الأعمدة، تُعرض في منتصف السطر بدل أن تلتصق بجهة.",
           "label": "توسيط المنتجات في الكمبيوتر",
           "icon": "sicon-align-center",
           "value": false,
@@ -14642,9 +14643,48 @@
           "id": "veloura_products_wide_desktop",
           "type": "boolean",
           "format": "switch",
+          "description": "يُخرج السلايدر من حدود الكونتينر ليأخذ عرض الشاشة كاملاً على الكمبيوتر.",
           "label": "توسيع عرض المنتجات في الكمبيوتر",
           "icon": "sicon-resize-full",
           "value": false,
+          "conditions": [
+            {
+              "id": "veloura_products_grid_mode",
+              "operation": "=",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "veloura_products_show_dots",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار نقاط التنقل",
+          "description": "تظهر تحت المنتجات في عرض السلايدر فقط.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_products_grid_mode",
+              "operation": "=",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "veloura_products_hide_arrows",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء أسهم التنقل في الكمبيوتر",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false,
           "conditions": [
             {
               "id": "veloura_products_grid_mode",
