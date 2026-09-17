@@ -27,6 +27,25 @@
   component.veloura_before_after_custom_classes ?: ''
   ]|join(' ') %}
 
+<style>
+/* قبل/بعد: كل الأجزاء تتبع حواف العنصر — حاد مع الحاد، ودائري مع الدائري. */
+.veloura-before-after .veloura-before-after__label {
+  border-radius: var(--veloura-before-after-radius, 16px) !important;
+}
+
+/* الدائرة في المنتصف: نصف حجمها أقصى حد، فتبقى دائرة مع الحواف الدائرية
+   وتصبح مربعاً مع الحادة. */
+.veloura-before-after .veloura-before-after__handle {
+  border-radius: min(var(--veloura-before-after-radius, 16px), 50%) !important;
+}
+
+/* الصورتان لا تتراكبان: كل صورة تُقص لجهتها فقط، فالصورة المفرّغة (PNG
+   شفاف) لا يظهر تحتها جزء من الصورة الأخرى. */
+.veloura-before-after .veloura-before-after__img--before {
+  will-change: clip-path;
+}
+</style>
+
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     class="{{ section_classes }}"
     style="
@@ -110,6 +129,7 @@
         const afterImg = compare.querySelector('.veloura-before-after__img--after');
         const line = compare.querySelector('.veloura-before-after__line');
         const handle = compare.querySelector('.veloura-before-after__handle');
+        const beforeImg = compare.querySelector('.veloura-before-after__img--before');
 
         if (!range || !afterWrap || !afterImg || !line || !handle) return;
 
@@ -126,6 +146,7 @@
 
         function setPosition(value) {
           afterWrap.style.clipPath = 'inset(0 ' + (100 - value) + '% 0 0)';
+          if (beforeImg) beforeImg.style.clipPath = 'inset(0 0 0 ' + value + '%)';
           line.style.left = value + '%';
           handle.style.left = value + '%';
           range.value = value;
