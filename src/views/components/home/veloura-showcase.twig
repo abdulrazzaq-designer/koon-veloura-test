@@ -7,18 +7,21 @@
 {# ==========================================================================
    عرض مميز للمنتجات (فيلورا)
 
-   لوحة بخلفية (صورة أو تدرّج لوني) مع كرات ضوء متحركة بهدوء، فيها من جهة:
-   عبارة صغيرة + عنوان + وصف + زر، ومن الجهة الأخرى سلايدر منتجات سلة.
-   لابتوب: ثلث للنص وثلثان للمنتجات. جوال: النص فوق والمنتجات تحته.
+   وسيط حقيقي لا خلفية: صورة شرح أو فيديو (ملف mp4 أو رابط يوتيوب) في جهة،
+   والنص في الجهة المقابلة، وتحتهما سلايدر منتجات من المتجر. خلفية القسم
+   اختيارية (شفافة أو لون أو تدرّج)، والحواف الداخلية مشتقة من حواف القسم.
    الستايل هنا في الملف نفسه مثل بقية عناصر فيلورا.
    ========================================================================== #}
 
 {% if not component.vsc_hide %}
 
-  {# ---------- مصدر المنتجات ---------- #}
+  {# ---------- مصدر المنتجات ----------
+     قوائم سلة تصل أحياناً ككائن وأحياناً كمصفوفة، فتُفك هنا بلا ماكرو:
+     ماكرو داخل {% if %} الخاص بالعنصر سبق أن أسقط قسماً كاملاً. #}
   {% set vsc_source = component.vsc_source|default('latest') %}
+  {% if vsc_source.selected is defined %}{% set vsc_source = vsc_source.selected %}{% endif %}
+  {% if vsc_source is iterable and vsc_source.value is not defined %}{% set vsc_source = vsc_source|first %}{% endif %}
   {% if vsc_source.value is defined %}{% set vsc_source = vsc_source.value %}{% endif %}
-  {% if vsc_source is iterable and vsc_source[0].value is defined %}{% set vsc_source = vsc_source[0].value %}{% endif %}
   {% if vsc_source is iterable or vsc_source == '' %}{% set vsc_source = 'latest' %}{% endif %}
 
   {% set vsc_source_value = null %}
@@ -32,24 +35,76 @@
     {% set vsc_source_value = vsc_ids %}
   {% endif %}
 
-  {# ---------- الإعدادات ---------- #}
-  {% set vsc_desk = component.vsc_desktop_cols|default(3) %}
+  {# ---------- الوسيط ---------- #}
+  {% set vsc_media = component.vsc_media_type|default('image') %}
+  {% if vsc_media.selected is defined %}{% set vsc_media = vsc_media.selected %}{% endif %}
+  {% if vsc_media is iterable and vsc_media.value is not defined %}{% set vsc_media = vsc_media|first %}{% endif %}
+  {% if vsc_media.value is defined %}{% set vsc_media = vsc_media.value %}{% endif %}
+  {% if vsc_media is iterable %}{% set vsc_media = 'image' %}{% endif %}
+  {% if vsc_media not in ['image', 'video', 'youtube', 'none'] %}{% set vsc_media = 'image' %}{% endif %}
+
+  {% set vsc_image = component.vsc_media_image.url|default(component.vsc_media_image) %}
+  {% set vsc_poster = component.vsc_media_poster.url|default(component.vsc_media_poster) %}
+  {% set vsc_video = component.vsc_media_video.url|default(component.vsc_media_video) %}
+  {% if vsc_video is iterable %}{% set vsc_video = '' %}{% endif %}
+  {% set vsc_video = vsc_video|default('')|trim %}
+
+  {# رابط يوتيوب بأي صيغة: watch?v= أو youtu.be أو shorts أو embed — نأخذ
+     المعرّف ونبني رابط تضمين، فالروابط العادية لا تُعرض داخل إطار. #}
+  {% set vsc_yt_raw = component.vsc_youtube|default('')|trim %}
+  {% set vsc_yt_id = '' %}
+  {% if 'v=' in vsc_yt_raw %}
+    {% set vsc_yt_id = (vsc_yt_raw|split('v='))[1]|split('&')|first %}
+  {% elseif 'youtu.be/' in vsc_yt_raw %}
+    {% set vsc_yt_id = (vsc_yt_raw|split('youtu.be/'))[1]|split('?')|first|split('&')|first %}
+  {% elseif '/shorts/' in vsc_yt_raw %}
+    {% set vsc_yt_id = (vsc_yt_raw|split('/shorts/'))[1]|split('?')|first|split('&')|first %}
+  {% elseif '/embed/' in vsc_yt_raw %}
+    {% set vsc_yt_id = (vsc_yt_raw|split('/embed/'))[1]|split('?')|first|split('&')|first %}
+  {% elseif vsc_yt_raw and 'http' not in vsc_yt_raw %}
+    {% set vsc_yt_id = vsc_yt_raw %}
+  {% endif %}
+  {% set vsc_yt_id = vsc_yt_id|trim %}
+
+  {% set vsc_has_media =
+    (vsc_media == 'image' and vsc_image)
+    or (vsc_media == 'video' and vsc_video)
+    or (vsc_media == 'youtube' and vsc_yt_id)
+  %}
+
+  {% set vsc_ratio = component.vsc_media_ratio|default('16-9') %}
+  {% if vsc_ratio.selected is defined %}{% set vsc_ratio = vsc_ratio.selected %}{% endif %}
+  {% if vsc_ratio is iterable and vsc_ratio.value is not defined %}{% set vsc_ratio = vsc_ratio|first %}{% endif %}
+  {% if vsc_ratio.value is defined %}{% set vsc_ratio = vsc_ratio.value %}{% endif %}
+  {% if vsc_ratio is iterable %}{% set vsc_ratio = '16-9' %}{% endif %}
+  {% set ratio_map = {'16-9': '16 / 9', '4-3': '4 / 3', '1-1': '1 / 1', 'auto': 'auto'} %}
+  {% set vsc_ratio_css = ratio_map[vsc_ratio]|default('16 / 9') %}
+
+  {# ---------- بقية الإعدادات ---------- #}
+  {% set vsc_desk = component.vsc_desktop_cols|default(4) %}
   {% set vsc_mob = component.vsc_mobile_cols|default(2) %}
   {% set vsc_peek = component.vsc_peek is defined ? component.vsc_peek : true %}
   {% set vsc_dots = component.vsc_show_dots is defined ? component.vsc_show_dots : true %}
   {% set vsc_desk_view = vsc_peek ? vsc_desk + 0.3 : vsc_desk %}
   {% set vsc_mob_view = vsc_peek ? vsc_mob + 0.3 : vsc_mob %}
-  {% set vsc_radius = component.vsc_radius|default(28) %}
+
+  {% set vsc_radius = component.vsc_radius|default(24) %}
   {% if vsc_radius.value is defined %}{% set vsc_radius = vsc_radius.value %}{% endif %}
-  {% set vsc_radius_px = (vsc_radius ~ '') == '40' ? '999px' : ((vsc_radius ~ '' == '' ? '28' : vsc_radius) ~ 'px') %}
-  {% set vsc_overlay = component.vsc_overlay|default(35) %}
-  {% set vsc_bg_image = component.vsc_bg_image.url|default(component.vsc_bg_image) %}
+  {% set vsc_radius_px = (vsc_radius ~ '') == '40' ? '999px' : ((vsc_radius ~ '' == '' ? '24' : vsc_radius) ~ 'px') %}
+
+  {% set vsc_bg = component.vsc_bg_style|default('soft') %}
+  {% if vsc_bg.selected is defined %}{% set vsc_bg = vsc_bg.selected %}{% endif %}
+  {% if vsc_bg is iterable and vsc_bg.value is not defined %}{% set vsc_bg = vsc_bg|first %}{% endif %}
+  {% if vsc_bg.value is defined %}{% set vsc_bg = vsc_bg.value %}{% endif %}
+  {% if vsc_bg is iterable %}{% set vsc_bg = 'soft' %}{% endif %}
+  {% if vsc_bg not in ['none', 'solid', 'gradient', 'soft'] %}{% set vsc_bg = 'soft' %}{% endif %}
 
   {% set vsc_classes = [
     's-block',
     'vsc',
-    component.vsc_info_left ? 'vsc--info-left' : '',
-    vsc_bg_image ? 'vsc--has-image' : '',
+    'vsc--bg-' ~ vsc_bg,
+    'vsc--media-' ~ (vsc_has_media ? vsc_media : 'none'),
+    component.vsc_media_left ? 'vsc--media-left' : '',
     component.vsc_dark_bg ? 'vsc--dark-bg' : '',
     vsc_dots ? 'vsc--dots' : '',
     component.vsc_custom_spacing ? 'has-spacing' : '',
@@ -63,135 +118,131 @@
    عرض مميز للمنتجات — كل شيء داخل .vsc
    ========================================================================== */
 .vsc {
-  --vsc-radius: 28px;
+  --vsc-radius: 24px;
   --vsc-from: #004956;
   --vsc-to: #0b1f2a;
-  --vsc-text: #ffffff;
-  --vsc-btn-bg: #ffffff;
-  --vsc-btn-text: #004956;
-  --vsc-overlay: .35;
+  --vsc-text: #111827;
+  --vsc-muted: #4b5563;
+  --vsc-btn-bg: #004956;
+  --vsc-btn-text: #ffffff;
+  --vsc-r-inner: min(var(--vsc-radius), 26px);
+  --vsc-r-pill: min(calc(var(--vsc-radius) * 40), 999px);
   padding-block: 40px;
   background: transparent !important;
+  color: var(--vsc-text);
 }
 
 .vsc [hidden] { display: none !important; }
 
-/* الحواف الداخلية مشتقة من حواف اللوحة: حاد مع الحاد، دائري مع الدائري. */
+/* ---------- اللوحة ---------- */
 .vsc .vsc__panel {
-  --vsc-r-inner: min(var(--vsc-radius), 22px);
-  --vsc-r-pill: min(calc(var(--vsc-radius) * 40), 999px);
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
   border-radius: min(var(--vsc-radius), 48px);
-  padding: 26px 18px 22px;
-  color: var(--vsc-text);
-  background: linear-gradient(135deg, var(--vsc-from), var(--vsc-to));
+  padding: 0;
+  overflow: hidden;
 }
+
+/* خلفية القسم: بلا شيء، أو لون، أو تدرّج، أو لمسة خفيفة من لون العنصر. */
+.vsc.vsc--bg-solid .vsc__panel { background: var(--vsc-from); padding: 22px 16px; }
+.vsc.vsc--bg-gradient .vsc__panel { background: linear-gradient(135deg, var(--vsc-from), var(--vsc-to)); padding: 22px 16px; }
+.vsc.vsc--bg-soft .vsc__panel {
+  background: color-mix(in srgb, var(--vsc-from) 7%, transparent);
+  padding: 22px 16px;
+}
+.vsc.vsc--bg-none .vsc__panel { background: transparent; }
 
 @media (min-width: 1024px) {
-  .vsc .vsc__panel { padding: 44px; }
+  .vsc:not(.vsc--bg-none) .vsc__panel { padding: 34px; }
 }
 
-/* ---------- الخلفية ---------- */
-.vsc .vsc__bg {
-  position: absolute;
-  inset: 0;
-  z-index: -3;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.04);
-  animation: vsc-zoom 18s ease-in-out infinite alternate;
-}
+/* على الخلفيات الملوّنة تُقرأ النصوص فاتحة، فالتاجر يضبط لون النص وحده،
+   والوصف يأخذ درجة منه. */
+.vsc .vsc__muted { color: var(--vsc-muted); }
 
-/* تعتيم يقوى في جهة النص حتى يبقى مقروءاً فوق أي صورة. */
-.vsc .vsc__panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background: linear-gradient(
-    to left,
-    rgba(0, 0, 0, var(--vsc-overlay)),
-    rgba(0, 0, 0, calc(var(--vsc-overlay) * .35))
-  );
-}
-.vsc.vsc--info-left .vsc__panel::before {
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, var(--vsc-overlay)),
-    rgba(0, 0, 0, calc(var(--vsc-overlay) * .35))
-  );
-}
-@media (max-width: 1023px) {
-  .vsc .vsc__panel::before,
-  .vsc.vsc--info-left .vsc__panel::before {
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, var(--vsc-overlay)),
-      rgba(0, 0, 0, calc(var(--vsc-overlay) * .35))
-    );
-  }
-}
-
-/* كرات ضوء تتحرك ببطء — هي ما يعطي اللوحة حياتها بدون صورة. */
-.vsc .vsc__orb {
-  position: absolute;
-  z-index: -1;
-  border-radius: 50%;
-  filter: blur(46px);
-  opacity: .55;
-  pointer-events: none;
-}
-.vsc .vsc__orb--a {
-  width: 340px; height: 340px;
-  inset-inline-start: -90px; top: -120px;
-  background: color-mix(in srgb, var(--vsc-from) 45%, #ffffff);
-  animation: vsc-float-a 14s ease-in-out infinite alternate;
-}
-.vsc .vsc__orb--b {
-  width: 280px; height: 280px;
-  inset-inline-end: 12%; bottom: -140px;
-  background: color-mix(in srgb, var(--vsc-to) 30%, var(--vsc-from));
-  opacity: .7;
-  animation: vsc-float-b 17s ease-in-out infinite alternate;
-}
-.vsc.vsc--has-image .vsc__orb { opacity: .28; }
-
-@keyframes vsc-zoom { to { transform: scale(1.12); } }
-@keyframes vsc-float-a { to { transform: translate(60px, 40px) scale(1.15); } }
-@keyframes vsc-float-b { to { transform: translate(-70px, -30px) scale(.9); } }
-
-/* ---------- التوزيع ---------- */
-.vsc .vsc__grid {
+/* ---------- الصف الأعلى: الوسيط والنص ---------- */
+.vsc .vsc__top {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 22px;
+  gap: 20px;
   align-items: center;
 }
 
 @media (min-width: 1024px) {
-  .vsc .vsc__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    grid-template-areas: "info products";
-    gap: 40px;
+  .vsc .vsc__top {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    grid-template-areas: "media info";
+    gap: 34px;
   }
-  .vsc.vsc--info-left .vsc__grid { grid-template-areas: "products info"; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  .vsc.vsc--media-left .vsc__top { grid-template-areas: "info media"; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); }
+  .vsc .vsc__media { grid-area: media; }
   .vsc .vsc__info { grid-area: info; }
-  .vsc .vsc__products { grid-area: products; }
 }
+
+/* بلا وسيط: النص وحده بعرض اللوحة. */
+.vsc.vsc--media-none .vsc__top { grid-template-columns: minmax(0, 1fr) !important; grid-template-areas: "info" !important; }
+
+/* ---------- الوسيط: صورة شرح أو فيديو ---------- */
+.vsc .vsc__media {
+  position: relative;
+  min-width: 0;
+  border-radius: var(--vsc-r-inner);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--vsc-from) 10%, transparent);
+}
+
+.vsc .vsc__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--vsc-ratio, 16 / 9);
+}
+
+.vsc.vsc--ratio-auto .vsc__frame { aspect-ratio: auto; }
+
+.vsc .vsc__media :is(img, video, iframe) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+
+.vsc.vsc--ratio-auto .vsc__media :is(img, video) { height: auto; object-fit: contain; }
+
+/* زر التشغيل الذي يظهر فوق صورة الفيديو قبل تشغيله. */
+.vsc .vsc__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: rgba(0, 0, 0, .18);
+  cursor: pointer;
+  transition: background-color .25s ease;
+}
+.vsc .vsc__play:hover { background: rgba(0, 0, 0, .28); }
+.vsc .vsc__play span {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: min(var(--vsc-r-inner), 50%);
+  background: #ffffff;
+  color: var(--vsc-from);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+  transition: transform .25s ease;
+}
+.vsc .vsc__play:hover span { transform: scale(1.08); }
+.vsc .vsc__play svg { width: 24px; height: 24px; margin-inline-start: 3px; }
 
 /* ---------- النص ---------- */
 .vsc .vsc__info {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  text-align: center;
-}
-@media (min-width: 1024px) {
-  .vsc .vsc__info { align-items: flex-start; text-align: start; gap: 14px; }
+  text-align: start;
+  min-width: 0;
 }
 
 .vsc .vsc__eyebrow {
@@ -200,13 +251,10 @@
   gap: 6px;
   padding: 6px 14px;
   border-radius: var(--vsc-r-pill);
-  background: rgba(255, 255, 255, .14);
-  border: 1px solid rgba(255, 255, 255, .22);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--vsc-from) 12%, transparent);
+  color: inherit;
   font-size: 12.5px;
   font-weight: 800;
-  letter-spacing: .02em;
 }
 .vsc .vsc__eyebrow::before {
   content: "";
@@ -222,19 +270,41 @@
   color: inherit;
   font-size: 26px;
   font-weight: 900;
-  line-height: 1.3;
+  line-height: 1.32;
 }
-@media (min-width: 1024px) { .vsc .vsc__title { font-size: 38px; } }
+@media (min-width: 1024px) { .vsc .vsc__title { font-size: 34px; } }
 
 .vsc .vsc__text {
   margin: 0;
-  color: inherit;
   font-size: 14px;
-  line-height: 1.9;
-  opacity: .85;
-  max-width: 38ch;
+  line-height: 1.95;
+  max-width: 46ch;
 }
 @media (min-width: 1024px) { .vsc .vsc__text { font-size: 15px; } }
+
+/* نقاط سريعة تحت الوصف: ما يجعل العنصر «شرحاً» لا مجرد بنر. */
+.vsc .vsc__points {
+  display: grid;
+  gap: 8px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+.vsc .vsc__point {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.vsc .vsc__point i {
+  font-size: 16px;
+  color: var(--vsc-from);
+  flex: 0 0 auto;
+}
+.vsc.vsc--bg-solid .vsc__point i,
+.vsc.vsc--bg-gradient .vsc__point i { color: inherit; }
 
 .vsc .vsc__button {
   display: inline-flex;
@@ -251,15 +321,26 @@
   transition: transform .25s ease, gap .25s ease;
 }
 .vsc .vsc__button:hover { transform: translateY(-2px); gap: 12px; }
-.vsc .vsc__button i { font-size: 16px; }
 
 /* ---------- المنتجات ---------- */
-.vsc .vsc__products { min-width: 0; }
+.vsc .vsc__products {
+  margin-top: 24px;
+  min-width: 0;
+}
+
+.vsc .vsc__products-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.vsc .vsc__products-head h3 { margin: 0; font-size: 17px; font-weight: 800; color: inherit; }
 
 .vsc .vsc__products :is(salla-products-slider, salla-slider) { display: block; }
 
-/* فجوة السلايدر من إعداده (spaceBetween)، ونلغي حشوات سلة الافتراضية حتى
-   تبدأ المنتجات وتنتهي عند حدود العمود بالضبط. */
+/* فجوة السلايدر من إعداده، وحشوات سلة الافتراضية تُلغى حتى تبدأ المنتجات
+   وتنتهي عند حدود اللوحة بالضبط. */
 .vsc .vsc__products .carousel-slider .swiper,
 .vsc .vsc__products .swiper {
   margin-left: 0 !important;
@@ -279,7 +360,6 @@
   display: none !important;
 }
 
-/* نقاط التنقل تحت المنتجات. */
 .vsc.vsc--dots .vsc__products .swiper { padding-bottom: 30px !important; }
 .vsc.vsc--dots .vsc__products .swiper-pagination {
   position: absolute !important;
@@ -291,35 +371,37 @@
 }
 .vsc:not(.vsc--dots) .vsc__products .swiper-pagination { display: none !important; }
 
-/* ---------- الوضع الداكن ----------
-   مع الخيار، ومن غير صورة: اللوحة تأخذ اللون الثانوي للداكن مع لمسة من
-   لون العنصر في الكرات. */
-html.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel,
-html body.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel {
+/* ---------- الوضع الداكن ---------- */
+html.dark .vsc.vsc--dark-bg:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel,
+html body.dark .vsc.vsc--dark-bg:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel {
   background: var(--veloura-dark-secondary-bg, #010612) !important;
+}
+html.dark .vsc.vsc--dark-bg :is(.vsc__title, .vsc__eyebrow, .vsc__products-head h3),
+html body.dark .vsc.vsc--dark-bg :is(.vsc__title, .vsc__eyebrow, .vsc__products-head h3) {
   color: var(--veloura-dark-primary-text, #ffffff) !important;
 }
-html.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel::before,
-html body.dark .vsc.vsc--dark-bg:not(.vsc--has-image) .vsc__panel::before { opacity: 0; }
-html.dark .vsc.vsc--dark-bg .vsc__text,
-html body.dark .vsc.vsc--dark-bg .vsc__text { color: var(--veloura-dark-secondary-text, #ededed); opacity: 1; }
+html.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point),
+html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
+  color: var(--veloura-dark-secondary-text, #ededed) !important;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .vsc .vsc__bg, .vsc .vsc__orb, .vsc .vsc__eyebrow::before { animation: none; }
+  .vsc .vsc__eyebrow::before { animation: none; }
 }
 </style>
 
   <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-showcase-{{ position }}"
-    class="{{ vsc_classes }}"
+    class="{{ vsc_classes }} {{ vsc_ratio == 'auto' ? 'vsc--ratio-auto' : '' }}"
     style="
       --vsc-radius: {{ vsc_radius_px }};
+      --vsc-ratio: {{ vsc_ratio_css }};
       --vsc-from: {{ component.vsc_bg_from|default('#004956') }};
       --vsc-to: {{ component.vsc_bg_to|default('#0b1f2a') }};
-      --vsc-text: {{ component.vsc_text_color|default('#ffffff') }};
-      --vsc-btn-bg: {{ component.vsc_button_bg|default('#ffffff') }};
-      --vsc-btn-text: {{ component.vsc_button_text_color|default('#004956') }};
-      --vsc-overlay: {{ (vsc_overlay / 100)|round(2) }};
+      --vsc-text: {{ component.vsc_text_color|default('#111827') }};
+      --vsc-muted: {{ component.vsc_muted_color|default('#4b5563') }};
+      --vsc-btn-bg: {{ component.vsc_button_bg|default('#004956') }};
+      --vsc-btn-text: {{ component.vsc_button_text_color|default('#ffffff') }};
     "
   >
     {% if component.vsc_custom_spacing %}
@@ -329,13 +411,47 @@ html body.dark .vsc.vsc--dark-bg .vsc__text { color: var(--veloura-dark-secondar
     {% endif %}
 
       <div class="vsc__panel">
-        {% if vsc_bg_image %}
-          <img class="vsc__bg" src="{{ vsc_bg_image }}" alt="" loading="lazy" decoding="async">
-        {% endif %}
-        <span class="vsc__orb vsc__orb--a" aria-hidden="true"></span>
-        <span class="vsc__orb vsc__orb--b" aria-hidden="true"></span>
 
-        <div class="vsc__grid">
+        <div class="vsc__top">
+
+          {% if vsc_has_media %}
+            <div class="vsc__media" data-vsc-media>
+              {% if vsc_media == 'image' %}
+                <span class="vsc__frame">
+                  <img src="{{ vsc_image }}" alt="{{ component.vsc_title|default('') }}" loading="lazy" decoding="async">
+                </span>
+
+              {% elseif vsc_media == 'video' %}
+                <span class="vsc__frame">
+                  <video
+                    src="{{ vsc_video }}"
+                    {% if vsc_poster %}poster="{{ vsc_poster }}"{% endif %}
+                    {% if component.vsc_video_autoplay %}autoplay muted loop playsinline{% endif %}
+                    {% if component.vsc_video_controls or not component.vsc_video_autoplay %}controls{% endif %}
+                    preload="metadata"
+                    data-vsc-video
+                  ></video>
+                </span>
+
+              {% else %}
+                {# يوتيوب: صورة مصغّرة أولاً وإطار يُحمَّل عند الضغط، فلا يُثقل
+                   الصفحة الرئيسية بسكربتات يوتيوب قبل أن يطلبها الزائر. #}
+                <span class="vsc__frame" data-vsc-yt="{{ vsc_yt_id|e('html_attr') }}">
+                  <img
+                    src="{{ vsc_poster ?: 'https://i.ytimg.com/vi/' ~ vsc_yt_id ~ '/hqdefault.jpg' }}"
+                    alt="{{ component.vsc_title|default('') }}"
+                    loading="lazy"
+                  >
+                  <button type="button" class="vsc__play" data-vsc-yt-play aria-label="تشغيل الفيديو">
+                    <span aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72c0 .82.9 1.32 1.6.88l10.8-6.86a1.04 1.04 0 0 0 0-1.76L9.6 4.26A1.04 1.04 0 0 0 8 5.14Z"/></svg>
+                    </span>
+                  </button>
+                </span>
+              {% endif %}
+            </div>
+          {% endif %}
+
           <div class="vsc__info">
             {% if component.vsc_eyebrow %}
               <span class="vsc__eyebrow">{{ component.vsc_eyebrow }}</span>
@@ -346,7 +462,20 @@ html body.dark .vsc.vsc--dark-bg .vsc__text { color: var(--veloura-dark-secondar
             {% endif %}
 
             {% if component.vsc_subtitle %}
-              <p class="vsc__text">{{ component.vsc_subtitle|nl2br }}</p>
+              <p class="vsc__text vsc__muted">{{ component.vsc_subtitle|nl2br }}</p>
+            {% endif %}
+
+            {% if component.vsc_points %}
+              <ul class="vsc__points">
+                {% for point in component.vsc_points %}
+                  {% if point.point_text %}
+                    <li class="vsc__point">
+                      <i class="{{ point.point_icon|default('sicon-check') }}" aria-hidden="true"></i>
+                      <span>{{ point.point_text }}</span>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
             {% endif %}
 
             {% if component.vsc_show_button and component.vsc_button_text %}
@@ -357,36 +486,69 @@ html body.dark .vsc.vsc--dark-bg .vsc__text { color: var(--veloura-dark-secondar
             {% endif %}
           </div>
 
-          <div class="vsc__products">
-            <salla-products-slider
-              source="{{ vsc_source }}"
-              limit="{{ component.vsc_limit ?: 8 }}"
-              source-value="{{ vsc_source_value|json_encode }}"
-              display-all-url=""
-              block-title=""
-              slider-id="veloura-showcase-slider-{{ position }}"
-              {% if component.vsc_autoplay %}autoplay{% endif %}
-              slider-config='{
-                "observer": true,
-                "observeParents": true,
-                "slidesPerView": {{ vsc_mob_view }},
-                "spaceBetween": 12,
-                "speed": 650,
-                "watchOverflow": true,
-                {% if component.vsc_autoplay %}"autoplay": { "delay": 3200, "disableOnInteraction": false, "pauseOnMouseEnter": true },{% endif %}
-                {% if vsc_dots %}"createElements": true,
-                "pagination": { "enabled": true, "clickable": true },{% endif %}
-                "breakpoints": {
-                  "768": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 16 },
-                  "1024": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 18 }
-                }
-              }'
-            ></salla-products-slider>
-          </div>
         </div>
+
+        <div class="vsc__products">
+          {% if component.vsc_products_title %}
+            <div class="vsc__products-head">
+              <h3>{{ component.vsc_products_title }}</h3>
+            </div>
+          {% endif %}
+
+          <salla-products-slider
+            source="{{ vsc_source }}"
+            limit="{{ component.vsc_limit ?: 8 }}"
+            source-value="{{ vsc_source_value|json_encode }}"
+            display-all-url=""
+            block-title=""
+            slider-id="veloura-showcase-slider-{{ position }}"
+            {% if component.vsc_products_autoplay %}autoplay{% endif %}
+            slider-config='{
+              "observer": true,
+              "observeParents": true,
+              "slidesPerView": {{ vsc_mob_view }},
+              "spaceBetween": 12,
+              "speed": 650,
+              "watchOverflow": true,
+              {% if component.vsc_products_autoplay %}"autoplay": { "delay": 3200, "disableOnInteraction": false, "pauseOnMouseEnter": true },{% endif %}
+              {% if vsc_dots %}"createElements": true,
+              "pagination": { "enabled": true, "clickable": true },{% endif %}
+              "breakpoints": {
+                "768": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 16 },
+                "1024": { "slidesPerView": {{ vsc_desk_view }}, "spaceBetween": 18 }
+              }
+            }'
+          ></salla-products-slider>
+        </div>
+
       </div>
 
     </div>
   </section>
+
+  {% if vsc_has_media and vsc_media == 'youtube' %}
+  <script>
+    (function () {
+      var section = document.getElementById('veloura-showcase-{{ position }}');
+      if (!section) return;
+      var frame = section.querySelector('[data-vsc-yt]');
+      var play = section.querySelector('[data-vsc-yt-play]');
+      if (!frame || !play) return;
+
+      play.addEventListener('click', function () {
+        var id = frame.getAttribute('data-vsc-yt');
+        if (!id) return;
+        frame.innerHTML = '';
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&playsinline=1';
+        iframe.title = 'video';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.loading = 'lazy';
+        frame.appendChild(iframe);
+      });
+    })();
+  </script>
+  {% endif %}
 
 {% endif %}
