@@ -132,6 +132,14 @@ html body.dark .vbr .veloura-brands__heading h2 { color: var(--veloura-dark-prim
 html.dark .vbr .veloura-brands__heading p,
 html body.dark .vbr .veloura-brands__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
 
+/* السحب باليد (لمس أو ماوس) فوق الحركة التلقائية. */
+.vbr .vbr__viewport { cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.vbr.vbr--manual .vbr__viewport { touch-action: pan-x pan-y; }
+.vbr .vbr__viewport.is-dragging { cursor: grabbing; }
+.vbr .vbr__viewport.is-dragging a { pointer-events: none; }
+.vbr .vbr__drag { will-change: transform; }
+.vbr .vbr__viewport img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
+
 /* نقاط التنقل تحت الصف. */
 .vbr .vbr__dots { margin-top: 16px; }
 
@@ -179,7 +187,7 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
         {% for row in b_rows %}
           {% set row_items = row == 'b' ? b_items|reverse : b_items %}
           <div class="vbr__viewport vbr__viewport--{{ row }}">
-            <div class="vbr__track">
+            <div class="vbr__drag"><div class="vbr__track">
               {% for copy in 1..(b_auto ? b_copies : 1) %}
                 {% for brand in row_items %}
                   {% set brand_name = brand.name|default(brand.title|default('brand')) %}
@@ -196,7 +204,7 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
                   </div>
                 {% endfor %}
               {% endfor %}
-            </div>
+            </div></div>
           </div>
         {% endfor %}
 
@@ -208,6 +216,85 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
 
     </div>
   </section>
+
+  {% if b_n > 0 %}
+  <script>
+  /* السحب باليد: أثناء السحب تتوقف الحركة ويتبع الشريط الإصبع، وعند الإفلات
+     يُحوَّل موضع الشريط إلى زمن داخل الحركة فتكمل من نفس المكان بلا قفزة.
+     في وضع الخطوات يثبت على أقرب ماركة. بدون تحريك: السحب يمرر الصف. */
+  (function () {
+    var section = document.getElementById('veloura-brands-{{ position }}');
+    if (!section) return;
+    var n = {{ b_n }};
+    var copies = {{ b_copies }};
+    var auto = section.classList.contains('vbr--auto');
+    var smooth = {{ b_smooth ? 'true' : 'false' }};
+
+    section.querySelectorAll('.vbr__viewport').forEach(function (viewport) {
+      var drag = viewport.querySelector('.vbr__drag');
+      var track = viewport.querySelector('.vbr__track');
+      if (!drag || !track) return;
+      var reversed = viewport.classList.contains('vbr__viewport--b');
+      var startX = 0, dx = 0, down = false, moved = false, basePos = 0, scroll0 = 0;
+
+      function anim() { var l = track.getAnimations ? track.getAnimations() : []; return l[0] || null; }
+      function posNow() {
+        var m = getComputedStyle(track).transform;
+        if (!m || m === 'none') return 0;
+        var v = m.match(/matrix\(([^)]+)\)/);
+        return v ? parseFloat(v[1].split(',')[4]) || 0 : 0;
+      }
+
+      viewport.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        down = true; moved = false; dx = 0; startX = e.clientX;
+        if (auto) { var a = anim(); if (a) a.pause(); basePos = posNow(); }
+        else scroll0 = viewport.scrollLeft;
+      });
+
+      window.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        dx = e.clientX - startX;
+        if (!moved && Math.abs(dx) > 6) { moved = true; viewport.classList.add('is-dragging'); }
+        if (!moved) return;
+        if (auto) drag.style.transform = 'translateX(' + dx + 'px)';
+        else if (e.pointerType === 'mouse') viewport.scrollLeft = scroll0 - dx;
+      }, { passive: true });
+
+      function end() {
+        if (!down) return;
+        down = false;
+        setTimeout(function () { viewport.classList.remove('is-dragging'); }, 0);
+        if (!auto) return;
+        var a = anim();
+        drag.style.transform = '';
+        if (!a) return;
+        var copyW = track.getBoundingClientRect().width / copies;
+        var d = a.effect.getTiming().duration;
+        var p = basePos + (moved ? dx : 0);
+        p = ((p % copyW) - copyW) % copyW;            /* (-copyW, 0] */
+        var frac = -p / copyW;                         /* 0..1 من نسخة واحدة */
+        var t;
+        if (smooth) {
+          t = frac * d;
+        } else {
+          var k = Math.round(frac * n) % n;            /* أقرب ماركة */
+          t = ((k + 0.36) / n) * d;                    /* منتصف فترة الثبات */
+        }
+        if (reversed) t = d - t;
+        var iter = Math.floor((a.currentTime || 0) / d);
+        a.currentTime = iter * d + t;
+        a.play();
+      }
+      window.addEventListener('pointerup', end);
+      window.addEventListener('pointercancel', end);
+
+      /* لا يُفتح رابط الماركة إذا كانت الحركة سحباً. */
+      viewport.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    });
+  })();
+  </script>
+  {% endif %}
 
   {% if not b_two and b_n > 1 %}
   <script>
