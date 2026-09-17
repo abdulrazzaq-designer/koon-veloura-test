@@ -39,6 +39,27 @@
   border-radius: min(var(--veloura-before-after-radius, 16px), 50%) !important;
 }
 
+/* خلفية الصورة المفرّغة = اللون الثانوي للخلفية (فاتح وداكن). */
+.veloura-before-after .veloura-before-after__compare {
+  background: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7)) !important;
+}
+html.dark .veloura-before-after .veloura-before-after__compare,
+html body.dark .veloura-before-after .veloura-before-after__compare {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+}
+
+/* بدون أي ظلال في الوضعين. */
+.veloura-before-after,
+.veloura-before-after .veloura-before-after__compare,
+.veloura-before-after .veloura-before-after__line,
+.veloura-before-after .veloura-before-after__handle,
+.veloura-before-after .veloura-before-after__label,
+.veloura-before-after .veloura-before-after__img {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
 /* الصورتان لا تتراكبان: كل صورة تُقص لجهتها فقط، فالصورة المفرّغة (PNG
    شفاف) لا يظهر تحتها جزء من الصورة الأخرى. */
 .veloura-before-after .veloura-before-after__img--before {
