@@ -27,6 +27,8 @@
   {% set vpk_radius_px = (vpk_radius ~ '') == '40' ? '999px' : ((vpk_radius ~ '' == '' ? '22' : vpk_radius) ~ 'px') %}
 
   {% set vpk_cols = component.vpk_desktop_cols|default(3) %}
+  {% if vpk_cols.value is defined %}{% set vpk_cols = vpk_cols.value %}{% endif %}
+  {% if vpk_cols is iterable or vpk_cols ~ '' == '' %}{% set vpk_cols = 3 %}{% endif %}
   {% set vpk_billing = component.vpk_show_billing ? true : false %}
 
   {% set vpk_classes = [
