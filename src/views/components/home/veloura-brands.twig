@@ -35,7 +35,7 @@
   {% set b_copies = b_n > 0 ? ((5 / b_n)|round(0, 'ceil') + 1) : 1 %}
   {% if b_copies < 2 %}{% set b_copies = 2 %}{% endif %}
   {% set b_anim = 'vbr' ~ (position|default(0)) %}
-  {% set b_duration = b_smooth ? (b_n * 2.6) : (b_n * 2.4) %}
+  {% set b_duration = b_smooth ? (b_n * 2.6) : (b_n * 2.8) %}
 
   {% set section_classes = [
     's-block',
@@ -109,17 +109,16 @@
 @keyframes {{ b_anim }}-step {
   {% for i in 0..(b_n > 0 ? b_n : 1) %}
     {% set t0 = (i * 100 / (b_n > 0 ? b_n : 1)) %}
-    {% set t1 = ((i + 0.72) * 100 / (b_n > 0 ? b_n : 1)) %}
+    {% set t1 = ((i + 0.45) * 100 / (b_n > 0 ? b_n : 1)) %}
     {{ t0|round(3) }}% { transform: translateX(calc(-100% / {{ b_copies }} * {{ i }} / {{ b_n > 0 ? b_n : 1 }})); }
     {% if i < b_n %}{{ t1|round(3) }}% { transform: translateX(calc(-100% / {{ b_copies }} * {{ i }} / {{ b_n }})); }{% endif %}
   {% endfor %}
 }
 
 .vbr.vbr--auto .vbr__track {
-  animation: {{ b_anim }}-{{ b_smooth ? 'smooth' : 'step' }} {{ b_duration }}s {{ b_smooth ? 'linear' : 'ease-in-out' }} infinite;
+  animation: {{ b_anim }}-{{ b_smooth ? 'smooth' : 'step' }} {{ b_duration }}s {{ b_smooth ? 'linear' : 'cubic-bezier(.45, 0, .25, 1)' }} infinite;
 }
 .vbr.vbr--auto .vbr__viewport--b .vbr__track { animation-direction: reverse; }
-.vbr.vbr--auto .vbr__viewport:hover .vbr__track { animation-play-state: paused; }
 
 @media (prefers-reduced-motion: reduce) {
   .vbr.vbr--auto .vbr__track { animation: none; }
@@ -133,11 +132,12 @@ html.dark .vbr .veloura-brands__heading p,
 html body.dark .vbr .veloura-brands__heading p { color: var(--veloura-dark-secondary-text, #ededed) !important; }
 
 /* السحب باليد (لمس أو ماوس) فوق الحركة التلقائية. */
-.vbr .vbr__viewport { cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.vbr .vbr__viewport { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .vbr.vbr--manual .vbr__viewport { touch-action: pan-x pan-y; }
 .vbr .vbr__viewport.is-dragging { cursor: grabbing; }
 .vbr .vbr__viewport.is-dragging a { pointer-events: none; }
 .vbr .vbr__drag { will-change: transform; }
+.vbr .vbr__drag.is-settling { transition: transform .45s cubic-bezier(.22, .61, .36, 1); }
 .vbr .vbr__viewport img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
 
 /* نقاط التنقل تحت الصف. */
@@ -248,7 +248,15 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
       viewport.addEventListener('pointerdown', function (e) {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         down = true; moved = false; dx = 0; startX = e.clientX;
-        if (auto) { var a = anim(); if (a) a.pause(); basePos = posNow(); }
+        if (auto) {
+          var a = anim(); if (a) a.pause();
+          var cur = getComputedStyle(drag).transform;
+          var off = 0;
+          if (cur && cur !== 'none') { var mm = cur.match(/matrix\(([^)]+)\)/); off = mm ? parseFloat(mm[1].split(',')[4]) || 0 : 0; }
+          drag.classList.remove('is-settling');
+          basePos = posNow() + off;
+          drag.style.transform = '';
+        }
         else scroll0 = viewport.scrollLeft;
       });
 
@@ -267,24 +275,35 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
         setTimeout(function () { viewport.classList.remove('is-dragging'); }, 0);
         if (!auto) return;
         var a = anim();
-        drag.style.transform = '';
-        if (!a) return;
+        if (!a) { drag.style.transform = ''; return; }
         var copyW = track.getBoundingClientRect().width / copies;
         var d = a.effect.getTiming().duration;
         var p = basePos + (moved ? dx : 0);
         p = ((p % copyW) - copyW) % copyW;            /* (-copyW, 0] */
         var frac = -p / copyW;                         /* 0..1 من نسخة واحدة */
-        var t;
+        var t, target;
         if (smooth) {
           t = frac * d;
+          target = p;
         } else {
           var k = Math.round(frac * n) % n;            /* أقرب ماركة */
-          t = ((k + 0.36) / n) * d;                    /* منتصف فترة الثبات */
+          t = ((k + 0.22) / n) * d;                    /* داخل فترة الثبات */
+          target = -k * copyW / n;
         }
         if (reversed) t = d - t;
         var iter = Math.floor((a.currentTime || 0) / d);
         a.currentTime = iter * d + t;
-        a.play();
+
+        /* الشريط صار في موضعه الجديد؛ نعوّض الفرق بإزاحة مؤقتة ثم نرخيها
+           بانسياب، فلا يقفز أبداً عند الإفلات. */
+        var diff = (basePos + (moved ? dx : 0)) - target;
+        diff = ((diff + copyW / 2) % copyW + copyW) % copyW - copyW / 2;
+        drag.classList.remove('is-settling');
+        drag.style.transform = 'translateX(' + diff + 'px)';
+        drag.getBoundingClientRect();
+        drag.classList.add('is-settling');
+        drag.style.transform = '';
+        setTimeout(function () { drag.classList.remove('is-settling'); if (!down) a.play(); }, Math.abs(diff) > 1 ? 450 : 0);
       }
       window.addEventListener('pointerup', end);
       window.addEventListener('pointercancel', end);
@@ -331,7 +350,7 @@ html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--velou
         if (!a) return 0;
         var d = a.effect.getTiming().duration;
         var t = (a.currentTime || 0) % d;
-        return Math.floor((t / d) * n + 0.14) % n;
+        return Math.floor((t / d) * n + ({{ b_smooth ? '0.5' : '0.28' }})) % n;
       }
       var max = viewport.scrollWidth - viewport.clientWidth;
       if (max <= 0) return 0;
