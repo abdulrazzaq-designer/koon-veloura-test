@@ -192,14 +192,35 @@
   .vsc .vsc__media { grid-area: media; align-self: stretch; }
   .vsc .vsc__content { grid-area: content; }
 
-  /* ارتفاع الوسيط على اللابتوب: إمّا بأبعاده (تلقائي) أو بطول العمود
-     المقابل (النص + المنتجات) فتستوي حافتا اللوحة. */
-  .vsc.vsc--mh-match:not(.vsc--ratio-auto) .vsc__media .vsc__frame {
+  /* ارتفاع الوسيط على اللابتوب — خيارَان:
+
+     1) «بطول العناوين والمنتجات»: الوسيط يُحسب على ارتفاع العمود المقابل
+        كاملاً (العبارة والعنوان والوصف والنقاط والزر وعنوان المنتجات
+        وبطاقات المنتجات والنقاط)، فتستوي حافتا اللوحة. الإطار مُثبَّت
+        بالمطلق داخل العمود حتى لا تفرض الصورة أو الفيديو ارتفاعهما.
+     2) «تلقائي»: الوسيط كامل بأبعاده الأصلية بلا قص ولا تمديد. */
+  .vsc.vsc--mh-match .vsc__media {
+    position: relative;
     height: 100%;
-    aspect-ratio: auto;
-    min-height: 300px;
+    min-height: 260px;
   }
-  .vsc.vsc--mh-auto .vsc__media { align-self: start; }
+  .vsc.vsc--mh-match .vsc__media .vsc__frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto !important;
+  }
+  .vsc.vsc--mh-match .vsc__media :is(img, video, iframe) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .vsc.vsc--mh-auto .vsc__media { align-self: start; background: transparent; }
+  .vsc.vsc--mh-auto .vsc__media .vsc__frame { aspect-ratio: auto !important; height: auto; }
+  .vsc.vsc--mh-auto .vsc__media :is(img, video) { height: auto; object-fit: contain; }
+  .vsc.vsc--mh-auto.vsc--media-youtube .vsc__media .vsc__frame { aspect-ratio: 16 / 9 !important; }
 }
 
 .vsc .vsc__content {

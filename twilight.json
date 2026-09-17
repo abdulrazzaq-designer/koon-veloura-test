@@ -15235,6 +15235,7 @@
           "type": "items",
           "format": "dropdown-list",
           "label": "ارتفاع الوسيط في الكمبيوتر",
+          "description": "بطول العناوين والمنتجات: يُحسب على ارتفاع العمود المقابل كاملاً فتستوي الحافتان (وقد يُقص جزء من أطراف الصورة). تلقائي: يظهر الوسيط كاملاً بأبعاده.",
           "icon": "sicon-resize-full",
           "selected": [
             {"label": "بطول العناوين والمنتجات", "value": "match", "key": "vsc_media_height-match"}
@@ -15252,7 +15253,8 @@
           "id": "vsc_media_ratio",
           "type": "items",
           "format": "dropdown-list",
-          "label": "أبعاد الوسيط",
+          "label": "أبعاد الوسيط في الجوال",
+          "description": "على الكمبيوتر يحدد الارتفاع الخيار السابق.",
           "icon": "sicon-resize-full",
           "selected": [
             {
