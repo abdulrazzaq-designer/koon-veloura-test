@@ -101,9 +101,22 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__heading p 
   color: var(--veloura-dark-secondary-text, #ededed) !important;
 }
 
-html.dark .veloura-animated-articles .veloura-animated-articles__image,
-html body.dark .veloura-animated-articles .veloura-animated-articles__image {
-  background: color-mix(in srgb, var(--veloura-dark-primary-text, #ffffff) 6%, transparent);
+/* ---------- الوضع الفاتح ----------
+   البطاقة بالخلفية الثانوية للفاتح (نفس المتغير الذي تقرأه بقية عناصر فيلورا). */
+.veloura-animated-articles .veloura-animated-articles__card {
+  background: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7)) !important;
+}
+
+/* لا خلفية خلف الصورة في الوضعين: الصورة تملأ إطارها مقصوصة (cover)،
+   فلا يظهر حولها لون شفاف. */
+.veloura-animated-articles .veloura-animated-articles__image {
+  background: transparent !important;
+}
+
+.veloura-animated-articles .veloura-animated-articles__image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 </style>
 
@@ -150,7 +163,7 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__image {
           {% if component.veloura_articles_autoplay %}auto-play{% endif %}
           {% if component.veloura_articles_hide_arrows %}show-controls="false"{% endif %}
           slider-config='{
-            "slidesPerView": 1,
+            "slidesPerView": 1.15,
             "spaceBetween": 0,
             "speed": 700,
             "loop": false,
