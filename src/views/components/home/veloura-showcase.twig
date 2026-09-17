@@ -399,6 +399,14 @@
 
 .vsc .vsc__products :is(salla-products-slider, salla-slider) { display: block; }
 
+/* سلة تضع هامشاً سفلياً كبيراً على غلاف سلايدر المنتجات (2rem على الجوال
+   و5rem على اللابتوب)، وهو مصدر الفراغ تحت النقاط — ولأنه داخل العمود كان
+   الوسيط يُحسب على ارتفاعه أيضاً. */
+.vsc .vsc__products :is(salla-products-slider, .s-products-slider-wrapper) {
+  margin-bottom: 0 !important;
+}
+.vsc .vsc__products .s-products-slider-card { max-width: none !important; padding-inline: 0 !important; }
+
 /* فجوة السلايدر من إعداده، وحشوات سلة الافتراضية تُلغى حتى تبدأ المنتجات
    وتنتهي عند حدود اللوحة بالضبط. */
 .vsc .vsc__products .carousel-slider .swiper,
