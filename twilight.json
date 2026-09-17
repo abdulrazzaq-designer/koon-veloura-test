@@ -15712,6 +15712,548 @@
       ]
     },
     {
+      "key": "7c3f95a1-6b28-4d7e-9a14-52c8f0e63b77",
+      "title": {
+        "ar": "الباقات (فيلورا)",
+        "en": "Packages - Veloura"
+      },
+      "icon": "sicon-gift",
+      "path": "home.veloura-packages",
+      "fields": [
+        {
+          "id": "veloura_home_tab_name_2026",
+          "type": "string",
+          "format": "text",
+          "label": "اسم التبويب الذي يظهر فيه العنصر",
+          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
+          "placeholder": "مثال: العطور",
+          "icon": "sicon-layout-grid",
+          "value": "",
+          "required": false,
+          "maxLength": 40
+        },
+        {
+          "id": "vpk_title_content",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">العنوان</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">عنوان القسم ووصفه</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vpk_title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم",
+          "description": null,
+          "icon": "sicon-format-text-alt",
+          "value": "باقاتنا",
+          "required": false
+        },
+        {
+          "id": "vpk_subtitle",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان الفرعي",
+          "description": null,
+          "icon": "sicon-format-text-alt",
+          "value": "اختر الباقة الأنسب لك، وقارن بينها بسهولة.",
+          "required": false
+        },
+        {
+          "id": "vpk_center_titles",
+          "type": "boolean",
+          "format": "switch",
+          "label": "توسيط العناوين",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": true,
+          "selected": true,
+          "required": false
+        },
+        {
+          "id": "vpk_title_plans",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">الباقات</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">الأسعار والميزات</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vpk_plans",
+          "type": "collection",
+          "format": "collection",
+          "label": "الباقات",
+          "item_label": "باقة",
+          "icon": "sicon-list-add",
+          "minLength": 1,
+          "maxLength": 6,
+          "value": [
+            {
+              "plan_name": "الباقة الأساسية",
+              "plan_badge": "",
+              "plan_desc": "بداية مناسبة لأول تجربة.",
+              "plan_price": "199",
+              "plan_price_yearly": "1,990",
+              "plan_suffix": "ر.س",
+              "plan_old_price": "",
+              "plan_features": "منتج واحد\nشحن عادي\n- تغليف هدايا\n- دعم مخصص",
+              "plan_button": "اطلب الباقة",
+              "plan_featured": false,
+              "plan_color": ""
+            },
+            {
+              "plan_name": "الباقة المميزة",
+              "plan_badge": "الأكثر طلبًا",
+              "plan_desc": "الأفضل قيمة مقابل السعر.",
+              "plan_price": "349",
+              "plan_price_yearly": "3,490",
+              "plan_suffix": "ر.س",
+              "plan_old_price": "429",
+              "plan_features": "ثلاثة منتجات\nشحن سريع\nتغليف هدايا\n- دعم مخصص",
+              "plan_button": "اطلب الباقة",
+              "plan_featured": true,
+              "plan_color": ""
+            },
+            {
+              "plan_name": "الباقة الكاملة",
+              "plan_badge": "",
+              "plan_desc": "كل شيء، بلا استثناء.",
+              "plan_price": "599",
+              "plan_price_yearly": "5,990",
+              "plan_suffix": "ر.س",
+              "plan_old_price": "",
+              "plan_features": "ستة منتجات\nشحن سريع\nتغليف هدايا\nدعم مخصص",
+              "plan_button": "اطلب الباقة",
+              "plan_featured": false,
+              "plan_color": ""
+            }
+          ],
+          "fields": [
+            {
+              "id": "plan_name",
+              "type": "string",
+              "format": "text",
+              "label": "اسم الباقة",
+              "description": null,
+              "icon": "sicon-format-text-alt",
+              "value": "باقة",
+              "required": false
+            },
+            {
+              "id": "plan_badge",
+              "type": "string",
+              "format": "text",
+              "label": "شريط صغير (اختياري)",
+              "description": "مثل: الأكثر طلبًا.",
+              "icon": "sicon-star",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "plan_desc",
+              "type": "string",
+              "format": "text",
+              "label": "وصف سطر واحد",
+              "description": null,
+              "icon": "sicon-format-text-alt",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "plan_price",
+              "type": "string",
+              "format": "text",
+              "label": "السعر (شهري)",
+              "description": null,
+              "icon": "sicon-dollar-sign",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "plan_price_yearly",
+              "type": "string",
+              "format": "text",
+              "label": "السعر (سنوي)",
+              "description": "يظهر عند تفعيل مبدّل شهري/سنوي.",
+              "icon": "sicon-dollar-sign",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "plan_suffix",
+              "type": "string",
+              "format": "text",
+              "label": "وحدة السعر",
+              "description": "مثل: ر.س أو ر.س / شهر.",
+              "icon": "sicon-format-text-alt",
+              "value": "ر.س",
+              "required": false
+            },
+            {
+              "id": "plan_old_price",
+              "type": "string",
+              "format": "text",
+              "label": "السعر قبل الخصم (اختياري)",
+              "description": null,
+              "icon": "sicon-dollar-sign",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "plan_features",
+              "type": "string",
+              "format": "textarea",
+              "label": "الميزات",
+              "description": "كل سطر ميزة. ابدأ السطر بعلامة «-» لتظهر الميزة غير مشمولة ومشطوبة.",
+              "icon": "sicon-list",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "plan_button",
+              "type": "string",
+              "format": "text",
+              "label": "نص الزر",
+              "description": null,
+              "icon": "sicon-link",
+              "value": "اطلب الباقة",
+              "required": false
+            },
+            {
+              "id": "plan_url",
+              "type": "items",
+              "icon": "sicon-link",
+              "label": "رابط الزر",
+              "value": [],
+              "required": false,
+              "format": "variable-list",
+              "searchable": true,
+              "source": "custom",
+              "sources": [
+                {
+                  "label": "منتج",
+                  "key": "products",
+                  "value": "products"
+                },
+                {
+                  "label": "تصنيف",
+                  "key": "categories",
+                  "value": "categories"
+                },
+                {
+                  "label": "ماركة تجارية",
+                  "key": "brands",
+                  "value": "brands"
+                },
+                {
+                  "label": "صفحة تعريفية",
+                  "key": "pages",
+                  "value": "pages"
+                },
+                {
+                  "label": "مقالة",
+                  "key": "blog_articles",
+                  "value": "blog_articles"
+                },
+                {
+                  "label": "تصنيف ضمن المدونة",
+                  "key": "blog_categories",
+                  "value": "blog_categories"
+                },
+                {
+                  "label": "التخفيضات",
+                  "key": "offers_link",
+                  "value": "offers_link"
+                },
+                {
+                  "label": "الماركات التجارية",
+                  "key": "brands_link",
+                  "value": "brands_link"
+                },
+                {
+                  "label": "المدونة",
+                  "key": "blog_link",
+                  "value": "blog_link"
+                },
+                {
+                  "label": "رابط خارجي",
+                  "key": "custom",
+                  "value": "custom"
+                }
+              ]
+            },
+            {
+              "id": "plan_featured",
+              "type": "boolean",
+              "format": "switch",
+              "label": "تمييز هذه الباقة",
+              "description": "إطار متحرك وزر ممتلئ.",
+              "labelHTML": null,
+              "icon": "sicon-toggle-off",
+              "value": false,
+              "selected": false,
+              "required": false
+            },
+            {
+              "id": "plan_color",
+              "type": "string",
+              "format": "color",
+              "inputType": "color",
+              "label": "لون الباقة (اختياري)",
+              "icon": "sicon-format-fill",
+              "value": "#004956",
+              "required": false
+            }
+          ],
+          "required": false
+        },
+        {
+          "id": "vpk_show_billing",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار مبدّل شهري / سنوي",
+          "description": "يقلب أسعار كل الباقات بين السعر الشهري والسنوي.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vpk_monthly_label",
+          "type": "string",
+          "format": "text",
+          "label": "نص خيار الشهري",
+          "description": null,
+          "icon": "sicon-format-text-alt",
+          "value": "شهري",
+          "required": false,
+          "conditions": [
+            {
+              "id": "vpk_show_billing",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vpk_yearly_label",
+          "type": "string",
+          "format": "text",
+          "label": "نص خيار السنوي",
+          "description": null,
+          "icon": "sicon-format-text-alt",
+          "value": "سنوي",
+          "required": false,
+          "conditions": [
+            {
+              "id": "vpk_show_billing",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vpk_yearly_note",
+          "type": "string",
+          "format": "text",
+          "label": "ملاحظة بجانب السنوي",
+          "description": null,
+          "icon": "sicon-star",
+          "value": "وفّر 20%",
+          "required": false,
+          "conditions": [
+            {
+              "id": "vpk_show_billing",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vpk_title_design",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">التصميم</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">الألوان والحواف</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vpk_desktop_cols",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "عدد الباقات في الصف (كمبيوتر)",
+          "description": null,
+          "icon": "sicon-grid",
+          "value": 3,
+          "step": "1",
+          "minimum": "2",
+          "maximum": "4",
+          "required": false
+        },
+        {
+          "id": "vpk_accent",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون التمييز",
+          "icon": "sicon-format-fill",
+          "value": "#004956",
+          "required": false
+        },
+        {
+          "id": "vpk_title_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون العناوين",
+          "icon": "sicon-format-fill",
+          "value": "#111827",
+          "required": false
+        },
+        {
+          "id": "vpk_text_color",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون النصوص",
+          "icon": "sicon-format-fill",
+          "value": "#4b5563",
+          "required": false
+        },
+        {
+          "id": "vpk_card_bg",
+          "type": "string",
+          "format": "color",
+          "inputType": "color",
+          "label": "لون البطاقة (الوضع الفاتح)",
+          "icon": "sicon-format-fill",
+          "value": "#ffffff",
+          "required": false
+        },
+        {
+          "id": "vpk_dark_cards",
+          "type": "boolean",
+          "format": "switch",
+          "label": "خلفية البطاقات في الوضع الداكن",
+          "description": "تأخذ اللون الثانوي للداكن.",
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": true,
+          "selected": true,
+          "required": false
+        },
+        {
+          "id": "vpk_radius",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "حواف البطاقات",
+          "description": "بالبيكسل — صفر حاد تمامًا، و٤٠ دائري بالكامل.",
+          "icon": "sicon-border-radius",
+          "value": 22,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "40",
+          "required": false
+        },
+        {
+          "id": "vpk_title_general",
+          "type": "static",
+          "format": "title",
+          "label": "Title",
+          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">عام</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">المسافات والظهور</span></span></div>",
+          "variant": "h1",
+          "icon": "sicon-format-text"
+        },
+        {
+          "id": "vpk_custom_spacing",
+          "type": "boolean",
+          "format": "switch",
+          "label": "مسافة أفقية مخصصة (يمين ويسار القسم)",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vpk_spacing",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "مقدار المسافة",
+          "description": null,
+          "icon": "sicon-resize-full",
+          "value": 16,
+          "step": "1",
+          "minimum": "0",
+          "maximum": "60",
+          "required": false,
+          "conditions": [
+            {
+              "id": "vpk_custom_spacing",
+              "operation": "=",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "vpk_mobile_only",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض العنصر في الجوال فقط",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vpk_desktop_only",
+          "type": "boolean",
+          "format": "switch",
+          "label": "عرض العنصر في الكمبيوتر والتابلت فقط",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vpk_hide",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء هذا العنصر بالكامل",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-toggle-off",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "vpk_custom_classes",
+          "type": "string",
+          "format": "text",
+          "label": "Classes",
+          "description": null,
+          "icon": "sicon-format-text-alt",
+          "value": "",
+          "required": false
+        }
+      ]
+    },
+    {
       "key": "f1c0f4a9-7a92-4f1c-a8f6-6d8f4a7b9c21",
       "title": {
         "ar": "روابط سريعة (فيلورا)",
