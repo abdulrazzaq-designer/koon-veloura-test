@@ -652,6 +652,8 @@
   .veloura-product-page .veloura-product-discount-countdown .s-count-down-item-value {
     font-size: 15px !important;
     line-height: 1.3 !important;
+    color: inherit !important;
+    opacity: 1 !important;
   }
   .veloura-product-page .veloura-product-discount-countdown .s-count-down-item-label {
     font-size: 10px !important;
@@ -889,6 +891,17 @@
   .veloura-product-page .article--main {
     overflow-anchor: none !important;
   }
+  /* 13) بعد إلغاء زر «اقرأ المزيد»: لا حاجة للفراغ الذي كان مخصصًا له،
+     والوصف يظهر كاملًا بلا قصّ. */
+  .veloura-product-page .product__description {
+    margin-bottom: 16px !important;
+    padding-bottom: 16px !important;
+  }
+  .veloura-product-page .product__description .article--main,
+  .veloura-product-page .product__description #more-content {
+    max-height: none !important;
+    overflow: visible !important;
+  }
 </style>
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
 
@@ -1116,25 +1129,15 @@
                     </div>
                 {% endif %}
 
-                <div class="product__description p-2 px-5 sm:p-1 leading-7 mb-3 {{ vpp_enabled and vpp_hide_short_description ? 'is-collapsed' : '' }}" data-v42-group="description">
+                {# الوصف يظهر كاملًا بلا طيّ ولا زر «اقرأ المزيد». #}
+                <div class="product__description p-2 px-5 sm:p-1 leading-7 mb-3" data-v42-group="description">
                     {% set product_desc = product.description|default('')|replace({'&nbsp;': ' '}) %}
-                    {% set vpp_desc_should_collapse = product.has_read_more or (vpp_enabled and vpp_hide_short_description) %}
 
-                    <article class="article article--main relative leading-8 overflow-hidden transition-all duration-300 py-4"
+                    <article class="article article--main relative leading-8 py-4"
                              id="more-content"
-                             style="{{ vpp_desc_should_collapse ? 'max-height:8.5rem' : 'max-height:none' }}">
+                             style="max-height:none">
                         {{ product_desc|raw }}
                     </article>
-
-                    {% if vpp_desc_should_collapse %}
-                        <a id="btn-show-more"
-                           class="veloura-product-read-more link--primary cursor-pointer"
-                           aria-expanded="false"
-                           data-more-text="{{ trans('pages.products.read_more') }}"
-                           data-less-text="عرض أقل">
-                            <span class="veloura-product-read-more__text">{{ trans('pages.products.read_more') }}</span>
-                        </a>
-                    {% endif %}
                 </div>
 
                 {% if product.tags|length and ((vpp_enabled and vpp_tags_enabled) or (not vpp_enabled and theme.settings.get('show_tags', true))) %}
@@ -1478,57 +1481,6 @@
           centerTitle: {{ vpp_recent_center_title|default(false) ? 'true' : 'false' }}
         }
       };
-    </script>
-
-    {# Veloura Read-more scroll guard V103 — يمنع قفزة الصفحة عند فتح الوصف.
-       مكتوب هنا (لا في product.js) ليعمل بلا انتظار إعادة بناء الأصول. #}
-    <script data-cfasync="false" id="veloura-product-readmore-guard-v103">
-    (function () {
-      function boot() {
-        var btn = document.getElementById('btn-show-more');
-        if (!btn || btn.dataset.velouraScrollGuard === '1') return;
-        btn.dataset.velouraScrollGuard = '1';
-
-        btn.addEventListener('click', function () {
-          var keepY = window.scrollY || window.pageYOffset || 0;
-          var keepX = window.scrollX || window.pageXOffset || 0;
-          var until = Date.now() + 1000;
-          var released = false;
-
-          function release() { released = true; }
-          ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
-            window.addEventListener(ev, release, { passive: true, once: true });
-          });
-
-          function snapBack() {
-            if (released) return;
-            var y = window.scrollY || window.pageYOffset || 0;
-            var x = window.scrollX || window.pageXOffset || 0;
-            if (Math.abs(y - keepY) > 2 || Math.abs(x - keepX) > 2) {
-              window.scrollTo(keepX, keepY);
-            }
-          }
-
-          /* الاستماع للتمرير أسرع من انتظار الإطار التالي، فتقلّ الرجّة. */
-          window.addEventListener('scroll', snapBack, true);
-          setTimeout(function () {
-            window.removeEventListener('scroll', snapBack, true);
-          }, 1000);
-
-          (function hold() {
-            if (released) return;
-            snapBack();
-            if (Date.now() < until) window.requestAnimationFrame(hold);
-          })();
-        }, true); /* مرحلة الالتقاط: قبل أي معالج آخر */
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', boot);
-      } else {
-        boot();
-      }
-    })();
     </script>
 
     {# Veloura Product Mobile Split V101 — يبني عمود التعريف بجانب الصورة على الجوال #}
