@@ -607,16 +607,17 @@
     text-underline-offset: 4px !important;
   }
 
-  /* 3) عدّاد انتهاء الخصم: موسّط، بخلفية اللون الثانوي، وبالحواف نفسها. */
+  /* 3) عدّاد انتهاء الخصم: سطر واحد مضغوط — الأيقونة يمين النص والعدّاد تحته. */
   .veloura-product-page .veloura-product-discount-countdown {
     display: flex !important;
-    flex-direction: column !important;
+    flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 10px !important;
+    gap: 4px 8px !important;
     width: 100% !important;
     text-align: center !important;
-    padding: 16px !important;
+    padding: 10px 14px !important;
+    margin: 10px 0 !important;
     background: var(--veloura-product-secondary-bg-inline, var(--veloura-site-second-bg, #f4f6f8)) !important;
     border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
   }
@@ -624,14 +625,37 @@
   body.dark .veloura-product-page .veloura-product-discount-countdown {
     background: var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) !important;
   }
+  .veloura-product-page .veloura-product-discount-countdown > i {
+    order: 0 !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }
   .veloura-product-page .veloura-product-discount-countdown > span {
-    width: 100% !important;
-    text-align: center !important;
+    order: 1 !important;
+    width: auto !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
   }
   .veloura-product-page .veloura-product-discount-countdown salla-count-down {
+    order: 2 !important;
+    flex: 0 0 100% !important;
     display: flex !important;
     justify-content: center !important;
-    width: 100% !important;
+    gap: 6px !important;
+    margin-top: 2px !important;
+  }
+  .veloura-product-page .veloura-product-discount-countdown .s-count-down-item {
+    padding: 2px 6px !important;
+    min-width: 0 !important;
+  }
+  .veloura-product-page .veloura-product-discount-countdown .s-count-down-item-value {
+    font-size: 15px !important;
+    line-height: 1.3 !important;
+  }
+  .veloura-product-page .veloura-product-discount-countdown .s-count-down-item-label {
+    font-size: 10px !important;
+    opacity: .7 !important;
   }
 
   /* 4) أزرار الشراء كلها تأخذ حواف الصفحة — بما فيها «اشترِ الآن» والاشتراك. */
@@ -698,57 +722,119 @@
     border-radius: min(var(--veloura-product-radius, 28px), 10px) !important;
   }
 
-  /* 8) نافذة المشاركة: بلون الثيم من أول لحظة، وبحواف الصفحة. */
-  .veloura-product-page salla-social-share .s-social-share-modal-dialog,
-  salla-social-share .s-social-share-modal-dialog {
+  /* 8) نافذة المشاركة: بلون الثيم من أول لحظة وبحواف الصفحة.
+        (سلة تنقل النافذة إلى نهاية الصفحة، فالمحدّدات بلا أب.) */
+  .s-social-share-modal {
+    background: rgba(2, 6, 23, .55) !important;
+  }
+  .s-social-share-modal-dialog {
     background: var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) !important;
     color: inherit !important;
     border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-bottom-left-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-bottom-right-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
     overflow: hidden !important;
   }
-  html.dark salla-social-share .s-social-share-modal-dialog,
-  body.dark salla-social-share .s-social-share-modal-dialog {
+  html.dark .s-social-share-modal-dialog,
+  body.dark .s-social-share-modal-dialog {
     background: var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) !important;
     color: var(--veloura-dark-primary-text, #ffffff) !important;
   }
-  salla-social-share .s-social-share-modal-card,
-  salla-social-share .s-social-share-modal-copy-row,
-  salla-social-share .s-social-share-modal-url,
-  salla-social-share .s-social-share-modal-close {
+  .s-social-share-modal-header,
+  .s-social-share-modal-platforms,
+  .s-social-share-modal-card,
+  .s-social-share-modal-close {
     background: transparent !important;
+  }
+  .s-social-share-modal-card,
+  .s-social-share-modal-close,
+  .s-social-share-modal-copy-row,
+  .s-social-share-modal-url {
     border-radius: min(var(--veloura-product-radius-final, 28px), 14px) !important;
   }
-  html.dark salla-social-share .s-social-share-modal-copy-row,
-  body.dark salla-social-share .s-social-share-modal-copy-row,
-  html.dark salla-social-share .s-social-share-modal-url,
-  body.dark salla-social-share .s-social-share-modal-url {
-    background: rgba(255, 255, 255, .06) !important;
+  html.dark .s-social-share-modal-card-label,
+  body.dark .s-social-share-modal-card-label,
+  html.dark .s-social-share-modal-title,
+  body.dark .s-social-share-modal-title,
+  html.dark .s-social-share-modal-url,
+  body.dark .s-social-share-modal-url {
     color: var(--veloura-dark-primary-text, #ffffff) !important;
+  }
+  html.dark .s-social-share-modal-copy-row,
+  body.dark .s-social-share-modal-copy-row,
+  html.dark .s-social-share-modal-url,
+  body.dark .s-social-share-modal-url {
+    background: rgba(255, 255, 255, .06) !important;
     border-color: rgba(255, 255, 255, .12) !important;
   }
-  salla-social-share .s-social-share-modal-handle {
-    background: currentColor !important;
-    opacity: .25 !important;
-  }
-  /* زر المشاركة نفسه يتبع الحواف أيضًا. */
+  .s-social-share-modal-handle { background: currentColor !important; opacity: .25 !important; }
   .veloura-product-page salla-social-share .s-social-share-btn {
     border-radius: min(var(--veloura-product-radius, 28px), 50%) !important;
   }
-  /* 6ب) أي شريط أبيض من مكوّنات سلة للمنتجات (المشابهة أو التي شاهدتها)
-     — الخلفية تصير شفافة، والهياكل المؤقتة تأخذ لونًا مناسبًا للداكن. */
-  salla-products-slider,
-  salla-products-list,
-  .s-products-slider-wrapper,
-  .s-products-slider-body,
-  .s-products-list-wrapper,
-  .s-products-list-body {
-    background: transparent !important;
-    background-color: transparent !important;
+
+  /* 9) الشريط السفلي الثابت: شفاف مع بلور في الوضعين (بلا اعتماد على إعداد الزجاج). */
+  @media (max-width: 767px) {
+    .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar,
+    .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar {
+      background: color-mix(in srgb, var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) 62%, transparent) !important;
+      background-color: color-mix(in srgb, var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) 62%, transparent) !important;
+      -webkit-backdrop-filter: blur(22px) saturate(140%) !important;
+      backdrop-filter: blur(22px) saturate(140%) !important;
+      border-top: 1px solid rgba(15, 23, 42, .08) !important;
+      box-shadow: 0 -8px 28px rgba(15, 23, 42, .10) !important;
+    }
+    html.dark .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar,
+    body.dark .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar {
+      background: color-mix(in srgb, var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) 66%, transparent) !important;
+      background-color: color-mix(in srgb, var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) 66%, transparent) !important;
+      border-top-color: rgba(255, 255, 255, .10) !important;
+    }
   }
-  html.dark [class*="skeleton"],
-  body.dark [class*="skeleton"] {
-    background-color: rgba(255, 255, 255, .06) !important;
-    background-image: none !important;
+
+  /* 10) عمود التعريف في تقسيم الجوال: تدرّج واضح — اسم بارز، وما حوله أهدأ. */
+  @media (max-width: 767px) {
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info { gap: 6px !important; }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-brand {
+      order: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: none !important;
+    }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-brand .veloura-product-brand__name {
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      opacity: .75 !important;
+    }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-brand .brand-logo img {
+      width: 20px !important;
+      height: 20px !important;
+      min-width: 20px !important;
+      max-width: 20px !important;
+      max-height: 20px !important;
+    }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info h1 {
+      order: 1 !important;
+      font-size: 18px !important;
+      font-weight: 800 !important;
+      line-height: 1.55 !important;
+      padding-bottom: 8px !important;
+      border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent) !important;
+    }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-header-price { order: 2 !important; }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info salla-rating-stars { order: 3 !important; }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-stock-radar {
+      order: 4 !important;
+      margin: 0 !important;
+    }
+    /* التصنيف آخر العمود وبحجم أصغر حتى لا ينافس الاسم. */
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-category-under-title {
+      order: 5 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: none !important;
+      font-size: 12px !important;
+      opacity: .85 !important;
+    }
   }
 </style>
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
@@ -1320,6 +1406,46 @@
             ></salla-products-slider>
         </div>
     {% endif %}
+    {# Veloura Read-more scroll guard V103 — يمنع قفزة الصفحة عند فتح الوصف.
+       مكتوب هنا (لا في product.js) ليعمل بلا انتظار إعادة بناء الأصول. #}
+    <script data-cfasync="false" id="veloura-product-readmore-guard-v103">
+    (function () {
+      function boot() {
+        var btn = document.getElementById('btn-show-more');
+        if (!btn || btn.dataset.velouraScrollGuard === '1') return;
+        btn.dataset.velouraScrollGuard = '1';
+
+        btn.addEventListener('click', function () {
+          var keepY = window.scrollY || window.pageYOffset || 0;
+          var keepX = window.scrollX || window.pageXOffset || 0;
+          var until = Date.now() + 700;
+          var released = false;
+
+          function release() { released = true; }
+          ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
+            window.addEventListener(ev, release, { passive: true, once: true });
+          });
+
+          (function hold() {
+            if (released) return;
+            var y = window.scrollY || window.pageYOffset || 0;
+            var x = window.scrollX || window.pageXOffset || 0;
+            if (Math.abs(y - keepY) > 2 || Math.abs(x - keepX) > 2) {
+              window.scrollTo(keepX, keepY);
+            }
+            if (Date.now() < until) window.requestAnimationFrame(hold);
+          })();
+        }, true); /* مرحلة الالتقاط: قبل أي معالج آخر */
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+      } else {
+        boot();
+      }
+    })();
+    </script>
+
     {# Veloura Product Mobile Split V101 — يبني عمود التعريف بجانب الصورة على الجوال #}
     {% if vpp_mobile_split %}
     <script data-cfasync="false" id="veloura-product-mobile-split-v101">
