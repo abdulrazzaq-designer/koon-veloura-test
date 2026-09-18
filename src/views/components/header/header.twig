@@ -453,6 +453,45 @@
     html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container > .inner {
       border-radius: 0 0 {{ top_border_px }} {{ top_border_px }} !important;
     }
+
+    /* زرّا العملة/اللغة وتسجيل الدخول يأخذان حواف الهيدر نفسها،
+       وكذلك النافذتان اللتان يفتحانهما. الرقم مكتوب صريحاً لا متغيّراً
+       لنفس السبب الموضّح أعلاه. */
+    html body .store-header.veloura-top-enabled .veloura-localization-pill,
+    html body .store-header.veloura-top-enabled .veloura-login-btn {
+      border-radius: {{ top_border_px }} !important;
+    }
+
+    html body salla-localization-modal .s-modal-wrapper,
+    html body salla-login-modal .s-modal-wrapper,
+    html body salla-localization-modal .s-localization-modal-inner {
+      border-radius: {{ top_border_px }} !important;
+      overflow: hidden !important;
+    }
+
+    /* العناصر داخل النافذتين: نفس الطابع لكن بسقف معقول حتى لا تصير كبسولات. */
+    html body salla-localization-modal :is(
+      .s-localization-modal-item,
+      .s-localization-modal-select,
+      .s-localization-modal-input,
+      .s-localization-modal-section-inner
+    ),
+    html body salla-login-modal :is(
+      .s-button-element,
+      input,
+      select,
+      .s-form-control
+    ) {
+      border-radius: min({{ top_border_px }}, 14px) !important;
+    }
+
+    /* على الجوال تُفتح النافذتان كورقة سفلية، فتبقى الحواف العليا فقط. */
+    @media (max-width: 640px) {
+      html body salla-localization-modal .s-modal-wrapper,
+      html body salla-login-modal .s-modal-wrapper {
+        border-radius: {{ top_border_px }} {{ top_border_px }} 0 0 !important;
+      }
+    }
   </style>
 
   <div id="mainnav" class="main-nav-container">
