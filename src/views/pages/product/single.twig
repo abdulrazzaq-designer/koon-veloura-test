@@ -772,22 +772,26 @@
     border-radius: min(var(--veloura-product-radius, 28px), 50%) !important;
   }
 
-  /* 9) الشريط السفلي الثابت: شفاف مع بلور في الوضعين (بلا اعتماد على إعداد الزجاج). */
+  /* 9) الشريط السفلي الثابت: نفس زجاج الهيدر حرفيًا — نفس الخلفية ونفس البلور
+        ونفس الحواف، عبر متغيّرات الهيدر ذاتها حتى لا يختلفا أبدًا. */
   @media (max-width: 767px) {
     .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar,
     .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar {
-      background: color-mix(in srgb, var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) 62%, transparent) !important;
-      background-color: color-mix(in srgb, var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) 62%, transparent) !important;
-      -webkit-backdrop-filter: blur(22px) saturate(140%) !important;
-      backdrop-filter: blur(22px) saturate(140%) !important;
-      border-top: 1px solid rgba(15, 23, 42, .08) !important;
-      box-shadow: 0 -8px 28px rgba(15, 23, 42, .10) !important;
+      background: var(--veloura-header-glass-background, color-mix(in srgb, var(--veloura-site-second-bg, #e4e7eb) 65%, transparent)) !important;
+      background-color: var(--veloura-header-glass-background, color-mix(in srgb, var(--veloura-site-second-bg, #e4e7eb) 65%, transparent)) !important;
+      background-image: none !important;
+      -webkit-backdrop-filter: var(--veloura-header-glass-filter, blur(20px) saturate(200%)) !important;
+      backdrop-filter: var(--veloura-header-glass-filter, blur(20px) saturate(200%)) !important;
+      filter: none !important;
+      border-top: 1px solid var(--veloura-header-glass-edge-top, rgba(100, 116, 139, .10)) !important;
+      box-shadow: 0 -8px 24px var(--veloura-header-glass-shadow, rgba(15, 23, 42, .10)) !important;
     }
-    html.dark .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar,
-    body.dark .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar {
-      background: color-mix(in srgb, var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) 66%, transparent) !important;
-      background-color: color-mix(in srgb, var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) 66%, transparent) !important;
-      border-top-color: rgba(255, 255, 255, .10) !important;
+    /* لا طبقة معتمة فوق الزجاج من قواعد أقدم. */
+    .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar::before,
+    .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar::after {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
     }
   }
 
@@ -875,6 +879,15 @@
     border-radius: inherit !important;
     display: block !important;
     max-width: 100% !important;
+  }
+  /* 12) فتح الوصف: تثبيت المرساة. المتصفح يعيد ضبط التمرير عند تغيّر ارتفاع
+     عنصر داخل الصفحة (scroll anchoring)، وهو سبب قفزة «اقرأ المزيد». */
+  .veloura-product-page,
+  .veloura-product-page .main-content,
+  .veloura-product-page .product__description,
+  .veloura-product-page #more-content,
+  .veloura-product-page .article--main {
+    overflow-anchor: none !important;
   }
 </style>
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
@@ -1479,7 +1492,7 @@
         btn.addEventListener('click', function () {
           var keepY = window.scrollY || window.pageYOffset || 0;
           var keepX = window.scrollX || window.pageXOffset || 0;
-          var until = Date.now() + 700;
+          var until = Date.now() + 1000;
           var released = false;
 
           function release() { released = true; }
@@ -1487,13 +1500,24 @@
             window.addEventListener(ev, release, { passive: true, once: true });
           });
 
-          (function hold() {
+          function snapBack() {
             if (released) return;
             var y = window.scrollY || window.pageYOffset || 0;
             var x = window.scrollX || window.pageXOffset || 0;
             if (Math.abs(y - keepY) > 2 || Math.abs(x - keepX) > 2) {
               window.scrollTo(keepX, keepY);
             }
+          }
+
+          /* الاستماع للتمرير أسرع من انتظار الإطار التالي، فتقلّ الرجّة. */
+          window.addEventListener('scroll', snapBack, true);
+          setTimeout(function () {
+            window.removeEventListener('scroll', snapBack, true);
+          }, 1000);
+
+          (function hold() {
+            if (released) return;
+            snapBack();
             if (Date.now() < until) window.requestAnimationFrame(hold);
           })();
         }, true); /* مرحلة الالتقاط: قبل أي معالج آخر */
