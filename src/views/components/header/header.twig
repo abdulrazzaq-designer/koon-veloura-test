@@ -572,15 +572,13 @@
       box-shadow: none !important;
     }
 
-    /* صفحة الدخول تأتي داخل إطار من accounts.salla.com، وهي صفحة فاتحة
-       فقط: لا تقرأ prefers-color-scheme ولا تقبل وسيطاً للوضع الداكن،
-       ولا يمكن تنسيقها من الثيم لأنها من نطاق آخر. الحل الوحيد المتاح
-       قلب ألوانها في الوضع الداكن: invert مع hue-rotate يعيد الألوان
-       (الأزرق يبقى أزرق) ويترك الخلفية داكنة. */
     /* نافذة تسجيل الدخول: بلا زجاج وبلا قلب ألوان وبلا شفافية — تُترك
        كما ترسلها سلة (صفحة حسابات فاتحة داخل إطار)، ولا تأخذ من الثيم
        إلا الحواف. أي معالجة أخرى جُرّبت وأعطت نتيجة سوداء أو باهتة. */
-    html body salla-modal.s-login-modal :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
+    html body salla-modal.s-login-modal :is(.s-modal-body, .s-modal-content, .s-salla-modal-body),
+    html body salla-modal:has(iframe) :is(.s-modal-body, .s-modal-content, .s-salla-modal-body),
+    html body .s-modal-body:has(iframe),
+    html body .s-modal-content:has(iframe) {
       background: #ffffff !important;
       background-color: #ffffff !important;
       background-image: none !important;
@@ -590,12 +588,22 @@
       box-shadow: 0 18px 44px rgba(15, 23, 42, .28) !important;
     }
 
-    html body salla-modal.s-login-modal iframe {
+    html body salla-modal.s-login-modal iframe,
+    html body salla-modal iframe {
       background: #ffffff !important;
       border-radius: inherit !important;
       filter: none !important;
       opacity: 1 !important;
       mix-blend-mode: normal !important;
+    }
+
+    /* لا بلور خلف نافذة الدخول أيضاً: التعتيم فقط. */
+    html body salla-modal.s-login-modal .s-modal-overlay,
+    html body salla-modal:has(iframe) .s-modal-overlay,
+    html body salla-modal.s-login-modal,
+    html body salla-modal:has(iframe) {
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
     }
 
   </style>
