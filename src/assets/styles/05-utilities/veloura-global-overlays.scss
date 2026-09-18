@@ -31,15 +31,7 @@ html body.dark.veloura-glass-effect {
 html body.veloura-glass-effect .veloura-glass-surface,
 html body.veloura-glass-effect .veloura-popup .veloura-popup__box,
 html body.veloura-glass-effect .swal2-container .swal2-popup:not(.swal2-toast),
-html body.veloura-glass-effect .s-modal .s-salla-modal-body,
-html body.veloura-glass-effect .s-modal .s-modal-body,
-html body.veloura-glass-effect .s-modal .s-modal-content,
-html body.veloura-glass-effect .s-salla-modal-body,
-html body.veloura-glass-effect .s-modal-body,
-html body.veloura-glass-effect .s-modal-content,
-html body.veloura-glass-effect .s-login-modal .s-modal-body,
-html body.veloura-glass-effect .s-auth-modal .s-salla-modal-body,
-html body.veloura-glass-effect .s-auth-modal .s-modal-content,
+/* نوافذ سلة تُعالَج الآن في قاعدة واحدة داخل ستايل الهيدر (انظر الشرح هناك). */
 html body.veloura-glass-effect .login-modal .modal-content,
 html body.veloura-glass-effect .auth-modal .modal-content {
   box-sizing: border-box !important;

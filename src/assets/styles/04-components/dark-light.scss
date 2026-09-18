@@ -95,6 +95,11 @@ html.dark {
 /* ------------------------------------------------------------------------
    One shared material. These selectors point only at the visible surface.
    No gradient edge, no duplicate inset border, no full-screen blur.
+
+   نوافذ سلة (s-modal-body / s-modal-content) خرجت من هذه القائمة: صارت
+   تُعالَج في قاعدة واحدة مباشرة داخل ستايل الهيدر — لأن <salla-modal>
+   ينقل نفسه إلى نهاية الصفحة وقت التحميل، فكانت المحدّدات المركّبة
+   (.s-modal .s-modal-body) لا تطابق شيئاً وتبقى النافذة بيضاء.
    ------------------------------------------------------------------------ */
 html body :is(
   .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
@@ -102,13 +107,7 @@ html body :is(
   .veloura-glass,
   .veloura-glass-surface,
   .veloura-popup .veloura-popup__box,
-  .swal2-container .swal2-popup:not(.swal2-toast),
-  .s-modal .s-salla-modal-body,
-  .s-modal .s-modal-body,
-  .s-modal .s-modal-content,
-  .s-salla-modal-body,
-  .s-modal-body,
-  .s-modal-content
+  .swal2-container .swal2-popup:not(.swal2-toast)
 ),
 html.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
 html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {

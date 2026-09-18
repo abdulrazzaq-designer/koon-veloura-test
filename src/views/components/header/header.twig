@@ -520,6 +520,68 @@
         border-radius: {{ top_border_px }} {{ top_border_px }} 0 0 !important;
       }
     }
+
+    /* ======================================================================
+       نوافذ سلة (الدخول، العملة، وغيرها): سطح واحد بلوري بلون الثيم.
+       الطريقة القديمة كانت قائمة محدّدات طويلة معظمها يشترط أباً باسم
+       .s-modal — و<salla-modal> ينقل نفسه إلى نهاية الصفحة وقت التحميل،
+       فلا يطابق شيء وتبقى النافذة بيضاء. هنا قاعدة واحدة مباشرة على
+       .s-modal-body نفسها، كما تفعل الثيمات الأخرى، لكن بمادة زجاجية.
+       ====================================================================== */
+    html body :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
+      background: var(--veloura-glass-surface, rgba(248, 250, 252, .72)) !important;
+      background-color: var(--veloura-glass-surface, rgba(248, 250, 252, .72)) !important;
+      background-image: none !important;
+      -webkit-backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(200%)) !important;
+      backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(200%)) !important;
+      filter: none !important;
+      box-shadow: 0 10px 32px var(--veloura-glass-shadow, rgba(15, 23, 42, .10)) !important;
+    }
+
+    html.dark body :is(.s-modal-body, .s-modal-content, .s-salla-modal-body),
+    html body.dark :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
+      background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #161b22) 82%, transparent) !important;
+      background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #161b22) 82%, transparent) !important;
+      color: var(--veloura-dark-primary-text, #ffffff) !important;
+    }
+
+    /* لا يعود الأبيض من الأبناء: كل ما داخل النافذة شفاف إلا الوسائط. */
+    html body :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) :is(
+      .s-modal-close,
+      .s-modal-header,
+      .s-modal-header-inner,
+      .s-modal-header-content,
+      .s-modal-wrapper,
+      .s-login-modal-content,
+      .s-localization-modal-inner,
+      .s-localization-modal-section,
+      .s-localization-modal-section-inner
+    ) {
+      background: transparent !important;
+      background-color: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: none !important;
+    }
+
+    /* صندوق النافذة الخارجي لا يحمل مادة ثانية فوق الأولى. */
+    html body :is(salla-modal, .s-modal-wrapper, .s-login-modal) {
+      background: transparent !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      box-shadow: none !important;
+    }
+
+    /* صفحة الدخول تأتي داخل إطار من نطاق حسابات سلة فلا يمكن تلوينها من
+       الثيم؛ color-scheme يجعل خلفيتها الافتراضية تتبع وضع المتجر. */
+    html body salla-modal iframe {
+      background: transparent !important;
+      color-scheme: light;
+    }
+    html.dark body salla-modal iframe,
+    html body.dark salla-modal iframe {
+      color-scheme: dark;
+    }
   </style>
 
   <div id="mainnav" class="main-nav-container">
