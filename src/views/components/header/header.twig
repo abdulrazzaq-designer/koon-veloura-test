@@ -478,33 +478,45 @@
       border-radius: {{ top_border_px }} !important;
     }
 
-    html body salla-localization-modal .s-modal-wrapper,
-    html body salla-login-modal .s-modal-wrapper,
-    html body salla-localization-modal .s-localization-modal-inner {
+    /* سلة تنقل <salla-modal> إلى نهاية الصفحة عند تحميلها (componentDidLoad
+       ينفّذ document.body.append)، فأي محدّد يبدأ من salla-login-modal أو
+       salla-localization-modal لا يطابق شيئاً. نافذة الدخول تحتفظ بكلاس
+       s-login-modal، ونافذة العملة تُعرف بمحتواها. */
+    html body salla-modal.s-login-modal :is(.s-modal-body, .s-modal-wrapper),
+    html body salla-modal:has(.s-localization-modal-inner) :is(.s-modal-body, .s-modal-wrapper) {
       border-radius: {{ top_border_px }} !important;
       overflow: hidden !important;
     }
 
+    /* المحتوى الداخلي (إطار الدخول أو قائمة العملات) يُقصّ على نفس الحواف. */
+    html body salla-modal.s-login-modal .s-modal-body > *,
+    html body salla-modal.s-login-modal iframe,
+    html body salla-modal:has(.s-localization-modal-inner) .s-localization-modal-inner {
+      border-radius: inherit !important;
+      overflow: hidden !important;
+    }
+
     /* العناصر داخل النافذتين: نفس الطابع لكن بسقف معقول حتى لا تصير كبسولات. */
-    html body salla-localization-modal :is(
-      .s-localization-modal-item,
-      .s-localization-modal-select,
-      .s-localization-modal-input,
-      .s-localization-modal-section-inner
-    ),
-    html body salla-login-modal :is(
+    html body salla-modal.s-login-modal :is(
       .s-button-element,
       input,
       select,
       .s-form-control
+    ),
+    html body salla-modal:has(.s-localization-modal-inner) :is(
+      .s-localization-modal-item,
+      .s-localization-modal-select,
+      .s-localization-modal-input,
+      .s-localization-modal-section-inner,
+      .s-button-element
     ) {
       border-radius: min({{ top_border_px }}, 14px) !important;
     }
 
     /* على الجوال تُفتح النافذتان كورقة سفلية، فتبقى الحواف العليا فقط. */
     @media (max-width: 640px) {
-      html body salla-localization-modal .s-modal-wrapper,
-      html body salla-login-modal .s-modal-wrapper {
+      html body salla-modal.s-login-modal :is(.s-modal-body, .s-modal-wrapper),
+      html body salla-modal:has(.s-localization-modal-inner) :is(.s-modal-body, .s-modal-wrapper) {
         border-radius: {{ top_border_px }} {{ top_border_px }} 0 0 !important;
       }
     }
