@@ -836,6 +836,46 @@
       opacity: .85 !important;
     }
   }
+  /* 8ب) قائمة المشاركة العمودية (النسخة غير المنبثقة): سلة ترسمها بيضاء
+     بحواف 1.5rem ثابتة — لهذا كانت تظهر قطعة بيضاء ثم الأيقونات. */
+  .veloura-product-page salla-social-share .s-social-share-list,
+  salla-social-share .s-social-share-list {
+    background-color: var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) !important;
+    border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(15, 23, 42, .08) !important;
+    overflow: hidden !important;
+  }
+  html.dark salla-social-share .s-social-share-list,
+  body.dark salla-social-share .s-social-share-list {
+    background-color: var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) !important;
+    border-color: rgba(255, 255, 255, .10) !important;
+  }
+  salla-social-share .s-social-share-list a svg { fill: currentColor !important; }
+  html.dark salla-social-share .s-social-share-list a,
+  body.dark salla-social-share .s-social-share-list a {
+    color: var(--veloura-dark-primary-text, #ffffff) !important;
+  }
+  /* زر المشاركة/الإغلاق يتبع الحواف أيضًا. */
+  .veloura-product-page salla-social-share .s-social-share-btn,
+  .veloura-product-page .veloura-product-media-share {
+    border-radius: min(var(--veloura-product-radius, 28px), 50%) !important;
+  }
+
+  /* 11) ويدجتات سلة الخارجية (التقسيط والعروض): داخل بطاقة بحواف الصفحة
+     بدل شريط ممتد بعرض الصفحة. */
+  .veloura-product-page salla-installment,
+  .veloura-product-page salla-offer {
+    display: block !important;
+    border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    overflow: hidden !important;
+  }
+  .veloura-product-page salla-installment iframe,
+  .veloura-product-page salla-offer iframe {
+    border-radius: inherit !important;
+    display: block !important;
+    max-width: 100% !important;
+  }
 </style>
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
 
