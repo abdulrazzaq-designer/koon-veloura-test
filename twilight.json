@@ -6553,6 +6553,50 @@
       ]
     },
     {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تقسيم صفحة المنتج على الجوال (صورة + تفاصيل بجانبها)",
+      "id": "veloura_product_mobile_split_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "description": "تصغر الصورة وتظهر بجانبها الاسم والسعر والتقييم وحالة التوفر، ويبقى الشراء تحتهما بعرض كامل."
+    },
+    {
+      "id": "veloura_product_mobile_split_ratio_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عرض عمود الصورة في التقسيم",
+      "icon": "sicon-resize-full",
+      "value": 52,
+      "step": "1",
+      "minimum": "40",
+      "maximum": "65",
+      "required": false,
+      "description": "نسبة عرض الصورة من الشاشة — والباقي للتفاصيل.",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_product_images_height_mode_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -15238,11 +15282,23 @@
           "description": "بطول العناوين والمنتجات: يُحسب على ارتفاع العمود المقابل كاملاً فتستوي الحافتان (وقد يُقص جزء من أطراف الصورة). تلقائي: يظهر الوسيط كاملاً بأبعاده.",
           "icon": "sicon-resize-full",
           "selected": [
-            {"label": "بطول العناوين والمنتجات", "value": "match", "key": "vsc_media_height-match"}
+            {
+              "label": "بطول العناوين والمنتجات",
+              "value": "match",
+              "key": "vsc_media_height-match"
+            }
           ],
           "options": [
-            {"label": "بطول العناوين والمنتجات", "value": "match", "key": "vsc_media_height-match"},
-            {"label": "تلقائي حسب أبعاد الوسيط", "value": "auto", "key": "vsc_media_height-auto"}
+            {
+              "label": "بطول العناوين والمنتجات",
+              "value": "match",
+              "key": "vsc_media_height-match"
+            },
+            {
+              "label": "تلقائي حسب أبعاد الوسيط",
+              "value": "auto",
+              "key": "vsc_media_height-auto"
+            }
           ],
           "source": "Manual",
           "multichoice": false,

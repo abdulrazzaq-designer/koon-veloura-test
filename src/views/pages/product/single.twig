@@ -226,6 +226,13 @@
     {% set vpp_mobile_quantity_style = 'mini_left' in vpp_mobile_quantity_style_raw ? 'mini_left' : 'modern' %}
     {% set vpp_mobile_buttons_compact = _self.veloura_bool(theme.settings.get('veloura_product_mobile_buttons_compact_2026', true), true)|trim == 'true' %}
 
+    {# تقسيم الجوال: الصورة في عمود والتعريف في عمود بجانبها. V101 #}
+    {% set vpp_mobile_split = _self.veloura_bool(theme.settings.get('veloura_product_mobile_split_2026', false), false)|trim == 'true' %}
+    {% set vpp_mobile_split_ratio_raw = _self.veloura_select(theme.settings.get('veloura_product_mobile_split_ratio_2026', 52), 52)|trim %}
+    {% set vpp_mobile_split_ratio = vpp_mobile_split_ratio_raw + 0 %}
+    {% if vpp_mobile_split_ratio < 40 %}{% set vpp_mobile_split_ratio = 40 %}{% endif %}
+    {% if vpp_mobile_split_ratio > 65 %}{% set vpp_mobile_split_ratio = 65 %}{% endif %}
+
     {% set vpp_tags_enabled = _self.veloura_bool(theme.settings.get('veloura_product_tags_enabled_2026', true), true)|trim == 'true' %}
     {% set vpp_hide_tags_visual_only = _self.veloura_bool(theme.settings.get('veloura_product_hide_tags_visual_only_2026', false), false)|trim == 'true' %}
     {% set vpp_hide_liked_products = _self.veloura_bool(theme.settings.get('veloura_product_hide_liked_products_2026', false), false)|trim == 'true' %}
@@ -483,6 +490,67 @@
     visibility: hidden !important;
     pointer-events: none !important;
   }
+  /* ==========================================================================
+     تقسيم الجوال V101: الصورة في عمود والتعريف (الاسم والسعر والتقييم
+     والتوفر) في عمود بجانبها. السكربت لا يحرّك السلايدر إطلاقًا — ينشئ
+     عمودًا بجانبه وينقل إليه عناصر التعريف فقط، ويعيدها عند تكبير الشاشة.
+     الشراء (الخيارات والكمية والأزرار) يبقى تحتهما بعرض كامل.
+     ========================================================================== */
+  @media (max-width: 767px) {
+    .veloura-product-page.veloura-product-mobile-split [id^="product-"] {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      align-items: flex-start !important;
+      column-gap: 14px;
+    }
+
+    .veloura-product-page.veloura-product-mobile-split [id^="product-"] > .sidebar {
+      width: var(--veloura-pp-split, 52%) !important;
+      flex: 0 0 var(--veloura-pp-split, 52%) !important;
+      margin: 0 !important;
+      padding-bottom: 14px !important;
+      order: 1;
+    }
+
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info {
+      flex: 1 1 0%;
+      min-width: 0;
+      order: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 2px;
+    }
+
+    .veloura-product-page.veloura-product-mobile-split [id^="product-"] > .main-content {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      order: 3;
+    }
+
+    /* العمود أضيق، فالعنوان والسعر أصغر قليلًا. */
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info h1 {
+      font-size: 17px !important;
+      line-height: 1.7 !important;
+    }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .total-price { font-size: 21px !important; }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info > *,
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-header-price {
+      margin: 0 !important;
+    }
+    .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .price-wrapper { flex-wrap: wrap; }
+
+    /* الصور المصغرة تصير صغيرة جدًا داخل نصف الشاشة، فتُخفى هنا. */
+    .veloura-product-page.veloura-product-mobile-split [id^="product-"] > .sidebar :is(
+      .s-slider-thumbs,
+      .swiper-thumbs,
+      [part~="thumbnails"]
+    ) {
+      display: none !important;
+    }
+  }
+
 </style>
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
 
@@ -501,7 +569,7 @@
   data-v42-order-quick="{{ vpp_order_quick }}"
   data-v42-order-payments="{{ vpp_order_payments }}"
   data-veloura-sticky="{{ vpp_mobile_sticky_cart ? 'true' : 'false' }}"
-     data-veloura-product-build="v100-native-related-recent" data-veloura-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
+     data-veloura-product-build="v100-native-related-recent" data-veloura-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }} {{ vpp_mobile_split ? 'veloura-product-mobile-split' : '' }}" style="--veloura-pp-split: {{ vpp_mobile_split_ratio }}%; --veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
 
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         {% if not (vpp_enabled and vpp_hide_breadcrumb) %}
@@ -1077,6 +1145,80 @@
         }
       };
     </script>
+    {# Veloura Product Mobile Split V101 — يبني عمود التعريف بجانب الصورة على الجوال #}
+    {% if vpp_mobile_split %}
+    <script data-cfasync="false" id="veloura-product-mobile-split-v101">
+    (function () {
+      function boot() {
+        var page = document.querySelector('.veloura-product-page.veloura-product-mobile-split');
+        if (!page) return;
+        var wrap = page.querySelector('[id^="product-"]');
+        if (!wrap) return;
+        var sidebar = wrap.querySelector(':scope > .sidebar');
+        var main = wrap.querySelector(':scope > .main-content');
+        if (!sidebar || !main) return;
+
+        /* عناصر التعريف فقط — بلا وصف ولا خيارات ولا أزرار شراء. */
+        var SEL = [
+          '.product-brand',
+          'h1',
+          '.veloura-product-category-under-title',
+          '.veloura-product-header-price',
+          'salla-rating-stars',
+          '.veloura-product-stock-radar'
+        ].join(',');
+
+        var info = document.createElement('div');
+        info.className = 'veloura-pp-split__info';
+
+        var moved = [];
+        var on = false;
+
+        function enable() {
+          if (on) return;
+          var nodes = [].slice.call(main.querySelectorAll(SEL));
+          /* استبعاد أي عنصر داخل عنصر آخر مُختار. */
+          nodes = nodes.filter(function (n) {
+            return !nodes.some(function (m) { return m !== n && m.contains(n); });
+          });
+          if (!nodes.length) return;
+
+          sidebar.insertAdjacentElement('afterend', info);
+          nodes.forEach(function (n) {
+            var slot = document.createComment('vpp-slot');
+            n.parentNode.insertBefore(slot, n);
+            moved.push({ node: n, slot: slot });
+            info.appendChild(n);
+          });
+          on = true;
+        }
+
+        function disable() {
+          if (!on) return;
+          moved.forEach(function (m) {
+            if (m.slot.parentNode) m.slot.parentNode.replaceChild(m.node, m.slot);
+          });
+          moved = [];
+          if (info.parentNode) info.parentNode.removeChild(info);
+          on = false;
+        }
+
+        var mq = window.matchMedia('(max-width: 767px)');
+        function apply() { mq.matches ? enable() : disable(); }
+        apply();
+        if (mq.addEventListener) { mq.addEventListener('change', apply); }
+        else if (mq.addListener) { mq.addListener(apply); }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+      } else {
+        boot();
+      }
+    })();
+    </script>
+    {% endif %}
+
     {% if product.has_3d_image %}
         <script type="module" defer src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     {% endif %}
