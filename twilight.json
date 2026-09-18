@@ -6579,10 +6579,10 @@
       "icon": "sicon-resize-full",
       "value": 52,
       "step": "1",
-      "minimum": "40",
-      "maximum": "65",
+      "minimum": "0",
+      "maximum": "70",
       "required": false,
-      "description": "نسبة عرض الصورة من الشاشة — والباقي للتفاصيل.",
+      "description": "نسبة عرض الصورة من الشاشة — والباقي للتفاصيل. المدى العملي بين 35% و65%.",
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",

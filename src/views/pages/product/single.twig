@@ -230,8 +230,8 @@
     {% set vpp_mobile_split = _self.veloura_bool(theme.settings.get('veloura_product_mobile_split_2026', false), false)|trim == 'true' %}
     {% set vpp_mobile_split_ratio_raw = _self.veloura_select(theme.settings.get('veloura_product_mobile_split_ratio_2026', 52), 52)|trim %}
     {% set vpp_mobile_split_ratio = vpp_mobile_split_ratio_raw + 0 %}
-    {% if vpp_mobile_split_ratio < 40 %}{% set vpp_mobile_split_ratio = 40 %}{% endif %}
-    {% if vpp_mobile_split_ratio > 65 %}{% set vpp_mobile_split_ratio = 65 %}{% endif %}
+    {% if vpp_mobile_split_ratio < 25 %}{% set vpp_mobile_split_ratio = 25 %}{% endif %}
+    {% if vpp_mobile_split_ratio > 70 %}{% set vpp_mobile_split_ratio = 70 %}{% endif %}
 
     {% set vpp_tags_enabled = _self.veloura_bool(theme.settings.get('veloura_product_tags_enabled_2026', true), true)|trim == 'true' %}
     {% set vpp_hide_tags_visual_only = _self.veloura_bool(theme.settings.get('veloura_product_hide_tags_visual_only_2026', false), false)|trim == 'true' %}
