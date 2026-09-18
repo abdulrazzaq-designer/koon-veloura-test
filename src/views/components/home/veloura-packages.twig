@@ -255,7 +255,7 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
   flex: 0 0 auto;
   width: 8px;
   height: 8px;
-  border-radius: 999px;
+  border-radius: min(var(--vpk-r-inner), 50%);
   background: var(--vpk-plan, var(--vpk-accent));
 }
 .vpk.is-centered .vpk__name { justify-content: center; }
@@ -298,7 +298,7 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
 
 .vpk .vpk__cycle {
   padding: 2px 9px;
-  border-radius: 999px;
+  border-radius: var(--vpk-r-pill);
   background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 14%, transparent);
   color: var(--vpk-plan, var(--vpk-accent));
   font-weight: 700;
@@ -409,8 +409,12 @@ html[dir="ltr"] .vpk .vpk__cta i { transform: rotate(180deg); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     touch-action: pan-x pan-y;
-    /* مساحة أعلى الشريط حتى لا يُقص الشريط الصغير فوق البطاقة المميزة. */
-    padding-block: 14px 6px;
+    /* مساحة حول الشريط: الإطار المضيء للبطاقة المميزة والظل لا يُقصّان،
+       لأن حاوية التمرير تقصّ ما يخرج عنها. */
+    padding-block: 16px 18px;
+    padding-inline: 6px;
+    margin-inline: -6px;
+    scroll-padding-inline-start: 6px;
     cursor: grab;
   }
   .vpk.vpk--m-swipe .vpk__grid::-webkit-scrollbar { display: none; }
@@ -562,13 +566,14 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
                   {% if plan.plan_suffix %}
                     <span class="vpk__suffix">{{ plan.plan_suffix }}</span>
                   {% endif %}
+
+                  {% if plan.plan_old_price %}
+                    <span class="vpk__old">{{ plan.plan_old_price }}</span>
+                  {% endif %}
                 </div>
 
-                {% if plan.plan_old_price or vpk_billing %}
+                {% if vpk_billing %}
                   <div class="vpk__price-meta">
-                    {% if plan.plan_old_price %}
-                      <span class="vpk__old">{{ plan.plan_old_price }}</span>
-                    {% endif %}
                     {% if vpk_billing %}
                       <span
                         class="vpk__cycle"
