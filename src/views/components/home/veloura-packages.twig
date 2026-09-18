@@ -405,16 +405,15 @@ html[dir="ltr"] .vpk .vpk__cta i { transform: rotate(180deg); }
     overflow-x: auto !important;
     overflow-y: hidden !important;
     scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     touch-action: pan-x pan-y;
-    /* مساحة حول الشريط: الإطار المضيء للبطاقة المميزة والظل لا يُقصّان،
-       لأن حاوية التمرير تقصّ ما يخرج عنها. */
-    padding-block: 16px 18px;
-    padding-inline: 6px;
-    margin-inline: -6px;
-    scroll-padding-inline-start: 6px;
+    /* مساحة صغيرة حول الشريط تكفي الإطار المضيء للباقة المميزة. الظل
+       الكبير معطّل داخل الشريط (انظر أسفله) لأن حاوية التمرير تقصّه. */
+    padding-block: 16px 14px;
+    padding-inline: 4px;
+    margin-inline: -4px;
+    scroll-padding-inline-start: 4px;
     cursor: grab;
   }
   .vpk.vpk--m-swipe .vpk__grid::-webkit-scrollbar { display: none; }
@@ -431,6 +430,14 @@ html[dir="ltr"] .vpk .vpk__cta i { transform: rotate(180deg); }
   }
   /* أثناء السحب لا تتحرك البطاقات تحت الإصبع. */
   .vpk.vpk--m-swipe .vpk__grid.is-dragging .vpk__card { transition: none; }
+
+  /* لا ظلّ ولا رفع داخل الشريط: حاوية التمرير تقصّ الظل فيظهر مستطيلًا
+     مقطوعًا تحت البطاقة، والرفع يربك السحب. */
+  .vpk.vpk--m-swipe .vpk__grid .vpk__card,
+  .vpk.vpk--m-swipe .vpk__grid .vpk__card:hover {
+    box-shadow: none !important;
+    transform: none !important;
+  }
 
   .vpk.vpk--m-grid .vpk__grid { grid-template-columns: minmax(0, 1fr); }
 
@@ -641,34 +648,87 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
       section.classList.add('is-inview');
     }
 
-    /* ---------- شريط الجوال: سحب بالفأرة + نقاط ----------
-       الإصبع يمرّر الشريط من المتصفح نفسه، أما الفأرة (وهي حالة معاينة
-       المحرّر) فلا تمرّر حاوية تمرير، فنترجم السحب إلى تمرير هنا. */
+    /* ---------- شريط الجوال: سحب سلس + نقاط ----------
+       الإصبع يمرّر الشريط من المتصفح، أما الفأرة (حالة معاينة المحرّر) فلا
+       تمرّر حاوية تمرير، فنترجم السحب إلى تمرير. وعند الإفلات لا نترك
+       التثبيت للمتصفح — فقفزته حادّة — بل نحرّك بأنفسنا بتسارع ناعم إلى
+       أقرب بطاقة، مع حساب سرعة الإفلات حتى تكفي نفضة خفيفة للانتقال. */
     var grid = section.querySelector('[data-vpk-grid]');
     var dotsBox = section.querySelector('[data-vpk-dots]');
     var cards = grid ? [].slice.call(grid.querySelectorAll('.vpk__card')) : [];
+    var rtl = (document.documentElement.getAttribute('dir') || '').toLowerCase() !== 'ltr';
 
     function swipeMode() {
-      return section.classList.contains('vpk--m-swipe') &&
+      return !!grid && section.classList.contains('vpk--m-swipe') &&
         window.matchMedia('(max-width: 639px)').matches;
     }
 
+    /* موضع التمرير الذي يجعل بداية البطاقة عند بداية الشريط. */
+    function targetOf(i) {
+      var gr = grid.getBoundingClientRect();
+      var cr = cards[i].getBoundingClientRect();
+      var d = rtl ? (cr.right - gr.right) : (cr.left - gr.left);
+      return grid.scrollLeft + d;
+    }
+
+    var anim = null;
+    function animateTo(i) {
+      if (!cards[i]) return;
+      var from = grid.scrollLeft;
+      var to = targetOf(i);
+      if (Math.abs(to - from) < 1) { sync(); return; }
+      if (anim) cancelAnimationFrame(anim);
+      grid.classList.add('is-dragging'); /* يعطّل تثبيت المتصفح أثناء حركتنا */
+      var t0 = performance.now(), dur = 420;
+      (function step(now) {
+        var t = Math.min((now - t0) / dur, 1);
+        /* تباطؤ ناعم في النهاية بلا ارتداد. */
+        var e = 1 - Math.pow(1 - t, 3);
+        grid.scrollLeft = from + (to - from) * e;
+        sync();
+        if (t < 1) { anim = requestAnimationFrame(step); }
+        else { anim = null; grid.classList.remove('is-dragging'); }
+      })(t0);
+    }
+
+    function nearest(pos) {
+      var at = (pos === undefined) ? grid.scrollLeft : pos;
+      var base = grid.scrollLeft, best = 0, bd = Infinity;
+      cards.forEach(function (c, i) {
+        var gr = grid.getBoundingClientRect();
+        var cr = c.getBoundingClientRect();
+        var t = base + (rtl ? (cr.right - gr.right) : (cr.left - gr.left));
+        var d = Math.abs(t - at);
+        if (d < bd) { bd = d; best = i; }
+      });
+      return best;
+    }
+
     if (grid && cards.length > 1) {
-      var down = false, moved = false, startX = 0, startScroll = 0;
+      var down = false, moved = false, startX = 0, startScroll = 0, startIndex = 0;
+      var lastX = 0, lastT = 0, vel = 0;
 
       grid.addEventListener('pointerdown', function (e) {
         if (e.pointerType !== 'mouse' || !swipeMode()) return;
-        down = true; moved = false;
-        startX = e.clientX;
+        if (anim) { cancelAnimationFrame(anim); anim = null; }
+        down = true; moved = false; vel = 0;
+        startX = lastX = e.clientX;
+        lastT = performance.now();
         startScroll = grid.scrollLeft;
+        startIndex = nearest();
         grid.classList.add('is-dragging');
+        if (grid.setPointerCapture) { try { grid.setPointerCapture(e.pointerId); } catch (err) {} }
       });
 
       grid.addEventListener('pointermove', function (e) {
         if (!down) return;
+        var now = performance.now(), dt = now - lastT;
+        if (dt > 0) vel = (e.clientX - lastX) / dt; /* بكسل/مللي ثانية */
+        lastX = e.clientX; lastT = now;
         var dx = e.clientX - startX;
         if (Math.abs(dx) > 4) moved = true;
         grid.scrollLeft = startScroll - dx;
+        sync();
         e.preventDefault();
       });
 
@@ -676,9 +736,16 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
         if (!down) return;
         down = false;
         grid.classList.remove('is-dragging');
-        /* إعادة التثبيت: تمرير بمقدار صفر يجعل المتصفح يثبّت على أقرب بطاقة. */
-        grid.scrollBy({ left: 0, behavior: 'smooth' });
-        sync();
+        /* نفضة سريعة تنقل بطاقة واحدة في اتجاه السحب مهما كانت قصيرة،
+           والسحب البطيء يثبت على أقرب بطاقة. */
+        var i;
+        if (Math.abs(vel) > 0.3) {
+          i = startIndex + (vel > 0 ? 1 : -1) * (rtl ? 1 : -1);
+          i = Math.max(0, Math.min(cards.length - 1, i));
+        } else {
+          i = nearest(grid.scrollLeft - vel * 160);
+        }
+        animateTo(i);
       }
       grid.addEventListener('pointerup', release);
       grid.addEventListener('pointercancel', release);
@@ -699,27 +766,14 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
         b.type = 'button';
         b.className = 'veloura-dots__dot';
         b.setAttribute('aria-label', 'الباقة ' + (i + 1));
-        b.addEventListener('click', function () {
-          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-        });
+        b.addEventListener('click', function () { animateTo(i); });
         dotsBox.appendChild(b);
         dots.push(b);
       });
     }
 
-    function nearest() {
-      var r = grid.getBoundingClientRect();
-      var mid = (r.left + r.right) / 2, best = 0, bd = Infinity;
-      cards.forEach(function (c, i) {
-        var cr = c.getBoundingClientRect();
-        var d = Math.abs((cr.left + cr.right) / 2 - mid);
-        if (d < bd) { bd = d; best = i; }
-      });
-      return best;
-    }
-
     function sync() {
-      if (!dots.length) return;
+      if (!dots.length || !grid) return;
       var k = nearest();
       dots.forEach(function (d, i) { d.classList.toggle('is-on', i === k); });
     }
