@@ -31,12 +31,19 @@
   {% if vpk_cols is iterable or vpk_cols ~ '' == '' %}{% set vpk_cols = 3 %}{% endif %}
   {% set vpk_billing = component.vpk_show_billing ? true : false %}
 
+  {% set vpk_mobile = component.vpk_mobile_mode|default('swipe') %}
+  {% if vpk_mobile.selected is defined %}{% set vpk_mobile = vpk_mobile.selected %}{% endif %}
+  {% if vpk_mobile is iterable and vpk_mobile.value is not defined %}{% set vpk_mobile = vpk_mobile|first %}{% endif %}
+  {% if vpk_mobile.value is defined %}{% set vpk_mobile = vpk_mobile.value %}{% endif %}
+  {% if vpk_mobile not in ['swipe', 'grid'] %}{% set vpk_mobile = 'swipe' %}{% endif %}
+
   {% set vpk_classes = [
     's-block',
     'vpk',
     component.vpk_center_titles ? 'is-centered' : '',
     vpk_billing ? 'vpk--billing' : '',
     component.vpk_dark_cards ? 'vpk--dark-cards' : '',
+    'vpk--m-' ~ vpk_mobile,
     component.vpk_custom_spacing ? 'has-spacing' : '',
     component.vpk_mobile_only ? 'veloura-mobile-only' : '',
     component.vpk_desktop_only ? 'veloura-desktop-only' : '',
@@ -157,7 +164,7 @@
 @media (hover: hover) and (pointer: fine) {
   .vpk .vpk__card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 18px 40px color-mix(in srgb, var(--vpk-accent) 14%, transparent);
+    box-shadow: 0 18px 40px color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 22%, transparent);
     border-color: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 45%, transparent);
   }
 }
@@ -323,19 +330,32 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
 }
 .vpk .vpk__cta:hover { transform: translateY(-2px); gap: 12px; }
 
-/* ---------- الجوال: بطاقات تُسحب ---------- */
+/* ---------- الجوال ----------
+   خياران: سحب باليد (شريط أفقي بتثبيت) أو شبكة تحت بعضها. السحب مبني على
+   flex لا grid: شبكة بأعمدة تلقائية داخل حاوية تمرّر لا تمرّر على بعض
+   المتصفحات، وهو سبب عدم عمل السحب. */
 @media (max-width: 639px) {
-  .vpk .vpk__grid {
-    grid-auto-flow: column;
-    grid-auto-columns: 86%;
-    grid-template-columns: none;
+  .vpk.vpk--m-swipe .vpk__grid {
+    display: flex;
+    flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding-bottom: 4px;
+    touch-action: pan-x pan-y;
+    /* مساحة أعلى الشريط حتى لا يُقص الشريط الصغير فوق البطاقة المميزة. */
+    padding-block: 14px 6px;
   }
-  .vpk .vpk__grid::-webkit-scrollbar { display: none; }
-  .vpk .vpk__card { scroll-snap-align: center; }
+  .vpk.vpk--m-swipe .vpk__grid::-webkit-scrollbar { display: none; }
+  .vpk.vpk--m-swipe .vpk__card {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+  }
+  .vpk.vpk--m-swipe .vpk__card:first-child { margin-inline-start: 0; }
+
+  .vpk.vpk--m-grid .vpk__grid { grid-template-columns: minmax(0, 1fr); }
+
   .vpk.is-inview .vpk__card.is-featured { transform: none; }
 }
 
@@ -354,6 +374,18 @@ html body.dark .vpk.vpk--dark-cards .vpk__card {
 html.dark .vpk .vpk__feature i,
 html body.dark .vpk .vpk__feature i {
   color: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 45%, #ffffff);
+}
+/* زر الباقات غير المميزة: لون المتجر يغمق على الداكن، فيُفتح ليبقى مقروءًا. */
+html.dark .vpk .vpk__card:not(.is-featured) .vpk__cta,
+html body.dark .vpk .vpk__card:not(.is-featured) .vpk__cta {
+  background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 26%, transparent);
+  color: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 25%, #ffffff) !important;
+}
+html.dark .vpk .vpk__billing button:not(.is-on),
+html body.dark .vpk .vpk__billing button:not(.is-on) { color: var(--vpk-text); }
+html.dark .vpk .vpk__billing button:not(.is-on) .vpk__save,
+html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
+  color: color-mix(in srgb, var(--vpk-accent) 25%, #ffffff);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -406,7 +438,16 @@ html body.dark .vpk .vpk__feature i {
       {% if vpk_items %}
         <div class="vpk__grid">
           {% for plan in vpk_items %}
-            {% set plan_url = plan.plan_url.url|default(plan.plan_url) %}
+            {# رابط الزر: المنتج المرتبط أولاً (يفتح صفحته)، وإلا الرابط اليدوي. #}
+            {% set plan_product = plan.plan_product|default(null) %}
+            {% if plan_product is iterable and plan_product.url is not defined %}{% set plan_product = plan_product|first %}{% endif %}
+            {% set plan_url = '' %}
+            {% if plan_product %}
+              {% set plan_url = plan_product.url|default(plan_product.link|default('')) %}
+            {% endif %}
+            {% if not plan_url %}
+              {% set plan_url = plan.plan_url.url|default(plan.plan_url) %}
+            {% endif %}
             {% if plan_url is iterable %}{% set plan_url = '' %}{% endif %}
 
             <article

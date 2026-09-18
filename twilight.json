@@ -15924,6 +15924,22 @@
               "required": false
             },
             {
+              "id": "plan_product",
+              "type": "items",
+              "format": "dropdown-list",
+              "label": "المنتج المرتبط (يفتح صفحته عند الضغط)",
+              "description": "عند اختيار منتج، يفتح زر الباقة صفحة هذا المنتج ويتجاهل الرابط اليدوي.",
+              "icon": "sicon-shopping-bag",
+              "source": "products",
+              "searchable": true,
+              "multichoice": false,
+              "selected": [],
+              "options": [],
+              "value": [],
+              "required": false,
+              "maxLength": 1
+            },
+            {
               "id": "plan_url",
               "type": "items",
               "icon": "sicon-link",
@@ -16090,12 +16106,43 @@
           "inputType": "range",
           "label": "عدد الباقات في الصف (كمبيوتر)",
           "description": "من 1 إلى 4 باقات.",
-                    "icon": "sicon-grid",
+          "icon": "sicon-grid",
           "value": "3",
           "step": "1",
           "minimum": "1",
           "maximum": "4",
           "required": false
+        },
+        {
+          "id": "vpk_mobile_mode",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "عرض الباقات على الجوال",
+          "icon": "sicon-mobile",
+          "description": "السحب باليد يعرض الباقات بجانب بعضها مع تمرير أفقي، والشبكة تعرضها تحت بعضها.",
+          "source": "Manual",
+          "searchable": false,
+          "multichoice": false,
+          "required": true,
+          "options": [
+            {
+              "label": "سحب باليد (تمرير أفقي)",
+              "value": "swipe",
+              "key": "vpk_mobile_mode-swipe"
+            },
+            {
+              "label": "شبكة تحت بعضها",
+              "value": "grid",
+              "key": "vpk_mobile_mode-grid"
+            }
+          ],
+          "selected": [
+            {
+              "label": "سحب باليد (تمرير أفقي)",
+              "value": "swipe",
+              "key": "vpk_mobile_mode-swipe"
+            }
+          ]
         },
         {
           "id": "vpk_accent",
