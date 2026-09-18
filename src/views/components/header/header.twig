@@ -577,24 +577,27 @@
        ولا يمكن تنسيقها من الثيم لأنها من نطاق آخر. الحل الوحيد المتاح
        قلب ألوانها في الوضع الداكن: invert مع hue-rotate يعيد الألوان
        (الأزرق يبقى أزرق) ويترك الخلفية داكنة. */
-    /* الإطار طبقة مستقلة في المتصفح فلا يتأثر بأوضاع المزج (جُرّبت
-       screen و multiply فلم تُطبَّق على الإطارات أصلاً). الحل العملي:
-       شفافية خفيفة على الإطار نفسه، فيظهر زجاج النافذة وما خلفها من
-       خلاله. وفي الداكن نقلب ألوان الصفحة أولاً لأنها فاتحة فقط. */
-    html body salla-modal.s-login-modal iframe {
-      background: transparent !important;
-      border-radius: inherit !important;
-      opacity: .74 !important;
-    }
-    html.dark body salla-modal.s-login-modal iframe,
-    html body.dark salla-modal.s-login-modal iframe {
-      filter: invert(1) hue-rotate(180deg) !important;
+    /* نافذة تسجيل الدخول: بلا زجاج وبلا قلب ألوان وبلا شفافية — تُترك
+       كما ترسلها سلة (صفحة حسابات فاتحة داخل إطار)، ولا تأخذ من الثيم
+       إلا الحواف. أي معالجة أخرى جُرّبت وأعطت نتيجة سوداء أو باهتة. */
+    html body salla-modal.s-login-modal :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      isolation: auto !important;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, .28) !important;
     }
 
-    /* المزج محصور داخل النافذة فلا يتسرّب إلى الصفحة خلفها. */
-    html body :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
-      isolation: isolate !important;
+    html body salla-modal.s-login-modal iframe {
+      background: #ffffff !important;
+      border-radius: inherit !important;
+      filter: none !important;
+      opacity: 1 !important;
+      mix-blend-mode: normal !important;
     }
+
   </style>
 
   <div id="mainnav" class="main-nav-container">
