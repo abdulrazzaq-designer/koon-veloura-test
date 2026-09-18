@@ -43236,6 +43236,11 @@ html.dark {
 /* ------------------------------------------------------------------------
    One shared material. These selectors point only at the visible surface.
    No gradient edge, no duplicate inset border, no full-screen blur.
+
+   نوافذ سلة (s-modal-body / s-modal-content) خرجت من هذه القائمة: صارت
+   تُعالَج في قاعدة واحدة مباشرة داخل ستايل الهيدر — لأن <salla-modal>
+   ينقل نفسه إلى نهاية الصفحة وقت التحميل، فكانت المحدّدات المركّبة
+   (.s-modal .s-modal-body) لا تطابق شيئاً وتبقى النافذة بيضاء.
    ------------------------------------------------------------------------ */
 html body :is(.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface:not(.does-not-exist)) {
   box-sizing: border-box !important;
@@ -43300,75 +43305,9 @@ html body :is(.swal2-container .swal2-popup:not(.swal2-toast)) {
   box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
   box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
-html body :is(.s-modal .s-salla-modal-body:not(.does-not-exist)) {
-  box-sizing: border-box !important;
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
-html body :is(.s-modal .s-modal-body:not(.does-not-exist)) {
-  box-sizing: border-box !important;
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
-html body :is(.s-modal .s-modal-content:not(.does-not-exist)) {
-  box-sizing: border-box !important;
-  background: rgba(244, 245, 247, 0.72) !important;
-  background: var(--veloura-glass-surface) !important;
-  background-color: rgba(244, 245, 247, 0.72) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-edge-top) !important;
-  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-filter) !important;
-  filter: none !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
-  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
-}
 html body .veloura-search-surface:not(.does-not-exist):not(.does-not-exist),
 html body .veloura-glass:not(.does-not-exist):not(.does-not-exist),
 html body .veloura-glass-surface:not(.does-not-exist):not(.does-not-exist),
-html body .s-salla-modal-body:not(.does-not-exist):not(.does-not-exist),
-html body .s-modal-body:not(.does-not-exist):not(.does-not-exist),
-html body .s-modal-content:not(.does-not-exist):not(.does-not-exist),
 html.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
 html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   box-sizing: border-box !important;
@@ -58423,15 +58362,6 @@ html body.dark.veloura-glass-effect {
 html body.veloura-glass-effect .veloura-glass-surface,
 html body.veloura-glass-effect .veloura-popup .veloura-popup__box,
 html body.veloura-glass-effect .swal2-container .swal2-popup:not(.swal2-toast),
-html body.veloura-glass-effect .s-modal .s-salla-modal-body,
-html body.veloura-glass-effect .s-modal .s-modal-body,
-html body.veloura-glass-effect .s-modal .s-modal-content,
-html body.veloura-glass-effect .s-salla-modal-body,
-html body.veloura-glass-effect .s-modal-body,
-html body.veloura-glass-effect .s-modal-content,
-html body.veloura-glass-effect .s-login-modal .s-modal-body,
-html body.veloura-glass-effect .s-auth-modal .s-salla-modal-body,
-html body.veloura-glass-effect .s-auth-modal .s-modal-content,
 html body.veloura-glass-effect .login-modal .modal-content,
 html body.veloura-glass-effect .auth-modal .modal-content {
   box-sizing: border-box !important;

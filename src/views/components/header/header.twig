@@ -572,15 +572,18 @@
       box-shadow: none !important;
     }
 
-    /* صفحة الدخول تأتي داخل إطار من نطاق حسابات سلة فلا يمكن تلوينها من
-       الثيم؛ color-scheme يجعل خلفيتها الافتراضية تتبع وضع المتجر. */
-    html body salla-modal iframe {
-      background: transparent !important;
-      color-scheme: light;
+    /* صفحة الدخول تأتي داخل إطار من accounts.salla.com، وهي صفحة فاتحة
+       فقط: لا تقرأ prefers-color-scheme ولا تقبل وسيطاً للوضع الداكن،
+       ولا يمكن تنسيقها من الثيم لأنها من نطاق آخر. الحل الوحيد المتاح
+       قلب ألوانها في الوضع الداكن: invert مع hue-rotate يعيد الألوان
+       (الأزرق يبقى أزرق) ويترك الخلفية داكنة. */
+    html body salla-modal.s-login-modal iframe {
+      background: #ffffff !important;
+      border-radius: inherit !important;
     }
-    html.dark body salla-modal iframe,
-    html body.dark salla-modal iframe {
-      color-scheme: dark;
+    html.dark body salla-modal.s-login-modal iframe,
+    html body.dark salla-modal.s-login-modal iframe {
+      filter: invert(1) hue-rotate(180deg) !important;
     }
   </style>
 
