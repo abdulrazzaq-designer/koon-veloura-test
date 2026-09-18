@@ -540,8 +540,8 @@
 
     html.dark body :is(.s-modal-body, .s-modal-content, .s-salla-modal-body),
     html body.dark :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
-      background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #161b22) 82%, transparent) !important;
-      background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #161b22) 82%, transparent) !important;
+      background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #161b22) 45%, transparent) !important;
+      background-color: color-mix(in srgb, var(--veloura-dark-secondary-bg, #161b22) 45%, transparent) !important;
       color: var(--veloura-dark-primary-text, #ffffff) !important;
     }
 
@@ -577,13 +577,23 @@
        ولا يمكن تنسيقها من الثيم لأنها من نطاق آخر. الحل الوحيد المتاح
        قلب ألوانها في الوضع الداكن: invert مع hue-rotate يعيد الألوان
        (الأزرق يبقى أزرق) ويترك الخلفية داكنة. */
+    /* الإطار طبقة مستقلة في المتصفح فلا يتأثر بأوضاع المزج (جُرّبت
+       screen و multiply فلم تُطبَّق على الإطارات أصلاً). الحل العملي:
+       شفافية خفيفة على الإطار نفسه، فيظهر زجاج النافذة وما خلفها من
+       خلاله. وفي الداكن نقلب ألوان الصفحة أولاً لأنها فاتحة فقط. */
     html body salla-modal.s-login-modal iframe {
-      background: #ffffff !important;
+      background: transparent !important;
       border-radius: inherit !important;
+      opacity: .74 !important;
     }
     html.dark body salla-modal.s-login-modal iframe,
     html body.dark salla-modal.s-login-modal iframe {
       filter: invert(1) hue-rotate(180deg) !important;
+    }
+
+    /* المزج محصور داخل النافذة فلا يتسرّب إلى الصفحة خلفها. */
+    html body :is(.s-modal-body, .s-modal-content, .s-salla-modal-body) {
+      isolation: isolate !important;
     }
   </style>
 
