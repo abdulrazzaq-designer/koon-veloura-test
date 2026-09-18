@@ -762,6 +762,29 @@ class Product extends BasePage {
 
         button.addEventListener('click', (event) => {
             event.preventDefault();
+            event.stopPropagation();
+
+            /*
+             * V102: some global handlers (and focus moves) scroll the page to
+             * the top on this click, so the page jumps before the description
+             * opens. Freeze the scroll position for the next few frames.
+             */
+            const keepX = window.scrollX || window.pageXOffset || 0;
+            const keepY = window.scrollY || window.pageYOffset || 0;
+            let guardFrames = 4;
+            const holdScroll = () => {
+                if (
+                    (window.scrollX || window.pageXOffset || 0) !== keepX ||
+                    (window.scrollY || window.pageYOffset || 0) !== keepY
+                ) {
+                    window.scrollTo(keepX, keepY);
+                }
+
+                if (--guardFrames > 0) {
+                    window.requestAnimationFrame(holdScroll);
+                }
+            };
+            window.requestAnimationFrame(holdScroll);
 
             const willExpand = !button.classList.contains('is-expanded');
             const currentHeight = content.getBoundingClientRect().height;

@@ -551,6 +551,205 @@
     }
   }
 
+  /* ==========================================================================
+     V102 — إصلاحات صفحة المنتج
+     ========================================================================== */
+
+  /* 1) الماركة: شعار صغير في اليمين والاسم بجانبه مباشرة. */
+  .veloura-product-page .veloura-product-brand .brand-logo,
+  .veloura-product-page .veloura-product-brand .veloura-product-brand__logo {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    padding: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .veloura-product-page .veloura-product-brand .brand-logo img {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: min(var(--veloura-product-radius, 28px), 50%) !important;
+  }
+  .veloura-product-page .veloura-product-brand .veloura-product-brand__name {
+    display: inline-block !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+  }
+
+  /* 2) التصنيف: أيقونة في أول السطر، واسم التصنيف مسطّر ليُعرف أنه رابط. */
+  .veloura-product-page .veloura-product-category-under-title {
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+  .veloura-product-page .veloura-product-category-icon {
+    font-size: 15px !important;
+    line-height: 1 !important;
+    opacity: .8 !important;
+  }
+  .veloura-product-page .veloura-product-category-under-title a,
+  .veloura-product-page .veloura-product-category-link {
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 4px !important;
+  }
+
+  /* 3) عدّاد انتهاء الخصم: موسّط، بخلفية اللون الثانوي، وبالحواف نفسها. */
+  .veloura-product-page .veloura-product-discount-countdown {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 16px !important;
+    background: var(--veloura-product-secondary-bg-inline, var(--veloura-site-second-bg, #f4f6f8)) !important;
+    border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+  }
+  html.dark .veloura-product-page .veloura-product-discount-countdown,
+  body.dark .veloura-product-page .veloura-product-discount-countdown {
+    background: var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) !important;
+  }
+  .veloura-product-page .veloura-product-discount-countdown > span {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .veloura-product-page .veloura-product-discount-countdown salla-count-down {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  /* 4) أزرار الشراء كلها تأخذ حواف الصفحة — بما فيها «اشترِ الآن» والاشتراك. */
+  .veloura-product-page .veloura-product-sticky-bar salla-button,
+  .veloura-product-page .veloura-product-sticky-bar salla-button .s-button-element,
+  .veloura-product-page .veloura-product-sticky-bar salla-button button,
+  .veloura-product-page salla-add-product-button salla-button .s-button-element,
+  .veloura-product-page salla-add-product-button .s-add-product-button-main > *,
+  .veloura-product-page salla-quick-order .s-button-element,
+  .veloura-product-page salla-quick-order button {
+    border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    overflow: hidden !important;
+  }
+  /* أزرار الكمية تبقى على شكلها. */
+  .veloura-product-page salla-quantity-input button {
+    border-radius: inherit !important;
+    overflow: visible !important;
+  }
+
+  /* 5) الشريط الثابت للشراء: زجاجي فعلاً في الوضع الفاتح مثل باقي الأسطح. */
+  @media (max-width: 767px) {
+    body.veloura-glass-effect .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar {
+      background: var(--veloura-global-glass-bg, rgba(248, 250, 252, .72)) !important;
+      border-top: 1px solid var(--veloura-global-glass-border, rgba(255, 255, 255, .66)) !important;
+      -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%)) !important;
+      backdrop-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%)) !important;
+      box-shadow: 0 -8px 28px rgba(15, 23, 42, .10) !important;
+    }
+    html.dark body.veloura-glass-effect .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar,
+    body.dark.veloura-glass-effect .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-sticky-bar {
+      background: color-mix(in srgb, var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) 72%, transparent) !important;
+      border-top-color: rgba(255, 255, 255, .10) !important;
+    }
+  }
+
+  /* 6) قسم «منتجات قد تعجبك»: لا شريط أبيض خلف العنوان ولا خلف السلايدر. */
+  .veloura-product-page ~ .veloura-product-related-products,
+  .veloura-product-related-products,
+  .veloura-product-related-products .veloura-product-related-heading,
+  .veloura-product-related-products salla-products-slider,
+  .veloura-product-related-products .s-products-slider-wrapper,
+  .veloura-product-related-products .s-products-slider-body,
+  .veloura-product-related-products .swiper,
+  .veloura-product-related-products .swiper-wrapper {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  .veloura-product-related-products hr,
+  .veloura-product-related-products .s-divider {
+    display: none !important;
+  }
+
+  /* 7) طرق الدفع: خلفية بيضاء دائمًا حتى لا تختفي الأيقونات على الداكن. */
+  .veloura-product-page .veloura-product-payment-methods .s-payments-list,
+  .veloura-product-page .veloura-product-payment-methods .s-payments-list-wrap {
+    background: #ffffff !important;
+    border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    padding: 12px !important;
+  }
+  .veloura-product-page .veloura-product-payment-methods .s-payments-list-item,
+  .veloura-product-page .veloura-product-payment-methods .s-payments-list-item img {
+    background: #ffffff !important;
+    border-radius: min(var(--veloura-product-radius, 28px), 10px) !important;
+  }
+
+  /* 8) نافذة المشاركة: بلون الثيم من أول لحظة، وبحواف الصفحة. */
+  .veloura-product-page salla-social-share .s-social-share-modal-dialog,
+  salla-social-share .s-social-share-modal-dialog {
+    background: var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) !important;
+    color: inherit !important;
+    border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    overflow: hidden !important;
+  }
+  html.dark salla-social-share .s-social-share-modal-dialog,
+  body.dark salla-social-share .s-social-share-modal-dialog {
+    background: var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #161b22)) !important;
+    color: var(--veloura-dark-primary-text, #ffffff) !important;
+  }
+  salla-social-share .s-social-share-modal-card,
+  salla-social-share .s-social-share-modal-copy-row,
+  salla-social-share .s-social-share-modal-url,
+  salla-social-share .s-social-share-modal-close {
+    background: transparent !important;
+    border-radius: min(var(--veloura-product-radius-final, 28px), 14px) !important;
+  }
+  html.dark salla-social-share .s-social-share-modal-copy-row,
+  body.dark salla-social-share .s-social-share-modal-copy-row,
+  html.dark salla-social-share .s-social-share-modal-url,
+  body.dark salla-social-share .s-social-share-modal-url {
+    background: rgba(255, 255, 255, .06) !important;
+    color: var(--veloura-dark-primary-text, #ffffff) !important;
+    border-color: rgba(255, 255, 255, .12) !important;
+  }
+  salla-social-share .s-social-share-modal-handle {
+    background: currentColor !important;
+    opacity: .25 !important;
+  }
+  /* زر المشاركة نفسه يتبع الحواف أيضًا. */
+  .veloura-product-page salla-social-share .s-social-share-btn {
+    border-radius: min(var(--veloura-product-radius, 28px), 50%) !important;
+  }
+  /* 6ب) أي شريط أبيض من مكوّنات سلة للمنتجات (المشابهة أو التي شاهدتها)
+     — الخلفية تصير شفافة، والهياكل المؤقتة تأخذ لونًا مناسبًا للداكن. */
+  salla-products-slider,
+  salla-products-list,
+  .s-products-slider-wrapper,
+  .s-products-slider-body,
+  .s-products-list-wrapper,
+  .s-products-list-body {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  html.dark [class*="skeleton"],
+  body.dark [class*="skeleton"] {
+    background-color: rgba(255, 255, 255, .06) !important;
+    background-image: none !important;
+  }
 </style>
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
 
@@ -715,8 +914,9 @@
 
                 {% if vpp_enabled and vpp_show_category and product.category and product.category.name %}
                     <div class="veloura-product-category-under-title" data-v42-group="title">
-                        <span>{{ vpp_category_label }}</span>
-                        <a href="{{ product.category.url }}">{{ product.category.name }}</a>
+                        <i class="sicon-tag veloura-product-category-icon" aria-hidden="true"></i>
+                        <span class="veloura-product-category-label">{{ vpp_category_label }}</span>
+                        <a class="veloura-product-category-link" href="{{ product.category.url }}">{{ product.category.name }}</a>
                     </div>
                 {% endif %}
 
