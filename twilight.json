@@ -15924,22 +15924,6 @@
               "required": false
             },
             {
-              "id": "plan_product",
-              "type": "items",
-              "format": "dropdown-list",
-              "label": "المنتج المرتبط (يفتح صفحته عند الضغط)",
-              "description": "عند اختيار منتج، يفتح زر الباقة صفحة هذا المنتج ويتجاهل الرابط اليدوي.",
-              "icon": "sicon-shopping-bag",
-              "source": "products",
-              "searchable": true,
-              "multichoice": false,
-              "selected": [],
-              "options": [],
-              "value": [],
-              "required": false,
-              "maxLength": 1
-            },
-            {
               "id": "plan_url",
               "type": "items",
               "icon": "sicon-link",
@@ -16000,7 +15984,8 @@
                   "key": "custom",
                   "value": "custom"
                 }
-              ]
+              ],
+              "description": "اختر منتجًا أو تصنيفًا أو صفحة، أو ضع رابطًا مخصصًا."
             },
             {
               "id": "plan_featured",

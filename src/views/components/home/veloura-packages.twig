@@ -230,27 +230,82 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
   85%, 100% { transform: translateX(120%); }
 }
 
-/* ---------- محتوى البطاقة ---------- */
-.vpk .vpk__name {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--vpk-title);
+/* ---------- محتوى البطاقة ----------
+   ترتيب ثابت في كل بطاقة: رأس (اسم + وصف)، ثم صندوق السعر، ثم الميزات، ثم
+   الزر في الأسفل. ثبات المواضع هو ما يجعل المقارنة بالعين ممكنة. */
+.vpk .vpk__head {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.vpk .vpk__desc { margin: 0; font-size: 13.5px; line-height: 1.8; min-height: 2.2em; }
+.vpk .vpk__name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+  color: var(--vpk-title);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* نقطة صغيرة بلون الباقة تسبق الاسم، تربط البطاقة بلونها. */
+.vpk .vpk__name::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--vpk-plan, var(--vpk-accent));
+}
+.vpk.is-centered .vpk__name { justify-content: center; }
+
+.vpk .vpk__desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.75;
+  min-height: 2.6em;
+  opacity: .9;
+}
+
+.vpk .vpk__price-box {
+  padding: 14px 16px;
+  border-radius: var(--vpk-r-inner);
+  background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 14%, transparent);
+}
+.vpk .vpk__card.is-featured .vpk__price-box {
+  background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 13%, transparent);
+}
 
 .vpk .vpk__price-row {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 8px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--vpk-line);
+}
+.vpk.is-centered .vpk__price-row { justify-content: center; }
+
+.vpk .vpk__price-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 12.5px;
+}
+.vpk.is-centered .vpk__price-meta { justify-content: center; }
+
+.vpk .vpk__cycle {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 14%, transparent);
+  color: var(--vpk-plan, var(--vpk-accent));
+  font-weight: 700;
 }
 
 .vpk .vpk__price {
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 900;
   line-height: 1;
   color: var(--vpk-title);
@@ -273,6 +328,7 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
 .vpk .vpk__features {
   display: grid;
   gap: 9px;
+  padding-block: 2px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -281,10 +337,14 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
 .vpk .vpk__feature {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 9px;
+  padding-bottom: 9px;
+  border-bottom: 1px dashed var(--vpk-line);
   font-size: 13.5px;
   line-height: 1.7;
 }
+.vpk .vpk__feature:last-child { padding-bottom: 0; border-bottom: 0; }
+.vpk.is-centered .vpk__feature { justify-content: center; text-align: center; }
 
 .vpk .vpk__feature i {
   flex: 0 0 auto;
@@ -329,34 +389,54 @@ html[dir="ltr"] .vpk.is-centered .vpk__badge { transform: translateX(-50%); }
   color: #ffffff !important;
 }
 .vpk .vpk__cta:hover { transform: translateY(-2px); gap: 12px; }
+.vpk .vpk__cta i { font-size: 12px; transition: transform .25s ease; }
+.vpk .vpk__cta:hover i { transform: translateX(-3px); }
+html[dir="ltr"] .vpk .vpk__cta:hover i { transform: translateX(3px) rotate(180deg); }
+html[dir="ltr"] .vpk .vpk__cta i { transform: rotate(180deg); }
 
 /* ---------- الجوال ----------
-   خياران: سحب باليد (شريط أفقي بتثبيت) أو شبكة تحت بعضها. السحب مبني على
-   flex لا grid: شبكة بأعمدة تلقائية داخل حاوية تمرّر لا تمرّر على بعض
-   المتصفحات، وهو سبب عدم عمل السحب. */
+   خياران: سحب باليد (شريط أفقي بتثبيت) أو شبكة تحت بعضها. الشريط مبني على
+   flex لا grid، والقواعد بـ important لأن ستايل الثيم قد يعيد الشبكة.
+   السحب بالإصبع من المتصفح، والسحب بالفأرة من السكربت (معاينة المحرّر). */
 @media (max-width: 639px) {
   .vpk.vpk--m-swipe .vpk__grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     touch-action: pan-x pan-y;
     /* مساحة أعلى الشريط حتى لا يُقص الشريط الصغير فوق البطاقة المميزة. */
     padding-block: 14px 6px;
+    cursor: grab;
   }
   .vpk.vpk--m-swipe .vpk__grid::-webkit-scrollbar { display: none; }
+  .vpk.vpk--m-swipe .vpk__grid.is-dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    cursor: grabbing;
+  }
   .vpk.vpk--m-swipe .vpk__card {
-    flex: 0 0 86%;
+    flex: 0 0 86% !important;
+    width: 86% !important;
+    max-width: none !important;
     scroll-snap-align: start;
   }
-  .vpk.vpk--m-swipe .vpk__card:first-child { margin-inline-start: 0; }
+  /* أثناء السحب لا تتحرك البطاقات تحت الإصبع. */
+  .vpk.vpk--m-swipe .vpk__grid.is-dragging .vpk__card { transition: none; }
 
   .vpk.vpk--m-grid .vpk__grid { grid-template-columns: minmax(0, 1fr); }
 
   .vpk.is-inview .vpk__card.is-featured { transform: none; }
+}
+
+/* النقاط تخصّ شريط الجوال فقط. */
+.vpk .vpk__dots { display: none; }
+@media (max-width: 639px) {
+  .vpk.vpk--m-swipe .vpk__dots { display: flex; }
 }
 
 /* ---------- الوضع الداكن ---------- */
@@ -374,6 +454,16 @@ html body.dark .vpk.vpk--dark-cards .vpk__card {
 html.dark .vpk .vpk__feature i,
 html body.dark .vpk .vpk__feature i {
   color: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 45%, #ffffff);
+}
+html.dark .vpk .vpk__cycle,
+html body.dark .vpk .vpk__cycle {
+  background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 28%, transparent);
+  color: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 22%, #ffffff);
+}
+html.dark .vpk .vpk__price-box,
+html body.dark .vpk .vpk__price-box {
+  background: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 16%, transparent);
+  border-color: color-mix(in srgb, var(--vpk-plan, var(--vpk-accent)) 30%, transparent);
 }
 /* زر الباقات غير المميزة: لون المتجر يغمق على الداكن، فيُفتح ليبقى مقروءًا. */
 html.dark .vpk .vpk__card:not(.is-featured) .vpk__cta,
@@ -436,18 +526,10 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
       {% endif %}
 
       {% if vpk_items %}
-        <div class="vpk__grid">
+        <div class="vpk__grid" data-vpk-grid>
           {% for plan in vpk_items %}
-            {# رابط الزر: المنتج المرتبط أولاً (يفتح صفحته)، وإلا الرابط اليدوي. #}
-            {% set plan_product = plan.plan_product|default(null) %}
-            {% if plan_product is iterable and plan_product.url is not defined %}{% set plan_product = plan_product|first %}{% endif %}
-            {% set plan_url = '' %}
-            {% if plan_product %}
-              {% set plan_url = plan_product.url|default(plan_product.link|default('')) %}
-            {% endif %}
-            {% if not plan_url %}
-              {% set plan_url = plan.plan_url.url|default(plan.plan_url) %}
-            {% endif %}
+            {# رابط الزر: حقل الرابط المتعدد (منتج أو تصنيف أو صفحة أو رابط مخصص). #}
+            {% set plan_url = plan.plan_url.url|default(plan.plan_url) %}
             {% if plan_url is iterable %}{% set plan_url = '' %}{% endif %}
 
             <article
@@ -458,28 +540,44 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
                 <span class="vpk__badge">{{ plan.plan_badge }}</span>
               {% endif %}
 
-              {% if plan.plan_name %}
-                <h3 class="vpk__name">{{ plan.plan_name }}</h3>
-              {% endif %}
-
-              {% if plan.plan_desc %}
-                <p class="vpk__desc">{{ plan.plan_desc }}</p>
-              {% endif %}
-
-              <div class="vpk__price-row">
-                <span
-                  class="vpk__price"
-                  data-vpk-price
-                  data-monthly="{{ plan.plan_price|default('')|e('html_attr') }}"
-                  data-yearly="{{ plan.plan_price_yearly|default(plan.plan_price)|default('')|e('html_attr') }}"
-                >{{ plan.plan_price }}</span>
-
-                {% if plan.plan_suffix %}
-                  <span class="vpk__suffix">{{ plan.plan_suffix }}</span>
+              <header class="vpk__head">
+                {% if plan.plan_name %}
+                  <h3 class="vpk__name">{{ plan.plan_name }}</h3>
                 {% endif %}
+                {% if plan.plan_desc %}
+                  <p class="vpk__desc">{{ plan.plan_desc }}</p>
+                {% endif %}
+              </header>
 
-                {% if plan.plan_old_price %}
-                  <span class="vpk__old">{{ plan.plan_old_price }}</span>
+              {# صندوق السعر: السعر كبير، وتحته السعر القديم ومدة الدفع. #}
+              <div class="vpk__price-box">
+                <div class="vpk__price-row">
+                  <span
+                    class="vpk__price"
+                    data-vpk-price
+                    data-monthly="{{ plan.plan_price|default('')|e('html_attr') }}"
+                    data-yearly="{{ plan.plan_price_yearly|default(plan.plan_price)|default('')|e('html_attr') }}"
+                  >{{ plan.plan_price }}</span>
+
+                  {% if plan.plan_suffix %}
+                    <span class="vpk__suffix">{{ plan.plan_suffix }}</span>
+                  {% endif %}
+                </div>
+
+                {% if plan.plan_old_price or vpk_billing %}
+                  <div class="vpk__price-meta">
+                    {% if plan.plan_old_price %}
+                      <span class="vpk__old">{{ plan.plan_old_price }}</span>
+                    {% endif %}
+                    {% if vpk_billing %}
+                      <span
+                        class="vpk__cycle"
+                        data-vpk-note
+                        data-monthly="{{ component.vpk_monthly_label|default('شهري')|e('html_attr') }}"
+                        data-yearly="{{ component.vpk_yearly_label|default('سنوي')|e('html_attr') }}"
+                      >{{ component.vpk_monthly_label|default('شهري') }}</span>
+                    {% endif %}
+                  </div>
                 {% endif %}
               </div>
 
@@ -508,6 +606,11 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
             </article>
           {% endfor %}
         </div>
+
+        {% if vpk_mobile == 'swipe' and vpk_items|length > 1 %}
+          {# نقاط التنقل الموحّدة للمتجر — تظهر على الجوال فقط. #}
+          <div class="veloura-dots vpk__dots" data-vpk-dots></div>
+        {% endif %}
       {% endif %}
 
     </div>
@@ -533,6 +636,99 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
       section.classList.add('is-inview');
     }
 
+    /* ---------- شريط الجوال: سحب بالفأرة + نقاط ----------
+       الإصبع يمرّر الشريط من المتصفح نفسه، أما الفأرة (وهي حالة معاينة
+       المحرّر) فلا تمرّر حاوية تمرير، فنترجم السحب إلى تمرير هنا. */
+    var grid = section.querySelector('[data-vpk-grid]');
+    var dotsBox = section.querySelector('[data-vpk-dots]');
+    var cards = grid ? [].slice.call(grid.querySelectorAll('.vpk__card')) : [];
+
+    function swipeMode() {
+      return section.classList.contains('vpk--m-swipe') &&
+        window.matchMedia('(max-width: 639px)').matches;
+    }
+
+    if (grid && cards.length > 1) {
+      var down = false, moved = false, startX = 0, startScroll = 0;
+
+      grid.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse' || !swipeMode()) return;
+        down = true; moved = false;
+        startX = e.clientX;
+        startScroll = grid.scrollLeft;
+        grid.classList.add('is-dragging');
+      });
+
+      grid.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        var dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        grid.scrollLeft = startScroll - dx;
+        e.preventDefault();
+      });
+
+      function release() {
+        if (!down) return;
+        down = false;
+        grid.classList.remove('is-dragging');
+        /* إعادة التثبيت: تمرير بمقدار صفر يجعل المتصفح يثبّت على أقرب بطاقة. */
+        grid.scrollBy({ left: 0, behavior: 'smooth' });
+        sync();
+      }
+      grid.addEventListener('pointerup', release);
+      grid.addEventListener('pointercancel', release);
+      grid.addEventListener('pointerleave', release);
+
+      /* بعد سحب فعلي لا يُفتح رابط الزر. */
+      grid.addEventListener('click', function (e) {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+      }, true);
+
+      grid.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    }
+
+    var dots = [];
+    if (dotsBox && cards.length > 1) {
+      cards.forEach(function (card, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'veloura-dots__dot';
+        b.setAttribute('aria-label', 'الباقة ' + (i + 1));
+        b.addEventListener('click', function () {
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        });
+        dotsBox.appendChild(b);
+        dots.push(b);
+      });
+    }
+
+    function nearest() {
+      var r = grid.getBoundingClientRect();
+      var mid = (r.left + r.right) / 2, best = 0, bd = Infinity;
+      cards.forEach(function (c, i) {
+        var cr = c.getBoundingClientRect();
+        var d = Math.abs((cr.left + cr.right) / 2 - mid);
+        if (d < bd) { bd = d; best = i; }
+      });
+      return best;
+    }
+
+    function sync() {
+      if (!dots.length) return;
+      var k = nearest();
+      dots.forEach(function (d, i) { d.classList.toggle('is-on', i === k); });
+    }
+
+    if (grid && dots.length) {
+      var raf = null;
+      grid.addEventListener('scroll', function () {
+        if (raf) return;
+        raf = requestAnimationFrame(function () { raf = null; sync(); });
+      }, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
+    }
+
     /* مبدّل شهري / سنوي: يقلب الأسعار مع حركة قصيرة. */
     var buttons = section.querySelectorAll('[data-vpk-cycle]');
     if (!buttons.length) return;
@@ -541,6 +737,10 @@ html body.dark .vpk .vpk__billing button:not(.is-on) .vpk__save {
       btn.addEventListener('click', function () {
         var cycle = btn.getAttribute('data-vpk-cycle');
         buttons.forEach(function (b) { b.classList.toggle('is-on', b === btn); });
+
+        section.querySelectorAll('[data-vpk-note]').forEach(function (el) {
+          el.textContent = el.getAttribute('data-' + cycle) || el.textContent;
+        });
 
         section.querySelectorAll('[data-vpk-price]').forEach(function (el) {
           var next = el.getAttribute('data-' + cycle) || '';
