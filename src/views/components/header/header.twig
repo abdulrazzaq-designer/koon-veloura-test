@@ -557,7 +557,32 @@
       box-shadow: none !important;
     }
 
-  </style>
+    /* ======================================================================
+       نافذة تسجيل الدخول: لوح أبيض في الوضعين — مكتوبة هنا في القالب
+       (لا في ملفات JS/SCSS) لأن القالب يُطبَّق بمجرّد نشر الثيم بلا انتظار
+       إعادة بناء الأصول. الكلاس مكرّر (.s-modal-body.s-modal-body) عمداً
+       لترفع الأسبقية فوق الستايل الذي يحقنه V86 في آخر الصفحة، فلا يعود
+       ترتيب المصادر مهمّاً. المحدّد بلا أب لأن النسخة المقيّدة بـ
+       salla-modal لا تطابق، و* لأن الأبناء يحملون اللون أيضاً.
+       ====================================================================== */
+    html body .s-modal-body.s-modal-body:has(iframe),
+    html body .s-modal-body.s-modal-body:has(iframe) *,
+    html body .s-modal-content.s-modal-content:has(iframe),
+    html body .s-modal-content.s-modal-content:has(iframe) * {
+      background-color: #ffffff !important;
+      background-image: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
+      color-scheme: light !important;
+    }
+
+    html body .s-modal-body.s-modal-body:has(iframe) iframe {
+      background: #ffffff !important;
+      opacity: 1 !important;
+      mix-blend-mode: normal !important;
+    }
+</style>
 
   <div id="mainnav" class="main-nav-container">
     <div class="inner w-full">
