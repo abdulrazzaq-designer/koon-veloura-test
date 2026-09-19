@@ -360,6 +360,31 @@
       or veloura_glass_effect_raw == 'yes'
     %}
 
+    {# مفتاح إيقاف كل التأثيرات الزجاجية في المتجر. موجود لأن الزجاج
+       مكتوب في عدة ملفات وبعضه غير مربوط بأي إعداد، فكان إطفاء خيار
+       الزجاج العام أو زجاج الهيدر لا يكفي. #}
+    {% set veloura_no_glass_setting = theme.settings.get('veloura_disable_all_glass_2026', false) %}
+    {% set veloura_no_glass_raw = veloura_no_glass_setting %}
+    {% if veloura_no_glass_setting.value is defined %}
+      {% set veloura_no_glass_raw = veloura_no_glass_setting.value %}
+    {% elseif veloura_no_glass_setting.selected is defined %}
+      {% if veloura_no_glass_setting.selected.value is defined %}
+        {% set veloura_no_glass_raw = veloura_no_glass_setting.selected.value %}
+      {% elseif veloura_no_glass_setting.selected is iterable and veloura_no_glass_setting.selected[0] is defined and veloura_no_glass_setting.selected[0].value is defined %}
+        {% set veloura_no_glass_raw = veloura_no_glass_setting.selected[0].value %}
+      {% else %}
+        {% set veloura_no_glass_raw = veloura_no_glass_setting.selected %}
+      {% endif %}
+    {% endif %}
+    {% set veloura_no_glass =
+      veloura_no_glass_raw == true
+      or veloura_no_glass_raw == 'true'
+      or veloura_no_glass_raw == 1
+      or veloura_no_glass_raw == '1'
+      or veloura_no_glass_raw == 'on'
+      or veloura_no_glass_raw == 'yes'
+    %}
+
     {% set veloura_clean_borders = theme.settings.get('veloura_general_clean_borders_2026', false) %}
 
     {% set veloura_should_show_bg_image = veloura_site_bg_image and (not veloura_site_bg_home_only or is_page('index')) %}
@@ -2297,7 +2322,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {{ vpc_enabled and vpc_glass ? ' veloura-pc-glass' : '' }}
   {{ veloura_should_show_bg_image ? ' veloura-site-has-bg-image' : '' }}
   {{ veloura_site_bg_fixed ? ' veloura-site-bg-fixed' : '' }}
-  {{ veloura_glass_effect ? ' veloura-glass-effect' : '' }}
+  {{ veloura_glass_effect and not veloura_no_glass ? ' veloura-glass-effect' : '' }}
+  {{ veloura_no_glass ? ' veloura-no-glass' : '' }}
   {{ veloura_clean_borders ? ' veloura-clean-borders' : '' }}
   {{ is_page('index') ? ' veloura-page-index' : '' }}
   {{ is_page('product.single') ? ' veloura-is-product-page' : '' }}
@@ -3183,6 +3209,45 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container,
   html body .store-header.veloura-top-enabled:not(.veloura-top-floating) .main-nav-container > .inner {
     border-radius: 0 0 {{ vht_top_border_px }} {{ vht_top_border_px }} !important;
+  }
+
+  /* ======================================================================
+     إيقاف كل التأثيرات الزجاجية (إعداد «إيقاف كل التأثيرات الزجاجية»).
+     الزجاج في الثيم مكتوب في عدة ملفات، وبعضه غير مربوط بإعداد أصلاً،
+     ولهذا لم يكن إطفاء «الزجاج العام» أو «زجاج الهيدر» كافياً. هنا نقطع
+     الطريق من جذرها: نُبدّل متغيّرات المادة الزجاجية إلى ألوان مصمتة
+     (فكل قاعدة تقرأ منها تصير مصمتة) ونلغي البلور عن كل عنصر.
+     ====================================================================== */
+  html body.veloura-no-glass {
+    --veloura-glass-surface: var(--veloura-site-second-bg, #f4f5f7) !important;
+    --veloura-glass-solid: var(--veloura-site-second-bg, #f4f5f7) !important;
+    --veloura-glass-source: var(--veloura-site-second-bg, #f4f5f7) !important;
+    --veloura-header-glass-background: var(--veloura-site-second-bg, #f4f5f7) !important;
+    --veloura-header-glass-solid: var(--veloura-site-second-bg, #f4f5f7) !important;
+    --veloura-global-glass-bg: var(--veloura-site-second-bg, #f4f5f7) !important;
+    --veloura-glass-filter: none !important;
+    --veloura-filter: none !important;
+    --veloura-header-glass-filter: none !important;
+    --veloura-global-glass-filter: none !important;
+    --veloura-global-glass-layer: none !important;
+  }
+
+  html.dark body.veloura-no-glass,
+  html body.dark.veloura-no-glass {
+    --veloura-glass-surface: var(--veloura-dark-secondary-bg, #161b22) !important;
+    --veloura-glass-solid: var(--veloura-dark-secondary-bg, #161b22) !important;
+    --veloura-glass-source: var(--veloura-dark-secondary-bg, #161b22) !important;
+    --veloura-header-glass-background: var(--veloura-dark-secondary-bg, #161b22) !important;
+    --veloura-header-glass-solid: var(--veloura-dark-secondary-bg, #161b22) !important;
+    --veloura-global-glass-bg: var(--veloura-dark-secondary-bg, #161b22) !important;
+  }
+
+  html body.veloura-no-glass,
+  html body.veloura-no-glass *,
+  html body.veloura-no-glass *::before,
+  html body.veloura-no-glass *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 </style>
 

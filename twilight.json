@@ -686,6 +686,24 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
+      "label": "إيقاف كل التأثيرات الزجاجية",
+      "id": "veloura_disable_all_glass_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "description": "يجعل كل الأسطح مصمتة ويلغي البلور في المتجر كله — الهيدر والبحث والنوافذ والقوائم. يتجاوز أي خيار زجاجي آخر.",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
       "label": "إخفاء الحدود الافتراضية لبعض الأقسام",
       "description": "مفيد للحصول على شكل أنظف وأكثر بساطة",
       "id": "veloura_general_clean_borders_2026",
