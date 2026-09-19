@@ -120,6 +120,21 @@
 {% set top_cart_bg = theme.settings.get('veloura_top_cart_bg_2026', '#f87171') %}
 {% if top_cart_bg.value is defined %}{% set top_cart_bg = top_cart_bg.value %}{% endif %}
 
+{% set login_dark_setting = theme.settings.get('veloura_login_dark_invert_2026', false) %}
+{% set login_dark_raw = login_dark_setting %}
+{% if login_dark_setting.value is defined %}
+  {% set login_dark_raw = login_dark_setting.value %}
+{% elseif login_dark_setting.selected is defined %}
+  {% if login_dark_setting.selected.value is defined %}
+    {% set login_dark_raw = login_dark_setting.selected.value %}
+  {% elseif login_dark_setting.selected is iterable and login_dark_setting.selected[0] is defined and login_dark_setting.selected[0].value is defined %}
+    {% set login_dark_raw = login_dark_setting.selected[0].value %}
+  {% else %}
+    {% set login_dark_raw = login_dark_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set login_dark = login_dark_raw == true or login_dark_raw == 'true' or login_dark_raw == 1 or login_dark_raw == '1' or login_dark_raw == 'on' %}
+
 {% set top_border = theme.settings.get('veloura_top_border_style_2026', 'sharp') %}
 {% if top_border.selected is defined %}
   {% if top_border.selected.value is defined %}
@@ -592,18 +607,36 @@
      ترث صفحة حسابات سلة الوضع الداكن فتختفي نصوصها. */
   (function () {
     var LOGIN_SRC = /accounts\.salla\.com/;
+    var WANT_DARK = {{ login_dark ? 'true' : 'false' }};
+
+    function isDark() {
+      return document.documentElement.classList.contains('dark') ||
+        (document.body && document.body.classList.contains('dark'));
+    }
+
+    /* صفحة حسابات سلة فاتحة فقط ومن نطاق آخر، فالوسيلة الوحيدة لتظهر
+       داكنة هي قلب ألوانها: invert يجعل الأبيض أسود، و hue-rotate يعيد
+       الألوان لطبيعتها (فيبقى زر الدخول أزرق)، و brightness يخفّف السواد
+       ليقترب من اللون الثانوي للمتجر بدل الأسود التام. */
+    var DARK_FILTER = 'invert(.92) hue-rotate(180deg)';
 
     function paint(el, isFrame) {
       if (!el || !el.style) return;
-      el.style.setProperty('background-color', '#ffffff', 'important');
+      var dark = WANT_DARK && isDark();
+
+      el.style.setProperty('background-color', dark ? 'var(--veloura-dark-secondary-bg, #161b22)' : '#ffffff', 'important');
       el.style.setProperty('background-image', 'none', 'important');
       el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
       el.style.setProperty('backdrop-filter', 'none', 'important');
-      el.style.setProperty('filter', 'none', 'important');
       el.style.setProperty('color-scheme', 'light', 'important');
+
       if (isFrame) {
+        el.style.setProperty('filter', dark ? DARK_FILTER : 'none', 'important');
         el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('background', dark ? '#ffffff' : '#ffffff', 'important');
         el.style.setProperty('mix-blend-mode', 'normal', 'important');
+      } else {
+        el.style.setProperty('filter', 'none', 'important');
       }
     }
 
@@ -643,6 +676,10 @@
 
     /* بعد فتح النافذة يغيّر سلة أحجامها عبر postMessage، فنعيد التثبيت. */
     window.addEventListener('message', schedule);
+
+    /* وعند تبديل الوضع الفاتح/الداكن. */
+    window.addEventListener('veloura:theme-changed', schedule);
+    document.addEventListener('theme::ready', schedule);
   })();
   </script>
 
