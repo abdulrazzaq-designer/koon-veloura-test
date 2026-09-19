@@ -2045,24 +2045,6 @@
       ]
     },
     {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تحويل نافذة تسجيل الدخول إلى داكنة في الوضع الداكن",
-      "id": "veloura_login_dark_invert_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "description": "صفحة تسجيل الدخول تأتي من حسابات سلة وهي فاتحة فقط ولا يمكن تلوينها من الثيم. هذا الخيار يقلب ألوانها لتصير داكنة بلون المتجر — والمقابل أن دوائر أيقونات آبل وجوجل وفيسبوك تظهر فاتحة.",
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_top_cart_icon_2026",
       "type": "items",
       "format": "dropdown-list",

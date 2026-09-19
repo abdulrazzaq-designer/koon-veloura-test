@@ -120,21 +120,6 @@
 {% set top_cart_bg = theme.settings.get('veloura_top_cart_bg_2026', '#f87171') %}
 {% if top_cart_bg.value is defined %}{% set top_cart_bg = top_cart_bg.value %}{% endif %}
 
-{% set login_dark_setting = theme.settings.get('veloura_login_dark_invert_2026', false) %}
-{% set login_dark_raw = login_dark_setting %}
-{% if login_dark_setting.value is defined %}
-  {% set login_dark_raw = login_dark_setting.value %}
-{% elseif login_dark_setting.selected is defined %}
-  {% if login_dark_setting.selected.value is defined %}
-    {% set login_dark_raw = login_dark_setting.selected.value %}
-  {% elseif login_dark_setting.selected is iterable and login_dark_setting.selected[0] is defined and login_dark_setting.selected[0].value is defined %}
-    {% set login_dark_raw = login_dark_setting.selected[0].value %}
-  {% else %}
-    {% set login_dark_raw = login_dark_setting.selected %}
-  {% endif %}
-{% endif %}
-{% set login_dark = login_dark_raw == true or login_dark_raw == 'true' or login_dark_raw == 1 or login_dark_raw == '1' or login_dark_raw == 'on' %}
-
 {% set top_border = theme.settings.get('veloura_top_border_style_2026', 'sharp') %}
 {% if top_border.selected is defined %}
   {% if top_border.selected.value is defined %}
@@ -607,36 +592,55 @@
      ترث صفحة حسابات سلة الوضع الداكن فتختفي نصوصها. */
   (function () {
     var LOGIN_SRC = /accounts\.salla\.com/;
-    var WANT_DARK = {{ login_dark ? 'true' : 'false' }};
 
     function isDark() {
       return document.documentElement.classList.contains('dark') ||
         (document.body && document.body.classList.contains('dark'));
     }
 
+    function isGlass() {
+      var b = document.body;
+      return !!b && b.classList.contains('veloura-glass-effect') &&
+        !b.classList.contains('veloura-no-glass');
+    }
+
     /* صفحة حسابات سلة فاتحة فقط ومن نطاق آخر، فالوسيلة الوحيدة لتظهر
-       داكنة هي قلب ألوانها: invert يجعل الأبيض أسود، و hue-rotate يعيد
-       الألوان لطبيعتها (فيبقى زر الدخول أزرق)، و brightness يخفّف السواد
-       ليقترب من اللون الثانوي للمتجر بدل الأسود التام. */
-    var DARK_FILTER = 'invert(.92) hue-rotate(180deg)';
+       داكنة هي قلب ألوانها. invert(.89) لا (1): الأبيض يصير رمادياً
+       داكناً بدرجة اللون الثانوي للمتجر تقريباً لا أسود تاماً، فتبدو
+       البطاقة والإطار لوناً واحداً. و hue-rotate يعيد الألوان لطبيعتها
+       فيبقى زر الدخول أزرق. */
+    var DARK_FILTER = 'invert(.89) hue-rotate(180deg)';
 
     function paint(el, isFrame) {
       if (!el || !el.style) return;
-      var dark = WANT_DARK && isDark();
-
-      el.style.setProperty('background-color', dark ? 'var(--veloura-dark-secondary-bg, #161b22)' : '#ffffff', 'important');
-      el.style.setProperty('background-image', 'none', 'important');
-      el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
-      el.style.setProperty('backdrop-filter', 'none', 'important');
-      el.style.setProperty('color-scheme', 'light', 'important');
+      var dark = isDark();
+      var glass = isGlass();
 
       if (isFrame) {
         el.style.setProperty('filter', dark ? DARK_FILTER : 'none', 'important');
-        el.style.setProperty('opacity', '1', 'important');
-        el.style.setProperty('background', dark ? '#ffffff' : '#ffffff', 'important');
+        /* مع الزجاج تُخفَّض العتامة قليلاً فيظهر ما خلف النافذة من خلالها. */
+        el.style.setProperty('opacity', glass ? (dark ? '.80' : '.86') : '1', 'important');
+        el.style.setProperty('background', 'transparent', 'important');
         el.style.setProperty('mix-blend-mode', 'normal', 'important');
+        el.style.setProperty('color-scheme', 'light', 'important');
+        return;
+      }
+
+      var bg = glass
+        ? 'var(--veloura-glass-surface, rgba(248, 250, 252, .72))'
+        : (dark ? 'var(--veloura-dark-secondary-bg, #161b22)' : '#ffffff');
+
+      el.style.setProperty('background-color', bg, 'important');
+      el.style.setProperty('background-image', 'none', 'important');
+      el.style.setProperty('filter', 'none', 'important');
+      el.style.setProperty('color-scheme', 'light', 'important');
+
+      if (glass) {
+        el.style.setProperty('-webkit-backdrop-filter', 'var(--veloura-glass-filter, blur(20px) saturate(200%))', 'important');
+        el.style.setProperty('backdrop-filter', 'var(--veloura-glass-filter, blur(20px) saturate(200%))', 'important');
       } else {
-        el.style.setProperty('filter', 'none', 'important');
+        el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+        el.style.setProperty('backdrop-filter', 'none', 'important');
       }
     }
 
