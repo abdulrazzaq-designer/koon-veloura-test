@@ -584,6 +584,68 @@
     }
 </style>
 
+  <script data-cfasync="false" id="veloura-login-modal-plain">
+  /* نافذة تسجيل الدخول: تثبيت بالـ inline لا بالـ CSS.
+     السبب: CSS الثيم يتنافس مع ستايل يُحقن في آخر الصفحة ويُعاد حقنه،
+     أما الستايل المكتوب على العنصر نفسه بـ important فلا يغلبه شيء.
+     نضبط: لوحاً أبيض، بلا بلور، و color-scheme: light على الإطار حتى لا
+     ترث صفحة حسابات سلة الوضع الداكن فتختفي نصوصها. */
+  (function () {
+    var LOGIN_SRC = /accounts\.salla\.com/;
+
+    function paint(el, isFrame) {
+      if (!el || !el.style) return;
+      el.style.setProperty('background-color', '#ffffff', 'important');
+      el.style.setProperty('background-image', 'none', 'important');
+      el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+      el.style.setProperty('backdrop-filter', 'none', 'important');
+      el.style.setProperty('filter', 'none', 'important');
+      el.style.setProperty('color-scheme', 'light', 'important');
+      if (isFrame) {
+        el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('mix-blend-mode', 'normal', 'important');
+      }
+    }
+
+    function fix() {
+      var frames = document.querySelectorAll('iframe');
+      for (var i = 0; i < frames.length; i++) {
+        var f = frames[i];
+        if (!LOGIN_SRC.test(f.getAttribute('src') || '')) continue;
+        paint(f, true);
+        var node = f.parentElement, hops = 0;
+        while (node && hops < 6) {
+          paint(node, false);
+          if (node.classList && node.classList.contains('s-modal-body')) break;
+          node = node.parentElement;
+          hops++;
+        }
+      }
+    }
+
+    var timer = null;
+    function schedule() {
+      if (timer) return;
+      timer = setTimeout(function () { timer = null; fix(); }, 80);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fix);
+    } else {
+      fix();
+    }
+
+    /* childList فقط: تعديلنا يكتب في السمة style، ومراقبة السمات تُدخلنا في دورة. */
+    new MutationObserver(schedule).observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+
+    /* بعد فتح النافذة يغيّر سلة أحجامها عبر postMessage، فنعيد التثبيت. */
+    window.addEventListener('message', schedule);
+  })();
+  </script>
+
   <div id="mainnav" class="main-nav-container">
     <div class="inner w-full">
       <div class="veloura-header-container">
