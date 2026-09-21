@@ -478,38 +478,37 @@
       border-radius: {{ top_border_px }} !important;
     }
 
-    /* سلة تنقل <salla-modal> إلى نهاية الصفحة عند تحميلها (componentDidLoad
-       ينفّذ document.body.append)، فأي محدّد يبدأ من salla-localization-modal
-       لا يطابق شيئاً؛ نافذة العملة تُعرف بمحتواها.
-
-       نافذة تسجيل الدخول مستثناة من كل ما تحتها: لا حواف ولا خلفية ولا
-       زجاج ولا ظل — تُترك كما ترسلها سلة تماماً. تُعرف بأنها النافذة
-       الوحيدة التي تحتوي <iframe>، ولهذا كل قاعدة أدناه مشروطة بـ
-       :not(:has(iframe)). */
-    html body salla-modal:has(.s-localization-modal-inner) :is(.s-modal-body, .s-modal-wrapper) {
+    /* Header geometry also owns the localization and login dialogs.
+       Salla moves modal hosts to body, so target their rendered content. */
+    html body salla-modal.s-login-modal .s-modal-body.s-modal-body,
+    html body salla-modal:has(.s-localization-modal-inner) .s-modal-body.s-modal-body {
       border-radius: {{ top_border_px }} !important;
       overflow: hidden !important;
     }
 
-    html body salla-modal:has(.s-localization-modal-inner) .s-localization-modal-inner {
-      border-radius: inherit !important;
-      overflow: hidden !important;
-    }
-
-    html body salla-modal:has(.s-localization-modal-inner) :is(
+    html body salla-modal:has(.s-localization-modal-inner) .s-localization-modal-inner,
+    html body salla-modal:has(.s-localization-modal-inner) .s-modal-body :is(
       .s-localization-modal-item,
       .s-localization-modal-select,
       .s-localization-modal-input,
       .s-localization-modal-section-inner,
-      .s-button-element
+      .s-localization-modal-label-slot,
+      .s-button-element,
+      button, input, select, textarea
+    ),
+    html body salla-modal.s-login-modal .s-modal-body :is(
+      .s-button-element, button, input, select, textarea
     ) {
-      border-radius: min({{ top_border_px }}, 14px) !important;
+      border-radius: {{ top_border_px }} !important;
     }
 
-    @media (max-width: 640px) {
-      html body salla-modal:has(.s-localization-modal-inner) :is(.s-modal-body, .s-modal-wrapper) {
-        border-radius: {{ top_border_px }} {{ top_border_px }} 0 0 !important;
-      }
+    /* Thin translucent top/bottom edges, without opaque side borders. */
+    html body.veloura-glass-effect salla-modal.s-login-modal .s-modal-body.s-modal-body,
+    html body.veloura-glass-effect salla-modal:has(.s-localization-modal-inner) .s-modal-body.s-modal-body,
+    html body.veloura-glass-effect .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+      border-top: 1px solid rgba(255, 255, 255, .20) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, .12) !important;
+      border-inline: 0 !important;
     }
 
     /* ======================================================================
