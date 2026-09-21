@@ -557,6 +557,12 @@
       box-shadow: none !important;
     }
 
+    /* Clear inherited wrapper paint while keeping the outer glass panel. */
+    html body .s-login-modal .s-modal-body :is(div, span, iframe) {
+      background-color: transparent !important;
+      background-image: none !important;
+    }
+
     /* Keep the close control clear; Salla owns login text colours. */
     html body .s-login-modal .s-modal-close,
     html body .s-login-modal .s-modal-close * {
@@ -595,7 +601,7 @@
         el.style.setProperty('opacity', '1', 'important');
         el.style.setProperty('background', 'transparent', 'important');
         el.style.setProperty('mix-blend-mode', 'normal', 'important');
-        el.style.setProperty('color-scheme', dark ? 'dark' : 'light', 'important');
+        el.style.setProperty('color-scheme', 'light', 'important');
         return;
       }
 
@@ -606,7 +612,7 @@
       el.style.setProperty('background-color', bg, 'important');
       el.style.setProperty('background-image', 'none', 'important');
       el.style.setProperty('filter', 'none', 'important');
-      el.style.setProperty('color-scheme', dark ? 'dark' : 'light', 'important');
+      el.style.setProperty('color-scheme', 'light', 'important');
 
       if (glass) {
         el.style.setProperty('-webkit-backdrop-filter', 'var(--veloura-glass-filter, blur(20px) saturate(200%))', 'important');
