@@ -349,6 +349,81 @@
 
 {# VELOURA PRODUCT DATA V98 CRITICAL START #}
 
+
+<style id="veloura-product-layout-v6">
+html body .veloura-product-page .veloura-product-detail-actions {
+  pointer-events: auto !important;
+  overflow: visible !important;
+  min-width: 0 !important;
+}
+html body .veloura-product-page .veloura-product-detail-actions .veloura-product-media-actions__left {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  transform: none !important;
+}
+html body .veloura-product-page .veloura-product-detail-actions .promotion-title.veloura-product-media-promo {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: 0 1 auto !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+  padding: 8px 12px !important;
+}
+/* The reviews area is between the product and related products. */
+html body .veloura-product-reviews,
+html body .veloura-product-reviews > div,
+html body .veloura-product-reviews :is(.s-comments, .s-comments-container, .s-comments-header, .s-comments-placeholder) {
+  background: transparent !important;
+  background-image: none !important;
+}
+html body .veloura-product-reviews:empty,
+html body .veloura-product-page .veloura-product-order-hook:empty {
+  display: none !important;
+}
+html body .veloura-product-page .product__description[data-veloura-description-fold="true"] {
+  position: relative !important;
+  overflow: visible !important;
+  margin-bottom: 40px !important;
+}
+html body .veloura-product-page .product__description.v-description-fold-ready {
+  padding-bottom: 28px !important;
+}
+html body .veloura-product-page .product__description .veloura-description-toggle {
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 0 !important;
+  transform: translate(-50%, 50%) !important;
+  margin: 0 !important;
+  z-index: 2;
+  width: max-content !important;
+  max-width: calc(100% - 24px) !important;
+  padding: 8px 20px !important;
+  border: 10px solid var(--veloura-site-bg, #ffffff) !important;
+  border-radius: var(--veloura-product-radius, 16px) !important;
+  background: var(--color-primary, #004956) !important;
+  background-clip: padding-box !important;
+  color: var(--color-primary-reverse, #ffffff) !important;
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+html.dark body .veloura-product-page .product__description .veloura-description-toggle,
+html body.dark .veloura-product-page .product__description .veloura-description-toggle {
+  border-color: var(--veloura-dark-body-bg, var(--veloura-dark-bg, #010202)) !important;
+}
+html body .veloura-description-toggle[hidden] { display: none !important; }
+html body .veloura-description-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+html body .veloura-product-page .product__description.v-description-fold-ready #more-content {
+  margin-bottom: 0 !important;
+  overflow: hidden !important;
+}
+</style>
+
 <style id="veloura-product-controls-v5">
 html body .veloura-product-page .veloura-product-media-actions.veloura-product-detail-actions {
   position: static !important;
@@ -1175,7 +1250,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
                     </div>
                 {% endif %}
 
-                {% if product.subtitle and not (vpp_enabled and vpp_hide_short_description) %}
+                {% if product.subtitle %}
                     <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5" data-v42-group="title">
                         {{ product.subtitle }}
                     </h2>
@@ -1232,8 +1307,8 @@ html body .veloura-product-page salla-mini-checkout-widget {
                     </div>
                 {% endif %}
 
-                {# الوصف يظهر كاملًا بلا طيّ ولا زر «اقرأ المزيد». #}
-                <div class="product__description p-2 px-5 sm:p-1 leading-7 mb-3" data-v42-group="description">
+                {# Description remains fully readable until the optional toggle initializes. #}
+                <div class="product__description p-2 px-5 sm:p-1 leading-7 mb-3" data-v42-group="description" data-veloura-description-fold="{{ vpp_enabled and vpp_hide_short_description ? 'true' : 'false' }}">
                     {% set product_desc = product.description|default('')|replace({'&nbsp;': ' '}) %}
 
                     <article class="article article--main relative leading-8 py-4"
@@ -1241,6 +1316,9 @@ html body .veloura-product-page salla-mini-checkout-widget {
                              style="max-height:none">
                         {{ product_desc|raw }}
                     </article>
+                    {% if vpp_enabled and vpp_hide_short_description %}
+                      <button type="button" class="veloura-description-toggle" aria-expanded="true" aria-controls="more-content" hidden>عرض المزيد</button>
+                    {% endif %}
                 </div>
 
                 {% if product.tags|length and ((vpp_enabled and vpp_tags_enabled) or (not vpp_enabled and theme.settings.get('show_tags', true))) %}
@@ -1665,6 +1743,45 @@ html body .veloura-product-page salla-mini-checkout-widget {
 {% endblock %}
 
 {% block scripts %}
+
+<script id="veloura-description-fold-v6">
+(function () {
+  function boot() {
+    var card = document.querySelector('[data-veloura-description-fold="true"]');
+    if (!card || card.dataset.foldBound) return;
+    var article = card.querySelector('#more-content');
+    var button = card.querySelector('.veloura-description-toggle');
+    if (!article || !button) return;
+    card.dataset.foldBound = 'true';
+    var expanded = false;
+    var limit = 220;
+    function update() {
+      var long = article.scrollHeight > limit + 2;
+      button.hidden = !long;
+      card.classList.toggle('v-description-fold-ready', long);
+      article.style.setProperty('max-height', long && !expanded ? limit + 'px' : 'none', 'important');
+      button.setAttribute('aria-expanded', String(!long || expanded));
+      button.textContent = expanded ? 'عرض أقل' : 'عرض المزيد';
+    }
+    button.addEventListener('click', function () {
+      expanded = !expanded;
+      update();
+      if (!expanded && button.getBoundingClientRect().top < 0) {
+        button.scrollIntoView({block: 'center', behavior: 'auto'});
+      }
+    });
+    update();
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(article);
+    new MutationObserver(update).observe(article, {childList: true, subtree: true, characterData: true});
+    article.addEventListener('load', update, true);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+    window.addEventListener('resize', update);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true});
+  else boot();
+})();
+</script>
+
 
     <script defer src="{{ 'product.js' | asset }}"></script>
     {% if product.has_3d_image %}
