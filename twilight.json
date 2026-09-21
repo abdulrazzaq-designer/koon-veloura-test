@@ -6867,6 +6867,47 @@
       "description": "يعرض جزءاً من الوصف داخل حدود الكرت ثم يظهر زر عرض المزيد"
     },
     {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "veloura_product_media_actions_position_2026",
+      "label": "مكان المشاركة والمفضلة والعنوان الترويجي",
+      "description": "إظهارها فوق الصورة، أو تحت التصنيف بجانب تفاصيل المنتج، أو إخفاؤها.",
+      "icon": "sicon-list",
+      "selected": [
+        {
+          "label": "فوق صورة المنتج",
+          "value": "image",
+          "key": "veloura-product-actions-image"
+        }
+      ],
+      "options": [
+        {
+          "label": "فوق صورة المنتج",
+          "value": "image",
+          "key": "veloura-product-actions-image"
+        },
+        {
+          "label": "تحت التصنيف في تفاصيل المنتج",
+          "value": "details",
+          "key": "veloura-product-actions-details"
+        },
+        {
+          "label": "إخفاء",
+          "value": "hidden",
+          "key": "veloura-product-actions-hidden"
+        }
+      ],
+      "source": "Manual",
+      "required": true,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_sticky_2026",

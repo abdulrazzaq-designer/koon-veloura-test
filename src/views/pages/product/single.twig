@@ -217,6 +217,8 @@
 
     {% set vpp_show_payment_methods = _self.veloura_bool(theme.settings.get('veloura_product_show_payment_methods_2026', true), true)|trim == 'true' %}
     {% set vpp_hide_discount_value = _self.veloura_bool(theme.settings.get('veloura_product_hide_discount_value_2026', false), false)|trim == 'true' %}
+    {% set vpp_media_actions_position = _self.veloura_select(theme.settings.get('veloura_product_media_actions_position_2026', 'image'), 'image')|trim %}
+    {% if vpp_media_actions_position not in ['image', 'details', 'hidden'] %}{% set vpp_media_actions_position = 'image' %}{% endif %}
     {% set vpp_show_discount_countdown = _self.veloura_bool(theme.settings.get('veloura_product_show_discount_countdown_2026', false), false)|trim == 'true' %}
 
     {% set vpp_hide_short_description = _self.veloura_bool(theme.settings.get('veloura_product_hide_short_description_2026', false), false)|trim == 'true' %}
@@ -346,6 +348,82 @@
     {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default((vpp_general_radius_key ~ '' == '' ? '28' : vpp_general_radius_key) ~ 'px') %}
 
 {# VELOURA PRODUCT DATA V98 CRITICAL START #}
+
+<style id="veloura-product-controls-v5">
+html body .veloura-product-page .veloura-product-media-actions.veloura-product-detail-actions {
+  position: static !important;
+  inset: auto !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  margin: 8px 0 !important;
+  transform: none !important;
+}
+html body .veloura-product-page .veloura-product-detail-actions .veloura-product-media-promo {
+  position: static !important;
+  inset: auto !important;
+  max-width: 100%;
+  white-space: normal;
+}
+@media (max-width: 767px) {
+  html body .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .veloura-product-detail-actions {
+    order: 6 !important;
+  }
+}
+html body .veloura-product-page .veloura-product-discount-countdown {
+  padding: 12px 14px !important;
+  gap: 8px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  color: var(--veloura-primary-text, #111827) !important;
+}
+html.dark body .veloura-product-page .veloura-product-discount-countdown,
+html body.dark .veloura-product-page .veloura-product-discount-countdown {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html body .veloura-product-page .veloura-product-discount-countdown salla-count-down,
+html body .veloura-product-page .veloura-product-discount-countdown .s-count-down-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  color: inherit !important;
+  background: transparent !important;
+  line-height: 1.3 !important;
+}
+html body .veloura-product-page .veloura-product-discount-countdown :is(.s-count-down-item, .s-count-down-item-value, .s-count-down-item-label),
+html body .veloura-product-page .veloura-product-discount-countdown .s-count-down-item::after {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1 !important;
+  margin: 0 !important;
+}
+html body .veloura-product-page .veloura-product-discount-countdown .s-count-down-item {
+  padding: 0 6px !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+/* Salla Fast Checkout exposes this variable on the widget itself. */
+html body .veloura-product-page salla-mini-checkout-widget {
+  --salla-fast-checkout-button-border-radius: {{ vpp_general_radius }} !important;
+}
+@media (max-width: 767px) {
+  html:not(.dark) body.veloura-glass-effect:not(.dark) .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar.veloura-product-sticky-bar {
+    background: rgba(228, 231, 235, .90) !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    -webkit-backdrop-filter: var(--veloura-glass-filter, blur(24px)) !important;
+    backdrop-filter: var(--veloura-glass-filter, blur(24px)) !important;
+    border-top: 1px solid rgba(255, 255, 255, .65) !important;
+  }
+  html:not(.dark) body.veloura-glass-effect:not(.dark) .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar.veloura-product-sticky-bar::after {
+    content: none !important;
+  }
+}
+</style>
 <style id="veloura-product-data-v98-critical">
   /* Availability pulse */
   .veloura-product-page .veloura-product-stock-radar {
@@ -951,6 +1029,7 @@
                   }
                 }'
                 show-thumbs-controls="false">
+                    {% if vpp_media_actions_position == 'image' %}
                     <div class="veloura-product-media-actions">
                         <div class="veloura-product-media-actions__left">
                             <button type="button"
@@ -971,6 +1050,7 @@
                             <div class="promotion-title veloura-product-media-promo">{{ product.promotion_title }}</div>
                         {% endif %}
                     </div>
+                    {% endif %}
 
                     {# Calories Badge #}
                     {% if product.calories %}
@@ -1069,6 +1149,29 @@
                         <i class="sicon-tag veloura-product-category-icon" aria-hidden="true"></i>
                         <span class="veloura-product-category-label">{{ vpp_category_label }}</span>
                         <a class="veloura-product-category-link" href="{{ product.category.url }}">{{ product.category.name }}</a>
+                    </div>
+                {% endif %}
+
+                {% if vpp_media_actions_position == 'details' %}
+                    <div class="veloura-product-media-actions veloura-product-detail-actions" data-v42-group="title">
+                        <div class="veloura-product-media-actions__left">
+                            <button type="button"
+                                    class="veloura-product-media-action-btn veloura-product-media-wishlist"
+                                    data-id="{{ product.id }}"
+                                    onclick="salla.wishlist.toggle('{{ product.id }}')"
+                                    aria-label="add to wishlist">
+                                <i class="sicon-heart"></i>
+                            </button>
+
+                            <salla-social-share
+                                    class="veloura-product-media-action-btn veloura-product-media-share"
+                                    aria-label="social share">
+                            </salla-social-share>
+                        </div>
+
+                        {% if product.promotion_title %}
+                            <div class="promotion-title veloura-product-media-promo">{{ product.promotion_title }}</div>
+                        {% endif %}
                     </div>
                 {% endif %}
 
@@ -1501,6 +1604,7 @@
           '.product-brand',
           'h1',
           '.veloura-product-category-under-title',
+          '.veloura-product-detail-actions',
           '.veloura-product-header-price',
           'salla-rating-stars',
           '.veloura-product-stock-radar'
