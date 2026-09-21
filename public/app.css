@@ -58576,6 +58576,49 @@ html body:not(.veloura-glass-effect) .s-modal-content {
   background-color: #010612 !important;
   background-color: var(--veloura-dark-secondary-bg, #010612) !important;
 }
+/* Login content uses native utility colours; override only text roles. */
+html body .s-login-modal {
+  color: #7c8082;
+  color: var(--veloura-primary-text, #111827);
+}
+html body .s-login-modal .s-modal-title, html body .s-login-modal .s-modal-header-content, html body .s-login-modal h1:not(.does-not-exist), html body .s-login-modal h2:not(.does-not-exist), html body .s-login-modal h3:not(.does-not-exist), html body .s-login-modal label:not(.does-not-exist), html body .s-login-modal input:not(.does-not-exist), html body .s-login-modal .s-form-control, html body .s-login-modal .s-login-modal-header {
+  color: #7c8082 !important;
+  color: var(--veloura-primary-text, #111827) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html body .s-login-modal p:not(.does-not-exist), html body .s-login-modal small:not(.does-not-exist), html body .s-login-modal .s-modal-sub-title {
+  color: #f5f7f9 !important;
+  color: var(--veloura-secondary-text, #64748b) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html body .s-login-modal input::-moz-placeholder {
+  color: #f5f7f9 !important;
+  color: var(--veloura-secondary-text, #64748b) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html body .s-login-modal input::placeholder {
+  color: #f5f7f9 !important;
+  color: var(--veloura-secondary-text, #64748b) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html body .s-login-modal input::-moz-placeholder {
+  opacity: 1;
+}
+html body .s-login-modal input::placeholder {
+  opacity: 1;
+}
+/* Clear the nested icon shell as well as the close button itself. */
+html body .s-login-modal .s-modal-close,
+html body .s-login-modal .s-modal-close span,
+html body .s-login-modal .s-modal-close svg {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #7c8082 !important;
+  color: var(--veloura-primary-text, #111827) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 .veloura-cart-banners {
   width: 100%;
   margin: 0 0 1.25rem;

@@ -557,39 +557,20 @@
       box-shadow: none !important;
     }
 
-    /* ======================================================================
-       نافذة تسجيل الدخول: لوح أبيض في الوضعين — مكتوبة هنا في القالب
-       (لا في ملفات JS/SCSS) لأن القالب يُطبَّق بمجرّد نشر الثيم بلا انتظار
-       إعادة بناء الأصول. الكلاس مكرّر (.s-modal-body.s-modal-body) عمداً
-       لترفع الأسبقية فوق الستايل الذي يحقنه V86 في آخر الصفحة، فلا يعود
-       ترتيب المصادر مهمّاً. المحدّد بلا أب لأن النسخة المقيّدة بـ
-       salla-modal لا تطابق، و* لأن الأبناء يحملون اللون أيضاً.
-       ====================================================================== */
-    html body .s-modal-body.s-modal-body:has(iframe),
-    html body .s-modal-body.s-modal-body:has(iframe) *,
-    html body .s-modal-content.s-modal-content:has(iframe),
-    html body .s-modal-content.s-modal-content:has(iframe) * {
-      background-color: #ffffff !important;
+    /* Keep the close control clear; Salla owns login text colours. */
+    html body .s-login-modal .s-modal-close,
+    html body .s-login-modal .s-modal-close * {
+      background: transparent !important;
       background-image: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
-      filter: none !important;
-      color-scheme: light !important;
-    }
-
-    html body .s-modal-body.s-modal-body:has(iframe) iframe {
-      background: #ffffff !important;
-      opacity: 1 !important;
-      mix-blend-mode: normal !important;
     }
 </style>
 
   <script data-cfasync="false" id="veloura-login-modal-plain">
-  /* نافذة تسجيل الدخول: تثبيت بالـ inline لا بالـ CSS.
-     السبب: CSS الثيم يتنافس مع ستايل يُحقن في آخر الصفحة ويُعاد حقنه،
-     أما الستايل المكتوب على العنصر نفسه بـ important فلا يغلبه شيء.
-     نضبط: لوحاً أبيض، بلا بلور، و color-scheme: light على الإطار حتى لا
-     ترث صفحة حسابات سلة الوضع الداكن فتختفي نصوصها. */
+  /* Preserve native login colours and paint only the outer panel. */
   (function () {
     var LOGIN_SRC = /accounts\.salla\.com/;
 
@@ -604,25 +585,17 @@
         !b.classList.contains('veloura-no-glass');
     }
 
-    /* صفحة حسابات سلة فاتحة فقط ومن نطاق آخر، فالوسيلة الوحيدة لتظهر
-       داكنة هي قلب ألوانها. invert(.89) لا (1): الأبيض يصير رمادياً
-       داكناً بدرجة اللون الثانوي للمتجر تقريباً لا أسود تاماً، فتبدو
-       البطاقة والإطار لوناً واحداً. و hue-rotate يعيد الألوان لطبيعتها
-       فيبقى زر الدخول أزرق. */
-    var DARK_FILTER = 'invert(.89) hue-rotate(180deg)';
-
     function paint(el, isFrame) {
       if (!el || !el.style) return;
       var dark = isDark();
       var glass = isGlass();
 
       if (isFrame) {
-        el.style.setProperty('filter', dark ? DARK_FILTER : 'none', 'important');
-        /* مع الزجاج تُخفَّض العتامة قليلاً فيظهر ما خلف النافذة من خلالها. */
-        el.style.setProperty('opacity', glass ? (dark ? '.80' : '.86') : '1', 'important');
+        el.style.setProperty('filter', 'none', 'important');
+        el.style.setProperty('opacity', '1', 'important');
         el.style.setProperty('background', 'transparent', 'important');
         el.style.setProperty('mix-blend-mode', 'normal', 'important');
-        el.style.setProperty('color-scheme', 'light', 'important');
+        el.style.setProperty('color-scheme', dark ? 'dark' : 'light', 'important');
         return;
       }
 
@@ -633,7 +606,7 @@
       el.style.setProperty('background-color', bg, 'important');
       el.style.setProperty('background-image', 'none', 'important');
       el.style.setProperty('filter', 'none', 'important');
-      el.style.setProperty('color-scheme', 'light', 'important');
+      el.style.setProperty('color-scheme', dark ? 'dark' : 'light', 'important');
 
       if (glass) {
         el.style.setProperty('-webkit-backdrop-filter', 'var(--veloura-glass-filter, blur(20px) saturate(200%))', 'important');
