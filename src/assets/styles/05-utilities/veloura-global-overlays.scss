@@ -232,3 +232,37 @@ html body:not(.veloura-glass-effect) .s-modal-content {
   background: var(--veloura-dark-secondary-bg, #010612) !important;
   background-color: var(--veloura-dark-secondary-bg, #010612) !important;
 }
+/* Login content uses native utility colours; override only text roles. */
+html body .s-login-modal {
+  color: var(--veloura-primary-text, #111827);
+}
+
+html body .s-login-modal :is(
+  .s-modal-title, .s-modal-header-content, h1, h2, h3, label,
+  input, .s-form-control, .s-login-modal-header
+) {
+  color: var(--veloura-primary-text, #111827) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body .s-login-modal :is(p, small, .s-modal-sub-title) {
+  color: var(--veloura-secondary-text, #64748b) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body .s-login-modal input::placeholder {
+  color: var(--veloura-secondary-text, #64748b) !important;
+  -webkit-text-fill-color: currentColor !important;
+  opacity: 1;
+}
+
+/* Clear the nested icon shell as well as the close button itself. */
+html body .s-login-modal .s-modal-close,
+html body .s-login-modal .s-modal-close :is(span, svg) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--veloura-primary-text, #111827) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}

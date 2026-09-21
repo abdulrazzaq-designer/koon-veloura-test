@@ -79,6 +79,26 @@
       color-scheme: dark;
     }
 
+    :host([data-veloura-glass-enabled='false']) {
+      --v86-surface: var(--v86-solid) !important;
+      --v86-filter: none !important;
+    }
+
+    :host .s-modal-close,
+    :host .s-modal-close :is(span, svg) {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      color: var(--v86-primary) !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+
+    :host(.s-login-modal) :is(.s-modal-title, label, input, .s-login-modal-header) {
+      color: var(--v86-primary) !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
     /* Hosts and full-screen wrappers never own the blur. */
     :host,
     .s-modal-wrapper,
@@ -468,10 +488,33 @@
     }
   }
 
+  // Current Salla login forms live in an iframe. Use its native theme message;
+  // document CSS cannot recolour content on the accounts origin.
+  const loginThemes = new WeakMap();
+  function syncLoginTheme(forceFrame) {
+    document.querySelectorAll('.s-login-modal iframe, salla-login-modal iframe').forEach((frame) => {
+      const dark = isDarkMode();
+      if (frame !== forceFrame && loginThemes.get(frame) === dark) return;
+      let origin;
+      try { origin = new URL(frame.src, location.href).origin; } catch (_) { return; }
+      if (origin === 'null' || !frame.contentWindow) return;
+      frame.contentWindow.postMessage({ source: 'login', type: 'darkMode', data: { isDark: dark } }, origin);
+      loginThemes.set(frame, dark);
+    });
+  }
+
+  window.addEventListener('message', (event) => {
+    if (event.data?.source !== 'login' || event.data?.type !== 'iframe::ready') return;
+    const frame = [...document.querySelectorAll('.s-login-modal iframe, salla-login-modal iframe')]
+      .find((frame) => frame.contentWindow === event.source && new URL(frame.src, location.href).origin === event.origin);
+    if (frame) syncLoginTheme(frame);
+  });
+
   function scan(scope = document) {
     if (!scope) return;
     if (scope.nodeType === 1 && scope.matches?.(COMPONENT_SELECTOR)) syncHost(scope);
     scope.querySelectorAll?.(COMPONENT_SELECTOR).forEach(syncHost);
+    syncLoginTheme();
   }
 
   function queueScan() {
