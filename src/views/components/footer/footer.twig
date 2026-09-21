@@ -201,10 +201,10 @@
           <div class="veloura-footer-block veloura-footer-store">
             <div class="veloura-footer-identity">
               {% if not footer_hide_logo %}
-                <a href="{{ link('/') }}" class="veloura-footer-logo" aria-label="{{ store.name }}">
+                <a href="{{ link('/') }}" class="veloura-footer-logo" style="width: {{ footer_logo_size }} !important; max-width: 100% !important; min-width: 0 !important; height: auto !important; flex-shrink: 1 !important;" aria-label="{{ store.name }}">
                   {% if footer_logo_is_video %}
                     <video
-                      class="veloura-footer-logo__media"
+                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       autoplay
                       muted
@@ -213,7 +213,7 @@
                     ></video>
                   {% else %}
                     <img
-                      class="veloura-footer-logo__media"
+                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       loading="eager"
                       decoding="async"
@@ -299,10 +299,10 @@
           <div class="veloura-footer-block veloura-footer-store">
             <div class="veloura-footer-identity">
               {% if not footer_hide_logo %}
-                <a href="{{ link('/') }}" class="veloura-footer-logo" aria-label="{{ store.name }}">
+                <a href="{{ link('/') }}" class="veloura-footer-logo" style="width: {{ footer_logo_size }} !important; max-width: 100% !important; min-width: 0 !important; height: auto !important; flex-shrink: 1 !important;" aria-label="{{ store.name }}">
                   {% if footer_logo_is_video %}
                     <video
-                      class="veloura-footer-logo__media"
+                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       autoplay
                       muted
@@ -311,7 +311,7 @@
                     ></video>
                   {% else %}
                     <img
-                      class="veloura-footer-logo__media"
+                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       loading="eager"
                       decoding="async"

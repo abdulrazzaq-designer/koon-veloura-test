@@ -19142,6 +19142,17 @@
               "icon": "sicon-palette",
               "value": "#004956",
               "required": false
+            },
+            {
+              "id": "veloura_steps_collection.step_icon_background",
+              "type": "string",
+              "format": "color",
+              "inputType": "color",
+              "label": "لون خلفية الأيقونة",
+              "description": "خلفية مستقلة عن لون الأيقونة، تُحفظ كما هي في الوضعين الفاتح والداكن.",
+              "icon": "sicon-palette",
+              "value": "#f4f5f7",
+              "required": false
             }
           ]
         },

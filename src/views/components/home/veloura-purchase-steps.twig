@@ -166,7 +166,7 @@ body .veloura-stp.veloura-stp > .container {
   height: var(--stp-tile);
   flex: 0 0 auto;
   border-radius: var(--stp-radius, 26px);
-  background: var(--stp-second);
+  background: var(--step-icon-bg, var(--stp-second));
   color: var(--step-color, var(--stp-accent));
   transition: transform .35s ease, box-shadow .35s ease, background-color .35s ease;
 }
@@ -397,7 +397,7 @@ body .veloura-stp.veloura-stp > .container {
     position: static;
     z-index: auto;
     overflow: visible;
-    background: color-mix(in srgb, var(--step-color, var(--stp-accent)) 20%, transparent);
+    background: var(--step-icon-bg, var(--stp-second));
   }
 
   .veloura-stp.stp--bare .stp__dot { background: transparent !important; }
@@ -436,16 +436,12 @@ body .veloura-stp.veloura-stp > .container {
 
 /* ------------------------------------------------------------ the dark -- */
 html.dark .veloura-stp, html body.dark .veloura-stp {
-  --stp-title: #f8fafc;
-  --stp-text: #cbd5e1;
-  --stp-second: var(--veloura-dark-secondary-bg, #010612);
   --stp-page: var(--veloura-dark-body-bg, var(--veloura-dark-bg, #010202));
-  --stp-line: color-mix(in srgb, #ffffff 42%, transparent);
 }
 
 html.dark .veloura-stp .stp__dot,
 html body.dark .veloura-stp .stp__dot {
-  color: color-mix(in srgb, var(--step-color, var(--stp-accent)) 45%, #ffffff);
+  color: var(--step-color, var(--stp-accent));
 }
 /* ============================================================ the flow ====
    ومضة ضوء تمشي على الشريط الواصل من الخطوة الأولى إلى الأخيرة، ثم تتوقف
@@ -540,6 +536,20 @@ html.dark .veloura-stp, html body.dark .veloura-stp {
   .veloura-stp .stp__dot,
   .veloura-stp .stp__pin { animation: none !important; }
 }
+/* Preserve merchant colours, including on icons, in either colour mode. */
+html body .veloura-stp .stp__dot,
+html body .veloura-stp .stp__dot i {
+  color: var(--step-color, var(--stp-accent)) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html body .veloura-stp .stp__heading h2,
+html body .veloura-stp .stp__text h3 {
+  color: var(--stp-title) !important;
+}
+html body .veloura-stp .stp__heading p,
+html body .veloura-stp .stp__text p {
+  color: var(--stp-text) !important;
+}
 </style>
 
   <section
@@ -557,9 +567,7 @@ html.dark .veloura-stp, html body.dark .veloura-stp {
     style="
       --stp-radius: {{ stp_radius_map[stp_radius_key]|default((stp_radius_key ~ '' == '' ? '20' : stp_radius_key) ~ 'px') }};
       --stp-accent: {{ component.veloura_steps_accent_color|default('#004956') }};
-      {# The merchant's colours are written as *-light properties, never as the
-         ones the component paints with: an inline style outranks any rule, and
-         would leave the dark block unable to lighten the text. #}
+      {# Explicit component colours stay identical in both colour modes. #}
       --stp-title-light: {{ component.veloura_steps_title_color|default('#0f172a') }};
       --stp-text-light: {{ component.veloura_steps_text_color|default('#52606d') }};
       --stp-cols: {{ stp_cols }};
@@ -582,7 +590,9 @@ html.dark .veloura-stp, html body.dark .veloura-stp {
         <ol class="stp__row">
           {% for step in stp_items %}
             {% set step_image = step.step_image.url|default(step.step_image) %}
-            <li class="stp__step" style="--i: {{ loop.index0 }}; {% if step.step_color %}--step-color: {{ step.step_color }};{% endif %}">
+            {% set step_icon_bg = step.step_icon_background|default('#f4f5f7') %}
+            {% if step_icon_bg.value is defined %}{% set step_icon_bg = step_icon_bg.value %}{% endif %}
+            <li class="stp__step" style="--step-icon-bg: {{ step_icon_bg|e }}; --i: {{ loop.index0 }}; {% if step.step_color %}--step-color: {{ step.step_color }};{% endif %}">
               <span class="stp__dot">
                 {% if step_image %}
                   <img src="{{ step_image }}" alt="{{ step.step_title|default('') }}" loading="lazy" decoding="async">
