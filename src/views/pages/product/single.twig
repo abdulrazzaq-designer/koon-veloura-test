@@ -350,6 +350,16 @@
 {# VELOURA PRODUCT DATA V98 CRITICAL START #}
 
 
+
+<style id="veloura-product-promo-v7">
+html body .veloura-product-page .veloura-product-promo-fixed .promotion-title.veloura-product-media-promo {
+  width: auto !important;
+  max-width: calc(100% - {{ vpp_media_actions_position == 'image' ? '128px' : '28px' }}) !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+}
+</style>
+
 <style id="veloura-product-layout-v6">
 html body .veloura-product-page .veloura-product-detail-actions {
   pointer-events: auto !important;
@@ -487,10 +497,10 @@ html body .veloura-product-page salla-mini-checkout-widget {
 }
 @media (max-width: 767px) {
   html:not(.dark) body.veloura-glass-effect:not(.dark) .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar.veloura-product-sticky-bar {
-    background: rgba(228, 231, 235, .90) !important;
+    background: rgba(248, 250, 252, .68) !important;
     background-image: none !important;
     opacity: 1 !important;
-    -webkit-backdrop-filter: var(--veloura-glass-filter, blur(24px)) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
     backdrop-filter: var(--veloura-glass-filter, blur(24px)) !important;
     border-top: 1px solid rgba(255, 255, 255, .65) !important;
   }
@@ -1121,10 +1131,14 @@ html body .veloura-product-page salla-mini-checkout-widget {
                             </salla-social-share>
                         </div>
 
-                        {% if product.promotion_title %}
-                            <div class="promotion-title veloura-product-media-promo">{{ product.promotion_title }}</div>
-                        {% endif %}
+
                     </div>
+                    {% endif %}
+
+                    {% if product.promotion_title %}
+                      <div class="veloura-product-media-actions veloura-product-promo-fixed">
+                        <div class="promotion-title veloura-product-media-promo">{{ product.promotion_title }}</div>
+                      </div>
                     {% endif %}
 
                     {# Calories Badge #}
@@ -1244,13 +1258,11 @@ html body .veloura-product-page salla-mini-checkout-widget {
                             </salla-social-share>
                         </div>
 
-                        {% if product.promotion_title %}
-                            <div class="promotion-title veloura-product-media-promo">{{ product.promotion_title }}</div>
-                        {% endif %}
+
                     </div>
                 {% endif %}
 
-                {% if product.subtitle %}
+                {% if product.subtitle and product.subtitle|striptags|trim != product.promotion_title|default('')|striptags|trim %}
                     <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5" data-v42-group="title">
                         {{ product.subtitle }}
                     </h2>
