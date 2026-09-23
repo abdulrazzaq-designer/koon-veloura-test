@@ -8237,18 +8237,13 @@
     },
     {
       "id": "veloura_related_desktop_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "عدد المنتجات في الكمبيوتر",
       "description": null,
       "labelHTML": null,
       "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "3",
-      "maximum": "6",
+      "required": true,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
@@ -8259,6 +8254,36 @@
           "id": "veloura_product_hide_liked_products_2026",
           "operation": "=",
           "value": false
+        }
+      ],
+      "source": "Manual",
+      "options": [
+        {
+          "label": "3",
+          "value": "3",
+          "key": "veloura_related_desktop_columns-3"
+        },
+        {
+          "label": "4",
+          "value": "4",
+          "key": "veloura_related_desktop_columns-4"
+        },
+        {
+          "label": "5",
+          "value": "5",
+          "key": "veloura_related_desktop_columns-5"
+        },
+        {
+          "label": "6",
+          "value": "6",
+          "key": "veloura_related_desktop_columns-6"
+        }
+      ],
+      "selected": [
+        {
+          "label": "4",
+          "value": "4",
+          "key": "veloura_related_desktop_columns-4"
         }
       ]
     },
@@ -8376,17 +8401,12 @@
     },
     {
       "id": "veloura_recently_viewed_desktop_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
       "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
       "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "3",
-      "maximum": "6",
+      "required": true,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
@@ -8402,6 +8422,36 @@
           "id": "veloura_recently_viewed_customize_2026",
           "operation": "=",
           "value": true
+        }
+      ],
+      "source": "Manual",
+      "options": [
+        {
+          "label": "3",
+          "value": "3",
+          "key": "veloura_recently_viewed_desktop_columns_2026-3"
+        },
+        {
+          "label": "4",
+          "value": "4",
+          "key": "veloura_recently_viewed_desktop_columns_2026-4"
+        },
+        {
+          "label": "5",
+          "value": "5",
+          "key": "veloura_recently_viewed_desktop_columns_2026-5"
+        },
+        {
+          "label": "6",
+          "value": "6",
+          "key": "veloura_recently_viewed_desktop_columns_2026-6"
+        }
+      ],
+      "selected": [
+        {
+          "label": "4",
+          "value": "4",
+          "key": "veloura_recently_viewed_desktop_columns_2026-4"
         }
       ]
     },
