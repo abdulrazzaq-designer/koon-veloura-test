@@ -1030,13 +1030,7 @@
 {% set vbn_active = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_active_color_2026', '#004d65'), '#004d65')|trim %}
 
 {% set vbn_glass_raw = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_glass_2026', false), false)|trim %}
-{% set vbn_glass =
-  vbn_glass_raw == true
-  or vbn_glass_raw == 'true'
-  or vbn_glass_raw == 1
-  or vbn_glass_raw == '1'
-  or vbn_glass_raw == 'on'
-%}
+{% set vbn_glass = (vbn_glass_raw|lower) in ['true', '1', 'on'] %}
 
 {% set vbn_radius = (_self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_radius_2026', 'pill'), 'pill') ~ '')|trim %}
 {% set vbn_radius_map = {
@@ -5534,5 +5528,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+<style id="veloura-bottom-nav-solid-v20">
+html body#app.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) [data-vbn] .veloura-bottom-nav__surface {
+background:var(--vbn-bg,#ffffff)!important;
+-webkit-backdrop-filter:none!important;backdrop-filter:none!important;opacity:1!important;
+}
+html.dark body#app.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) [data-vbn] .veloura-bottom-nav__surface,
+html body#app.dark.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) [data-vbn] .veloura-bottom-nav__surface {
+background:var(--veloura-dark-secondary-bg,var(--vbn-bg,#010612))!important;
+}
+</style>
 </body>
 </html>
