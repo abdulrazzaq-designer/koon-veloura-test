@@ -1,3 +1,44 @@
+{% set fc_merge = theme.settings.get('veloura_footer_credentials_merge', false) %}
+{% if fc_merge.value is defined %}{% set fc_merge = fc_merge.value %}{% elseif fc_merge.selected is defined %}{% set fc_merge = fc_merge.selected %}{% endif %}
+{% set fc_merge = fc_merge in [true, 1, '1', 'true', 'on'] %}
+{% set fc_cards = theme.settings.get('veloura_footer_credentials_cards', true) %}
+{% if fc_cards.value is defined %}{% set fc_cards = fc_cards.value %}{% elseif fc_cards.selected is defined %}{% set fc_cards = fc_cards.selected %}{% endif %}
+{% set fc_cards = fc_cards in [true, 1, '1', 'true', 'on'] %}
+{% set fc_tax = theme.settings.get('veloura_footer_credentials_tax', true) %}
+{% if fc_tax.value is defined %}{% set fc_tax = fc_tax.value %}{% elseif fc_tax.selected is defined %}{% set fc_tax = fc_tax.selected %}{% endif %}
+{% set fc_tax = fc_tax in [true, 1, '1', 'true', 'on'] %}
+{% set fc_commercial = theme.settings.get('veloura_footer_credentials_commercial', true) %}
+{% if fc_commercial.value is defined %}{% set fc_commercial = fc_commercial.value %}{% elseif fc_commercial.selected is defined %}{% set fc_commercial = fc_commercial.selected %}{% endif %}
+{% set fc_commercial = fc_commercial in [true, 1, '1', 'true', 'on'] %}
+{% set fc_sbc = theme.settings.get('veloura_footer_credentials_sbc', true) %}
+{% if fc_sbc.value is defined %}{% set fc_sbc = fc_sbc.value %}{% elseif fc_sbc.selected is defined %}{% set fc_sbc = fc_sbc.selected %}{% endif %}
+{% set fc_sbc = fc_sbc in [true, 1, '1', 'true', 'on'] %}
+{% set fc_tax_label = theme.settings.get('veloura_footer_credentials_tax_label', 'الرقم الضريبي') %}
+{% if fc_tax_label.value is defined %}{% set fc_tax_label = fc_tax_label.value %}{% endif %}
+{% set fc_commercial_label = theme.settings.get('veloura_footer_credentials_commercial_label', 'السجل التجاري') %}
+{% if fc_commercial_label.value is defined %}{% set fc_commercial_label = fc_commercial_label.value %}{% endif %}
+{% set fc_sbc_label = theme.settings.get('veloura_footer_credentials_sbc_label', 'موثّق في منصة الأعمال') %}
+{% if fc_sbc_label.value is defined %}{% set fc_sbc_label = fc_sbc_label.value %}{% endif %}
+
+{% set footer_credentials %}
+{% if (fc_tax and store.settings.tax.number) or (fc_commercial and (store.settings.commercial_number or store.settings.freelance_number)) or (fc_sbc and store.settings.certificate.id) %}
+<div class="veloura-footer-credentials {{ fc_cards ? 'has-card-background' : '' }}">
+{% if fc_tax and store.settings.tax.number %}
+<div class="veloura-footer-credential">
+{% if store.settings.tax.certificate %}<a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" aria-label="{{ fc_tax_label }}">{% endif %}
+<img src="{{ 'images/tax.png' | cdn(70,70) }}" width="40" height="40" loading="lazy" alt="{{ fc_tax_label }}">
+{% if store.settings.tax.certificate %}</a>{% endif %}
+<div><span>{{ fc_tax_label }}</span><b dir="ltr">{{ store.settings.tax.number }}</b></div></div>
+{% if store.settings.tax.certificate %}<salla-modal id="modal-value-tax" modal-title="{{ fc_tax_label }}"><img class="w-full" data-src="{{ store.settings.tax.certificate }}" alt="{{ fc_tax_label }}"></salla-modal>{% endif %}
+{% endif %}
+{% if fc_commercial and (store.settings.commercial_number or store.settings.freelance_number) %}
+<div class="veloura-footer-credential"><img src="{{ (store.settings.commercial_number ? 'images/commercial-register.png' : 'images/freelance.png') | cdn(70,70) }}" width="40" height="40" loading="lazy" alt=""><div><span>{{ store.settings.commercial_number ? fc_commercial_label : 'وثيقة العمل الحر' }}</span><b dir="ltr">{{ store.settings.commercial_number ?: store.settings.freelance_number }}</b></div></div>
+{% endif %}
+{% if fc_sbc and store.settings.certificate.id %}
+<a class="veloura-footer-credential" href="https://eauthenticate.saudibusiness.gov.sa/certificate-details/{{ store.settings.certificate.id|url_encode }}" target="_blank" rel="noopener noreferrer"><img src="{{ 'images/sbc.png' | cdn(58,58) }}" width="40" height="40" loading="lazy" alt=""><span>{{ fc_sbc_label }}</span></a>
+{% endif %}
+</div>{% endif %}
+{% endset %}
 {% macro veloura_footer_select_value(raw, fallback) %}
   {% if raw.selected is defined and raw.selected[0].value is defined %}
     {{ raw.selected[0].value }}
@@ -240,55 +281,7 @@
               {% endif %}
             </div>
 
-            <div class="veloura-footer-trust">
-              <salla-trust-badges
-                {% if theme.settings.get('footer_is_dark') %}dark{% endif %}
-              ></salla-trust-badges>
-
-              {% if store.settings.tax.number %}
-                <div class="veloura-footer-tax">
-                  {% if store.settings.tax.certificate %}
-                    <a
-                      class="load-img-onclick"
-                      data-modal-id="modal-value-tax"
-                      href="#/"
-                      aria-label="{{ trans('common.elements.tax_number') }}"
-                    >
-                      <img
-                        width="40"
-                        height="50"
-                        src="{{ 'images/tax.png' | cdn(70,70) }}"
-                        loading="lazy"
-                        alt="value added tax"
-                      >
-                    </a>
-                  {% endif %}
-
-                  <div>
-                    <p>{{ trans('common.elements.tax_number') }}</p>
-                    <b>{{ store.settings.tax.number }}</b>
-                  </div>
-                </div>
-
-                {% if store.settings.tax.certificate %}
-                  <salla-modal
-                    sub-title-first
-                    sub-title="{{ trans('common.elements.tax_number') }}"
-                    modal-title="{{ store.settings.tax.number }}"
-                    id="modal-value-tax"
-                  >
-                    <div class="flex justify-center max-w-full">
-                      <img
-                        class="w-full"
-                        loading="lazy"
-                        data-src="{{ store.settings.tax.certificate }}"
-                        alt="{{ store.settings.tax.number }}"
-                      >
-                    </div>
-                  </salla-modal>
-                {% endif %}
-              {% endif %}
-            </div>
+            {% if not fc_merge %}{{ footer_credentials|raw }}{% endif %}
 
           </div>
         </div>
@@ -338,55 +331,7 @@
               {% endif %}
             </div>
 
-            <div class="veloura-footer-trust">
-              <salla-trust-badges
-                {% if theme.settings.get('footer_is_dark') %}dark{% endif %}
-              ></salla-trust-badges>
-
-              {% if store.settings.tax.number %}
-                <div class="veloura-footer-tax">
-                  {% if store.settings.tax.certificate %}
-                    <a
-                      class="load-img-onclick"
-                      data-modal-id="modal-value-tax"
-                      href="#/"
-                      aria-label="{{ trans('common.elements.tax_number') }}"
-                    >
-                      <img
-                        width="40"
-                        height="50"
-                        src="{{ 'images/tax.png' | cdn(70,70) }}"
-                        loading="lazy"
-                        alt="value added tax"
-                      >
-                    </a>
-                  {% endif %}
-
-                  <div>
-                    <p>{{ trans('common.elements.tax_number') }}</p>
-                    <b>{{ store.settings.tax.number }}</b>
-                  </div>
-                </div>
-
-                {% if store.settings.tax.certificate %}
-                  <salla-modal
-                    sub-title-first
-                    sub-title="{{ trans('common.elements.tax_number') }}"
-                    modal-title="{{ store.settings.tax.number }}"
-                    id="modal-value-tax"
-                  >
-                    <div class="flex justify-center max-w-full">
-                      <img
-                        class="w-full"
-                        loading="lazy"
-                        data-src="{{ store.settings.tax.certificate }}"
-                        alt="{{ store.settings.tax.number }}"
-                      >
-                    </div>
-                  </salla-modal>
-                {% endif %}
-              {% endif %}
-            </div>
+            {% if not fc_merge %}{{ footer_credentials|raw }}{% endif %}
 
           </div>
         {% endif %}
@@ -454,12 +399,20 @@
         {% endif %}
       </span>
 
-      {% if not footer_hide_payments %}
-        <salla-payments></salla-payments>
-      {% endif %}
+<div class="veloura-footer-payment-trust">{% if fc_merge %}{{ footer_credentials|raw }}{% endif %}{% if not footer_hide_payments %}<salla-payments exclude='["sbc"]'></salla-payments>{% endif %}</div>
     </div>
   </div>
   </div>
 
   <span class="hidden bottom-2 rtl:pl-24 ltr:pr-24 md:grid-cols-3 opacity-40"></span>
 </footer>
+<style id="veloura-footer-credentials-style">
+html body footer .veloura-footer-credentials { display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-block:16px; }
+html body footer .veloura-footer-credential { display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 14px;border-radius:var(--veloura-general-radius,16px);color:inherit;text-decoration:none;max-width:100%; }
+html body footer .has-card-background .veloura-footer-credential { background:color-mix(in srgb,currentColor 6%,transparent);border:1px solid color-mix(in srgb,currentColor 12%,transparent); }
+html body footer .veloura-footer-credential img { width:40px!important;height:40px!important;object-fit:contain;flex-shrink:0; }
+html body footer .veloura-footer-credential b { display:block;font-size:14px;overflow-wrap:anywhere; }
+html body footer .veloura-footer-credential span { font-size:13px; }
+html body footer .veloura-footer-payment-trust { display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;width:100%; }
+html body footer .veloura-footer-payment-trust .veloura-footer-credentials { margin:0; }
+</style>

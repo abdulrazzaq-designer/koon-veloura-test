@@ -2514,6 +2514,131 @@
       "selected": false
     },
     {
+      "id": "veloura_footer_credentials_merge",
+      "type": "boolean",
+      "format": "switch",
+      "label": "دمج بيانات التوثيق مع طرق الدفع",
+      "value": false,
+      "selected": false,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_cards",
+      "type": "boolean",
+      "format": "switch",
+      "label": "خلفية خفيفة لبيانات التوثيق",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_tax",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار الرقم الضريبي",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_commercial",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار السجل التجاري أو وثيقة العمل الحر",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_sbc",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار توثيق منصة الأعمال",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_tax_label",
+      "type": "string",
+      "format": "text",
+      "label": "عنوان الرقم الضريبي",
+      "value": "الرقم الضريبي",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_commercial_label",
+      "type": "string",
+      "format": "text",
+      "label": "عنوان السجل التجاري",
+      "value": "السجل التجاري",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_footer_credentials_sbc_label",
+      "type": "string",
+      "format": "text",
+      "label": "عنوان توثيق منصة الأعمال",
+      "value": "موثّق في منصة الأعمال",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_logo_2026",
