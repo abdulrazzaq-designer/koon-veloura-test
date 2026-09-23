@@ -741,13 +741,13 @@ html body .veloura-product-page salla-mini-checkout-widget {
       flex: 0 0 var(--veloura-pp-split, 52%) !important;
       margin: 0 !important;
       padding-bottom: 14px !important;
-      order: 1;
+      order: 1 !important;
     }
 
     .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info {
       flex: 1 1 0%;
       min-width: 0;
-      order: 2;
+      order: 2 !important;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -757,7 +757,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
     .veloura-product-page.veloura-product-mobile-split [id^="product-"] > .main-content {
       width: 100% !important;
       flex: 0 0 100% !important;
-      order: 3;
+      order: 3 !important;
     }
 
     /* العمود أضيق، فالعنوان والسعر أصغر قليلًا. */
@@ -1775,6 +1775,25 @@ html body .veloura-product-page salla-mini-checkout-widget {
         var info = document.createElement('div');
         info.className = 'veloura-pp-split__info';
 
+        // These ranks belong to the fixed identity area, never to merchant group ordering.
+        function identityOrder(node) {
+          if (node.matches('.product-brand')) return 0;
+          if (node.matches('h1')) return 1;
+          if (node.matches('.product-entry__sub-title')) return 2;
+          if (node.matches('.veloura-product-header-price')) return 3;
+          if (node.matches('salla-rating-stars')) return 4;
+          if (node.matches('.veloura-product-stock-radar')) return 5;
+          if (node.matches('.veloura-product-category-under-title')) return 6;
+          return 7;
+        }
+        function restoreGroupOrder(node) {
+          if (page.getAttribute('data-v42-order-enabled') === 'true') {
+            var value = Number(page.getAttribute('data-v42-order-' + node.getAttribute('data-v42-group')));
+            node.style.setProperty('order', String(Number.isFinite(value) ? Math.max(1, Math.min(10, Math.round(value))) : 10), 'important');
+          } else {
+            node.style.removeProperty('order');
+          }
+        }
         var moved = [];
         var on = false;
 
@@ -1792,6 +1811,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
             var slot = document.createComment('vpp-slot');
             n.parentNode.insertBefore(slot, n);
             moved.push({ node: n, slot: slot });
+            n.style.setProperty('order', String(identityOrder(n)), 'important');
             info.appendChild(n);
           });
           on = true;
@@ -1800,7 +1820,10 @@ html body .veloura-product-page salla-mini-checkout-widget {
         function disable() {
           if (!on) return;
           moved.forEach(function (m) {
-            if (m.slot.parentNode) m.slot.parentNode.replaceChild(m.node, m.slot);
+            if (m.slot.parentNode) {
+              m.slot.parentNode.replaceChild(m.node, m.slot);
+              restoreGroupOrder(m.node);
+            }
           });
           moved = [];
           if (info.parentNode) info.parentNode.removeChild(info);
