@@ -351,7 +351,17 @@
 
 
 <style id="veloura-product-promo-v7">
-html body .veloura-product-page .veloura-product-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 20px !important; }
+html body .veloura-product-page .veloura-product-payment-methods--last { margin-top: 12px !important; padding-block: 12px !important; }
+html body .veloura-product-page salla-quick-order:empty { display: none !important; margin: 0 !important; padding: 0 !important; }
+html body .veloura-product-page .veloura-product-payment-methods salla-payments { margin-block: 0 !important; }
+html body .veloura-product-page salla-slider.details-slider.image-slider :is(.s-slider-thumbs,.s-slider-thumbs-wrapper),
+html body .veloura-product-page salla-slider.details-slider.image-slider > [slot="thumbs"] { height: 76px !important; min-height: 76px !important; gap: 8px !important; padding-inline: 0 !important; }
+html body .veloura-product-page salla-slider.details-slider.image-slider :is(.veloura-product-thumb-item,.s-slider-thumbs .swiper-slide,.s-slider-thumbs-wrapper .swiper-slide) {
+ flex: 0 0 52px !important; width: 52px !important; min-width: 52px !important; max-width: 52px !important;
+ height: 76px !important; min-height: 76px !important; max-height: 76px !important;
+}
+
+html body .veloura-product-page .veloura-product-tags { display: flex; flex-wrap: wrap; justify-content: center !important; gap: 8px; margin-block: 20px !important; }
 html body .veloura-product-page .veloura-product-tags .veloura-product-tag {
   display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px;
   border-radius: var(--veloura-product-radius, 16px); text-decoration: none !important;

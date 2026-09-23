@@ -983,3 +983,15 @@ html body#app .store-header[data-veloura-header] #mainnav .veloura-cart-hide-tot
   html body#app .store-header[data-veloura-header].veloura-desktop-menu-links #mainnav .veloura-header__menu { display: none !important; }
 }
 </style>
+
+<style id="veloura-header-spacing-v11">
+@media (min-width:1024px) {
+html body#app .store-header[data-veloura-header] #mainnav .veloura-header-grid { padding-block: 10px !important; }
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-header-grid { position: relative !important; padding-right: 48px !important; }
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-header__menu {
+ position: absolute !important; right: 0 !important; left: auto !important; top: 50% !important; bottom: auto !important;
+ transform: translateY(-50%) !important; margin: 0 !important; width: 40px !important; height: 40px !important; z-index: 30;
+}
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-menu-trigger-mobile { position: static !important; transform: none !important; margin: 0 !important; }
+}
+</style>
