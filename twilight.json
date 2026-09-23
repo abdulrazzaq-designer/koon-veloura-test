@@ -8142,7 +8142,7 @@
       "value": "4",
       "required": false,
       "step": "1",
-      "minimum": "1",
+      "minimum": "3",
       "maximum": "6",
       "conditions": [
         {
@@ -8280,7 +8280,7 @@
       "value": "4",
       "required": false,
       "step": "1",
-      "minimum": "1",
+      "minimum": "3",
       "maximum": "6",
       "conditions": [
         {

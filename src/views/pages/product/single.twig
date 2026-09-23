@@ -243,7 +243,7 @@
 
     {% set vpp_related_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_desktop_columns', 4), 4)|trim %}
     {% set vpp_related_desktop_columns = vpp_related_desktop_columns_raw + 0 %}
-    {% if vpp_related_desktop_columns < 1 %}{% set vpp_related_desktop_columns = 1 %}{% endif %}
+    {% if vpp_related_desktop_columns < 3 %}{% set vpp_related_desktop_columns = 3 %}{% endif %}
     {% if vpp_related_desktop_columns > 6 %}{% set vpp_related_desktop_columns = 6 %}{% endif %}
     {% set vpp_related_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_mobile_columns', 2), 2)|trim %}
     {% set vpp_related_mobile_columns = vpp_related_mobile_columns_raw + 0 %}
@@ -259,7 +259,7 @@
     {% if vpp_recent_mobile_columns > 3 %}{% set vpp_recent_mobile_columns = 3 %}{% endif %}
     {% set vpp_recent_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_recently_viewed_desktop_columns_2026', 4), 4)|trim %}
     {% set vpp_recent_desktop_columns = vpp_recent_desktop_columns_raw + 0 %}
-    {% if vpp_recent_desktop_columns < 1 %}{% set vpp_recent_desktop_columns = 1 %}{% endif %}
+    {% if vpp_recent_desktop_columns < 3 %}{% set vpp_recent_desktop_columns = 3 %}{% endif %}
     {% if vpp_recent_desktop_columns > 6 %}{% set vpp_recent_desktop_columns = 6 %}{% endif %}
     {% set vpp_recent_center_title = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_center_title_2026', false), false)|trim == 'true' %}
 
@@ -745,14 +745,19 @@ html body .veloura-product-page salla-mini-checkout-widget {
     }
     .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .price-wrapper { flex-wrap: wrap; }
 
-    /* الصور المصغرة تصير صغيرة جدًا داخل نصف الشاشة، فتُخفى هنا. */
-    .veloura-product-page.veloura-product-mobile-split [id^="product-"] > .sidebar :is(
-      .s-slider-thumbs,
-      .swiper-thumbs,
-      [part~="thumbnails"]
-    ) {
-      display: none !important;
+    /* Thumbnails remain available in the mobile split layout. */
+    html body .veloura-product-page.veloura-product-mobile-split:not(.veloura-product-hide-thumbs) [id^="product-"] > .sidebar :is(.s-slider-thumbs, .swiper-thumbs, [part~="thumbnails"]) {
+      display: block !important;
+      width: 100% !important;
+      min-width: 0 !important;
     }
+    html body .veloura-product-page.veloura-product-mobile-split .veloura-pp-split__info .product-entry__sub-title {
+      order: 1 !important;
+      font-size: 13px !important;
+      line-height: 1.6 !important;
+      overflow-wrap: anywhere;
+    }
+
   }
 
   /* ==========================================================================
@@ -1274,6 +1279,12 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
                 <h1 class="text-xl md:text-2xl leading-10 font-bold mb-6 text-gray-800" data-v42-group="title">{{ product.name }}</h1>
 
+                {% if product.subtitle %}
+                    <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5" data-v42-group="title">
+                        {{ product.subtitle }}
+                    </h2>
+                {% endif %}
+
                 {% if vpp_enabled and vpp_show_category and product.category and product.category.name %}
                     <div class="veloura-product-category-under-title" data-v42-group="title">
                         <i class="sicon-tag veloura-product-category-icon" aria-hidden="true"></i>
@@ -1303,11 +1314,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
                     </div>
                 {% endif %}
 
-                {% if product.subtitle and not product.promotion_title %}
-                    <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5" data-v42-group="title">
-                        {{ product.subtitle }}
-                    </h2>
-                {% endif %}
+
 
 
                 {# One canonical live price directly under the product title/subtitle #}
@@ -1734,6 +1741,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
         var SEL = [
           '.product-brand',
           'h1',
+          '.product-entry__sub-title',
           '.veloura-product-category-under-title',
           '.veloura-product-detail-actions',
           '.veloura-product-header-price',
