@@ -5789,12 +5789,42 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
   });
 
-  // Re-patch native login if Salla renders/replaces modal nodes asynchronously.
-  if (typeof MutationObserver === 'function') {
-    const loginObserver = new MutationObserver(() => {
-    });
-    loginObserver.observe(document.body, { childList: true, subtree: true });
-  }
+  // Modal state is owned by Salla; reconcile every close path, including backdrop clicks.
+  let overlayState = '';
+  let reconcileTimer;
+  const modalOpen = selector => [...document.querySelectorAll(selector)].some(modal =>
+    typeof modal.visible === 'boolean' ? modal.visible : visible(modal.querySelector('.s-modal-body') || modal)
+  );
+  const reconcileOverlays = () => {
+    const next = modalOpen('salla-modal.s-search-modal') ? 'search' : modalOpen('salla-modal.s-login-modal') ? 'account' : '';
+    if (next === overlayState) return;
+    overlayState = next;
+    document.body.classList.toggle(LOGIN_OPEN_CLASS, next === 'account');
+    accountItem?.setAttribute('aria-expanded', String(next === 'account'));
+    searchItem?.setAttribute('aria-expanded', String(next === 'search'));
+    if (next) setActive(next === 'search' ? searchItem : accountItem);
+    else if (!document.body.classList.contains('menu-opened')) restoreRouteActive();
+    const bounds = nav.getBoundingClientRect();
+    document.body.style.setProperty('--veloura-nav-clearance', Math.max(90, window.innerHeight - bounds.top + 12) + 'px');
+  };
+  const scheduleOverlaySync = () => {
+    clearTimeout(reconcileTimer);
+    reconcileTimer = setTimeout(reconcileOverlays, 40);
+  };
+  const modalSelector = 'salla-modal.s-search-modal,salla-modal.s-login-modal';
+  new MutationObserver(records => {
+    if (records.some(record => record.target.closest?.(modalSelector) ||
+      [...record.addedNodes, ...record.removedNodes].some(node => node.matches?.(modalSelector) || node.querySelector?.(modalSelector)))) scheduleOverlaySync();
+  }).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['class','style','hidden','visible']});
+  document.addEventListener('click', event => {
+    const target = event.target;
+    if (target.matches?.('.mm-ocd, .mm-ocd__backdrop')) {
+      window.__velouraCloseNativeMobileMenu?.();
+    }
+    scheduleOverlaySync();
+  }, true);
+  window.addEventListener('resize', scheduleOverlaySync, {passive:true});
+  scheduleOverlaySync();
 
   // Keep Categories active in sync with Raed's mmenu state.
   // Only react when the *menu-opened state itself* changes. The body also gets

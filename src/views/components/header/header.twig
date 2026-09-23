@@ -995,3 +995,14 @@ html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger 
 html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-menu-trigger-mobile { position: static !important; transform: none !important; margin: 0 !important; }
 }
 </style>
+
+<style>@media(min-width:1024px){
+html body#app .store-header[data-veloura-header] #mainnav :is(.veloura-header-left,.veloura-header-right,.veloura-header__tools){column-gap:8px !important;}
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-header__menu{width:32px !important;}
+html body#app .store-header[data-veloura-header] #mainnav :is(.veloura-dark-toggle,.veloura-search-toggle){width:32px !important;min-width:32px !important;}
+}</style>
+
+<style>@media(min-width:1024px){
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-header-right .veloura-dark-toggle { right:36px !important; left:auto !important; }
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger.veloura-desktop-search-icon_right #mainnav .veloura-header-right .veloura-search-toggle { right:72px !important; left:auto !important; }
+}</style>

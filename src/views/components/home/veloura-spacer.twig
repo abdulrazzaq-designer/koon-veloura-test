@@ -169,8 +169,7 @@
   function run() {
     var previous = sibling(el, 'previousElementSibling');
     var requested = window.innerWidth >= 1024 ? {{ sp_d_pull }} : window.innerWidth >= 768 ? {{ sp_t_pull }} : {{ sp_m_pull }};
-    var available = previous ? Math.max(0, previous.getBoundingClientRect().height - 16) : 0;
-    var pull = Math.max(requested, -available) + 'px';
+    var pull = (document.readyState === 'complete' ? requested : 0) + 'px';
     if (el.style.getPropertyValue('--veloura-spacer-safe-pull') !== pull) el.style.setProperty('--veloura-spacer-safe-pull', pull);
     if (previous && previous !== observedPrevious && sizeObserver) {
       sizeObserver.disconnect(); sizeObserver.observe(previous); observedPrevious = previous;
