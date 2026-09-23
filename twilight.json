@@ -8237,13 +8237,13 @@
     },
     {
       "id": "veloura_related_desktop_columns",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
       "label": "عدد المنتجات في الكمبيوتر",
       "description": null,
       "labelHTML": null,
       "icon": "sicon-pin",
-      "required": true,
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
@@ -8256,36 +8256,11 @@
           "value": false
         }
       ],
-      "source": "Manual",
-      "options": [
-        {
-          "label": "3",
-          "value": "3",
-          "key": "veloura_related_desktop_columns-3"
-        },
-        {
-          "label": "4",
-          "value": "4",
-          "key": "veloura_related_desktop_columns-4"
-        },
-        {
-          "label": "5",
-          "value": "5",
-          "key": "veloura_related_desktop_columns-5"
-        },
-        {
-          "label": "6",
-          "value": "6",
-          "key": "veloura_related_desktop_columns-6"
-        }
-      ],
-      "selected": [
-        {
-          "label": "4",
-          "value": "4",
-          "key": "veloura_related_desktop_columns-4"
-        }
-      ]
+      "inputType": "range",
+      "value": 4,
+      "step": 1,
+      "minimum": 3,
+      "maximum": 6
     },
     {
       "id": "veloura_related_hide_arrows_2026",
@@ -8401,12 +8376,12 @@
     },
     {
       "id": "veloura_recently_viewed_desktop_columns_2026",
-      "type": "items",
-      "format": "dropdown-list",
+      "type": "number",
+      "format": "slider",
       "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
       "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
       "icon": "sicon-pin",
-      "required": true,
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
@@ -8424,36 +8399,11 @@
           "value": true
         }
       ],
-      "source": "Manual",
-      "options": [
-        {
-          "label": "3",
-          "value": "3",
-          "key": "veloura_recently_viewed_desktop_columns_2026-3"
-        },
-        {
-          "label": "4",
-          "value": "4",
-          "key": "veloura_recently_viewed_desktop_columns_2026-4"
-        },
-        {
-          "label": "5",
-          "value": "5",
-          "key": "veloura_recently_viewed_desktop_columns_2026-5"
-        },
-        {
-          "label": "6",
-          "value": "6",
-          "key": "veloura_recently_viewed_desktop_columns_2026-6"
-        }
-      ],
-      "selected": [
-        {
-          "label": "4",
-          "value": "4",
-          "key": "veloura_recently_viewed_desktop_columns_2026-4"
-        }
-      ]
+      "inputType": "range",
+      "value": 4,
+      "step": 1,
+      "minimum": 3,
+      "maximum": 6
     },
     {
       "id": "veloura_recently_viewed_center_title_2026",
