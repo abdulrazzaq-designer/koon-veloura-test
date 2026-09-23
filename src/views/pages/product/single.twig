@@ -242,7 +242,7 @@
 
     {% set vpp_related_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_desktop_columns', 4), 4)|trim %}
     {% set vpp_related_desktop_columns = vpp_related_desktop_columns_raw + 0 %}
-    {% if vpp_related_desktop_columns < 3 %}{% set vpp_related_desktop_columns = 3 %}{% endif %}
+    {% if vpp_related_desktop_columns < 1 %}{% set vpp_related_desktop_columns = 1 %}{% endif %}
     {% if vpp_related_desktop_columns > 6 %}{% set vpp_related_desktop_columns = 6 %}{% endif %}
     {% set vpp_related_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_mobile_columns', 2), 2)|trim %}
     {% set vpp_related_mobile_columns = vpp_related_mobile_columns_raw + 0 %}
@@ -258,7 +258,7 @@
     {% if vpp_recent_mobile_columns > 3 %}{% set vpp_recent_mobile_columns = 3 %}{% endif %}
     {% set vpp_recent_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_recently_viewed_desktop_columns_2026', 4), 4)|trim %}
     {% set vpp_recent_desktop_columns = vpp_recent_desktop_columns_raw + 0 %}
-    {% if vpp_recent_desktop_columns < 3 %}{% set vpp_recent_desktop_columns = 3 %}{% endif %}
+    {% if vpp_recent_desktop_columns < 1 %}{% set vpp_recent_desktop_columns = 1 %}{% endif %}
     {% if vpp_recent_desktop_columns > 6 %}{% set vpp_recent_desktop_columns = 6 %}{% endif %}
     {% set vpp_recent_center_title = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_center_title_2026', false), false)|trim == 'true' %}
 

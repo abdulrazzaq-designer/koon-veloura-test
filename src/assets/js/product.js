@@ -238,7 +238,7 @@ class Product extends BasePage {
             if (!host || host.dataset.velouraSliderApplying === 'true') return;
 
             const mobile = clamp(options.mobile, 1, 3, 2);
-            const desktop = clamp(options.desktop, 3, 6, 4);
+            const desktop = clamp(options.desktop, 1, 6, 4);
             const hideArrows = Boolean(options.hideArrows);
             const config = buildConfig(mobile, desktop);
             const marker = options.marker || 'products';
@@ -319,7 +319,7 @@ class Product extends BasePage {
             );
             const desktop = clamp(
                 relatedSection.dataset.velouraRelatedDesktop ?? related.desktopColumns,
-                3,
+                1,
                 6,
                 4
             );
@@ -349,7 +349,7 @@ class Product extends BasePage {
         const recentCustomize = Boolean(recent.customize);
         const recentOptions = recentCustomize ? recent : (settings.related || {});
         const recentMobile = clamp(recentOptions.mobileColumns, 1, 3, 2);
-        const recentDesktop = clamp(recentOptions.desktopColumns, 3, 6, 4);
+        const recentDesktop = clamp(recentOptions.desktopColumns, 1, 6, 4);
         const recentCenterTitle = Boolean(recentOptions.centerTitle);
 
         const normalizeText = (value) =>
