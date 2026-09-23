@@ -6762,26 +6762,6 @@
       ]
     },
     {
-      "id": "veloura_product_brand_label_2026",
-      "type": "string",
-      "format": "text",
-      "label": "عنوان الماركة",
-      "value": "ماركة أصلية 100%",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_show_brand_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "إظهار طرق الدفع / التقسيط في صفحة المنتج",

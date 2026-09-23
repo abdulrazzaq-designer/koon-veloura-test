@@ -212,7 +212,6 @@
     {% set vpp_category_label = theme.settings.get('veloura_product_category_label_2026', 'التصنيف:') ?: 'التصنيف:' %}
 
     {% set vpp_show_brand = _self.veloura_bool(theme.settings.get('veloura_product_show_brand_2026', false), false)|trim == 'true' %}
-    {% set vpp_brand_label = theme.settings.get('veloura_product_brand_label_2026', 'ماركة أصلية 100%') ?: 'ماركة أصلية 100%' %}
     {% set vpp_brand_title_image_only = _self.veloura_bool(theme.settings.get('veloura_product_brand_title_image_only_2026', true), true)|trim == 'true' %}
 
     {% set vpp_show_payment_methods = _self.veloura_bool(theme.settings.get('veloura_product_show_payment_methods_2026', true), true)|trim == 'true' %}
@@ -352,6 +351,24 @@
 
 
 <style id="veloura-product-promo-v7">
+html body .veloura-product-page .veloura-product-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 20px !important; }
+html body .veloura-product-page .veloura-product-tags .veloura-product-tag {
+  display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px;
+  border-radius: var(--veloura-product-radius, 16px); text-decoration: none !important;
+  background: var(--veloura-product-secondary-bg-inline, #f4f6f8); color: inherit;
+  font-size: 13px; line-height: 1.6; border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+html.dark body .veloura-product-page .veloura-product-tag,
+html body.dark .veloura-product-page .veloura-product-tag { background: var(--veloura-product-dark-secondary-bg-inline, #161b22); }
+html body .veloura-product-page .veloura-product-tag span { color: var(--color-primary); }
+html body .veloura-product-page .veloura-product-tag:hover { border-color: var(--color-primary); }
+html body .veloura-product-page salla-slider.details-slider.image-slider { margin-bottom: 16px !important; }
+html body .veloura-product-page salla-slider.details-slider.image-slider :is(.s-slider-thumbs, .s-slider-thumbs-wrapper),
+html body .veloura-product-page salla-slider.details-slider.image-slider > [slot="thumbs"] {
+  position: relative !important; inset: auto !important; transform: none !important; margin: 0 !important;
+}
+html body .veloura-product-page salla-slider.details-slider.image-slider .s-slider-thumbs { margin-top: 12px !important; }
+
 html body .veloura-recent-grid .s-products-list-wrapper {
   display: grid !important;
   grid-template-columns: repeat(var(--veloura-recent-mobile, 2), minmax(0, 1fr)) !important;
@@ -1262,9 +1279,6 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
                 {% if product.brand and product.brand.name and (not vpp_enabled or vpp_show_brand) %}
                     <div class="product-brand veloura-product-brand mb-5" data-v42-group="title">
-                        {% if not vpp_brand_title_image_only %}
-                            <span class="veloura-product-brand__label">{{ vpp_brand_label }}</span>
-                        {% endif %}
                         <a class="brand-logo veloura-product-brand__logo" href="{{ product.brand.url }}" title="{{ product.brand.name }}">
                             {% if product.brand.logo %}
                                 <img width="100%" height="100%" class="max-h-full object-contain"
@@ -1385,8 +1399,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
                     <div class="mb-3 veloura-product-tags" data-v42-group="data">
                         {% for tag in product.tags %}
                             <a href="{{ tag.url }}"
-                               class="rtl:ml-2 ltr:mr-2 inline-flex  text-gray-500 hover:text-primary underline text-sm mb-1">{{ tag.name }}
-                                ,</a>
+                               class="veloura-product-tag"><span aria-hidden="true">#</span>{{ tag.name }}</a>
                         {% endfor %}
                     </div>
                 {% endif %}

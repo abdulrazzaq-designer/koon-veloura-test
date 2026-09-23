@@ -957,3 +957,29 @@
     <salla-localization-modal class="veloura-localization-modal-host"></salla-localization-modal>
   {% endif %}
 </header>
+<style id="veloura-header-controls-v10">
+html body#app .store-header[data-veloura-header] #mainnav .veloura-header-grid,
+html body#app .store-header[data-veloura-header] #mainnav :is(.veloura-header__tools,.veloura-header-left,.veloura-header-right) {
+  align-items: center !important; align-content: center !important;
+}
+html body#app .store-header[data-veloura-header] #mainnav :is(.veloura-header-icon,.veloura-header-logo,salla-cart-summary,.veloura-header__menu) { align-self: center !important; }
+html body#app .store-header[data-veloura-header] #mainnav salla-cart-summary.veloura-cart-total-visible {
+  display: inline-flex !important; width: auto !important; max-width: none !important; overflow: visible !important;
+}
+html body#app .store-header[data-veloura-header] #mainnav salla-cart-summary.veloura-cart-total-visible .s-cart-summary-wrapper {
+  display: inline-flex !important; align-items: center !important; gap: 8px !important; width: auto !important; max-width: none !important;
+}
+html body#app .store-header[data-veloura-header] #mainnav salla-cart-summary.veloura-cart-total-visible :is(.s-cart-summary-total,.s-cart-summary-content) {
+  display: inline-flex !important; align-items: center !important; visibility: visible !important; opacity: 1 !important;
+  position: static !important; width: auto !important; height: auto !important; max-width: none !important;
+  font-size: 14px !important; line-height: 1.4 !important; margin: 0 !important; overflow: visible !important;
+}
+html body#app .store-header[data-veloura-header] #mainnav .veloura-cart-hide-total :is(.s-cart-summary-total,.s-cart-summary-content) { display: none !important; }
+@media (min-width: 1024px) {
+  html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav :is(.veloura-header__menu,.veloura-menu-trigger-mobile) {
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    visibility: visible !important; opacity: 1 !important; flex: 0 0 auto !important;
+  }
+  html body#app .store-header[data-veloura-header].veloura-desktop-menu-links #mainnav .veloura-header__menu { display: none !important; }
+}
+</style>
