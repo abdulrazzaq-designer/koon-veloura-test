@@ -8256,7 +8256,7 @@
           "value": false
         }
       ],
-      "inputType": "range",
+      "inputType": "number",
       "value": 4,
       "step": 1,
       "minimum": 3,
@@ -8399,7 +8399,7 @@
           "value": true
         }
       ],
-      "inputType": "range",
+      "inputType": "number",
       "value": 4,
       "step": 1,
       "minimum": 3,
