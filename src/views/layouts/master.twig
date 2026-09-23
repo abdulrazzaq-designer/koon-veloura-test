@@ -5497,5 +5497,42 @@ html body.veloura-bottom-nav-login-open .s-login-modal .s-modal-wrapper { paddin
 html body.veloura-bottom-nav-login-open .s-login-modal .s-modal-body { max-height:calc(100dvh - var(--veloura-nav-clearance,100px) - 24px) !important; overflow-y:auto !important; margin-bottom:var(--veloura-nav-clearance,100px) !important; }
 }
 </style>
+
+<style id="veloura-native-overlays-v19">
+@media(max-width:767px){
+html body.veloura-bottom-nav-login-open .s-login-modal .s-modal-wrapper{padding-bottom:0!important}
+html body.veloura-bottom-nav-login-open .s-login-modal .s-modal-body{
+position:fixed!important;inset:auto 0 0!important;transform:none!important;width:100%!important;max-width:100%!important;margin:0!important;
+padding-bottom:calc(var(--veloura-nav-clearance,100px) + 20px)!important;max-height:calc(100dvh - 12px)!important;box-sizing:border-box!important;overflow-y:auto!important}
+}</style>
+<script>
+(function(){
+function init(){
+var nav=document.querySelector('[data-vbn]');if(!nav||window.__velouraNativeOverlaysV19)return;
+window.__velouraNativeOverlaysV19=true;
+var route=nav.querySelector('[aria-current="page"]')||nav.querySelector('[data-vbn-item].is-active')||nav.querySelector('[data-vbn-key="home"]');
+document.body.appendChild(nav);
+var wasOpen=false,closingUntil=0;
+function set(el,k,v){if(el.style.getPropertyValue(k)!==v||el.style.getPropertyPriority(k)!=='important')el.style.setProperty(k,v,'important')}
+function opened(selector){return Array.from(document.querySelectorAll(selector)).some(function(m){return m.visible!==false&&getComputedStyle(m).display!=='none'&&(m.visible===true||(!m.classList.contains('s-hidden')&&m.getBoundingClientRect().height>0))})}
+function sync(){
+if(innerWidth>767)return;
+var drawer=!!document.querySelector('.mm-ocd--open');if(wasOpen&&!drawer)closingUntil=Date.now()+450;wasOpen=drawer;
+var busy=drawer||Date.now()<closingUntil,login=opened('salla-modal.s-login-modal'),search=opened('salla-modal.s-search-modal');
+document.body.classList.toggle('veloura-bottom-nav-login-open',login);
+set(nav,'z-index',busy?'2147483644':'2147483647');
+document.querySelectorAll('salla-modal.s-login-modal,salla-modal.s-search-modal').forEach(function(m){set(m,'z-index','2147483645')});
+if(!busy){nav.classList.remove('is-side-menu-suppressed');nav.removeAttribute('aria-hidden');document.body.classList.remove('menu-opened','veloura-bottom-nav-categories-open')}
+var clearance=Math.max(90,innerHeight-nav.getBoundingClientRect().top+12)+'px';
+if(document.body.style.getPropertyValue('--veloura-nav-clearance')!==clearance)document.body.style.setProperty('--veloura-nav-clearance',clearance);
+var state=drawer?'categories':login?'account':search?'search':null,target=state?nav.querySelector('[data-vbn-key="'+state+'"]'):route;
+if(target)nav.querySelectorAll('[data-vbn-item]').forEach(function(item){var active=item===target;if(item.classList.contains('is-active')!==active)item.classList.toggle('is-active',active)});
+}
+sync();setInterval(sync,100);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
 </body>
 </html>

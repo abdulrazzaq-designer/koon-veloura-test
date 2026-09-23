@@ -175,8 +175,10 @@
       sizeObserver.disconnect(); sizeObserver.observe(previous); observedPrevious = previous;
     }
 
-    var a = layer(sibling(el, 'previousElementSibling'), '{{ sp_order == 'below' ? 2 : 1 }}');
-    var b = layer(sibling(el, 'nextElementSibling'), '{{ sp_order == 'below' ? 1 : 2 }}');
+    var sections = Array.from(el.parentElement.children).filter(function(n) { return !SKIP[n.tagName]; });
+    var a = layer(previous, String(sections.indexOf(previous) + 1));
+    var next = sibling(el, 'nextElementSibling');
+    var b = layer(next, String(sections.indexOf(next) + 1));
     /* أثر مرئي للتحقق: أي قسمين طُبّق عليهما وبأي ترتيب. */
     el.setAttribute('data-veloura-layers', a + ' | ' + b);
   }
