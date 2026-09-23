@@ -3145,6 +3145,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       0 2px 8px color-mix(in srgb, var(--veloura-dot-on) 30%, transparent) !important;
   }
 {% elseif vdots_style == 'diamond' %}
+  html body .swiper-pagination, html body .veloura-dots {
+    padding-block: calc(var(--veloura-dot-size, 8px) * .75) !important;
+    min-height: calc(var(--veloura-dot-size, 8px) * 3) !important;
+    height: auto !important; overflow: visible !important; box-sizing: border-box;
+  }
+
   html body .swiper-pagination-bullet.swiper-pagination-bullet.swiper-pagination-bullet,
   html body .veloura-dots__dot.veloura-dots__dot {
     border-radius: 0 !important;
@@ -4288,6 +4294,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
        and empties as they come back up, which makes the button a report on
        where they are as well as a way out of it. */
     .veloura-fab--top .veloura-fab__btn {
+      border-radius: 50% !important;
       --vfab-color: var(--vbn-bg, #ffffff);
       --vfab-ink: var(--vbn-text, #111827);
       opacity: 0;
@@ -4300,7 +4307,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     .veloura-fab--top .veloura-fab__btn::before {
       content: "";
       position: absolute;
-      inset: -5px;
+      inset: 0;
       border-radius: inherit;
       background: conic-gradient(
         var(--vbn-active, #004956) calc(var(--vfab-p, 0) * 360deg),
@@ -5469,5 +5476,9 @@ html.dark .veloura-title__line {
 })();
 </script>
 
+<style>
+@media (min-width:640px) { html body .vpk .veloura-dots.vpk__dots { display:none !important; } }
+html body .swiper-pagination.swiper-pagination-lock { display:none !important; }
+</style>
 </body>
 </html>

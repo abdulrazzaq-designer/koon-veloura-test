@@ -86,7 +86,7 @@
     min-height: 0 !important;
     flex: 0 0 auto !important;
     height: {{ sp_m_h }}px !important;
-    margin: 0 0 {{ sp_m_pull }}px !important;
+    margin: 0 0 var(--veloura-spacer-safe-pull, 0px) !important;
     /* مع السحب يجب ألا يقص القسمَ الصاعد فوقه. */
     overflow: {{ sp_m_pull < 0 ? 'visible' : 'hidden' }} !important;
     position: relative;
@@ -96,7 +96,7 @@
   @media (min-width: 768px) {
     #{{ sp_id }} {
       height: {{ sp_t_h }}px !important;
-      margin: 0 0 {{ sp_t_pull }}px !important;
+      margin: 0 0 var(--veloura-spacer-safe-pull, 0px) !important;
       overflow: {{ sp_t_pull < 0 ? 'visible' : 'hidden' }} !important;
     }
   }
@@ -104,7 +104,7 @@
   @media (min-width: 1024px) {
     #{{ sp_id }} {
       height: {{ sp_d_h }}px !important;
-      margin: 0 0 {{ sp_d_pull }}px !important;
+      margin: 0 0 var(--veloura-spacer-safe-pull, 0px) !important;
       overflow: {{ sp_d_pull < 0 ? 'visible' : 'hidden' }} !important;
     }
   }
@@ -164,7 +164,18 @@
     return (node.tagName + '.' + (node.className || '').toString().trim().split(/\s+/)[0] + ':' + z);
   }
 
+  var observedPrevious;
+  var sizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(function () { requestAnimationFrame(run); }) : null;
   function run() {
+    var previous = sibling(el, 'previousElementSibling');
+    var requested = window.innerWidth >= 1024 ? {{ sp_d_pull }} : window.innerWidth >= 768 ? {{ sp_t_pull }} : {{ sp_m_pull }};
+    var available = previous ? Math.max(0, previous.getBoundingClientRect().height - 16) : 0;
+    var pull = Math.max(requested, -available) + 'px';
+    if (el.style.getPropertyValue('--veloura-spacer-safe-pull') !== pull) el.style.setProperty('--veloura-spacer-safe-pull', pull);
+    if (previous && previous !== observedPrevious && sizeObserver) {
+      sizeObserver.disconnect(); sizeObserver.observe(previous); observedPrevious = previous;
+    }
+
     var a = layer(sibling(el, 'previousElementSibling'), '{{ sp_order == 'below' ? 2 : 1 }}');
     var b = layer(sibling(el, 'nextElementSibling'), '{{ sp_order == 'below' ? 1 : 2 }}');
     /* أثر مرئي للتحقق: أي قسمين طُبّق عليهما وبأي ترتيب. */
@@ -176,6 +187,8 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   else run();
 
+  window.addEventListener('resize', run);
+  window.addEventListener('load', run, {once:true});
   setTimeout(run, 300);
   setTimeout(run, 1200);
 })();
