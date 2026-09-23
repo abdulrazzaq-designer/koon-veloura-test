@@ -151,6 +151,28 @@ class Product extends BasePage {
         const applyInnerSlider = async (inner, config, hideArrows, marker) => {
             if (!inner) return false;
 
+            // Updating component attributes alone does not reconfigure an existing Swiper.
+            const syncInstance = (swiper) => {
+                if (!swiper?.params || swiper.destroyed) return;
+                Object.assign(swiper.params, config);
+                if (swiper.originalParams) Object.assign(swiper.originalParams, config);
+                swiper.currentBreakpoint = undefined;
+                swiper.setBreakpoint?.();
+                swiper.update?.();
+            };
+            if (!inner.__velouraLiveConfigBound) {
+                inner.__velouraLiveConfigBound = true;
+                const viewport = window.matchMedia('(min-width: 768px)');
+                viewport.addEventListener('change', async () => {
+                    if (!inner.isConnected) return;
+                    try { inner.__velouraSyncInstance?.(await inner.sliderInstance?.()); } catch (_) {}
+                });
+                inner.addEventListener('afterInit', (event) => {
+                    if (event.target === inner) inner.__velouraSyncInstance?.(event.detail);
+                });
+            }
+            inner.__velouraSyncInstance = syncInstance;
+
             try {
                 inner.sliderConfig = config;
                 inner.slidesPerView = String(config.slidesPerView);
@@ -167,6 +189,8 @@ class Product extends BasePage {
                     await inner.componentOnReady();
                 }
             } catch (_) {}
+
+            try { syncInstance(await inner.sliderInstance?.()); } catch (_) {}
 
             if (hideArrows && inner.shadowRoot) {
                 injectShadowStyle(
@@ -323,9 +347,10 @@ class Product extends BasePage {
         const recent = settings.recent || {};
         const recentHide = Boolean(recent.hide);
         const recentCustomize = Boolean(recent.customize);
-        const recentMobile = clamp(recent.mobileColumns, 1, 3, 2);
-        const recentDesktop = clamp(recent.desktopColumns, 1, 6, 4);
-        const recentCenterTitle = Boolean(recent.centerTitle);
+        const recentOptions = recentCustomize ? recent : (settings.related || {});
+        const recentMobile = clamp(recentOptions.mobileColumns, 1, 3, 2);
+        const recentDesktop = clamp(recentOptions.desktopColumns, 1, 6, 4);
+        const recentCenterTitle = Boolean(recentOptions.centerTitle);
 
         const normalizeText = (value) =>
             String(value || '')
@@ -346,6 +371,7 @@ class Product extends BasePage {
                 'data-title',
                 'data-section-title',
                 'data-testid',
+                'source',
             ];
 
             const parts = attrs.map((name) => element.getAttribute?.(name) || '');
@@ -372,7 +398,7 @@ class Product extends BasePage {
         const findRecentWrapper = (host) => {
             let node = host;
 
-            for (let depth = 0; node && depth < 9; depth += 1) {
+            for (let depth = 0; node && !node.matches('body,main,html') && depth < 4; depth += 1) {
                 if (isRecentSignature(elementSignature(node))) {
                     return node;
                 }
@@ -385,11 +411,12 @@ class Product extends BasePage {
 
         const isRecentHost = (host) => {
             if (!host || host.matches?.('[data-veloura-related-slider]')) return false;
+            if (host.getAttribute('source') === 'recently') return true;
 
             if (isRecentSignature(elementSignature(host))) return true;
 
             let node = host.parentElement;
-            for (let depth = 0; node && depth < 8; depth += 1) {
+            for (let depth = 0; node && !node.matches('body,main,html') && depth < 3; depth += 1) {
                 if (isRecentSignature(elementSignature(node))) return true;
                 node = node.parentElement;
             }
@@ -425,6 +452,8 @@ class Product extends BasePage {
             const wrapper = findRecentWrapper(host);
             host.dataset.velouraRecentDetected = 'true';
             wrapper?.classList?.add('veloura-recent-stable-section');
+            wrapper?.classList?.add('veloura-product-related-products');
+            wrapper?.classList?.toggle('is-arrows-hidden', Boolean(settings.related?.hideArrows));
 
             if (recentHide) {
                 (wrapper || host).style.setProperty('display', 'none', 'important');
@@ -435,18 +464,22 @@ class Product extends BasePage {
             (wrapper || host).style.removeProperty('display');
             centerRecentTitle(wrapper || host);
 
-            if (recentCustomize && host.tagName === 'SALLA-PRODUCTS-SLIDER') {
+            if (host.tagName === 'SALLA-PRODUCTS-SLIDER') {
                 await applyProductsSlider(host, {
                     mobile: recentMobile,
                     desktop: recentDesktop,
-                    hideArrows: false,
+                    hideArrows: Boolean(settings.related?.hideArrows),
                     marker: 'recent-v100',
                 });
+            } else {
+                host.classList.add('veloura-recent-grid');
+                host.style.setProperty('--veloura-recent-mobile', String(recentMobile));
+                host.style.setProperty('--veloura-recent-desktop', String(recentDesktop));
             }
 
             host.dataset.velouraRecentMode = recentCustomize
                 ? 'custom-v100'
-                : 'native-v100';
+                : 'inherited-v108';
 
             return true;
         };

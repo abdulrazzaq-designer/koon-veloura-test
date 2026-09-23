@@ -352,6 +352,18 @@
 
 
 <style id="veloura-product-promo-v7">
+html body .veloura-recent-grid .s-products-list-wrapper {
+  display: grid !important;
+  grid-template-columns: repeat(var(--veloura-recent-mobile, 2), minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+html body .veloura-recent-grid .s-products-list-wrapper > * { min-width: 0; width: 100% !important; }
+@media (min-width: 768px) {
+  html body .veloura-recent-grid .s-products-list-wrapper {
+    grid-template-columns: repeat(var(--veloura-recent-desktop, 4), minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+}
 html body .veloura-product-page .veloura-product-promo-fixed .promotion-title.veloura-product-media-promo {
   width: auto !important;
   max-width: calc(100% - {{ vpp_media_actions_position == 'image' ? '128px' : '28px' }}) !important;
@@ -412,7 +424,7 @@ html body .veloura-product-page .product__description .veloura-description-toggl
   width: max-content !important;
   max-width: calc(100% - 24px) !important;
   padding: 8px 20px !important;
-  border: 10px solid var(--veloura-site-bg, #ffffff) !important;
+  border: 8px solid var(--veloura-site-bg, #ffffff) !important;
   border-radius: var(--veloura-product-radius, 16px) !important;
   background: var(--color-primary, #004956) !important;
   background-clip: padding-box !important;
@@ -431,6 +443,35 @@ html body .veloura-description-toggle:focus-visible { outline: 2px solid current
 html body .veloura-product-page .product__description.v-description-fold-ready #more-content {
   margin-bottom: 0 !important;
   overflow: hidden !important;
+  transition: max-height 420ms cubic-bezier(.22,.61,.36,1) !important;
+}
+html body .veloura-product-page .product__description.v-description-fold-ready::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 64px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--veloura-description-surface, var(--veloura-site-second-bg, #f4f6f8)));
+  border-radius: inherit;
+  opacity: 1;
+  transition: opacity 420ms ease;
+}
+html body .veloura-product-page .product__description.is-description-expanded::after { opacity: 0; }
+html body .veloura-product-page .veloura-product-media-action-btn,
+html body .veloura-product-page .veloura-product-media-share :is(button, a) {
+  background: var(--veloura-product-secondary-bg-inline, var(--veloura-site-second-bg, #f4f6f8)) !important;
+  background-image: none !important;
+}
+html.dark body .veloura-product-page .veloura-product-media-action-btn,
+html body.dark .veloura-product-page .veloura-product-media-action-btn,
+html.dark body .veloura-product-page .veloura-product-media-share :is(button, a),
+html body.dark .veloura-product-page .veloura-product-media-share :is(button, a) {
+  background: var(--veloura-product-dark-secondary-bg-inline, var(--veloura-dark-secondary-bg, #111111)) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html body .veloura-product-page .product__description.v-description-fold-ready #more-content,
+  html body .veloura-product-page .product__description.v-description-fold-ready::after { transition: none !important; }
 }
 </style>
 
@@ -1262,7 +1303,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
                     </div>
                 {% endif %}
 
-                {% if product.subtitle and product.subtitle|striptags|trim != product.promotion_title|default('')|striptags|trim %}
+                {% if product.subtitle and not product.promotion_title %}
                     <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5" data-v42-group="title">
                         {{ product.subtitle }}
                     </h2>
@@ -1767,24 +1808,47 @@ html body .veloura-product-page salla-mini-checkout-widget {
     card.dataset.foldBound = 'true';
     var expanded = false;
     var limit = 220;
+    var finishTimer;
+    var animating = false;
+    function finish() {
+      clearTimeout(finishTimer);
+      animating = false;
+      button.textContent = expanded ? 'عرض أقل' : 'عرض المزيد';
+      button.removeAttribute('aria-busy');
+      if (!expanded && button.getBoundingClientRect().top < 0) {
+        button.scrollIntoView({block: 'center', behavior: 'smooth'});
+      }
+    }
     function update() {
       var long = article.scrollHeight > limit + 2;
       button.hidden = !long;
       card.classList.toggle('v-description-fold-ready', long);
-      article.style.setProperty('max-height', long && !expanded ? limit + 'px' : 'none', 'important');
+      card.classList.toggle('is-description-expanded', expanded);
+      card.style.setProperty('--veloura-description-surface', getComputedStyle(card).backgroundColor);
+      article.style.setProperty('max-height', (long && !expanded ? limit : article.scrollHeight) + 'px', 'important');
       button.setAttribute('aria-expanded', String(!long || expanded));
-      button.textContent = expanded ? 'عرض أقل' : 'عرض المزيد';
+      if (!animating) button.textContent = expanded ? 'عرض أقل' : 'عرض المزيد';
     }
     button.addEventListener('click', function () {
+      clearTimeout(finishTimer);
+      animating = true;
+      button.setAttribute('aria-busy', 'true');
       expanded = !expanded;
       update();
-      if (!expanded && button.getBoundingClientRect().top < 0) {
-        button.scrollIntoView({block: 'center', behavior: 'auto'});
-      }
+      finishTimer = setTimeout(finish, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450);
+    });
+    article.addEventListener('transitionend', function (event) {
+      if (event.target === article && event.propertyName === 'max-height' && animating) finish();
     });
     update();
-    if ('ResizeObserver' in window) new ResizeObserver(update).observe(article);
+    var lastWidth = article.clientWidth;
+    if ('ResizeObserver' in window) new ResizeObserver(function () {
+      if (article.clientWidth !== lastWidth) { lastWidth = article.clientWidth; update(); }
+    }).observe(article);
     new MutationObserver(update).observe(article, {childList: true, subtree: true, characterData: true});
+    var themeObserver = new MutationObserver(update);
+    themeObserver.observe(document.documentElement, {attributes: true, attributeFilter: ['class']});
+    themeObserver.observe(document.body, {attributes: true, attributeFilter: ['class']});
     article.addEventListener('load', update, true);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
     window.addEventListener('resize', update);
