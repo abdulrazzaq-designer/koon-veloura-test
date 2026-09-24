@@ -5128,6 +5128,22 @@
       ]
     },
     {
+      "id": "veloura_product_card_cart_text_2026",
+      "type": "string",
+      "format": "text",
+      "label": "نص زر إضافة للسلة في بطاقة المنتج",
+      "description": "اتركه فارغًا لاستخدام النص الافتراضي. لا يغيّر نص الحجز أو الطلب المسبق أو المنتج غير المتوفر.",
+      "value": "",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "type": "boolean",
       "icon": "sicon-shopping-bag",
       "label": "إخفاء زر أضف للسلة من بطاقة المنتج",

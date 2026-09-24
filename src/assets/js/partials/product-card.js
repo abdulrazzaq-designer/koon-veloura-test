@@ -961,6 +961,12 @@ class ProductCard extends HTMLElement {
     return price;
   }
 
+  getCustomCartLabel() {
+    if (this.product.status !== 'sale' || this.product.has_preorder_campaign || ['booking', 'donating'].includes(this.product.type)) return '';
+    const text = window.velouraProductCardControls?.cartText;
+    return typeof text === 'string' ? this.escapeHTML(text.trim()) : '';
+  }
+
   getAddButtonLabel() {
     if(this.product.has_preorder_campaign) {
         return salla.lang.get('pages.products.pre_order_now');
@@ -1141,7 +1147,7 @@ class ProductCard extends HTMLElement {
                   ${this.product.status == 'sale' ? 
                       `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
                     }
-                  <span>${this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel() }</span>
+                  <span>${this.getCustomCartLabel() || (this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel()) }</span>
                 </salla-add-product-button>
 
                 ${this.horizontal || this.fullImage ?

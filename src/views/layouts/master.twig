@@ -695,13 +695,7 @@
       {% set vpc_title_one_line_raw = vpc_title_one_line_raw.selected %}
     {% endif %}
 
-    {% set vpc_title_one_line =
-      vpc_title_one_line_raw == true
-      or vpc_title_one_line_raw == 'true'
-      or vpc_title_one_line_raw == 1
-      or vpc_title_one_line_raw == '1'
-      or vpc_title_one_line_raw == 'on'
-    %}
+    {% set vpc_title_one_line = ((vpc_title_one_line_raw ~ '')|trim|lower) in ['true', '1', 'on'] %}
 
     {% set vpc_title_two_lines_raw = theme.settings.get('veloura_product_card_title_two_lines_2026', true) %}
     {% if vpc_title_two_lines_raw.value is defined %}
@@ -710,13 +704,7 @@
       {% set vpc_title_two_lines_raw = vpc_title_two_lines_raw.selected %}
     {% endif %}
 
-    {% set vpc_title_two_lines =
-      vpc_title_two_lines_raw == true
-      or vpc_title_two_lines_raw == 'true'
-      or vpc_title_two_lines_raw == 1
-      or vpc_title_two_lines_raw == '1'
-      or vpc_title_two_lines_raw == 'on'
-    %}
+    {% set vpc_title_two_lines = ((vpc_title_two_lines_raw ~ '')|trim|lower) in ['true', '1', 'on'] %}
 
     {# زر أضف للسلة #}
     {% set vpc_button_radius_raw = theme.settings.get('veloura_product_card_button_radius_2026', 'medium') %}
@@ -1109,6 +1097,7 @@
 
     <script data-cfasync="false">
       window.velouraProductCardControls = {
+        cartText: {{ theme.settings.get('veloura_product_card_cart_text_2026', '')|json_encode|raw }},
         hideCartIcon: {{ vpc_hide_cart_icon ? 'true' : 'false' }},
         cartIcon: {{ vpc_cart_icon|json_encode|raw }}
       };
@@ -5538,5 +5527,23 @@ html body#app.dark.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) [da
 background:var(--veloura-dark-secondary-bg,var(--vbn-bg,#010612))!important;
 }
 </style>
+
+<style id="veloura-card-text-glass-v31">
+html body#app.veloura-product-card-enabled:not(.veloura-product-title-one-line):not(.veloura-product-title-two-lines) .s-product-card-entry .s-product-card-content-title,
+html body#app.veloura-product-card-enabled:not(.veloura-product-title-one-line):not(.veloura-product-title-two-lines) .s-product-card-entry .s-product-card-content-title :is(a,span) {
+display:block!important;white-space:normal!important;-webkit-line-clamp:unset!important;line-clamp:unset!important;overflow:visible!important;text-overflow:clip!important;height:auto!important;max-height:none!important;overflow-wrap:anywhere!important;
+}
+html body#app.veloura-product-card-enabled .s-product-card-entry :is(.s-product-card-content,.s-product-card-content-main) {min-width:0!important;max-width:100%!important}
+html body#app.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-subtitle {
+display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;line-clamp:2!important;white-space:normal!important;overflow:hidden!important;text-overflow:ellipsis!important;overflow-wrap:anywhere!important;min-width:0!important;max-width:100%!important;max-height:3em!important;line-height:1.5!important;
+}
+html:not(.dark) body#app:not(.dark).veloura-quick-view-overlay-blur .veloura-qv-full .veloura-qv-full__overlay {
+-webkit-backdrop-filter:blur(24px) saturate(140%)!important;backdrop-filter:blur(24px) saturate(140%)!important;
+}
+html:not(.dark) body#app:not(.dark).veloura-quick-view-overlay-blur .veloura-qv-full .veloura-qv-full__dialog {
+background:rgba(235,239,243,.58)!important;-webkit-backdrop-filter:blur(24px) saturate(140%)!important;backdrop-filter:blur(24px) saturate(140%)!important;
+}
+</style>
+
 </body>
 </html>
