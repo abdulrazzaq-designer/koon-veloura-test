@@ -1862,6 +1862,19 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 
 {% block scripts %}
+<style id="veloura-product-labels-count-v30">
+html.dark body .veloura-product-page .product-form .veloura-product-purchase-card :is(.form-label,.veloura-product-cart-price-row__label),
+html body.dark .veloura-product-page .product-form .veloura-product-purchase-card :is(.form-label,.veloura-product-cart-price-row__label) {
+color:var(--veloura-dark-primary-text,#fff)!important;-webkit-text-fill-color:var(--veloura-dark-primary-text,#fff)!important;
+}
+html body .veloura-product-page .main-content .veloura-product-original-purchase-count {
+display:flex!important;justify-content:center!important;align-items:center!important;text-align:center!important;width:100%!important;box-sizing:border-box!important;
+}
+html body .veloura-product-page .main-content .veloura-product-original-purchase-count > div {
+justify-content:center!important;text-align:center!important;
+}
+</style>
+
 <style id="veloura-purchase-size-glass-v29">
 html body .veloura-product-page .product-form .veloura-product-purchase-card salla-add-product-button:has(salla-mini-checkout-widget) .s-add-product-button-main > salla-button > button {
 height:40px!important;min-height:40px!important;max-height:40px!important;box-sizing:border-box!important;padding-block:0!important;
