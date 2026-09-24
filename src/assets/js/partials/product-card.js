@@ -641,6 +641,53 @@ function markVelouraCardNativeParts(card) {
     .forEach((promo) => promo.classList.add('veloura-pc-native-promo'));
 }
 
+// Recover hydrated hosts whose native button was lost during slider/card mounting.
+// Mount outside the slider first, then move the same live native component back.
+const velouraCartRepairChecked = new WeakSet();
+async function repairVelouraNativeCart(old) {
+  if (!old || velouraCartRepairChecked.has(old)) return;
+  velouraCartRepairChecked.add(old);
+  const hasButton = node => Boolean(node.querySelector('salla-button,button') || node.shadowRoot?.querySelector('salla-button,button'));
+  let box;
+  try {
+    await customElements.whenDefined('salla-add-product-button');
+    await old.componentOnReady?.();
+    if (!old.isConnected || hasButton(old) || old.getAttribute('product-status') !== 'sale') return;
+    box = document.createElement('div');
+    box.setAttribute('aria-hidden', 'true');
+    box.style.cssText = 'position:fixed;left:-10000px;top:0;width:200px;pointer-events:none';
+    document.body.appendChild(box);
+    const fresh = document.createElement('salla-add-product-button');
+    for (const attr of old.attributes) {
+      if (!['class', 'style', 'id'].includes(attr.name)) fresh.setAttribute(attr.name, attr.value);
+    }
+    const label = Array.from(old.children).filter(node => node.matches('i,span'));
+    if (label.length) label.forEach(node => fresh.appendChild(node.cloneNode(true)));
+    else fresh.textContent = old.textContent.trim();
+    // Do not recursively repair the freshly mounted component.
+    velouraCartRepairChecked.add(fresh);
+    box.appendChild(fresh);
+    await fresh.componentOnReady?.();
+    if (!old.isConnected || !hasButton(fresh)) return;
+    fresh.className = old.className;
+    fresh.style.cssText = old.style.cssText;
+    if (old.id) fresh.id = old.id;
+    const state = velouraActionObserverState.get(old);
+    if (state) {
+      state.hostObserver?.disconnect(); state.shadowObserver?.disconnect();
+      if (state.frame) cancelAnimationFrame(state.frame);
+      state.timers.forEach(clearTimeout);
+      velouraActionObserverState.delete(old);
+    }
+    old.replaceWith(fresh);
+    styleVelouraActionComponent(fresh);
+  } catch (error) {
+    console.warn('[Veloura] Native cart button recovery failed', error);
+  } finally {
+    box?.remove();
+  }
+}
+
 function applyVelouraProductCard(card) {
   if (!card || !card.classList) return;
 
