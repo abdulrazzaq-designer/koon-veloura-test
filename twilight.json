@@ -7208,6 +7208,24 @@
       ]
     },
     {
+      "id": "veloura_product_center_details_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-align-center",
+      "label": "توسيط جميع بيانات المنتج",
+      "description": "توسيط النصوص والسعر والتقييم والتوفر والبيانات والوصف، بما فيها المعلومات بجانب الصورة عند التقسيم.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_product_details_order_enabled_2026",
       "type": "boolean",
       "format": "switch",
