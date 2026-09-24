@@ -7306,6 +7306,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7389,6 +7394,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7472,6 +7482,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7555,6 +7570,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7638,6 +7658,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7721,6 +7746,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7804,6 +7834,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7887,6 +7922,11 @@
           "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -7968,6 +8008,803 @@
         },
         {
           "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_order_image_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب صورة المنتج — بدون تقسيم",
+      "description": "ترتيب العناصر المنفصلة. ترتيب الصورة بين التفاصيل يطبق على الجوال؛ الكمبيوتر يحتفظ بعمود الصور.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "1",
+      "default": "1",
+      "selected": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_identity_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب كتلة الصورة ومعلومات المنتج — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "1",
+      "default": "1",
+      "selected": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_status_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب عداد انتهاء العرض — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "3",
+      "default": "3",
+      "selected": [
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_description_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب وصف المنتج — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "5",
+      "default": "5",
+      "selected": [
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_data_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب بيانات المنتج والوسوم وعداد الشراء — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "6",
+      "default": "6",
+      "selected": [
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_extras_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب التوفر بالفروع والملفات الرقمية — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "7",
+      "default": "7",
+      "selected": [
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_options_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب الخيارات والكمية وأزرار الشراء — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "8",
+      "default": "8",
+      "selected": [
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_quick_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب الطلب السريع — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "9",
+      "default": "9",
+      "selected": [
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_split_order_payments_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب طرق الدفع — التقسيم",
+      "description": "ترتيب عناصر وضع التقسيم على الجوال. الصورة والمعلومات بجانبها كتلة واحدة بترتيب داخلي ثابت. الأرقام المتساوية تحافظ على التسلسل الأصلي.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": true,
+      "value": "10",
+      "default": "10",
+      "selected": [
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_mobile_split_2026",
           "operation": "=",
           "value": true
         }

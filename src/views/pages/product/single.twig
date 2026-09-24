@@ -1144,6 +1144,16 @@ html body .veloura-product-page salla-mini-checkout-widget {
 <div
   data-veloura-recovered="true"
   data-veloura-product-data-build="v98"
+
+  data-v22-order-image="{{ _self.veloura_select(theme.settings.get('veloura_product_order_image_2026', 1), 1)|trim }}"
+  data-v22-split-order-identity="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_identity_2026', 1), 1)|trim }}"
+  data-v22-split-order-status="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_status_2026', 3), 3)|trim }}"
+  data-v22-split-order-description="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_description_2026', 5), 5)|trim }}"
+  data-v22-split-order-data="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_data_2026', 6), 6)|trim }}"
+  data-v22-split-order-extras="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_extras_2026', 7), 7)|trim }}"
+  data-v22-split-order-options="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_options_2026', 8), 8)|trim }}"
+  data-v22-split-order-quick="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_quick_2026', 9), 9)|trim }}"
+  data-v22-split-order-payments="{{ _self.veloura_select(theme.settings.get('veloura_product_split_order_payments_2026', 10), 10)|trim }}"
   data-v42-order-enabled="{{ vpp_details_order_enabled ? 'true' : 'false' }}"
   data-v96-stock-pulse="{{ vpp_show_stock_radar ? 'true' : 'false' }}"
   data-v42-order-title="{{ vpp_order_title }}"
@@ -1849,7 +1859,38 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 {% endblock %}
 
+
 {% block scripts %}
+<style>
+@media(max-width:767px){
+html body .veloura-product-page [id^="product-"].veloura-ordered-layout {display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:start!important;column-gap:14px!important}
+html body .veloura-product-page.veloura-product-mobile-split [id^="product-"].veloura-ordered-layout {grid-template-columns:var(--veloura-pp-split,52%) minmax(0,1fr)!important}
+html body .veloura-product-page .veloura-ordered-layout > .main-content {display:contents!important}
+html body .veloura-product-page .veloura-ordered-layout > .sidebar {width:100%!important;min-width:0!important;margin:0!important;position:static!important}
+html body .veloura-product-page .veloura-ordered-layout > .main-content > * {min-width:0;max-width:100%}
+}
+</style>
+<script id="veloura-product-order-v22">
+(function(){function init(){
+var page=document.querySelector('.veloura-product-page');if(!page)return;
+var wrap=page.querySelector('[id^="product-"]'),main=wrap&&wrap.querySelector(':scope > .main-content'),sidebar=wrap&&wrap.querySelector(':scope > .sidebar');if(!main||!sidebar)return;
+var touched=[];
+function rank(key,fallback){var raw=page.getAttribute(key),n=raw===null?fallback:Number(raw);return Number.isFinite(n)?Math.max(1,Math.min(10,n)):fallback}
+function place(node,row,column){if(!node)return;node.style.setProperty('grid-row',String(row),'important');node.style.setProperty('grid-column',column,'important');touched.push(node)}
+function apply(){
+touched.forEach(function(n){n.style.removeProperty('grid-row');n.style.removeProperty('grid-column')});touched=[];
+var enabled=innerWidth<=767&&page.getAttribute('data-v42-order-enabled')==='true';wrap.classList.toggle('veloura-ordered-layout',enabled);if(!enabled)return;
+var info=wrap.querySelector(':scope > .veloura-pp-split__info'),split=!!info;
+var entries=[{nodes:split?[sidebar,info]:[sidebar],rank:rank(split?'data-v22-split-order-identity':'data-v22-order-image',1),identity:true}];
+Array.from(main.children).forEach(function(n){if(['SCRIPT','STYLE','TEMPLATE'].includes(n.tagName))return;var group=n.getAttribute('data-v42-group');var key=(split?'data-v22-split-order-':'data-v42-order-')+group;entries.push({nodes:[n],rank:rank(key,rank('data-v42-order-'+group,10))})});
+entries.sort(function(a,b){return a.rank-b.rank});entries.forEach(function(entry,i){entry.nodes.forEach(function(n,j){place(n,i+1,entry.identity&&split?String(j+1):'1 / -1')})});
+}
+apply();window.addEventListener('resize',function(){requestAnimationFrame(apply)});window.addEventListener('load',apply,{once:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
+</script>
+
+
 
 <script id="veloura-description-fold-v6">
 (function () {
