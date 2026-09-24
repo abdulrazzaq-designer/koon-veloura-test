@@ -963,7 +963,8 @@ class ProductCard extends HTMLElement {
 
   getCustomCartLabel() {
     if (this.product.status !== 'sale' || this.product.has_preorder_campaign || ['booking', 'donating'].includes(this.product.type)) return '';
-    const text = window.velouraProductCardControls?.cartText;
+    const raw = window.velouraProductCardControls?.cartText;
+    const text = raw && typeof raw === "object" ? (raw.value ?? raw.selected ?? "") : raw;
     return typeof text === 'string' ? this.escapeHTML(text.trim()) : '';
   }
 

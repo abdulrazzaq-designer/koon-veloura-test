@@ -1097,7 +1097,7 @@
 
     <script data-cfasync="false">
       window.velouraProductCardControls = {
-        cartText: {{ theme.settings.get('veloura_product_card_cart_text_2026', '')|json_encode|raw }},
+        cartText: {{ _self.veloura_dm_value(theme.settings.get('veloura_product_card_cart_text_2026', ''), '')|trim|json_encode|raw }},
         hideCartIcon: {{ vpc_hide_cart_icon ? 'true' : 'false' }},
         cartIcon: {{ vpc_cart_icon|json_encode|raw }}
       };
@@ -5538,11 +5538,18 @@ html body#app.veloura-product-card-enabled .s-product-card-entry .s-product-card
 display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;line-clamp:2!important;white-space:normal!important;overflow:hidden!important;text-overflow:ellipsis!important;overflow-wrap:anywhere!important;min-width:0!important;max-width:100%!important;max-height:3em!important;line-height:1.5!important;
 }
 html:not(.dark) body#app:not(.dark).veloura-quick-view-overlay-blur .veloura-qv-full .veloura-qv-full__overlay {
--webkit-backdrop-filter:blur(24px) saturate(140%)!important;backdrop-filter:blur(24px) saturate(140%)!important;
+-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
 }
 html:not(.dark) body#app:not(.dark).veloura-quick-view-overlay-blur .veloura-qv-full .veloura-qv-full__dialog {
 background:rgba(235,239,243,.58)!important;-webkit-backdrop-filter:blur(24px) saturate(140%)!important;backdrop-filter:blur(24px) saturate(140%)!important;
 }
+</style>
+
+
+<style id="veloura-card-cart-center-v32">
+html body#app.veloura-product-card-enabled .s-product-card-entry salla-add-product-button .s-button-element {text-align:center!important;justify-content:center!important}
+html body#app.veloura-product-card-enabled .s-product-card-entry salla-add-product-button .s-button-text {display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important}
+html body#app.veloura-product-card-enabled .s-product-card-entry salla-add-product-button .s-button-text > :is(i,span) {flex:0 1 auto!important;width:auto!important;margin:0!important;padding:0!important;text-align:center!important}
 </style>
 
 </body>

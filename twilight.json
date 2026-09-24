@@ -5128,22 +5128,6 @@
       ]
     },
     {
-      "id": "veloura_product_card_cart_text_2026",
-      "type": "string",
-      "format": "text",
-      "label": "نص زر إضافة للسلة في بطاقة المنتج",
-      "description": "اتركه فارغًا لاستخدام النص الافتراضي. لا يغيّر نص الحجز أو الطلب المسبق أو المنتج غير المتوفر.",
-      "value": "",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "type": "boolean",
       "icon": "sicon-shopping-bag",
       "label": "إخفاء زر أضف للسلة من بطاقة المنتج",
@@ -6414,6 +6398,22 @@
       "id": "veloura_product_card_subtitle_button_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>زر أضف للسلة</span></div>",
       "variant": "h6",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_card_cart_text_2026",
+      "type": "string",
+      "format": "text",
+      "label": "نص زر إضافة للسلة في بطاقة المنتج",
+      "description": "اتركه فارغًا لاستخدام النص الافتراضي. لا يغيّر نص الحجز أو الطلب المسبق أو المنتج غير المتوفر.",
+      "value": "",
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
