@@ -250,8 +250,8 @@
     {% if vpp_related_mobile_columns > 3 %}{% set vpp_related_mobile_columns = 3 %}{% endif %}
     {% set vpp_related_hide_arrows = _self.veloura_bool(theme.settings.get('veloura_related_hide_arrows_2026', false), false)|trim == 'true' %}
     {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
-    {% set vpp_recent_hide = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_hide_2026', false), false)|trim == 'true' %}
-    {% set vpp_recent_customize = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_customize_2026', false), false)|trim == 'true' %}
+    {% set vpp_recent_hide = false %}
+    {% set vpp_recent_customize = false %}
     {% set vpp_recent_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_recently_viewed_mobile_columns_2026', 2), 2)|trim %}
     {% set vpp_recent_mobile_columns = vpp_recent_mobile_columns_raw + 0 %}
     {% if vpp_recent_mobile_columns < 1 %}{% set vpp_recent_mobile_columns = 1 %}{% endif %}
@@ -1862,6 +1862,22 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 
 {% block scripts %}
+<style id="veloura-purchase-v27">
+html body .veloura-product-page .main-content .veloura-product-purchase-card .sticky-product-bar__quantity {direction:rtl!important;flex-direction:row!important}
+html body .veloura-product-page .main-content .veloura-product-purchase-card .sticky-product-bar__quantity .form-label {order:0!important;text-align:right!important}
+html body .veloura-product-page .main-content .veloura-product-purchase-card .sticky-product-bar__quantity salla-quantity-input {order:1!important;direction:ltr!important}
+</style>
+<script id="veloura-purchase-height-v27">
+(function(){function init(){var host=document.querySelector('.veloura-product-purchase-card salla-add-product-button');if(!host)return;
+var widget,observer=new ResizeObserver(sync);
+function sync(){var next=host.querySelector('salla-mini-checkout-widget');if(next!==widget){if(widget)observer.unobserve(widget);widget=next;if(widget)observer.observe(widget)}
+if(!widget)return;var height=widget.getBoundingClientRect().height;if(height<28||height>100)return;
+var cart=host.querySelector('salla-button');if(!cart)return;
+[cart].concat(Array.from(cart.querySelectorAll('button,.s-button-element'))).forEach(function(el){['height','min-height','max-height'].forEach(function(key){var value=height+'px';if(el.style.getPropertyValue(key)!==value)el.style.setProperty(key,value,'important')});el.style.setProperty('box-sizing','border-box','important');el.style.setProperty('margin-block','0','important')});}
+new MutationObserver(sync).observe(host,{childList:true,subtree:true});sync();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
+</script>
+
 
 <style id="veloura-product-purchase-v26">
 html body .veloura-product-page .before-price {text-decoration:line-through!important;text-decoration-thickness:1px!important;font-size:14px!important;font-weight:400!important}
