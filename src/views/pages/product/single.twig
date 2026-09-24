@@ -1866,7 +1866,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
 html body .veloura-product-page [id^="product-"].veloura-ordered-layout {display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:start!important;column-gap:14px!important}
 html body .veloura-product-page.veloura-product-mobile-split [id^="product-"].veloura-ordered-layout {grid-template-columns:var(--veloura-pp-split,52%) minmax(0,1fr)!important}
 html body .veloura-product-page .veloura-ordered-layout > .main-content {display:contents!important}
-html body .veloura-product-page .veloura-ordered-layout > .sidebar {width:100%!important;min-width:0!important;margin:0!important;position:static!important}
+html body .veloura-product-page [id^="product-"].veloura-ordered-layout > .sidebar {width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;position:static!important;justify-self:stretch!important;box-sizing:border-box!important}
 html body .veloura-product-page .veloura-ordered-layout > .main-content > * {min-width:0;max-width:100%}
 }
 </style>
