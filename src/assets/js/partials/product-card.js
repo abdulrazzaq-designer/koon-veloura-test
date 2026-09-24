@@ -1142,7 +1142,7 @@ class ProductCard extends HTMLElement {
                   fill="outline"
                   width="wide"
                   product-id="${this.product.id}"
-                  product-status="${this.effectiveStatus}"
+                  product-status="${this.escapeHTML(this.product.status || 'out')}"
                   product-type="${this.product.type}"
                   data-veloura-native-cart="true">
                   ${this.product.status == 'sale' ? 
