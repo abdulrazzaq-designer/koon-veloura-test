@@ -1083,7 +1083,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
      بحواف 1.5rem ثابتة — لهذا كانت تظهر قطعة بيضاء ثم الأيقونات. */
   .veloura-product-page salla-social-share .s-social-share-list,
   salla-social-share .s-social-share-list {
-    background-color: var(--veloura-product-bg-inline, var(--veloura-site-bg, #ffffff)) !important;
+    background-color: var(--veloura-product-secondary-bg-inline, var(--veloura-site-second-bg, #f4f6f8)) !important;
     border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
     box-shadow: none !important;
     border: 1px solid rgba(15, 23, 42, .08) !important;
@@ -1862,23 +1862,18 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 
 {% block scripts %}
+<style id="veloura-share-surface-v28">
+html:not(.dark) body:not(.dark) .veloura-product-page salla-social-share .s-social-share-list {
+background:var(--veloura-product-secondary-bg-inline,var(--veloura-site-second-bg,#f4f6f8))!important;
+}
+html:not(.dark) body:not(.dark) .veloura-product-page salla-social-share .s-social-share-list :is(li,a,button,span) {background:transparent!important;box-shadow:none!important}
+</style>
+
 <style id="veloura-purchase-v27">
 html body .veloura-product-page .main-content .veloura-product-purchase-card .sticky-product-bar__quantity {direction:rtl!important;flex-direction:row!important}
 html body .veloura-product-page .main-content .veloura-product-purchase-card .sticky-product-bar__quantity .form-label {order:0!important;text-align:right!important}
 html body .veloura-product-page .main-content .veloura-product-purchase-card .sticky-product-bar__quantity salla-quantity-input {order:1!important;direction:ltr!important}
 </style>
-<script id="veloura-purchase-height-v27">
-(function(){function init(){var host=document.querySelector('.veloura-product-purchase-card salla-add-product-button');if(!host)return;
-var widget,observer=new ResizeObserver(sync);
-function sync(){var next=host.querySelector('salla-mini-checkout-widget');if(next!==widget){if(widget)observer.unobserve(widget);widget=next;if(widget)observer.observe(widget)}
-if(!widget)return;var height=widget.getBoundingClientRect().height;if(height<28||height>100)return;
-var cart=host.querySelector('salla-button');if(!cart)return;
-[cart].concat(Array.from(cart.querySelectorAll('button,.s-button-element'))).forEach(function(el){['height','min-height','max-height'].forEach(function(key){var value=height+'px';if(el.style.getPropertyValue(key)!==value)el.style.setProperty(key,value,'important')});el.style.setProperty('box-sizing','border-box','important');el.style.setProperty('margin-block','0','important')});}
-new MutationObserver(sync).observe(host,{childList:true,subtree:true});sync();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
-</script>
-
-
 <style id="veloura-product-purchase-v26">
 html body .veloura-product-page .before-price {text-decoration:line-through!important;text-decoration-thickness:1px!important;font-size:14px!important;font-weight:400!important}
 html body .veloura-product-page.veloura-product-hide-discount .before-price {display:none!important}
@@ -1887,7 +1882,6 @@ html body .veloura-product-page .veloura-product-purchase-card :is(.veloura-prod
 html body .veloura-product-page .main-content .veloura-product-purchase-card :is(.form-label,.veloura-product-cart-price-row__label) {text-align:start!important;margin:0!important;flex:0 0 auto!important}
 html body .veloura-product-page .main-content .veloura-product-purchase-card .price-wrapper {justify-content:flex-end!important;text-align:end!important;margin:0!important;flex:0 0 auto!important}
 html body .veloura-product-page .veloura-product-purchase-card salla-quantity-input {margin:0!important;flex:0 0 auto!important;width:auto!important}
-html body .veloura-product-page .veloura-product-purchase-card salla-add-product-button :is(button,.s-button-element) {height:44px!important;min-height:44px!important;box-sizing:border-box!important;padding-block:0!important;display:flex!important;align-items:center!important;justify-content:center!important}
 </style>
 
 
