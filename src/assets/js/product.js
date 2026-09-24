@@ -84,7 +84,7 @@ class Product extends BasePage {
         const readOrder = (group) => {
             const value = Number(page.getAttribute(attributes[group]));
             if (!Number.isFinite(value)) return 10;
-            return Math.max(1, Math.min(10, Math.round(value)));
+            return Math.max(1, Math.min(12, Math.round(value)));
         };
 
         /*

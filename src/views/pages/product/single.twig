@@ -240,7 +240,7 @@
     {% set vpp_liked_title = _self.veloura_text(theme.settings.get('veloura_product_liked_title_2026', trans('pages.products.similar_products')), trans('pages.products.similar_products'))|trim %}
     {% if not vpp_liked_title %}{% set vpp_liked_title = trans('pages.products.similar_products') %}{% endif %}
 
-    {% set vpp_related_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_desktop_columns', 4), 4)|trim %}
+    {% set vpp_related_desktop_columns_raw = 4 %}
     {% set vpp_related_desktop_columns = vpp_related_desktop_columns_raw + 0 %}
     {% if vpp_related_desktop_columns < 1 %}{% set vpp_related_desktop_columns = 1 %}{% endif %}
     {% if vpp_related_desktop_columns > 6 %}{% set vpp_related_desktop_columns = 6 %}{% endif %}
@@ -1800,7 +1800,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
         function restoreGroupOrder(node) {
           if (page.getAttribute('data-v42-order-enabled') === 'true') {
             var value = Number(page.getAttribute('data-v42-order-' + node.getAttribute('data-v42-group')));
-            node.style.setProperty('order', String(Number.isFinite(value) ? Math.max(1, Math.min(10, Math.round(value))) : 10), 'important');
+            node.style.setProperty('order', String(Number.isFinite(value) ? Math.max(1, Math.min(12, Math.round(value))) : 10), 'important');
           } else {
             node.style.removeProperty('order');
           }
@@ -1863,10 +1863,22 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 {% block scripts %}
 
+<style id="veloura-product-purchase-v26">
+html body .veloura-product-page .before-price {text-decoration:line-through!important;text-decoration-thickness:1px!important;font-size:14px!important;font-weight:400!important}
+html body .veloura-product-page.veloura-product-hide-discount .before-price {display:none!important}
+html body .veloura-product-page .veloura-product-original-purchase-count .sicon-fire {color:var(--color-primary)!important;-webkit-text-fill-color:var(--color-primary)!important}
+html body .veloura-product-page .veloura-product-purchase-card :is(.veloura-product-cart-price-row,.sticky-product-bar__quantity) {display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;width:100%!important;gap:12px!important}
+html body .veloura-product-page .main-content .veloura-product-purchase-card :is(.form-label,.veloura-product-cart-price-row__label) {text-align:start!important;margin:0!important;flex:0 0 auto!important}
+html body .veloura-product-page .main-content .veloura-product-purchase-card .price-wrapper {justify-content:flex-end!important;text-align:end!important;margin:0!important;flex:0 0 auto!important}
+html body .veloura-product-page .veloura-product-purchase-card salla-quantity-input {margin:0!important;flex:0 0 auto!important;width:auto!important}
+html body .veloura-product-page .veloura-product-purchase-card salla-add-product-button :is(button,.s-button-element) {height:44px!important;min-height:44px!important;box-sizing:border-box!important;padding-block:0!important;display:flex!important;align-items:center!important;justify-content:center!important}
+</style>
+
+
 <style id="veloura-product-center-thumbs-v25">
 @media(max-width:767px){
 html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info),
-html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info) :is(h1,h2,h3,p,small,label,article,li,td,th,.product__description,.veloura-product-sku-card,.s-product-options-option-label) {text-align:center!important}
+html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info) :is(h1,h2,h3,p,small,article,li,td,th,.product__description,.veloura-product-sku-card,.s-product-options-option-label) {text-align:center!important}
 html body .veloura-product-page.veloura-product-center-details :is(.veloura-product-header-price,.price-wrapper,.veloura-product-brand,.veloura-product-category-under-title,.veloura-product-detail-actions,.veloura-product-stock-radar,.veloura-product-tags,.veloura-product-original-purchase-count) {justify-content:center!important;text-align:center!important}
 html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info) > salla-rating-stars {align-self:center!important;margin-inline:auto!important}
 html body .veloura-product-page.veloura-product-center-details .product__description * {text-align:center!important}
@@ -1896,7 +1908,7 @@ html body .veloura-product-page .veloura-ordered-layout > .main-content > * {min
 var page=document.querySelector('.veloura-product-page');if(!page)return;
 var wrap=page.querySelector('[id^="product-"]'),main=wrap&&wrap.querySelector(':scope > .main-content'),sidebar=wrap&&wrap.querySelector(':scope > .sidebar');if(!main||!sidebar)return;
 var touched=[];
-function rank(key,fallback){var raw=page.getAttribute(key),n=raw===null?fallback:Number(raw);return Number.isFinite(n)?Math.max(1,Math.min(10,n)):fallback}
+function rank(key,fallback){var raw=page.getAttribute(key),n=raw===null?fallback:Number(raw);return Number.isFinite(n)?Math.max(1,Math.min(12,n)):fallback}
 function place(node,row,column){if(!node)return;node.style.setProperty('grid-row',String(row),'important');node.style.setProperty('grid-column',column,'important');touched.push(node)}
 function apply(){
 touched.forEach(function(n){n.style.removeProperty('grid-row');n.style.removeProperty('grid-column')});touched=[];
