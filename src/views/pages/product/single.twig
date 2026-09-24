@@ -1862,6 +1862,17 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 
 {% block scripts %}
+<style id="veloura-purchase-size-glass-v29">
+html body .veloura-product-page .product-form .veloura-product-purchase-card salla-add-product-button:has(salla-mini-checkout-widget) .s-add-product-button-main > salla-button > button {
+height:40px!important;min-height:40px!important;max-height:40px!important;box-sizing:border-box!important;padding-block:0!important;
+}
+@media(max-width:767px){
+html body .veloura-product-page.veloura-product-mobile-sticky-enabled .product-form .sticky-product-bar.veloura-product-sticky-bar.veloura-product-purchase-card::after {
+content:none!important;display:none!important;background:none!important;
+}
+}
+</style>
+
 <style id="veloura-share-surface-v28">
 html:not(.dark) body:not(.dark) .veloura-product-page salla-social-share .s-social-share-list {
 background:var(--veloura-product-secondary-bg-inline,var(--veloura-site-second-bg,#f4f6f8))!important;
