@@ -1863,13 +1863,19 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
 {% block scripts %}
 
-<style id="veloura-product-center-thumbs-v24">
+<style id="veloura-product-center-thumbs-v25">
+@media(max-width:767px){
 html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info),
 html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info) :is(h1,h2,h3,p,small,label,article,li,td,th,.product__description,.veloura-product-sku-card,.s-product-options-option-label) {text-align:center!important}
 html body .veloura-product-page.veloura-product-center-details :is(.veloura-product-header-price,.price-wrapper,.veloura-product-brand,.veloura-product-category-under-title,.veloura-product-detail-actions,.veloura-product-stock-radar,.veloura-product-tags,.veloura-product-original-purchase-count) {justify-content:center!important;text-align:center!important}
 html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info) > salla-rating-stars {align-self:center!important;margin-inline:auto!important}
 html body .veloura-product-page.veloura-product-center-details .product__description * {text-align:center!important}
+html body .veloura-product-page.veloura-product-center-details :is(.main-content,.veloura-pp-split__info) :is(.veloura-product-brand,.veloura-product-category-under-title) {display:flex!important;width:100%!important;max-width:100%!important;align-self:center!important;justify-content:center!important;margin-inline:auto!important;text-align:center!important}
+html body .veloura-product-page.veloura-product-center-details .veloura-product-brand .brand-logo {display:flex!important;align-items:center!important;justify-content:center!important;margin-inline:auto!important;text-align:center!important}
+}
 @media(min-width:768px){
+html body .veloura-product-page salla-slider.details-slider.image-slider :is(.veloura-product-thumb-item,.s-slider-thumbs .swiper-slide,.s-slider-thumbs-wrapper .swiper-slide) img {object-fit:cover!important;object-position:center!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important}
+
 html body .veloura-product-page salla-slider.details-slider.image-slider :is(.s-slider-thumbs,.s-slider-thumbs-wrapper),
 html body .veloura-product-page salla-slider.details-slider.image-slider > [slot="thumbs"] {height:112px!important;min-height:112px!important;gap:12px!important}
 html body .veloura-product-page salla-slider.details-slider.image-slider :is(.veloura-product-thumb-item,.s-slider-thumbs .swiper-slide,.s-slider-thumbs-wrapper .swiper-slide) {flex:0 0 84px!important;width:84px!important;min-width:84px!important;max-width:84px!important;height:112px!important;min-height:112px!important;max-height:112px!important}
