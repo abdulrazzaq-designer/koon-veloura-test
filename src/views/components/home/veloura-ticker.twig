@@ -55,7 +55,7 @@
    shorthand, which would otherwise outrank a padding-inline of equal weight. */
 .veloura-tkr { padding-inline: 0 !important; }
 
-body .veloura-tkr.veloura-tkr > .container {
+body .veloura-tkr > .container {
   width: 100%;
   margin-inline: auto !important;
   box-sizing: border-box;
@@ -72,7 +72,7 @@ body .veloura-tkr.veloura-tkr > .container {
    class is repeated to outweigh it, and the same chain is followed so that an
    untouched section still matches the rest of the page. */
 @media (max-width: 1023px) {
-  body .veloura-tkr.veloura-tkr > .container {
+  body .veloura-tkr > .container {
     max-width: none !important;
     padding-inline: var(--tkr-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
   }
@@ -83,7 +83,7 @@ body .veloura-tkr.veloura-tkr > .container {
    the page sits rather than a few pixels wider. The setting is a phone and
    tablet affair, which is where it is wanted. */
 @media (min-width: 1024px) {
-  body .veloura-tkr.veloura-tkr > .container {
+  body .veloura-tkr > .container {
     max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
     padding-inline: var(--veloura-global-spacing, 10px) !important;
   }

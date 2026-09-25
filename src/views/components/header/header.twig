@@ -470,18 +470,18 @@
     html body .veloura-header-tabs-stack
       .store-header.veloura-top-enabled
       .veloura-header-container .veloura-header-grid .veloura-header__tools
-      .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill.veloura-localization-pill,
+      .veloura-header-icon.veloura-lang-desktop.veloura-localization-pill,
     html body .veloura-header-tabs-stack
       .store-header.veloura-top-enabled
       .veloura-header-container .veloura-header-grid .veloura-header__tools
-      .veloura-header-icon.veloura-login-btn.veloura-login-btn {
+      .veloura-header-icon.veloura-login-btn {
       border-radius: {{ top_border_px }} !important;
     }
 
     /* Header geometry also owns the localization and login dialogs.
        Salla moves modal hosts to body, so target their rendered content. */
-    html body salla-modal.s-login-modal .s-modal-body.s-modal-body,
-    html body salla-modal:has(.s-localization-modal-inner) .s-modal-body.s-modal-body {
+    html body salla-modal.s-login-modal .s-modal-body,
+    html body salla-modal:has(.s-localization-modal-inner) .s-modal-body {
       border-radius: {{ top_border_px }} !important;
       overflow: hidden !important;
     }
@@ -503,8 +503,8 @@
     }
 
     /* Thin translucent top/bottom edges, without opaque side borders. */
-    html body.veloura-glass-effect salla-modal.s-login-modal .s-modal-body.s-modal-body,
-    html body.veloura-glass-effect salla-modal:has(.s-localization-modal-inner) .s-modal-body.s-modal-body,
+    html body.veloura-glass-effect salla-modal.s-login-modal .s-modal-body,
+    html body.veloura-glass-effect salla-modal:has(.s-localization-modal-inner) .s-modal-body,
     html body.veloura-glass-effect .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
       border-top: 1px solid rgba(255, 255, 255, .20) !important;
       border-bottom: 1px solid rgba(255, 255, 255, .12) !important;

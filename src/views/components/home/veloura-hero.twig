@@ -178,7 +178,7 @@
 /* الكونتينر يُكتب هنا بدل الاعتماد على .container وحده: قواعد المتجر العامة
    تفرض حشوة بـ important على كل .container تحت 1024، فلو تُركت المسافة
    المخصصة لها ما وصلت أبداً. */
-body .veloura-hero.veloura-hero > .hero__wrap.container {
+body .veloura-hero > .hero__wrap.container {
   width: 100%;
   margin-inline: auto !important;
   box-sizing: border-box;
@@ -187,14 +187,14 @@ body .veloura-hero.veloura-hero > .hero__wrap.container {
 }
 
 @media (max-width: 1023px) {
-  body .veloura-hero.veloura-hero > .hero__wrap.container {
+  body .veloura-hero > .hero__wrap.container {
     max-width: none !important;
     padding-inline: var(--hero-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
   }
 }
 
 @media (min-width: 1024px) {
-  body .veloura-hero.veloura-hero > .hero__wrap.container {
+  body .veloura-hero > .hero__wrap.container {
     max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
     padding-inline: var(--veloura-global-spacing, 10px) !important;
   }

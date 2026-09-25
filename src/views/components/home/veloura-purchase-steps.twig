@@ -87,7 +87,7 @@
 /* The gutter, read from the theme's own variables so an untouched section is
    the same box as every other block; the custom number is a phone and tablet
    affair, which is where the setting says it belongs. */
-body .veloura-stp.veloura-stp > .container {
+body .veloura-stp > .container {
   width: 100%;
   margin-inline: auto !important;
   box-sizing: border-box;
@@ -96,14 +96,14 @@ body .veloura-stp.veloura-stp > .container {
 }
 
 @media (max-width: 1023px) {
-  body .veloura-stp.veloura-stp > .container {
+  body .veloura-stp > .container {
     max-width: none !important;
     padding-inline: var(--stp-gutter, var(--veloura-site-spacing, var(--veloura-global-spacing, 10px))) !important;
   }
 }
 
 @media (min-width: 1024px) {
-  body .veloura-stp.veloura-stp > .container {
+  body .veloura-stp > .container {
     max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
     padding-inline: var(--veloura-global-spacing, 10px) !important;
   }
