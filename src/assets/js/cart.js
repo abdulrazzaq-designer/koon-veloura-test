@@ -46,10 +46,10 @@ class Cart extends BasePage {
                     margin: 0 !important;
 
                     background:
-                        var(--veloura-cart-primary-bg, #ffffff) !important;
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
 
                     background-color:
-                        var(--veloura-cart-primary-bg, #ffffff) !important;
+                        var(--veloura-cart-secondary-bg, #f8fafc) !important;
 
                     color:
                         var(--veloura-cart-text, #111827) !important;
@@ -156,6 +156,17 @@ class Cart extends BasePage {
             `,
         };
 
+        const surfaceCss = `
+          :host, .s-loyalty-panel, .s-gifting-content, .s-tiered-offer-wrapper,
+          input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]), select, textarea, .s-form-control {
+            background:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+            color:var(--veloura-cart-text,#111827)!important;
+            border-radius:var(--veloura-cart-real-radius,0px)!important;
+          }
+        `;
+        ['SALLA-LOYALTY-PANEL','SALLA-TIERED-OFFER','SALLA-GIFTING'].forEach(tag => { shadowCss[tag] = surfaceCss; });
+        shadowCss['SALLA-CART-COUPONS'] += surfaceCss;
+
         const injectShadowStyle = async (element) => {
             if (!element) {
                 return;
@@ -193,6 +204,9 @@ class Cart extends BasePage {
                 'salla-quantity-input',
                 'salla-button',
                 'salla-cart-coupons',
+                'salla-loyalty-panel',
+                'salla-tiered-offer',
+                'salla-gifting',
             ].join(',');
 
             if (scope.matches?.(selector)) {

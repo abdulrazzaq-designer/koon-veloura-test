@@ -56,13 +56,7 @@
     {% elseif vcart_enabled_raw.value is defined %}
         {% set vcart_enabled_raw = vcart_enabled_raw.value %}
     {% endif %}
-    {% set vcart_surfaces_enabled =
-        vcart_enabled_raw == true
-        or vcart_enabled_raw == 'true'
-        or vcart_enabled_raw == 1
-        or vcart_enabled_raw == '1'
-        or vcart_enabled_raw == 'on'
-    %}
+    {% set vcart_surfaces_enabled = true %}
 
     {% set vcart_border_raw = theme.settings.get('veloura_cart_surfaces_border_enabled_2026', false) %}
     {% if vcart_border_raw.selected is defined %}
@@ -349,5 +343,13 @@
 {% endblock %}
 
 {% block scripts %}
+<style id="veloura-cart-surfaces-v37">
+.veloura-cart-page {--veloura-cart-primary-bg:var(--veloura-cart-secondary-bg)!important}
+.veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-surface,salla-loyalty-panel,salla-tiered-offer,salla-gifting,.s-loyalty-panel,.s-gifting-content,.s-tiered-offer-wrapper,.s-cart-coupon-input,.s-form-control,select,textarea,input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])) {
+background:var(--veloura-cart-secondary-bg)!important;color:var(--veloura-cart-text)!important;border-radius:var(--veloura-cart-real-radius)!important;
+}
+.veloura-cart-page :is(salla-loyalty-panel,salla-tiered-offer,salla-gifting) {--salla-button-border-radius:var(--veloura-cart-real-radius);--salla-input-border-radius:var(--veloura-cart-real-radius)}
+</style>
+
     <script defer src="{{ 'checkout.js' | asset }}"></script>
 {% endblock %}

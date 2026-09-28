@@ -59813,7 +59813,7 @@ html body .veloura-search-surface salla-search .s-search-input {
 /* A "bar" mode bar stays visible at every scroll position, in both the
    connected and the detached header, on both breakpoints. */
 @media (min-width: 1024px) {
-  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar.veloura-detached-desktop-bar .veloura-detached-search--desktop.veloura-detached-search--desktop {
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar .veloura-detached-search--desktop {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -59821,20 +59821,20 @@ html body .veloura-search-surface salla-search .s-search-input {
     max-height: none !important;
     overflow: visible !important;
   }
-  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar.veloura-detached-desktop-bar {
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-desktop-bar {
     display: block !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-top-enabled.veloura-desktop-search-bar.veloura-desktop-search-bar:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar {
+  html body .store-header.veloura-top-enabled.veloura-desktop-search-bar:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
 }
 @media (max-width: 1023px) {
-  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar.veloura-detached-mobile-bar .veloura-detached-search--mobile.veloura-detached-search--mobile {
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar .veloura-detached-search--mobile {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -59842,13 +59842,13 @@ html body .veloura-search-surface salla-search .s-search-input {
     max-height: none !important;
     overflow: visible !important;
   }
-  html body .veloura-header-tabs-stack.veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar.veloura-detached-mobile-bar {
+  html body .veloura-header-tabs-stack .veloura-detached-search-shell.veloura-detached-mobile-bar {
     display: block !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-top-enabled.veloura-mobile-search-bar.veloura-mobile-search-bar:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-mobile-search-bar {
+  html body .store-header.veloura-top-enabled.veloura-mobile-search-bar:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-mobile-search-bar {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -59991,7 +59991,7 @@ html body.dark {
 
    (1,4,2) — above every rule in the bundle that touches these two elements,
    so this does not depend on which stylesheet loads last. */
-html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-search-surface, html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur .veloura-search-surface {
+html body#app .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body#app .veloura-header-tabs-stack--blur .veloura-search-surface, html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface, html body .veloura-header-tabs-stack--blur .veloura-search-surface {
   background: rgba(230, 232, 235, .69) !important;
   background: var(--veloura-header-glass-background) !important;
   background-color: rgba(230, 232, 235, .69) !important;
@@ -60003,8 +60003,8 @@ html body#app .veloura-header-tabs-stack--blur.veloura-header-tabs-stack--blur.v
 /* Nothing INSIDE the search paints. Two translucent layers at 65% stack to
    about 88%, which is why the search read far heavier than the header while
    both measured the same colour. The wrapper paints; its contents do not. */
-html body#app .veloura-search-surface.veloura-search-surface *,
-html body .veloura-search-surface.veloura-search-surface.veloura-search-surface * {
+html body#app .veloura-search-surface *,
+html body .veloura-search-surface * {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -60026,9 +60026,9 @@ html body#app .veloura-search-surface salla-search::part(base) {
 }
 /* The input carried its own blur(24px) inside a wrapper already blurring —
    blur inside blur, the same compounding as the colour. */
-html.dark body#app .veloura-search-surface input.s-search-input.s-search-input,
-html body#app .veloura-search-surface input.s-search-input.s-search-input,
-html body .veloura-search-surface.veloura-search-surface input.s-search-input.s-search-input {
+html.dark body#app .veloura-search-surface input.s-search-input,
+html body#app .veloura-search-surface input.s-search-input,
+html body .veloura-search-surface input.s-search-input {
   background: transparent !important;
   background-color: transparent !important;
   -webkit-backdrop-filter: none !important;
@@ -60039,10 +60039,10 @@ html body .veloura-search-surface.veloura-search-surface input.s-search-input.s-
    darkens the element itself rather than casting around it. That is the
    "top shadow": the colour was identical all along, the edges were not.
    Light is left exactly as it is; it was reported correct. */
-html.dark body#app .veloura-search-surface.veloura-search-surface.veloura-search-surface,
-html body.dark#app .veloura-search-surface.veloura-search-surface.veloura-search-surface,
-html.dark body .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface,
-html body.dark .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface {
+html.dark body#app .veloura-search-surface,
+html body.dark#app .veloura-search-surface,
+html.dark body .veloura-search-surface,
+html body.dark .veloura-search-surface {
   border: 0 !important;
   border-top: 1px solid rgba(100, 116, 139, .10) !important;
   border-top: 1px solid var(--veloura-edge-top, rgba(100, 116, 139, 0.1)) !important;
@@ -60056,7 +60056,7 @@ html body.dark .veloura-search-surface.veloura-search-surface.veloura-search-sur
    The shadow is not decoration: two panels of the same solid colour overlap
    into one shape without it. It replaces the frame, which was not wanted.
    The class repeats to clear the strongest competing rule measured at (0,7,3). */
-html body#app .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html body#app .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu.sub-menu, html body#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu, html body .veloura-header-tabs-stack.veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html body .store-header .sub-menu, html body .store-header .veloura-submenu-surface {
+html body#app .veloura-header-tabs-stack .sub-menu.sub-menu, html body#app .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu, html body#app .veloura-header-tabs-stack .veloura-submenu-surface, html body .veloura-header-tabs-stack .sub-menu, html body .veloura-header-tabs-stack .veloura-submenu-surface, html body .store-header .sub-menu, html body .store-header .veloura-submenu-surface {
   background: #f4f5f7 !important;
   background: var(--veloura-site-second-bg, #f4f5f7) !important;
   background-color: #f4f5f7 !important;
@@ -60069,7 +60069,7 @@ html body#app .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html body#
 }
 /* A black shadow on a near-black panel is invisible, so dark needs its own
    strength — the same number in both themes would leave dark unseparated. */
-html.dark body#app .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu.sub-menu, html body#app.dark .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html body#app.dark .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu.sub-menu, html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html body.dark#app .veloura-header-tabs-stack .veloura-submenu-surface.veloura-submenu-surface.veloura-submenu-surface, html.dark body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu, html body.dark .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu.sub-menu, html.dark body .store-header .sub-menu, html.dark body .store-header .veloura-submenu-surface, html body.dark .store-header .sub-menu, html body.dark .store-header .veloura-submenu-surface {
+html.dark body#app .veloura-header-tabs-stack .sub-menu.sub-menu, html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu, html body#app.dark .veloura-header-tabs-stack .sub-menu.sub-menu, html body#app.dark .veloura-header-tabs-stack .veloura-submenu-surface.sub-menu, html.dark body#app .veloura-header-tabs-stack .veloura-submenu-surface, html body.dark#app .veloura-header-tabs-stack .veloura-submenu-surface, html.dark body .veloura-header-tabs-stack .sub-menu, html body.dark .veloura-header-tabs-stack .sub-menu, html.dark body .store-header .sub-menu, html.dark body .store-header .veloura-submenu-surface, html body.dark .store-header .sub-menu, html body.dark .store-header .veloura-submenu-surface {
   background: #010612 !important;
   background: var(--veloura-dark-secondary-bg, #010612) !important;
   background-color: #010612 !important;
@@ -60078,7 +60078,7 @@ html.dark body#app .veloura-header-tabs-stack .sub-menu.sub-menu.sub-menu, html.
 }
 /* A nested dropdown draws above its parent, not under it. */
 html body#app .veloura-header-tabs-stack .sub-menu .sub-menu,
-html body .veloura-header-tabs-stack.veloura-header-tabs-stack .sub-menu .sub-menu {
+html body .veloura-header-tabs-stack .sub-menu .sub-menu {
   z-index: 500 !important;
 }
 /* ---- 4. DIVIDERS ----------------------------------------------------------
@@ -60252,7 +60252,7 @@ html body .veloura-header-tabs-stack .sub-menu.veloura-submenu--cols-3 > ul {
    background-attachment is untouched; the fixed / scroll setting still works.
    ------------------------------------------------------------------------- */
 html body#app.veloura-general-enabled.veloura-site-has-bg-image,
-html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image {
+html body.veloura-general-enabled.veloura-site-has-bg-image {
   background-size: 100% auto !important;
   background-repeat: repeat-y !important;
   background-position: top center !important;
@@ -60282,8 +60282,8 @@ html body {
    The value is the SAME custom property the header uses, so the two cannot
    drift apart again: change the token and both move together.
    ========================================================================== */
-html body#app .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface,
-html body .veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface.veloura-search-surface {
+html body#app .veloura-search-surface,
+html body .veloura-search-surface {
   background: rgba(230, 232, 235, .69) !important;
   background: var(--veloura-header-glass-background) !important;
   background-color: rgba(230, 232, 235, .69) !important;
@@ -60294,8 +60294,8 @@ html body .veloura-search-surface.veloura-search-surface.veloura-search-surface.
 }
 /* The header surface is pinned at the same strength, so neither side can be
    overtaken independently and drift from the other. */
-html body#app .veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface,
-html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface.veloura-header-tabs-stack__surface {
+html body#app .veloura-header-tabs-stack__surface,
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   background: rgba(230, 232, 235, .69) !important;
   background: var(--veloura-header-glass-background) !important;
   background-color: rgba(230, 232, 235, .69) !important;
@@ -60418,9 +60418,9 @@ being an outlier. */
    ========================================================================== */
 @media (max-width: 1023px) {
   html body#app.veloura-general-enabled.veloura-site-has-bg-image,
-  html body.veloura-general-enabled.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-has-bg-image,
+  html body.veloura-general-enabled.veloura-site-has-bg-image,
   html body#app.veloura-general-enabled.veloura-site-bg-fixed,
-  html body.veloura-general-enabled.veloura-general-enabled.veloura-site-bg-fixed.veloura-site-bg-fixed {
+  html body.veloura-general-enabled.veloura-site-bg-fixed {
     background-attachment: scroll !important;
     background-size: 100% auto !important;
     background-repeat: repeat-y !important;
