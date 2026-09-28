@@ -344,8 +344,14 @@
 
 {% block scripts %}
 <style id="veloura-cart-surfaces-v37">
-.veloura-cart-page {--veloura-cart-primary-bg:var(--veloura-cart-secondary-bg)!important}
-.veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-surface,salla-loyalty-panel,salla-tiered-offer,salla-gifting,.s-loyalty-panel,.s-gifting-content,.s-tiered-offer-wrapper,.s-cart-coupon-input,.s-form-control,select,textarea,input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])) {
+.veloura-cart-page {--veloura-cart-field-bg:var(--veloura-site-bg,#fff)}
+html.dark .veloura-cart-page,body.dark .veloura-cart-page {--veloura-cart-field-bg:var(--veloura-dark-body-bg,#010202)}
+.veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-product-options-shell,.veloura-cart-product-options-host,.s-product-options-wrapper) {background:var(--veloura-cart-secondary-bg)!important}
+html body .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-product-options-shell,.veloura-cart-summary-surface) :is(select,textarea,input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),.s-form-control,.s-input),
+html body .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-quantity-input-container,.s-quantity-input-button,.s-quantity-input-input) {
+background:var(--veloura-cart-field-bg)!important;opacity:1!important;color:var(--veloura-cart-text)!important;
+}
+.veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-surface,salla-loyalty-panel,salla-tiered-offer,salla-gifting,.s-loyalty-panel,.s-gifting-content,.s-tiered-offer-wrapper) {
 background:var(--veloura-cart-secondary-bg)!important;color:var(--veloura-cart-text)!important;border-radius:var(--veloura-cart-real-radius)!important;
 }
 .veloura-cart-page :is(salla-loyalty-panel,salla-tiered-offer,salla-gifting) {--salla-button-border-radius:var(--veloura-cart-real-radius);--salla-input-border-radius:var(--veloura-cart-real-radius)}

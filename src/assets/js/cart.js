@@ -167,6 +167,15 @@ class Cart extends BasePage {
         ['SALLA-LOYALTY-PANEL','SALLA-TIERED-OFFER','SALLA-GIFTING'].forEach(tag => { shadowCss[tag] = surfaceCss; });
         shadowCss['SALLA-CART-COUPONS'] += surfaceCss;
 
+        const fieldCss = `
+          select, textarea, input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+          .s-form-control, .s-input, .s-quantity-input-container, .s-quantity-input-button, .s-quantity-input-input {
+            background:var(--veloura-cart-field-bg,var(--veloura-site-bg,#fff))!important;
+            color:var(--veloura-cart-text,#111827)!important;opacity:1!important;
+          }
+        `;
+        ['SALLA-PRODUCT-OPTIONS','SALLA-QUANTITY-INPUT','SALLA-CART-COUPONS'].forEach(tag => { shadowCss[tag] += fieldCss; });
+
         const injectShadowStyle = async (element) => {
             if (!element) {
                 return;
