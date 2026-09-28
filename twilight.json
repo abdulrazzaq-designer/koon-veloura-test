@@ -4340,15 +4340,33 @@
       ]
     },
     {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "عرض الصور على شكل سلايدر صور متحركة",
-      "description": "عند التفعيل يتم عرض صور التصنيفات الفرعية كسلايدر بدلاً من شبكة ثابتة",
-      "id": "veloura_category_images_slider_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
+      "id": "veloura_category_children_layout_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "source": "Manual",
+      "label": "طريقة عرض التصنيفات الفرعية",
+      "description": "اختر شريطًا متحركًا أو شبكة تملأ عرض الصفحة، سواء كانت التصنيفات بصور أو أسماء فقط.",
+      "required": true,
+      "value": "slider",
+      "selected": [
+        {
+          "label": "شريط متحرك",
+          "value": "slider",
+          "key": "category-layout-slider"
+        }
+      ],
+      "options": [
+        {
+          "label": "شريط متحرك",
+          "value": "slider",
+          "key": "category-layout-slider"
+        },
+        {
+          "label": "شبكة",
+          "value": "grid",
+          "key": "category-layout-grid"
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",

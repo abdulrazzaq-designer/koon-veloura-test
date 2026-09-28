@@ -107,7 +107,8 @@
     {% set vcat_hide_count = _self.veloura_bool(theme.settings.get('veloura_category_hide_product_count_2026', false), false)|trim == 'true' %}
     {% set vcat_auto_load = _self.veloura_bool(theme.settings.get('veloura_category_auto_load_products_2026', true), true)|trim == 'true' %}
     {% set vcat_use_custom_images = _self.veloura_bool(theme.settings.get('veloura_category_use_custom_images_2026', false), false)|trim == 'true' %}
-    {% set vcat_slider = _self.veloura_bool(theme.settings.get('veloura_category_images_slider_2026', true), true)|trim == 'true' %}
+    {% set vcat_layout = _self.veloura_select(theme.settings.get('veloura_category_children_layout_2026', 'slider'), 'slider')|trim %}
+    {% set vcat_slider = vcat_layout != 'grid' %}
     {% set vcat_transparent = _self.veloura_bool(theme.settings.get('veloura_category_images_transparent_bg_2026', false), false)|trim == 'true' %}
 
     {% set vcat_images_location = _self.veloura_select(theme.settings.get('veloura_category_images_location_2026', 'sidebar_and_page'), 'sidebar_and_page')|trim %}
@@ -326,6 +327,7 @@
                     <section
                         class="
                             veloura-category-children
+                            {{ not vcat_slider ? 'veloura-category-children--grid' : '' }}
                             veloura-category-children--position-{{ vcat_image_position }}
                             veloura-category-children--shape-{{ vcat_image_shape }}
                             {{ vcat_transparent ? 'veloura-category-children--transparent' : '' }}
@@ -343,7 +345,7 @@
                                 type="carousel"
                                 controls-outer
                                 static-when-single
-                                class="veloura-category-children__slider"
+                                class="veloura-category-children__slider" show-controls="false"
                                 slider-config='{
                                     "slidesPerView": {{ vcat_mobile_cols }},
                                     "spaceBetween": 12,
@@ -550,7 +552,7 @@
             {% endif %}
 
             <div class="main-content flex-1 w-full {{ filters and not vcat_hide_products_section ? 'ltr:lg:ml-8 rtl:lg:mr-8' : '' }}">
-                <div class="mb-4 sm:mb-6 flex justify-between items-center">
+                <div class="mb-4 sm:mb-6 flex justify-between items-center" {{ vcat_hide_products_section ? 'hidden style="display:none"' : '' }}>
                     <h1 class="font-bold text-xl rtl:pl-3 ltr:pr-3" id="page-main-title">
                         {% if vcat_is_category and vcat_hide_count %}
                             {{ category.name }}
@@ -627,5 +629,12 @@
 {% endblock %}
 
 {% block scripts %}
+<style>
+.veloura-category-page .veloura-category-children--grid :is(.veloura-category-compact__track,.veloura-category-descendants__track) {display:grid!important;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))!important;overflow:visible!important;gap:12px!important;white-space:normal!important}
+.veloura-category-page .veloura-category-children--grid :is(.veloura-category-compact__item,.veloura-category-descendant) {width:100%!important;min-width:0!important;max-width:none!important;box-sizing:border-box!important}
+.veloura-category-page .veloura-category-children--grid {position:static!important;top:auto!important;max-height:none!important}
+.veloura-category-page .veloura-category-children :is(.s-slider-next,.s-slider-prev,.swiper-button-next,.swiper-button-prev) {display:none!important}
+</style>
+
     <script defer src="{{ 'product.js' | asset }}"></script>
 {% endblock %}
