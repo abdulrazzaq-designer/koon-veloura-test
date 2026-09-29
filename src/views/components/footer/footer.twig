@@ -137,7 +137,7 @@
 {% set footer_compact_raw = theme.settings.get('veloura_footer_compact_2026', false) %}
 {% if footer_compact_raw.value is defined %}{% set footer_compact_raw = footer_compact_raw.value %}{% endif %}
 {% if footer_compact_raw.selected is defined %}{% set footer_compact_raw = footer_compact_raw.selected %}{% endif %}
-{% set footer_compact = footer_compact_raw in [true, 1, '1', 'true', 'on'] %}
+{% set footer_compact = (footer_compact_raw ~ '')|trim|lower in ['1', 'true', 'on'] %}
 
 {% set footer_hide_logo = theme.settings.get('veloura_footer_hide_logo_2026', false) %}
 {% if footer_hide_logo.value is defined %}{% set footer_hide_logo = footer_hide_logo.value %}{% endif %}
@@ -445,24 +445,19 @@ html body#app #veloura-footer .veloura-footer-payment-trust salla-payments {widt
 }
 </style>
 
-<style id="veloura-footer-wide-shell-v57">
-html body#app #veloura-footer {width:100%!important;max-width:none!important;padding-inline:0!important;box-sizing:border-box!important}
-html body#app #veloura-footer .veloura-footer-shell {
-width:var(--veloura-footer-header-width,calc(100% - var(--veloura-site-spacing,16px) * 2))!important;max-width:var(--veloura-footer-header-width,var(--veloura-global-container,1280px))!important;margin-inline:auto!important;box-sizing:border-box!important;
+
+
+
+
+<style id="veloura-footer-frame-v59">
+html body#app #veloura-footer {width:100%!important;max-width:none!important;padding-inline:0!important;margin-inline:0!important;box-sizing:border-box!important}
+html body#app #veloura-footer .veloura-footer-shell {width:100%!important;max-width:none!important;margin-inline:auto!important;padding-inline:0!important;box-sizing:border-box!important}
+html body#app #veloura-footer[data-veloura-footer-compact="true"] .veloura-footer-shell {
+width:calc(100% - 16px)!important;max-width:calc(var(--veloura-global-container,1280px) + 40px)!important;
 }
 html body#app #veloura-footer .veloura-footer-container {
-width:100%!important;max-width:var(--veloura-global-container,1280px)!important;margin-inline:auto!important;padding-inline:var(--veloura-header-inset,clamp(12px,1.6vw,28px))!important;box-sizing:border-box!important;
+width:100%!important;max-width:var(--veloura-global-container,1280px)!important;margin-inline:auto!important;padding-inline:var(--veloura-global-spacing,10px)!important;box-sizing:border-box!important;
 }
+html body#app #veloura-footer .veloura-footer-main,
+html body#app #veloura-footer .veloura-footer-bottom {width:100%!important;max-width:none!important;margin-inline:0!important;box-sizing:border-box!important}
 </style>
-
-<script id="veloura-footer-header-width-v58">
-(() => {
-const footer=document.getElementById('veloura-footer');
-const header=document.querySelector('.veloura-header-tabs-stack__surface');
-if(!footer||!header)return;
-let frame=0;
-const sync=()=>{frame=0;const width=header.getBoundingClientRect().width;if(width>0)footer.style.setProperty('--veloura-footer-header-width',width+'px');};
-const schedule=()=>{if(!frame)frame=requestAnimationFrame(sync);};
-sync();new ResizeObserver(schedule).observe(header);window.addEventListener('resize',schedule,{passive:true});
-})();
-</script>
