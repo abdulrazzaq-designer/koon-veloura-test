@@ -3375,7 +3375,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% elseif vsc_menu_radius == 'xl' %}
   {% set vsc_menu_radius_px = '44px' %}
 {% elseif vsc_menu_radius ~ '' == '40' %}
-  {% set vsc_menu_radius_px = '999px' %}
+  {% set vsc_menu_radius_px = '40px' %}
 {% elseif vsc_menu_radius ~ '' != '' %}
   {% set vsc_menu_radius_px = vsc_menu_radius ~ 'px' %}
 {% endif %}
@@ -5584,6 +5584,26 @@ function init(){scan();new MutationObserver(schedule).observe(document.body,{chi
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+
+
+<style id="veloura-side-menu-surface-v48">
+html body#app .mm-ocd.veloura-side-menu-drawer > .mm-ocd__content {
+border-radius:min(var(--veloura-side-cats-menu-radius,16px),24px)!important;overflow:hidden!important;
+}
+html body#app .mm-ocd.veloura-side-menu-drawer :is(#mobile-menu,.mm-spn,.mm-spn ul,.mm-navbar,.veloura-side-menu-logo,.veloura-side-menu-pinned,.veloura-side-menu-row) {
+border-radius:0!important;background:transparent!important;box-shadow:none!important;border:0!important;
+}
+html body#app .mm-ocd.veloura-side-menu-drawer .mm-spn::after,
+html body#app .mm-ocd.veloura-side-menu-drawer .mm-spn ul::before,
+html body#app .mm-ocd.veloura-side-menu-drawer .mm-spn li::after {
+border-radius:0!important;background:transparent!important;border:0!important;box-shadow:none!important;
+}
+html:not(.dark).veloura-side-cats-glass body#app:not(.dark) .mm-ocd.veloura-side-menu-drawer > .mm-ocd__content,
+html:not(.dark) body#app.veloura-side-cats-glass:not(.dark) .mm-ocd.veloura-side-menu-drawer > .mm-ocd__content {
+background:rgba(230,232,235,.69)!important;background-image:none!important;
+-webkit-backdrop-filter:blur(20px) saturate(200%)!important;backdrop-filter:blur(20px) saturate(200%)!important;
+}
+</style>
 
 </body>
 </html>

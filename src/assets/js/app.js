@@ -2844,13 +2844,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   function applyCategoryBadges(menu, settings) {
-  if (!menu) return;
-
-  menu.querySelectorAll('.veloura-side-category-badge')
-    .forEach(function (badge) {
-      badge.remove();
+    if (!menu) return;
+    var rules = normalizeCollection(settings.categoryBadges);
+    menu.querySelectorAll('a').forEach(function (link) {
+      var existing = link.querySelector('.veloura-side-category-badge');
+      if (existing) existing.remove();
+      var rule = rules.find(function (item) {
+        return isSameCategory(link, getItemCategoryTokens(item));
+      });
+      if (!rule) return;
+      var raw = rule.veloura_badge_text || rule.text || '';
+      var text = normalizeText(typeof raw === 'object' ? raw.value : raw);
+      if (!text) return;
+      var badge = document.createElement('span');
+      badge.className = 'veloura-side-category-badge';
+      badge.textContent = text;
+      link.appendChild(badge);
     });
-}
+  }
 
   function appendCustomLinks(menu, settings) {
     var list = getMainList(menu);
