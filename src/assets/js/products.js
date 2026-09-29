@@ -1377,7 +1377,7 @@ class Products extends BasePage {
     }
 
     applyVelouraCategoryMappedImages(page, settings) {
-        if (!settings.useCustomImages) {
+        if (!settings.useCustomImages || !settings.showImages) {
             return;
         }
 
@@ -1423,14 +1423,19 @@ class Products extends BasePage {
                     return;
                 }
 
-                const img = card.querySelector(
-                    '[data-veloura-category-child-image]'
-                );
-
-                if (img) {
-                    img.src = image;
-                    img.dataset.velouraMappedImage = 'true';
+                let img = card.querySelector('[data-veloura-category-child-image]');
+                if (!img) {
+                    const media = document.createElement('span');
+                    media.className = 'veloura-category-child__media';
+                    img = document.createElement('img');
+                    img.dataset.velouraCategoryChildImage = '';
+                    img.alt = card.dataset.categoryName || '';
+                    img.loading = 'lazy';
+                    media.appendChild(img);
+                    card.prepend(media);
                 }
+                img.src = image;
+                img.dataset.velouraMappedImage = 'true';
             });
         });
     }
