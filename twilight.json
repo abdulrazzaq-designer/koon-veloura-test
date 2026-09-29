@@ -4489,17 +4489,12 @@
     },
     {
       "id": "veloura_category_top_size_mobile_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "حجم صور وأيقونات التصنيفات أعلى الاسم — الجوال",
-      "description": "الحجم بالبكسل. يبقى العنصر في المنتصف دون تغيير عرض خانات التصنيفات.",
+      "description": "اختر حجم الصور والأيقونات أعلى الاسم، مع بقاء العناصر في المنتصف.",
       "icon": "sicon-image",
-      "value": 64,
-      "step": "4",
-      "minimum": "32",
-      "maximum": "200",
-      "required": false,
+      "required": true,
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",
@@ -4511,21 +4506,41 @@
           "operation": "=",
           "value": "top"
         }
+      ],
+      "source": "Manual",
+      "options": [
+        {
+          "label": "ضخم",
+          "value": "160",
+          "key": "veloura_category_top_size_mobile_2026-huge"
+        },
+        {
+          "label": "صغير",
+          "value": "64",
+          "key": "veloura_category_top_size_mobile_2026-small"
+        },
+        {
+          "label": "صغير جدًا",
+          "value": "40",
+          "key": "veloura_category_top_size_mobile_2026-tiny"
+        }
+      ],
+      "selected": [
+        {
+          "label": "صغير",
+          "value": "64",
+          "key": "veloura_category_top_size_mobile_2026-small"
+        }
       ]
     },
     {
       "id": "veloura_category_top_size_desktop_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "حجم صور وأيقونات التصنيفات أعلى الاسم — الكمبيوتر",
-      "description": "الحجم بالبكسل. يبقى العنصر في المنتصف دون تغيير عرض خانات التصنيفات.",
+      "description": "اختر حجم الصور والأيقونات أعلى الاسم، مع بقاء العناصر في المنتصف.",
       "icon": "sicon-image",
-      "value": 96,
-      "step": "4",
-      "minimum": "32",
-      "maximum": "200",
-      "required": false,
+      "required": true,
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",
@@ -4536,6 +4551,31 @@
           "id": "veloura_category_image_position_2026",
           "operation": "=",
           "value": "top"
+        }
+      ],
+      "source": "Manual",
+      "options": [
+        {
+          "label": "ضخم",
+          "value": "160",
+          "key": "veloura_category_top_size_desktop_2026-huge"
+        },
+        {
+          "label": "صغير",
+          "value": "64",
+          "key": "veloura_category_top_size_desktop_2026-small"
+        },
+        {
+          "label": "صغير جدًا",
+          "value": "40",
+          "key": "veloura_category_top_size_desktop_2026-tiny"
+        }
+      ],
+      "selected": [
+        {
+          "label": "صغير",
+          "value": "64",
+          "key": "veloura_category_top_size_desktop_2026-small"
         }
       ]
     },

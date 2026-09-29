@@ -880,7 +880,7 @@ margin:0!important;
 </style>
 
 {% set vcat_top_mobile = _self.veloura_select(theme.settings.get('veloura_category_top_size_mobile_2026', 64), 64)|trim + 0 %}
-{% set vcat_top_desktop = _self.veloura_select(theme.settings.get('veloura_category_top_size_desktop_2026', 96), 96)|trim + 0 %}
+{% set vcat_top_desktop = _self.veloura_select(theme.settings.get('veloura_category_top_size_desktop_2026', 64), 64)|trim + 0 %}
 <style id="veloura-category-top-size-v45">
 .veloura-category-page {--vcat-top-size:{{ vcat_top_mobile < 32 ? 32 : (vcat_top_mobile > 200 ? 200 : vcat_top_mobile) }}px}
 @media(min-width:1024px){.veloura-category-page {--vcat-top-size:{{ vcat_top_desktop < 32 ? 32 : (vcat_top_desktop > 200 ? 200 : vcat_top_desktop) }}px}}
