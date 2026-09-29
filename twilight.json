@@ -2346,9 +2346,26 @@
     {
       "type": "boolean",
       "format": "switch",
+      "id": "veloura_home_tabs_hidden_2026",
+      "label": "إخفاء تبويبات الصفحة الرئيسية",
+      "description": "يخفي التبويبات دون حذفها. إغلاق الإعدادات لا يخفيها.",
+      "value": false,
+      "selected": false,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_home_tabs_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
       "id": "veloura_home_tabs_sticky_v4_2026",
       "label": "تثبيت التبويبات مع الهيدر عند التمرير",
-      "description": "تبقى التبويبات متصلة مباشرة أسفل الهيدر دون فراغ.",
+      "description": "عند التفعيل تتصل التبويبات بالهيدر. عند الإيقاف تظهر في شريط مستقل مع فراغ أسفل الهيدر.",
       "icon": "sicon-pin",
       "value": true,
       "selected": true,
