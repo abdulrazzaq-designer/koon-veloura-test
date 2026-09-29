@@ -4488,6 +4488,58 @@
       ]
     },
     {
+      "id": "veloura_category_top_size_mobile_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "حجم صور وأيقونات التصنيفات أعلى الاسم — الجوال",
+      "description": "الحجم بالبكسل. يبقى العنصر في المنتصف دون تغيير عرض خانات التصنيفات.",
+      "icon": "sicon-image",
+      "value": 64,
+      "step": "4",
+      "minimum": "32",
+      "maximum": "200",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_category_image_position_2026",
+          "operation": "=",
+          "value": "top"
+        }
+      ]
+    },
+    {
+      "id": "veloura_category_top_size_desktop_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "حجم صور وأيقونات التصنيفات أعلى الاسم — الكمبيوتر",
+      "description": "الحجم بالبكسل. يبقى العنصر في المنتصف دون تغيير عرض خانات التصنيفات.",
+      "icon": "sicon-image",
+      "value": 96,
+      "step": "4",
+      "minimum": "32",
+      "maximum": "200",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_category_image_position_2026",
+          "operation": "=",
+          "value": "top"
+        }
+      ]
+    },
+    {
       "id": "veloura_category_title_size_2026",
       "type": "items",
       "format": "dropdown-list",

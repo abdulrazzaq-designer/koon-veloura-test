@@ -878,5 +878,18 @@ html body#app .veloura-category-page .veloura-category-children--position-right 
 margin:0!important;
 }
 </style>
+
+{% set vcat_top_mobile = _self.veloura_select(theme.settings.get('veloura_category_top_size_mobile_2026', 64), 64)|trim + 0 %}
+{% set vcat_top_desktop = _self.veloura_select(theme.settings.get('veloura_category_top_size_desktop_2026', 96), 96)|trim + 0 %}
+<style id="veloura-category-top-size-v45">
+.veloura-category-page {--vcat-top-size:{{ vcat_top_mobile < 32 ? 32 : (vcat_top_mobile > 200 ? 200 : vcat_top_mobile) }}px}
+@media(min-width:1024px){.veloura-category-page {--vcat-top-size:{{ vcat_top_desktop < 32 ? 32 : (vcat_top_desktop > 200 ? 200 : vcat_top_desktop) }}px}}
+html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child,.veloura-category-compact__item,.veloura-category-descendant) {flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child__media,.veloura-category-compact__media,.veloura-category-descendant__media) {
+width:min(100%,var(--vcat-top-size))!important;max-width:100%!important;min-width:0!important;height:auto!important;min-height:0!important;aspect-ratio:1!important;flex:0 0 auto!important;margin-inline:auto!important;
+}
+html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child__media,.veloura-category-compact__media,.veloura-category-descendant__media) img {width:100%!important;height:100%!important;min-height:0!important;object-fit:var(--vcat-image-fit,cover)}
+html body#app .veloura-category-page .veloura-category-children--position-top [data-category-root="true"] i {font-size:calc(var(--vcat-top-size) * .55)!important;max-width:100%}
+</style>
     <script defer src="{{ 'product.js' | asset }}"></script>
 {% endblock %}
