@@ -635,5 +635,218 @@ html body#app .veloura-category-page :is(.veloura-category-child,.veloura-catego
 .veloura-category-page .veloura-category-children :is(.s-slider-next,.s-slider-prev,.swiper-button-next,.swiper-button-prev) {display:none!important}
 </style>
 
+
+<script id="veloura-category-images-v42">
+(() => {
+ class CategoryImages {
+    applyVelouraCategoryMappedImages(page, settings) {
+        if (!settings.useCustomImages || !settings.showImages) {
+            return;
+        }
+
+        const map = this.normalizeVelouraCollection(settings.imagesMap);
+        const cards = page.querySelectorAll('[data-veloura-category-child]');
+
+        if (!map.length || !cards.length) {
+            return;
+        }
+
+        map.forEach(item => {
+            const image = this.extractVelouraImageUrl(
+                item?.veloura_map_image ||
+                item?.image ||
+                item?.img ||
+                item?.photo ||
+                ''
+            );
+
+            const categoryTokens = this.collectVelouraTokens(
+                item?.veloura_map_categories ||
+                item?.categories ||
+                item?.category ||
+                item?.selected ||
+                item?.value ||
+                []
+            );
+
+            if (!image || !categoryTokens.length) {
+                return;
+            }
+
+            cards.forEach(card => {
+                const cardTokens = this.collectVelouraTokens([
+                    card.dataset.categoryId,
+                    card.dataset.categoryName,
+                    card.dataset.categoryUrl,
+                    card.dataset.categorySlug,
+                    card.getAttribute('href')
+                ]);
+
+                if (!this.velouraTokensMatch(cardTokens, categoryTokens)) {
+                    return;
+                }
+
+                let img = card.querySelector('[data-veloura-category-child-image]');
+                if (!img) {
+                    const media = document.createElement('span');
+                    media.className = 'veloura-category-child__media';
+                    img = document.createElement('img');
+                    img.dataset.velouraCategoryChildImage = '';
+                    img.alt = card.dataset.categoryName || '';
+                    img.loading = 'lazy';
+                    media.appendChild(img);
+                    card.prepend(media);
+                }
+                img.src = image;
+                img.dataset.velouraMappedImage = 'true';
+            });
+        });
+    }
+
+    normalizeVelouraCollection(collection) {
+        if (!collection) return [];
+        if (Array.isArray(collection)) return collection;
+
+        if (typeof collection === 'object') {
+            if (Array.isArray(collection.selected)) return collection.selected;
+            if (Array.isArray(collection.value)) return collection.value;
+            if (Array.isArray(collection.items)) return collection.items;
+            if (Array.isArray(collection.data)) return collection.data;
+
+            return Object.keys(collection).map(key => collection[key]);
+        }
+
+        return [];
+    }
+
+    extractVelouraImageUrl(value) {
+        if (!value) return '';
+        if (typeof value === 'string') return value;
+
+        if (Array.isArray(value)) {
+            for (const item of value) {
+                const found = this.extractVelouraImageUrl(item);
+                if (found) return found;
+            }
+
+            return '';
+        }
+
+        if (typeof value === 'object') {
+            return this.extractVelouraImageUrl(
+                value.url ||
+                value.src ||
+                value.path ||
+                value.image ||
+                value.cdn ||
+                value.value ||
+                ''
+            );
+        }
+
+        return '';
+    }
+
+    normalizeVelouraToken(value) {
+        return String(value || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase()
+            .replace(/^https?:\/\//, '')
+            .replace(/^www\./, '')
+            .replace(/[?#].*$/, '')
+            .replace(/\/+$/, '');
+    }
+
+    collectVelouraTokens(value, tokens = []) {
+        const add = raw => {
+            const token = this.normalizeVelouraToken(raw);
+
+            if (token && !tokens.includes(token)) {
+                tokens.push(token);
+            }
+        };
+
+        if (value === null || value === undefined) {
+            return tokens;
+        }
+
+        if (typeof value === 'string' || typeof value === 'number') {
+            add(value);
+            return tokens;
+        }
+
+        if (Array.isArray(value)) {
+            value.forEach(item => this.collectVelouraTokens(item, tokens));
+            return tokens;
+        }
+
+        if (typeof value === 'object') {
+            [
+                'label',
+                'name',
+                'title',
+                'value',
+                'id',
+                'key',
+                'url',
+                'link',
+                'slug',
+                'selected',
+                'items',
+                'data'
+            ].forEach(prop => {
+                if (value[prop] !== undefined) {
+                    this.collectVelouraTokens(value[prop], tokens);
+                }
+            });
+        }
+
+        return tokens;
+    }
+
+    velouraTokensMatch(leftTokens, rightTokens) {
+        return rightTokens.some(right => {
+            return leftTokens.some(left => {
+                if (!left || !right) return false;
+                if (left === right) return true;
+
+                if (left.length >= 2 && right.length >= 2) {
+                    return left.includes(right) || right.includes(left);
+                }
+
+                return false;
+            });
+        });
+    }
+
+
+ }
+ const repair = new CategoryImages();
+ const run = () => {
+  const page = document.querySelector('.veloura-category-page');
+  const settings = window.velouraCategoryPageSettings || {};
+  if (!page || !settings.showImages) return;
+  repair.applyVelouraCategoryMappedImages(page, settings);
+  page.querySelectorAll('[data-veloura-category-compact-switch]').forEach(card => {
+   const source = [...page.querySelectorAll('[data-veloura-category-child]')].find(el => el.dataset.categoryId === card.dataset.categoryId);
+   const original = source?.querySelector('[data-veloura-category-child-image]');
+   if (!original) return;
+   let media = card.querySelector('.veloura-category-compact__media');
+   if (!media) { media = document.createElement('span'); media.className = 'veloura-category-compact__media'; card.prepend(media); }
+   let img = media.querySelector('img');
+   if (!img) { img = document.createElement('img'); img.alt = original.alt; img.loading = 'lazy'; media.appendChild(img); }
+   if (img.getAttribute('src') !== original.getAttribute('src')) img.src = original.getAttribute('src');
+  });
+ };
+ run();
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, {once:true});
+ const page = document.querySelector('.veloura-category-page');
+ if (page) {
+  let queued = false;
+  new MutationObserver(() => { if (!queued) { queued = true; queueMicrotask(() => { queued = false; run(); }); } }).observe(page, {childList:true, subtree:true});
+ }
+})();
+</script>
     <script defer src="{{ 'product.js' | asset }}"></script>
 {% endblock %}
