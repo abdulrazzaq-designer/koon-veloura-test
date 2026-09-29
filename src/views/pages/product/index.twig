@@ -365,7 +365,7 @@
                                             <a
                                                 href="{{ vcat_current_url }}"
                                                 class="veloura-category-child veloura-category-child--all is-active"
-                                                data-veloura-category-child
+                                                
                                                 data-veloura-category-switch
                                                 data-category-id="{{ vcat_current_id|default('') }}"
                                                 data-category-name="{{ vcat_current_name|striptags|e('html_attr') }}"
@@ -374,7 +374,8 @@
                                                 aria-current="page"
                                             >
                                                 
-                                                <span class="veloura-category-child__title">الكل</span>
+                                                <span class="veloura-category-child__media veloura-category-child__media--all"><i class="sicon-layout-grid" aria-hidden="true"></i></span>
+<span class="veloura-category-child__title">الكل</span>
                                             </a>
                                         </div>
                                     {% endif %}
@@ -422,7 +423,7 @@
                                     <a
                                         href="{{ vcat_current_url }}"
                                         class="veloura-category-child veloura-category-child--all is-active"
-                                        data-veloura-category-child
+                                        
                                         data-veloura-category-switch
                                         data-category-id="{{ vcat_current_id|default('') }}"
                                         data-category-name="{{ vcat_current_name|striptags|e('html_attr') }}"
@@ -431,7 +432,8 @@
                                         aria-current="page"
                                     >
                                         
-                                        <span class="veloura-category-child__title">الكل</span>
+                                        <span class="veloura-category-child__media veloura-category-child__media--all"><i class="sicon-layout-grid" aria-hidden="true"></i></span>
+<span class="veloura-category-child__title">الكل</span>
                                     </a>
                                 {% endif %}
 
@@ -617,6 +619,20 @@
 {% endblock %}
 
 {% block scripts %}
+<style id="veloura-category-layout-v43">
+.veloura-category-page [data-category-root="true"] :is(.veloura-category-child__media,.veloura-category-compact__media) {
+width:48px!important;height:48px!important;min-width:48px!important;flex:0 0 48px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:0!important;outline:0!important;box-shadow:none!important;
+}
+.veloura-category-page [data-category-root="true"] i {font-size:28px!important}
+.veloura-category-page .veloura-category-children--grid.veloura-category-children--position-right :is(.veloura-category-child,.veloura-category-compact__item,.veloura-category-descendant) {
+min-height:80px!important;box-sizing:border-box!important;display:flex!important;flex-direction:row!important;direction:rtl;align-items:center!important;justify-content:center!important;gap:10px!important;padding:10px!important;
+}
+.veloura-category-page .veloura-category-children--grid.veloura-category-children--position-right :is(.veloura-category-child__media,.veloura-category-compact__media,.veloura-category-descendant__media) {
+width:56px!important;height:56px!important;min-width:56px!important;flex:0 0 56px!important;
+}
+.veloura-category-page .veloura-category-children--grid.veloura-category-children--position-right :is(.veloura-category-child__title,.veloura-category-compact__title,.veloura-category-descendant__title) {margin:0!important;min-width:0;overflow-wrap:anywhere}
+</style>
+
 <style id="veloura-category-clean-grid-v40">
 html body#app .veloura-category-page .veloura-category-children--grid,
 html body#app .veloura-category-page .veloura-category-children--grid :is(.veloura-category-children__grid,.veloura-category-compact,.veloura-category-descendants) {
@@ -674,6 +690,7 @@ html body#app .veloura-category-page :is(.veloura-category-child,.veloura-catego
             }
 
             cards.forEach(card => {
+                if (card.dataset.categoryRoot === 'true') return;
                 const cardTokens = this.collectVelouraTokens([
                     card.dataset.categoryId,
                     card.dataset.categoryName,
@@ -829,6 +846,7 @@ html body#app .veloura-category-page :is(.veloura-category-child,.veloura-catego
   if (!page || !settings.showImages) return;
   repair.applyVelouraCategoryMappedImages(page, settings);
   page.querySelectorAll('[data-veloura-category-compact-switch]').forEach(card => {
+   if (card.dataset.categoryRoot === 'true') return;
    const source = [...page.querySelectorAll('[data-veloura-category-child]')].find(el => el.dataset.categoryId === card.dataset.categoryId);
    const original = source?.querySelector('[data-veloura-category-child-image]');
    if (!original) return;
