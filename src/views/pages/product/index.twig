@@ -390,9 +390,7 @@
                                         {% elseif child_image is iterable %}
                                             {% set child_image = '' %}
                                         {% endif %}
-                                        {% if not child_image %}
-                                            {% set child_image = 'images/placeholder.png' | asset %}
-                                        {% endif %}
+                                        {% if 'placeholder' in child_image %}{% set child_image = '' %}{% endif %}
 
                                         <div class="swiper-slide">
                                             <a
@@ -405,7 +403,7 @@
                                                 data-category-url="{{ child.url|default('')|e('html_attr') }}"
                                                 data-category-slug="{{ child.slug|default('')|e('html_attr') }}"
                                             >
-                                                {% if vcat_render_images %}
+                                                {% if vcat_render_images and child_image %}
                                                     <span class="veloura-category-child__media">
                                                         <img
                                                             src="{{ child_image }}"
@@ -452,9 +450,7 @@
                                     {% elseif child_image is iterable %}
                                         {% set child_image = '' %}
                                     {% endif %}
-                                    {% if not child_image %}
-                                        {% set child_image = 'images/placeholder.png' | asset %}
-                                    {% endif %}
+                                    {% if 'placeholder' in child_image %}{% set child_image = '' %}{% endif %}
 
                                     <a
                                         href="{{ child.url }}"
@@ -466,7 +462,7 @@
                                         data-category-url="{{ child.url|default('')|e('html_attr') }}"
                                         data-category-slug="{{ child.slug|default('')|e('html_attr') }}"
                                     >
-                                        {% if vcat_render_images %}
+                                        {% if vcat_render_images and child_image %}
                                             <span class="veloura-category-child__media">
                                                 <img
                                                     src="{{ child_image }}"
@@ -629,6 +625,17 @@
 {% endblock %}
 
 {% block scripts %}
+<style id="veloura-category-clean-grid-v40">
+html body#app .veloura-category-page .veloura-category-children--grid,
+html body#app .veloura-category-page .veloura-category-children--grid :is(.veloura-category-children__grid,.veloura-category-compact,.veloura-category-descendants) {
+background:transparent!important;background-image:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;border-color:transparent!important;
+}
+html body#app .veloura-category-page :is(.veloura-category-child,.veloura-category-compact__item,.veloura-category-descendant):not(:has(img)):not(:has(i)) {
+display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:0!important;min-height:48px!important;
+}
+html body#app .veloura-category-page :is(.veloura-category-child,.veloura-category-compact__item,.veloura-category-descendant):not(:has(img)):not(:has(i)) > :is(.veloura-category-child__title,.veloura-category-compact__title,.veloura-category-descendant__title) {width:100%!important;margin:0!important;text-align:center!important}
+</style>
+
 <style>
 .veloura-category-page .veloura-category-children--grid :is(.veloura-category-compact__track,.veloura-category-descendants__track) {display:grid!important;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))!important;overflow:visible!important;gap:12px!important;white-space:normal!important}
 .veloura-category-page .veloura-category-children--grid :is(.veloura-category-compact__item,.veloura-category-descendant) {width:100%!important;min-width:0!important;max-width:none!important;box-sizing:border-box!important}
