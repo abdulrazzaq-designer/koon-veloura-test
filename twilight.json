@@ -3460,7 +3460,7 @@
       "required": false,
       "step": "1",
       "minimum": "1",
-      "maximum": "25",
+      "maximum": "50",
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
@@ -3559,7 +3559,7 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف القائمة الجانبية",
-      "description": "اختر شكل حواف القائمة الجانبية — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "تدوير الحواف الخارجية بالبكسل من 0 إلى 40، دون تدوير أجزاء القائمة الداخلية.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",

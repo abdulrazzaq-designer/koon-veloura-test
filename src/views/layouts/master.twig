@@ -5588,7 +5588,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <style id="veloura-side-menu-surface-v48">
 html body#app .mm-ocd.veloura-side-menu-drawer > .mm-ocd__content {
-border-radius:min(var(--veloura-side-cats-menu-radius,16px),24px)!important;overflow:hidden!important;
+border-radius:min(var(--veloura-side-cats-menu-radius,16px),40px)!important;overflow:hidden!important;
 }
 html body#app .mm-ocd.veloura-side-menu-drawer :is(#mobile-menu,.mm-spn,.mm-spn ul,.mm-navbar,.veloura-side-menu-logo,.veloura-side-menu-pinned,.veloura-side-menu-row) {
 border-radius:0!important;background:transparent!important;box-shadow:none!important;border:0!important;
@@ -5604,6 +5604,189 @@ background:rgba(230,232,235,.69)!important;background-image:none!important;
 -webkit-backdrop-filter:blur(20px) saturate(200%)!important;backdrop-filter:blur(20px) saturate(200%)!important;
 }
 </style>
+
+
+<style id="veloura-side-colors-v49">
+html body#app .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-side-cats-text,var(--color-text,#111827))}
+html.dark body#app .mm-ocd.veloura-side-menu-drawer,html body#app.dark .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-dark-side-menu-text,var(--veloura-dark-primary-text,#fff))}
+html.veloura-side-cats-glass body#app .mm-ocd.veloura-side-menu-drawer,html body#app.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-primary-text,var(--color-text,#111827))}
+html.dark.veloura-side-cats-glass body#app .mm-ocd.veloura-side-menu-drawer,html.dark body#app.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer,html.veloura-side-cats-glass body#app.dark .mm-ocd.veloura-side-menu-drawer,html body#app.dark.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-dark-primary-text,#fff)}
+html body#app .mm-ocd.veloura-side-menu-drawer #mobile-menu.mm-spn::after,
+html body#app .mm-ocd.veloura-side-menu-drawer .mm-ocd__content :is(a,span,li,i,.mm-navbar__title,.veloura-side-menu-row__label) {color:var(--veloura-menu-effective-text)!important;-webkit-text-fill-color:currentColor!important}
+</style>
+<script id="veloura-side-badges-v49">
+(function(){
+  function normalizeText(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function normalizeKey(value) {
+    return normalizeText(value)
+      .toLowerCase()
+      .replace(/^https?:\/\//, '')
+      .replace(/^www\./, '')
+      .replace(/[?#].*$/, '')
+      .replace(/\/+$/, '');
+  }
+
+  function normalizeCollection(collection) {
+    if (!collection) return [];
+    if (Array.isArray(collection)) return collection;
+
+    if (typeof collection === 'object') {
+      if (Array.isArray(collection.value)) return collection.value;
+      if (Array.isArray(collection.selected)) return collection.selected;
+      if (Array.isArray(collection.items)) return collection.items;
+      if (Array.isArray(collection.data)) return collection.data;
+
+      return Object.keys(collection).map(function (key) {
+        return collection[key];
+      });
+    }
+
+    return [];
+  }
+
+  function collectPrimitiveTokens(value, tokens) {
+    tokens = tokens || [];
+
+    function add(v) {
+      var key = normalizeKey(v);
+      if (key && tokens.indexOf(key) === -1) {
+        tokens.push(key);
+      }
+    }
+
+    if (value === null || value === undefined) return tokens;
+
+    if (typeof value === 'string' || typeof value === 'number') {
+      add(value);
+      return tokens;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach(function (item) {
+        collectPrimitiveTokens(item, tokens);
+      });
+      return tokens;
+    }
+
+    if (typeof value === 'object') {
+      [
+        'label',
+        'name',
+        'title',
+        'value',
+        'id',
+        'key',
+        'url',
+        'link',
+        'slug',
+        'selected',
+        'items',
+        'data'
+      ].forEach(function (prop) {
+        if (value[prop] !== undefined) {
+          collectPrimitiveTokens(value[prop], tokens);
+        }
+      });
+    }
+
+    return tokens;
+  }
+
+  function getItemCategoryTokens(item) {
+    if (!item || typeof item !== 'object') return [];
+
+    var categories =
+      item.veloura_map_categories ||
+      item.veloura_badge_categories ||
+      item.categories ||
+      item.category ||
+      item.selected ||
+      item.value ||
+      [];
+
+    return collectPrimitiveTokens(categories, []);
+  }
+
+  function getLinkTokens(link) {
+    var li = link.closest('li');
+    var tokens = [];
+
+    function add(value) {
+      var key = normalizeKey(value);
+      if (key && tokens.indexOf(key) === -1) {
+        tokens.push(key);
+      }
+    }
+
+    var labelCopy = link.cloneNode(true);
+    labelCopy.querySelectorAll('.veloura-side-category-badge').forEach(function (el) { el.remove(); });
+    add(labelCopy.textContent);
+    add(link.getAttribute('href'));
+    add(link.href);
+
+    if (li) {
+      add(li.id);
+      add(li.getAttribute('id'));
+      add(li.getAttribute('data-id'));
+      add(li.getAttribute('data-category-id'));
+      add(li.getAttribute('data-slug'));
+      add(li.getAttribute('data-url'));
+      add(li.getAttribute('data-menu-item'));
+    }
+
+    return tokens;
+  }
+
+  function isSameCategory(link, categoryTokens) {
+    var linkTokens = getLinkTokens(link);
+
+    return categoryTokens.some(function (categoryToken) {
+      return linkTokens.some(function (linkToken) {
+        if (!categoryToken || !linkToken) return false;
+        if (linkToken === categoryToken) return true;
+
+        if (linkToken.length >= 2 && categoryToken.length >= 2) {
+          return (
+            linkToken.indexOf(categoryToken) !== -1 ||
+            categoryToken.indexOf(linkToken) !== -1
+          );
+        }
+
+        return false;
+      });
+    });
+  }
+
+  function applyCategoryBadges(menu, settings) {
+    if (!menu) return;
+    var rules = normalizeCollection(settings.categoryBadges);
+    menu.querySelectorAll('li > a, li > span').forEach(function (link) {
+      var existing = link.querySelector('.veloura-side-category-badge');
+      var rule = rules.find(function (item) {
+        return isSameCategory(link, getItemCategoryTokens(item));
+      });
+      if (!rule) { if (existing) existing.remove(); return; }
+      var raw = rule.veloura_badge_text || rule.text || '';
+      var text = normalizeText(typeof raw === 'object' ? raw.value : raw);
+      if (!text) { if (existing) existing.remove(); return; }
+      if (existing) { if (existing.textContent !== text) existing.textContent = text; return; }
+      var badge = document.createElement('span');
+      badge.className = 'veloura-side-category-badge';
+      badge.textContent = text;
+      link.appendChild(badge);
+    });
+  }
+
+let pending=false;
+const sync=()=>{const menu=document.querySelector('#mobile-menu');if(menu)applyCategoryBadges(menu,window.velouraSideCategoriesSettings||{});};
+const queue=()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;sync();});};
+sync();document.addEventListener('DOMContentLoaded',queue,{once:true});
+new MutationObserver(queue).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 
 </body>
 </html>

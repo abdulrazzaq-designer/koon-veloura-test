@@ -2759,7 +2759,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    add(link.textContent);
+    var labelCopy = link.cloneNode(true);
+    labelCopy.querySelectorAll('.veloura-side-category-badge').forEach(function (el) { el.remove(); });
+    add(labelCopy.textContent);
     add(link.getAttribute('href'));
     add(link.href);
 
@@ -2846,16 +2848,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyCategoryBadges(menu, settings) {
     if (!menu) return;
     var rules = normalizeCollection(settings.categoryBadges);
-    menu.querySelectorAll('a').forEach(function (link) {
+    menu.querySelectorAll('li > a, li > span').forEach(function (link) {
       var existing = link.querySelector('.veloura-side-category-badge');
-      if (existing) existing.remove();
       var rule = rules.find(function (item) {
         return isSameCategory(link, getItemCategoryTokens(item));
       });
-      if (!rule) return;
+      if (!rule) { if (existing) existing.remove(); return; }
       var raw = rule.veloura_badge_text || rule.text || '';
       var text = normalizeText(typeof raw === 'object' ? raw.value : raw);
-      if (!text) return;
+      if (!text) { if (existing) existing.remove(); return; }
+      if (existing) { if (existing.textContent !== text) existing.textContent = text; return; }
       var badge = document.createElement('span');
       badge.className = 'veloura-side-category-badge';
       badge.textContent = text;
