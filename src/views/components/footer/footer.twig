@@ -46,7 +46,7 @@
     {{ raw.value }}
   {% elseif raw is iterable and raw[0].value is defined %}
     {{ raw[0].value }}
-  {% elseif raw %}
+  {% elseif raw is not null and raw is not same as(false) and raw is not same as('') %}
     {{ raw }}
   {% else %}
     {{ fallback }}
@@ -123,7 +123,7 @@
 {% set text_size_map = {'small':'13px','medium':'15px','large':'17px'} %}
 {% set footer_title_size = title_size_map[footer_title_size_key]|default('24px') %}
 {% set footer_text_size = text_size_map[footer_text_size_key]|default('15px') %}
-{% set footer_logo_scale = footer_logo_scale_raw|default('20')|number_format(0, '.', '') %}
+{% set footer_logo_scale = footer_logo_scale_raw + 0 %}
 {% if footer_logo_scale < 0 %}{% set footer_logo_scale = 0 %}{% endif %}
 {% if footer_logo_scale > 60 %}{% set footer_logo_scale = 60 %}{% endif %}
 {% set footer_logo_size_value = 80 + footer_logo_scale %}
@@ -132,7 +132,7 @@
 {% set footer_center_all_raw = theme.settings.get('veloura_footer_center_all_2026', false) %}
 {% if footer_center_all_raw.value is defined %}{% set footer_center_all_raw = footer_center_all_raw.value %}{% endif %}
 {% if footer_center_all_raw.selected is defined %}{% set footer_center_all_raw = footer_center_all_raw.selected %}{% endif %}
-{% set footer_center_all = footer_center_all_raw in [true, 1, '1', 'true', 'on'] %}
+{% set footer_center_all = (footer_center_all_raw ~ '')|trim|lower in ['1', 'true', 'on'] %}
 
 {% set footer_compact_raw = theme.settings.get('veloura_footer_compact_2026', false) %}
 {% if footer_compact_raw.value is defined %}{% set footer_compact_raw = footer_compact_raw.value %}{% endif %}
@@ -172,7 +172,7 @@
 {% set footer_title_lines_raw = theme.settings.get('veloura_footer_title_badge_2026', false) %}
 {% if footer_title_lines_raw.value is defined %}{% set footer_title_lines_raw = footer_title_lines_raw.value %}{% endif %}
 {% if footer_title_lines_raw.selected is defined %}{% set footer_title_lines_raw = footer_title_lines_raw.selected %}{% endif %}
-{% set footer_title_lines = footer_title_lines_raw in [true, 1, '1', 'true', 'on'] %}
+{% set footer_title_lines = (footer_title_lines_raw ~ '')|trim|lower in ['1', 'true', 'on'] %}
 
 {% set footer_store_title = theme.settings.get('veloura_footer_store_title_2026') ?: store.name %}
 {% set footer_store_description = theme.settings.get('veloura_footer_store_description_2026') ?: store.description %}
@@ -245,7 +245,7 @@
                 <a href="{{ link('/') }}" class="veloura-footer-logo" style="width: {{ footer_logo_size }} !important; max-width: 100% !important; min-width: 0 !important; height: auto !important; flex-shrink: 1 !important;" aria-label="{{ store.name }}">
                   {% if footer_logo_is_video %}
                     <video
-                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       autoplay
                       muted
@@ -254,7 +254,7 @@
                     ></video>
                   {% else %}
                     <img
-                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       loading="eager"
                       decoding="async"
@@ -295,7 +295,7 @@
                 <a href="{{ link('/') }}" class="veloura-footer-logo" style="width: {{ footer_logo_size }} !important; max-width: 100% !important; min-width: 0 !important; height: auto !important; flex-shrink: 1 !important;" aria-label="{{ store.name }}">
                   {% if footer_logo_is_video %}
                     <video
-                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       autoplay
                       muted
@@ -304,7 +304,7 @@
                     ></video>
                   {% else %}
                     <img
-                      class="veloura-footer-logo__media" style="width: 100% !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: {{ footer_logo_size }} !important; max-height: {{ footer_logo_size }} !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}"
                       loading="eager"
                       decoding="async"
@@ -415,4 +415,14 @@ html body footer .veloura-footer-credential b { display:block;font-size:14px;ove
 html body footer .veloura-footer-credential span { font-size:13px; }
 html body footer .veloura-footer-payment-trust { display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;width:100%; }
 html body footer .veloura-footer-payment-trust .veloura-footer-credentials { margin:0; }
+</style>
+
+<style id="veloura-footer-settings-v55">
+html body#app #veloura-footer .store-footer__inner::before {display:none!important}
+html body#app #veloura-footer .veloura-footer-shell,
+html body#app #veloura-footer .veloura-footer-main {border-top-left-radius:var(--veloura-footer-real-radius,0px)!important;border-top-right-radius:var(--veloura-footer-real-radius,0px)!important}
+html body#app #veloura-footer[data-veloura-footer-center-all="false"] .veloura-footer-section-title {text-align:right!important;justify-content:flex-start!important;justify-items:start!important}
+html body#app #veloura-footer[data-veloura-footer-center-all="false"][data-veloura-footer-title-lines="false"] .veloura-footer-section-title {display:block!important;width:100%!important}
+html body#app #veloura-footer[data-veloura-footer-center-all="false"] .veloura-footer-title-text {text-align:right!important;margin-inline:0!important}
+html body#app #veloura-footer .veloura-footer-title-line {animation:none!important}
 </style>

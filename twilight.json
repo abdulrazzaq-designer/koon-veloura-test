@@ -3020,13 +3020,13 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "إظهار الخطوط المتحركة بجانب العناوين",
+      "label": "إظهار خطوط بجانب العناوين",
       "id": "veloura_footer_title_badge_2026",
       "format": "switch",
       "required": false,
       "value": true,
       "selected": true,
-      "description": "يظهر خطان متحركان باتجاه عنوان القسم. يتم استخدام لون تختاره مع لمعة فاتحة لإظهار الحركة.",
+      "description": "إظهار خطوط ثابتة بجانب عناوين أقسام الفوتر.",
       "conditions": [
         {
           "id": "veloura_footer_enabled_2026",
@@ -3039,7 +3039,7 @@
       "id": "veloura_footer_title_bg_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون الخطوط المتحركة",
+      "label": "لون الخطوط",
       "value": "#14c8c1",
       "required": false,
       "conditions": [
@@ -3051,7 +3051,9 @@
         {
           "id": "veloura_footer_title_badge_2026",
           "operation": "=",
-          "value": true
+          "value": true,
+          "label": "إظهار خطوط بجانب العناوين",
+          "description": "إظهار خطوط ثابتة بجانب عناوين أقسام الفوتر."
         }
       ]
     },
