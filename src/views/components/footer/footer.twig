@@ -453,7 +453,7 @@ html body#app #veloura-footer .veloura-footer-payment-trust salla-payments {widt
 html body#app #veloura-footer {width:100%!important;max-width:none!important;padding-inline:0!important;margin-inline:0!important;box-sizing:border-box!important}
 html body#app #veloura-footer .veloura-footer-shell {width:100%!important;max-width:none!important;margin-inline:auto!important;padding-inline:0!important;box-sizing:border-box!important}
 html body#app #veloura-footer[data-veloura-footer-compact="true"] .veloura-footer-shell {
-width:calc(100% - 16px)!important;max-width:calc(var(--veloura-global-container,1280px) + 40px)!important;
+width:var(--veloura-footer-frame-width,100%)!important;max-width:var(--veloura-footer-frame-width,var(--veloura-global-container,1280px))!important;
 }
 html body#app #veloura-footer .veloura-footer-container {
 width:100%!important;max-width:var(--veloura-global-container,1280px)!important;margin-inline:auto!important;padding-inline:var(--veloura-global-spacing,10px)!important;box-sizing:border-box!important;
@@ -461,3 +461,22 @@ width:100%!important;max-width:var(--veloura-global-container,1280px)!important;
 html body#app #veloura-footer .veloura-footer-main,
 html body#app #veloura-footer .veloura-footer-bottom {width:100%!important;max-width:none!important;margin-inline:0!important;box-sizing:border-box!important}
 </style>
+
+<script id="veloura-footer-match-header-v60">
+(() => {
+const footer=document.getElementById('veloura-footer');
+if(!footer)return;
+let observed=null,frame=0;
+const sync=()=>{
+ frame=0;
+ const header=document.querySelector('.veloura-header-tabs-stack__surface');
+ if(!header)return;
+ if(observed!==header){if(observed)observer.unobserve(observed);observed=header;observer.observe(header);}
+ const width=header.getBoundingClientRect().width;
+ if(width>0)footer.style.setProperty('--veloura-footer-frame-width',width+'px');
+};
+const schedule=()=>{if(!frame)frame=requestAnimationFrame(sync);};
+const observer=new ResizeObserver(schedule);
+sync();document.addEventListener('DOMContentLoaded',schedule,{once:true});window.addEventListener('load',schedule,{once:true});window.addEventListener('resize',schedule,{passive:true});
+})();
+</script>
