@@ -866,5 +866,17 @@ html body#app .veloura-category-page :is(.veloura-category-child,.veloura-catego
  }
 })();
 </script>
+
+<style id="veloura-category-center-v44">
+html body#app .veloura-category-page .veloura-category-children--position-right :is(.veloura-category-child,.veloura-category-compact__item,.veloura-category-descendant) {
+justify-content:center!important;text-align:center!important;
+}
+html body#app .veloura-category-page .veloura-category-children--position-right :is(.veloura-category-child__title,.veloura-category-compact__title,.veloura-category-descendant__title) {
+flex:0 1 auto!important;width:auto!important;margin:0!important;text-align:center!important;
+}
+html body#app .veloura-category-page .veloura-category-children--position-right :is(.veloura-category-child__media,.veloura-category-compact__media,.veloura-category-descendant__media) {
+margin:0!important;
+}
+</style>
     <script defer src="{{ 'product.js' | asset }}"></script>
 {% endblock %}
