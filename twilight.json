@@ -2341,8 +2341,7 @@
       "label": " ",
       "required": false,
       "value": false,
-      "selected": false,
-      "description": "فتح وإغلاق إعدادات التبويبات فقط، دون تغيير ظهورها في المتجر."
+      "selected": false
     },
     {
       "type": "boolean",

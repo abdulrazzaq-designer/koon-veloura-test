@@ -5859,9 +5859,16 @@ border-top:1px solid var(--veloura-menu-section-line,rgba(15,23,42,.12))!importa
 
 <style id="veloura-header-top-gap-v63">
 @media(max-width:1023px){
-html body#app .veloura-header-tabs-stack--floating {padding-top:0!important;margin-top:0!important}
+html body#app .veloura-header-tabs-stack--floating {padding-top:15px!important;margin-top:0!important}
 }
 html body#app .veloura-tabs-detached-frame #veloura-home-tabs:not(.is-hidden) {display:block;visibility:visible;opacity:1}
 </style>
 </body>
 </html>
+<style id="veloura-detached-tabs-visible-v67">
+html body#app .veloura-header-tabs-stack--floating {padding-top:15px!important}
+html body#app .veloura-tabs-detached-frame {position:relative!important;z-index:139;isolation:isolate;display:block!important}
+html body#app .veloura-tabs-detached-frame #veloura-home-tabs {display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;max-height:none!important;transform:none!important;overflow:hidden!important}
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__track {display:flex!important;align-items:center;gap:16px;min-height:48px;overflow-x:auto;flex-wrap:nowrap}
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button {flex:0 0 auto;white-space:nowrap}
+</style>
