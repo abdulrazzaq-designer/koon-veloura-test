@@ -6010,7 +6010,7 @@ html body.dark .veloura-tabs-detached-frame .veloura-home-tabs__divider {
 }
 html body#app.veloura-hero-merged .veloura-tabs-detached-frame #veloura-home-tabs {background:transparent!important;background-image:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border:0!important}
 html body#app.veloura-hero-merged .veloura-tabs-detached-frame .veloura-home-tabs__divider {background:color-mix(in srgb,var(--veloura-tabs-text-color,#fff) 35%,transparent)!important}
-html body#app .veloura-tabs-detached-frame #veloura-home-tabs > .container {width:100%!important;max-width:none!important;padding-inline:0!important}
+
 
 </style>
 
@@ -6128,15 +6128,13 @@ window.addEventListener('scroll',schedule,{passive:true});window.addEventListene
 </script>
 
 <style id="veloura-tabs-container-v78">
-html body#app #veloura-home-tabs > .container {
- width:min(100%,var(--veloura-tabs-content-width,1280px))!important;max-width:none!important;margin-inline:auto!important;padding-inline:0!important;background:transparent!important;
+html body#app .veloura-header-tabs-stack #veloura-home-tabs > .container,
+html body#app .veloura-tabs-detached-frame #veloura-home-tabs > .container {
+ width:100%!important;max-width:var(--veloura-global-container,1280px)!important;margin-inline:auto!important;padding-inline:var(--veloura-global-spacing,12px)!important;box-sizing:border-box!important;background:transparent!important;
 }
 html body#app #veloura-home-tabs .veloura-home-tabs__track {
  display:grid!important;grid-auto-flow:column!important;grid-auto-columns:minmax(0,1fr)!important;gap:0!important;padding-inline:0!important;
 }
 html body#app #veloura-home-tabs .veloura-home-tabs__button {width:100%!important;min-width:0!important;max-width:none!important;justify-content:center!important;}
 </style>
-<script id="veloura-tabs-container-runtime-v78">
-(()=>{const tabs=document.querySelector('#veloura-home-tabs'),grid=document.querySelector('[data-veloura-header] .veloura-header-grid');if(!tabs||!grid)return;
-const sync=()=>{const width=grid.getBoundingClientRect().width;if(width>0)tabs.style.setProperty('--veloura-tabs-content-width',width+'px');};new ResizeObserver(sync).observe(grid);window.addEventListener('resize',sync,{passive:true});sync();})();
-</script>
+
