@@ -1888,7 +1888,7 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف القسم العلوي",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر للحواف الحادة، وحتى ٤٠ بكسل للتدوير. القوائم الفرعية بتدوير متناسب لا يتجاوز ٢٠ بكسل.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
@@ -2207,16 +2207,6 @@
           "label": "أيقونة على اليسار فقط",
           "value": "icon_left",
           "key": "veloura-mobile-search-icon-left-2026"
-        },
-        {
-          "label": "شريط بحث مستطيل",
-          "value": "bar",
-          "key": "veloura-mobile-search-bar-2026"
-        },
-        {
-          "label": "شريط بالأعلى وأيقونة عند النزول",
-          "value": "bar_sticky_icon",
-          "key": "veloura-mobile-search-bar-sticky-icon-2026"
         }
       ],
       "conditions": [
@@ -2237,9 +2227,9 @@
       "required": true,
       "selected": [
         {
-          "label": "شريط بالأعلى وأيقونة عند النزول",
-          "value": "bar_sticky_icon",
-          "key": "veloura-desktop-search-bar-sticky-icon-2026"
+          "label": "شريط قصير على اليمين",
+          "value": "bar",
+          "key": "veloura-desktop-search-bar-2026"
         }
       ],
       "options": [
@@ -2254,14 +2244,9 @@
           "key": "veloura-desktop-search-icon-left-2026"
         },
         {
-          "label": "شريط بحث مستطيل",
+          "label": "شريط قصير على اليمين",
           "value": "bar",
           "key": "veloura-desktop-search-bar-2026"
-        },
-        {
-          "label": "شريط بالأعلى وأيقونة عند النزول",
-          "value": "bar_sticky_icon",
-          "key": "veloura-desktop-search-bar-sticky-icon-2026"
         }
       ],
       "conditions": [
@@ -2274,26 +2259,8 @@
     },
     {
       "type": "boolean",
-      "icon": "sicon-search",
-      "label": "فصل شريط البحث المستطيل عن الهيدر",
-      "description": "يعرض شريط البحث كصف مستقل أسفل الهيدر بدل أن يكون بداخله. يسري فقط عند اختيار شريط بحث مستطيل (للجوال أو للابتوب)؛ في وضع الأيقونة لا يوجد شريط ليُفصل فلا يكون له أثر.",
-      "id": "veloura_top_search_detached_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "جعل القسم العلوي وشريط البحث ملء الشاشة في اللابتوب",
+      "label": "جعل القسم العلوي ملء الشاشة في اللابتوب",
       "description": "عند عدم تفعيله سيكون القسم العلوي في اللابتوب بنفس عرض العناصر العادية container",
       "id": "veloura_top_full_width_desktop_2026",
       "format": "switch",

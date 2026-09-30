@@ -138,8 +138,8 @@
 {# الحواف صارت رقماً بالبيكسل من شريط تمرير. الأنماط القديمة كانت مربوطة بأسماء
    كلاسات في ملف SCSS (veloura-top-border-medium…)، وأي رقم ما يوافق كلاس فيبقى
    الهيدر بلا حواف — ولهذا صارت القيمة تُكتب متغيراً على العنصر نفسه، والقاعدة
-   تحت تطبّقه. المفاتيح القديمة تبقى مفهومة، و«40» = دائري. #}
-{% set top_border_px_map = {'sharp':'0px','soft':'12px','medium':'24px','large':'42px','xl':'48px','round':'999px','40':'999px'} %}
+   تحت تطبّقه. المفاتيح القديمة تبقى مفهومة، و«40» = تدوير 40 بكسل. #}
+{% set top_border_px_map = {'sharp':'0px','soft':'12px','medium':'24px','large':'32px','xl':'40px','round':'40px','40':'40px'} %}
 {% set top_border_px = top_border_px_map[top_border]|default((top_border ~ '' == '' ? '16' : top_border) ~ 'px') %}
 
 {% set icons_size = theme.settings.get('veloura_top_icons_size_2026', 'small') %}
@@ -172,7 +172,9 @@
   {% set mobile_search = mobile_search[0].value %}
 {% endif %}
 
-{% set desktop_search = theme.settings.get('veloura_top_desktop_search_display_2026', 'bar_sticky_icon') %}
+{% set mobile_search = mobile_search == 'icon_left' ? 'icon_left' : 'icon_right' %}
+
+{% set desktop_search = theme.settings.get('veloura_top_desktop_search_display_2026', 'bar') %}
 {% if desktop_search.selected is defined %}
   {% if desktop_search.selected.value is defined %}
     {% set desktop_search = desktop_search.selected.value %}
@@ -186,6 +188,8 @@
 {% elseif desktop_search is iterable and desktop_search[0] is defined and desktop_search[0].value is defined %}
   {% set desktop_search = desktop_search[0].value %}
 {% endif %}
+
+{% set desktop_search = desktop_search in ['icon_right', 'icon_left'] ? desktop_search : 'bar' %}
 
 {% set desktop_menu_mode = theme.settings.get('veloura_top_desktop_menu_mode_2026', 'links') %}
 {% if desktop_menu_mode.selected is defined %}
@@ -262,34 +266,7 @@
 {% endif %}
 {% set full_width_desktop = full_width_desktop == true or full_width_desktop == 'true' or full_width_desktop == 1 or full_width_desktop == '1' or full_width_desktop == 'on' %}
 
-{% set search_detached_setting = theme.settings.get('veloura_top_search_detached_2026', false) %}
-{% set search_detached_raw = search_detached_setting %}
-{% if search_detached_setting.selected is defined %}
-  {% if search_detached_setting.selected.value is defined %}
-    {% set search_detached_raw = search_detached_setting.selected.value %}
-  {% elseif search_detached_setting.selected is iterable and search_detached_setting.selected[0] is defined and search_detached_setting.selected[0].value is defined %}
-    {% set search_detached_raw = search_detached_setting.selected[0].value %}
-  {% else %}
-    {% set search_detached_raw = search_detached_setting.selected %}
-  {% endif %}
-{% elseif search_detached_setting.value is defined %}
-  {% set search_detached_raw = search_detached_setting.value %}
-{% endif %}
-{% set search_detached = search_detached_raw == true or search_detached_raw == 'true' or search_detached_raw == 1 or search_detached_raw == '1' or search_detached_raw == 'on' %}
-
-{# فصل شريط البحث لا معنى له بدون شريط.
-
-   الزر يبقى ظاهراً دائماً في لوحة الإعدادات — إخفاؤه كان قراراً خاطئاً مني،
-   لأن التاجر يفقد الخيار من أمامه بدل أن يراه بلا أثر. بدلاً من ذلك يُلغى
-   مفعوله هنا: الفصل يسري فقط إن كان أحد الوضعين (الجوال أو اللابتوب) يعرض
-   شريط بحث. في وضع الأيقونة لا يوجد شريط ليُفصل، وتركه فعّالاً كان يغيّر
-   تخطيط الهيدر ويحرّك الأيقونة إلى الجهة الخطأ. #}
-{# لكل مقاس إجابته: الفصل يسري على الجوال إن كان الجوال شريطاً، وعلى
-   اللابتوب إن كان اللابتوب شريطاً. الشرط المشترك ("أحدهما") كان يجعل
-   شريطَ الجوال يُفعّل الفصل على اللابتوب وهو في وضع الأيقونة. #}
-{% set search_detached_mobile = search_detached and mobile_search in ['bar', 'bar_sticky_icon'] %}
-{% set search_detached_desktop = search_detached and desktop_search in ['bar', 'bar_sticky_icon'] %}
-{% set search_detached = search_detached_mobile or search_detached_desktop %}
+{% set search_detached = false %}
 
 {% set show_wishlist = theme.settings.get('veloura_top_show_wishlist_2026', false) %}
 {% if show_wishlist.value is defined %}{% set show_wishlist = show_wishlist.value %}{% endif %}
@@ -411,7 +388,7 @@
      track (column 1) is simply empty, which is harmless in CSS Grid — so
      applying it unconditionally for bar/bar_sticky_icon fixes detached
      search without a fallback layout to keep in sync. #}
-  {{ desktop_search in ['bar', 'bar_sticky_icon'] ? 'veloura-header-balanced-search' : '' }}
+  
   {{ hide_lang_desktop ? 'veloura-top-hide-lang-desktop' : '' }}
   {{ top_hide_on_scroll ? 'veloura-hide-top-on-scroll' : '' }}
 
@@ -700,6 +677,7 @@
             </div>
 
             <div class="veloura-header-right">
+              <div class="veloura-header-inline-search veloura-search-surface" data-veloura-search-slot="header-desktop" data-veloura-search-height="36"></div>
               {# Physical RIGHT group: menu → dark → language → search/wishlist toward the logo. #}
               <div class="veloura-header__menu">
                 <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
@@ -920,33 +898,7 @@
             </div>
           {% endif %}
 
-          {# SINGLE-SEARCH CONTRACT (see master.twig #veloura-search-park).
-
-             Every <salla-search> instance registers its OWN
-             salla.event.on('search::open') listener in its constructor, and
-             every instance — `inline` ones included — renders its own
-             <salla-modal>. Rendering a mobile bar and a desktop bar here (plus
-             the page modal and the bottom-nav panel) therefore meant one click
-             on the search icon opened FOUR or FIVE stacked dialogs.
-
-             These wrappers are now empty placement slots. app.js keeps exactly
-             one <salla-search> in the document and moves it into whichever slot
-             is currently visible, so the layout rules below (which are keyed on
-             .veloura-mobile-search-bar / .veloura-desktop-search-bar) are
-             untouched while only one dialog can ever open. #}
-          {% if not search_detached %}
-            <div
-              class="veloura-mobile-search-bar veloura-search-surface"
-              data-veloura-search-slot="header-mobile"
-              data-veloura-search-height="36"
-            ></div>
-
-            <div
-              class="veloura-desktop-search-bar veloura-search-surface"
-              data-veloura-search-slot="header-desktop"
-              data-veloura-search-height="36"
-            ></div>
-          {% endif %}
+          {# The shared search component uses the inline desktop slot above. #}
 
         </div>
       </div>
@@ -1006,3 +958,22 @@ html body#app .store-header[data-veloura-header] #mainnav :is(.veloura-dark-togg
 html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger #mainnav .veloura-header-right .veloura-dark-toggle { right:36px !important; left:auto !important; }
 html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger.veloura-desktop-search-icon_right #mainnav .veloura-header-right .veloura-search-toggle { right:72px !important; left:auto !important; }
 }</style>
+
+<style id="veloura-compact-search-v76">
+html body#app .store-header[data-veloura-header] #mainnav .veloura-header-inline-search {display:none!important;}
+@media(min-width:1024px){
+html body#app .store-header[data-veloura-header].veloura-desktop-search-bar #mainnav .veloura-header-inline-search {
+ display:flex!important;align-items:center!important;order:6!important;position:relative!important;inset:auto!important;transform:none!important;
+ flex:0 0 clamp(140px,14vw,190px)!important;width:clamp(140px,14vw,190px)!important;max-width:190px!important;min-width:0!important;height:36px!important;min-height:36px!important;max-height:36px!important;margin:0!important;direction:rtl!important;border-radius:min(var(--veloura-header-surface-radius,16px),18px)!important;
+}
+html body#app .store-header[data-veloura-header].veloura-desktop-search-bar #mainnav .veloura-search-toggle {display:none!important;}
+html body#app .store-header[data-veloura-header] #mainnav .veloura-header-inline-search salla-search {display:block!important;width:100%!important;min-width:0!important;}
+html body#app .store-header[data-veloura-header] #mainnav .veloura-header-inline-search :is(.s-search-input-wrapper,.s-search-input) {width:100%!important;min-width:0!important;height:36px!important;box-sizing:border-box!important;}
+html body#app .store-header[data-veloura-header] #mainnav .veloura-header-inline-search .s-search-input {font-size:12px!important;border-radius:min(var(--veloura-header-surface-radius,16px),18px)!important;}
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger.veloura-desktop-search-bar #mainnav .veloura-header-grid {padding-right:0!important;}
+html body#app .store-header[data-veloura-header].veloura-desktop-menu-hamburger.veloura-desktop-search-bar #mainnav .veloura-header__menu {position:static!important;inset:auto!important;transform:none!important;order:8!important;margin:0!important;}
+/* Reserve the right cluster even when language controls are disabled. */
+html body#app .store-header[data-veloura-header].veloura-desktop-search-bar #mainnav .veloura-header-inline-search {margin-left:auto!important;}
+html body#app .store-header[data-veloura-header] #mainnav :is(.sub-menu,.veloura-submenu-surface) {border-radius:min(var(--veloura-header-surface-radius,16px),20px)!important;}
+}
+</style>

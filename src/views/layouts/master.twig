@@ -2839,65 +2839,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    any structure Salla hands back is treated as "not set", i.e. false. #}
 {% set vht_full_width = vht_full_width_raw is not iterable and (vht_full_width_raw == true or vht_full_width_raw == 'true' or vht_full_width_raw == 1 or vht_full_width_raw == '1' or vht_full_width_raw == 'on') %}
 
-{% set vht_search_detached_setting = theme.settings.get('veloura_top_search_detached_2026', false) %}
-{% set vht_search_detached_raw = vht_search_detached_setting %}
-{% if vht_search_detached_setting.selected is defined %}
-  {% if vht_search_detached_setting.selected.value is defined %}
-    {% set vht_search_detached_raw = vht_search_detached_setting.selected.value %}
-  {% elseif vht_search_detached_setting.selected is iterable and vht_search_detached_setting.selected[0] is defined and vht_search_detached_setting.selected[0].value is defined %}
-    {% set vht_search_detached_raw = vht_search_detached_setting.selected[0].value %}
-  {% else %}
-    {% set vht_search_detached_raw = vht_search_detached_setting.selected %}
-  {% endif %}
-{% elseif vht_search_detached_setting.value is defined %}
-  {% set vht_search_detached_raw = vht_search_detached_setting.value %}
-{% endif %}
-{% set vht_search_detached = vht_search_detached_raw == true or vht_search_detached_raw == 'true' or vht_search_detached_raw == 1 or vht_search_detached_raw == '1' or vht_search_detached_raw == 'on' %}
-
-{% set vht_mobile_search = theme.settings.get('veloura_top_mobile_search_display_2026', 'icon_right') %}
-{% if vht_mobile_search.selected is defined %}
-  {% if vht_mobile_search.selected.value is defined %}
-    {% set vht_mobile_search = vht_mobile_search.selected.value %}
-  {% elseif vht_mobile_search.selected is iterable and vht_mobile_search.selected[0] is defined and vht_mobile_search.selected[0].value is defined %}
-    {% set vht_mobile_search = vht_mobile_search.selected[0].value %}
-  {% else %}
-    {% set vht_mobile_search = vht_mobile_search.selected %}
-  {% endif %}
-{% elseif vht_mobile_search.value is defined %}
-  {% set vht_mobile_search = vht_mobile_search.value %}
-{% elseif vht_mobile_search is iterable and vht_mobile_search[0].value is defined %}
-  {% set vht_mobile_search = vht_mobile_search[0].value %}
-{% endif %}
-
-{% set vht_desktop_search = theme.settings.get('veloura_top_desktop_search_display_2026', 'bar_sticky_icon') %}
-{% if vht_desktop_search.selected is defined %}
-  {% if vht_desktop_search.selected.value is defined %}
-    {% set vht_desktop_search = vht_desktop_search.selected.value %}
-  {% elseif vht_desktop_search.selected is iterable and vht_desktop_search.selected[0] is defined and vht_desktop_search.selected[0].value is defined %}
-    {% set vht_desktop_search = vht_desktop_search.selected[0].value %}
-  {% else %}
-    {% set vht_desktop_search = vht_desktop_search.selected %}
-  {% endif %}
-{% elseif vht_desktop_search.value is defined %}
-  {% set vht_desktop_search = vht_desktop_search.value %}
-{% elseif vht_desktop_search is iterable and vht_desktop_search[0].value is defined %}
-  {% set vht_desktop_search = vht_desktop_search[0].value %}
-{% endif %}
+{% set vht_search_detached = false %}
 
 
-{# فصل شريط البحث لا معنى له بدون شريط.
-
-   الزر يبقى ظاهراً دائماً في لوحة الإعدادات — إخفاؤه كان قراراً خاطئاً مني،
-   لأن التاجر يفقد الخيار من أمامه بدل أن يراه بلا أثر. بدلاً من ذلك يُلغى
-   مفعوله هنا: الفصل يسري فقط إن كان أحد الوضعين (الجوال أو اللابتوب) يعرض
-   شريط بحث. في وضع الأيقونة لا يوجد شريط ليُفصل، وتركه فعّالاً كان يغيّر
-   تخطيط الهيدر ويحرّك الأيقونة إلى الجهة الخطأ. #}
-{# لكل مقاس إجابته: الفصل يسري على الجوال إن كان الجوال شريطاً، وعلى
-   اللابتوب إن كان اللابتوب شريطاً. الشرط المشترك ("أحدهما") كان يجعل
-   شريطَ الجوال يُفعّل الفصل على اللابتوب وهو في وضع الأيقونة. #}
-{% set vht_search_detached_mobile = vht_search_detached and vht_mobile_search in ['bar', 'bar_sticky_icon'] %}
-{% set vht_search_detached_desktop = vht_search_detached and vht_desktop_search in ['bar', 'bar_sticky_icon'] %}
-{% set vht_search_detached = vht_search_detached_mobile or vht_search_detached_desktop %}
 
 {# V13: tabs background is always independent from the header in solid mode. #}
 {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
@@ -2925,7 +2869,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 
 {# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
-{% set vht_top_border_px_map = {'sharp':'0px','soft':'14px','medium':'24px','large':'38px','round':'999px','pill':'999px','xl':'44px','40':'999px'} %}
+{% set vht_top_border_px_map = {'sharp':'0px','soft':'12px','medium':'24px','large':'32px','round':'40px','pill':'40px','xl':'40px','40':'40px'} %}
 {% set vht_top_border_px = vht_top_border_px_map[vht_top_border]|default((vht_top_border ~ '' == '' ? '16' : vht_top_border) ~ 'px') %}
 
 
@@ -3296,26 +3240,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
     </div>
 
-    {% if vht_search_detached %}
-      <div
-        class="veloura-detached-search-shell veloura-detached-mobile-{{ vht_mobile_search }} veloura-detached-desktop-{{ vht_desktop_search }}"
-        data-veloura-detached-search
-      >
-        {# Placement slots only — the one shared <salla-search> lives in
-           #veloura-search-park and is moved here by app.js. See the note in
-           header.twig for why duplicated instances stacked five dialogs. #}
-        <div
-          class="veloura-detached-search veloura-detached-search--mobile veloura-search-surface"
-          data-veloura-search-slot="detached-mobile"
-          data-veloura-search-height="36"
-        ></div>
-        <div
-          class="veloura-detached-search veloura-detached-search--desktop veloura-search-surface"
-          data-veloura-search-slot="detached-desktop"
-          data-veloura-search-height="36"
-        ></div>
-      </div>
-    {% endif %}
+
   </div>
 </div>
 
