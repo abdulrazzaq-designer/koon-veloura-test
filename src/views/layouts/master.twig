@@ -5863,6 +5863,256 @@ html body#app .veloura-header-tabs-stack--floating {padding-top:15px!important;m
 }
 html body#app .veloura-tabs-detached-frame #veloura-home-tabs:not(.is-hidden) {display:block;visibility:visible;opacity:1}
 </style>
+<style id="veloura-detached-tabs-design-v69">
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs {
+  --veloura-tabs-gap: 22px;
+  --veloura-tabs-divider: rgba(15, 23, 42, .16);
+}
+
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__track {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  /* Distributes the tabs across the full width instead of clustering them to
+     one side. Falls back to normal left-to-right flow once there are enough
+     tabs to overflow (see the scroll rules below), which is when `gap`
+     becomes the real spacing instead of the extra distributed space. */
+  justify-content: space-evenly !important;
+  gap: var(--veloura-tabs-gap) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding-block: 10px !important;
+  padding-inline: var(--veloura-global-spacing, 12px) !important;
+  box-sizing: border-box !important;
+
+  /* One row that scrolls sideways — never a wrapped second row that would
+     fight .veloura-home-tabs { max-height: 90px; overflow: hidden }. */
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-behavior: smooth !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__track::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+
+  min-height: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  /* Free-floating: no border, no fill, no radius, no shadow. Only the text
+     itself marks a tab. */
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+
+  color: var(--veloura-tabs-text-color, #1f2937) !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  opacity: .78 !important;
+
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  scroll-snap-align: center;
+  transition:
+    color .18s ease,
+    opacity .18s ease,
+    font-weight .18s ease !important;
+}
+
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button > i {
+  font-size: 15px !important;
+  line-height: 1 !important;
+  flex: 0 0 auto !important;
+}
+
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button > span {
+  display: block !important;
+  min-width: 0 !important;
+}
+
+/* V26 — the dot belongs at the far edge of the WHOLE tab: physically to the
+   right of everything, so the tab reads (right to left) dot, icon, label.
+
+   V24 put it on the button's ::after and V25 moved it onto the icon's own
+   ::after; both were wrong, and the reason is the same in each case. This is
+   an RTL flex row, so the FIRST flex item is the one on the physical RIGHT —
+   ::after (the last item) landed on the far LEFT, past the label, and
+   hanging it off the icon landed it between the icon and the label.
+
+   `order` is what actually decides the physical side here, so the dot is
+   declared exactly once and only its order flips per writing direction:
+   -1 puts it first (physical right) under RTL, and 1 puts it last (also
+   physical right) under LTR. The track's own 6px gap spaces it from the
+   icon, so no extra margin is needed — and no :has() either, which means
+   this no longer depends on that selector surviving the CSS build. */
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button.is-active::after,
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button[aria-selected="true"]::after {
+  content: '' !important;
+  order: -1 !important;
+  flex: 0 0 auto !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: var(--veloura-tabs-active-color, #003848) !important;
+  animation: veloura-home-tabs-pulse 1.6s ease-in-out infinite !important;
+}
+
+html[dir="ltr"] body#app .veloura-tabs-detached-frame .veloura-home-tabs__button.is-active::after,
+html[dir="ltr"] body#app .veloura-tabs-detached-frame .veloura-home-tabs__button[aria-selected="true"]::after {
+  order: 1 !important;
+}
+
+@keyframes veloura-home-tabs-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: .5; }
+}
+
+/* Real flex-item divider between tabs — see master.twig's loop for why it is
+   a DOM element and not a pseudo-element, and the V24 note above for why that
+   is what keeps it centred under `justify-content: space-evenly`. Vertically
+   centred via the track's own `align-items: center`. */
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__divider {
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  width: 1px !important;
+  height: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--veloura-tabs-divider) !important;
+}
+
+/* Hover is gated behind a real pointer. On a touchscreen there is no such
+   thing as leaving an element, so :hover STICKS after a tap: the tapped tab
+   kept the brightened hover look until something else was tapped, which is
+   the "a hover shows up when I press a tab" report. A mouse still gets it. */
+@media (hover: hover) and (pointer: fine) {
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button:hover {
+    opacity: 1 !important;
+    /* Belt and braces on top of the base rule above: no browser/user-agent
+       default (hover underline, tap highlight, etc.) is allowed to paint
+       anything resembling a fill or a bar behind the label on hover either. */
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+  }
+}
+
+/* Pressing a tab must not draw anything either — no focus ring, no active
+   fill, no tap highlight. The active tab is already marked by its colour and
+   the pulsing dot, so the focus box was pure noise on click (and on the
+   browsers that treat a click as :focus-visible it read as a box around the
+   tab). Keyboard users still get the browser's own default ring only if
+   nothing here removes it, so this deliberately leaves no visible ring at
+   all, per the requested design. */
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button:focus,
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button:focus-visible,
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button:active {
+  outline: none !important;
+  outline-offset: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* app.js sets BOTH .is-active and aria-selected; match either so a tab is never
+   left looking inactive if one of the two is out of sync. No background here
+   by design — only the text/icon colour (inherited from color:currentColor on
+   the icon) marks the active tab, plus the pulsing dot above. */
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button.is-active,
+html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button[aria-selected="true"] {
+  color: var(--veloura-tabs-active-color, #003848) !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+
+/* Dark mode: the merchant's text colour is chosen against the LIGHT bar, so it
+   is overridden here rather than left to fail contrast. The active colour is
+   their brand colour and stays. */
+html.dark body#app .veloura-tabs-detached-frame .veloura-home-tabs__button:not(.is-active):not([aria-selected="true"]),
+html body.dark .veloura-tabs-detached-frame .veloura-home-tabs__button:not(.is-active):not([aria-selected="true"]) {
+  color: rgba(255, 255, 255, .82) !important;
+}
+
+html.dark body#app .veloura-tabs-detached-frame .veloura-home-tabs__divider,
+html body.dark .veloura-tabs-detached-frame .veloura-home-tabs__divider {
+  background: rgba(255, 255, 255, .22) !important;
+}
+
+@media (max-width: 767px) {
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs {
+    --veloura-tabs-gap: 16px;
+  }
+
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__track {
+    padding-block: 8px !important;
+  }
+
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button {
+    min-height: 26px !important;
+    font-size: 13px !important;
+  }
+
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__divider {
+    height: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__track {
+    scroll-behavior: auto !important;
+  }
+
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button {
+    transition: none !important;
+  }
+
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button.is-active::after,
+  html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button[aria-selected="true"]::after {
+    animation: none !important;
+  }
+}
+html body#app.veloura-hero-merged .veloura-tabs-detached-frame #veloura-home-tabs {background:transparent!important;background-image:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border:0!important}
+html body#app.veloura-hero-merged .veloura-tabs-detached-frame .veloura-home-tabs__divider {background:color-mix(in srgb,var(--veloura-tabs-text-color,#fff) 35%,transparent)!important}
+html body#app .veloura-tabs-detached-frame #veloura-home-tabs > .container {width:100%!important;max-width:none!important;padding-inline:0!important}
+
+</style>
 </body>
 </html>
 <style id="veloura-detached-tabs-visible-v67">
@@ -5873,12 +6123,4 @@ html body#app .veloura-tabs-detached-frame .veloura-home-tabs__track {display:fl
 html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button {flex:0 0 auto;white-space:nowrap}
 </style>
 
-<style id="veloura-detached-tabs-design-v68">
-}
-html body#app.veloura-hero-merged .veloura-tabs-detached-frame #veloura-home-tabs {
-background:transparent!important;background-image:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border:0!important;
-}
-html body#app.veloura-hero-merged .veloura-tabs-detached-frame .veloura-home-tabs__divider {background:color-mix(in srgb,var(--veloura-tabs-text-color,#fff) 35%,transparent)!important}
-html body#app .veloura-tabs-detached-frame #veloura-home-tabs > .container {width:100%!important;max-width:none!important;padding-inline:0!important}
 
-</style>
