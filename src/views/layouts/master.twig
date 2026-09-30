@@ -6140,7 +6140,7 @@ const update=()=>{
 pending=0;
 let bottom=0;
 if(header){const rect=header.getBoundingClientRect();const style=getComputedStyle(header);if(['sticky','fixed'].includes(style.position)&&rect.bottom>0&&rect.top<innerHeight)bottom=rect.bottom;}
-frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,bottom)+4+'px');
+frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,bottom)+10+'px');
 const hide=tabs.dataset.velouraTabsHideScroll==='true'&&window.scrollY>4;
 frame.classList.toggle('is-scroll-hidden',hide);
 if(hide)frame.setAttribute('inert','');else frame.removeAttribute('inert');
@@ -6178,3 +6178,31 @@ html body#app.veloura-hero-merged .veloura-tabs-detached-frame #veloura-home-tab
 border-top-color:rgba(255,255,255,.20)!important;border-bottom-color:rgba(255,255,255,.12)!important;
 }
 </style>
+
+<style id="veloura-tabs-header-material-v74">
+html body#app .veloura-tabs-detached-frame {margin-top:0!important;margin-bottom:0!important;top:var(--veloura-detached-tabs-top,10px)!important}
+</style>
+<script id="veloura-tabs-header-material-runtime-v74">
+(()=>{
+const frame=document.querySelector('.veloura-tabs-detached-frame');const tabs=frame?.querySelector('#veloura-home-tabs');const header=document.querySelector('.veloura-header-tabs-stack__surface');const stack=document.querySelector('[data-veloura-header-tabs-stack]');
+if(!frame||!tabs||!header||!stack)return;
+let pending=0;
+const update=()=>{pending=0;const style=getComputedStyle(header);const merged=document.body.classList.contains('veloura-hero-merged');
+for(const prop of ['background-color','background-image','backdrop-filter','-webkit-backdrop-filter','border-radius'])tabs.style.setProperty(prop,merged&&prop==='background-color'?'transparent':style.getPropertyValue(prop),'important');
+tabs.style.setProperty('box-shadow','none','important');
+const dark=document.documentElement.classList.contains('dark')||document.body.classList.contains('dark')||merged;
+tabs.style.setProperty('border-top','1px solid '+(dark?'rgba(255,255,255,.18)':'rgba(15,23,42,.18)'),'important');
+tabs.style.setProperty('border-bottom','1px solid '+(dark?'rgba(255,255,255,.10)':'rgba(15,23,42,.09)'),'important');
+// Account for the header container's padding below its painted surface.
+const tail=Math.max(0,stack.getBoundingClientRect().bottom-header.getBoundingClientRect().bottom);
+frame.style.setProperty('margin-top',(10-tail)+'px','important');
+frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,header.getBoundingClientRect().bottom)+10+'px');
+};
+const schedule=()=>{if(!pending)pending=requestAnimationFrame(update);};
+new ResizeObserver(schedule).observe(stack);new ResizeObserver(schedule).observe(header);
+new MutationObserver(schedule).observe(header,{attributes:true,attributeFilter:['class','style']});
+new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});
+new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule,{passive:true});document.addEventListener('veloura:header:position',schedule);update();
+})();
+</script>
