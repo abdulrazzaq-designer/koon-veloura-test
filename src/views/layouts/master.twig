@@ -6140,7 +6140,7 @@ const update=()=>{
 pending=0;
 let bottom=0;
 if(header){const rect=header.getBoundingClientRect();const style=getComputedStyle(header);if(['sticky','fixed'].includes(style.position)&&rect.bottom>0&&rect.top<innerHeight)bottom=rect.bottom;}
-frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,bottom)+8+'px');
+frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,bottom)+4+'px');
 const hide=tabs.dataset.velouraTabsHideScroll==='true'&&window.scrollY>4;
 frame.classList.toggle('is-scroll-hidden',hide);
 if(hide)frame.setAttribute('inert','');else frame.removeAttribute('inert');
@@ -6154,14 +6154,27 @@ update();
 
 <style id="veloura-tabs-frame-v72">
 html body#app .veloura-tabs-detached-frame {
-width:var(--veloura-tabs-frame-width,calc(100% - 24px))!important;max-width:none!important;padding-inline:0!important;margin:8px auto!important;top:var(--veloura-detached-tabs-top,8px)!important;
+width:var(--veloura-tabs-frame-width,calc(100% - 24px))!important;max-width:none!important;padding-inline:0!important;margin:4px auto!important;top:var(--veloura-detached-tabs-top,4px)!important;
 }
 html body#app .veloura-tabs-detached-frame #veloura-home-tabs {
 border-top:1px solid var(--veloura-border,rgba(15,23,42,.12))!important;border-bottom:1px solid var(--veloura-border,rgba(15,23,42,.12))!important;box-shadow:none!important;
 }
 html body#app .veloura-tabs-detached-frame #veloura-home-tabs .veloura-home-tabs__track {padding-block:5px!important;min-height:36px!important}
-html body#app.veloura-hero-merged .veloura-tabs-detached-frame #veloura-home-tabs {border-color:transparent!important}
+
 </style>
 <script id="veloura-tabs-frame-runtime-v72">
 (()=>{const frame=document.querySelector('.veloura-tabs-detached-frame');const header=document.querySelector('.veloura-header-tabs-stack__surface');if(!frame||!header)return;const sync=()=>{const w=header.getBoundingClientRect().width;if(w>0)frame.style.setProperty('--veloura-tabs-frame-width',w+'px');};sync();new ResizeObserver(sync).observe(header);})();
 </script>
+
+<style id="veloura-tabs-glass-edges-v73">
+html body#app .veloura-tabs-detached-frame #veloura-home-tabs {
+border-top:1px solid rgba(255,255,255,.28)!important;
+border-bottom:1px solid rgba(15,23,42,.13)!important;
+box-shadow:none!important;
+}
+html.dark body#app .veloura-tabs-detached-frame #veloura-home-tabs,
+html body#app.dark .veloura-tabs-detached-frame #veloura-home-tabs,
+html body#app.veloura-hero-merged .veloura-tabs-detached-frame #veloura-home-tabs {
+border-top-color:rgba(255,255,255,.20)!important;border-bottom-color:rgba(255,255,255,.12)!important;
+}
+</style>
