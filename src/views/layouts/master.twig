@@ -2950,13 +2950,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vht_hide_on_scroll = vht_hide_raw == true or vht_hide_raw == 'true' or vht_hide_raw == 1 or vht_hide_raw == '1' or vht_hide_raw == 'on' %}
 
   {% set vht_items = theme.settings.get('veloura_home_tabs_items_2026', []) %}
-  {% if vht_items.value is defined %}{% set vht_items = vht_items.value %}{% endif %}
+  {% if vht_items.value is defined %}{% set vht_items = vht_items.value %}{% elseif vht_items.selected is defined %}{% set vht_items = vht_items.selected %}{% elseif vht_items.items is defined %}{% set vht_items = vht_items.items %}{% endif %}
 {% endif %}
 
-{% set vht_hidden = _self.veloura_dm_value(theme.settings.get('veloura_home_tabs_hidden_2026', false), false)|trim|lower in ['true','1','on'] %}
+{% set vht_display = _self.veloura_dm_value(theme.settings.get('veloura_home_tabs_display_2026', true), true)|trim|lower in ['true','1','on'] %}
 {% set vht_connect = _self.veloura_dm_value(theme.settings.get('veloura_home_tabs_sticky_v4_2026', true), true)|trim|lower in ['true','1','on'] %}
 {% set vht_valid_tabs = vht_items|default([])|slice(0,10)|filter(tab => tab.name|default('') != '') %}
-{% set vht_has_tabs = is_page('index') and not vht_hidden and vht_valid_tabs|length > 0 %}
+{% set vht_has_tabs = is_page('index') and vht_display and vht_valid_tabs|length > 0 %}
 {% set vht_tabs_connected = vht_has_tabs and vht_connect %}
 {% set vht_stack_sticky = vh_sticky %}
 
@@ -5852,5 +5852,11 @@ border-top:1px solid var(--veloura-menu-section-line,rgba(15,23,42,.12))!importa
 }
 </style>
 
+<style id="veloura-header-top-gap-v63">
+@media(max-width:1023px){
+html body#app .veloura-header-tabs-stack--floating {padding-top:0!important;margin-top:0!important}
+}
+html body#app .veloura-tabs-detached-frame #veloura-home-tabs:not(.is-hidden) {display:block;visibility:visible;opacity:1}
+</style>
 </body>
 </html>

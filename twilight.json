@@ -2341,16 +2341,17 @@
       "label": " ",
       "required": false,
       "value": false,
-      "selected": false
+      "selected": false,
+      "description": "فتح وإغلاق إعدادات التبويبات فقط، دون تغيير ظهورها في المتجر."
     },
     {
       "type": "boolean",
       "format": "switch",
-      "id": "veloura_home_tabs_hidden_2026",
-      "label": "إخفاء تبويبات الصفحة الرئيسية",
-      "description": "يخفي التبويبات دون حذفها. إغلاق الإعدادات لا يخفيها.",
-      "value": false,
-      "selected": false,
+      "id": "veloura_home_tabs_display_2026",
+      "label": "تفعيل التبويبات",
+      "description": "يتحكم بظهور التبويبات في المتجر، مستقلًا عن فتح وإغلاق لوحة إعداداتها.",
+      "value": true,
+      "selected": true,
       "required": false,
       "conditions": [
         {
