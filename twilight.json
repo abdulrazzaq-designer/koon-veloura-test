@@ -328,6 +328,91 @@
       ]
     },
     {
+      "id": "veloura_site_bg_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون خلفية الموقع في الوضع الفاتح",
+      "description": "هذا اللون يظهر خلف كل الصفحات والأقسام",
+      "value": "#ffffff",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_site_second_bg_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون الخلفية الثانوي في الوضع الفاتح",
+      "description": "يستخدم للأقسام أو الكروت التي تحتاج خلفية مختلفة",
+      "value": "#f8fafc",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_site_bg_image_2026",
+      "type": "string",
+      "format": "image",
+      "label": "خلفية المتجر صورة في الوضع الفاتح",
+      "description": "المقاس المفضل 1600 × 900 وتظهر في جميع الصفحات",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل صورة الخلفية في الصفحة الرئيسية فقط",
+      "description": "عند التفعيل تظهر صورة الخلفية في الصفحة الرئيسية فقط ولا تظهر في باقي الصفحات",
+      "id": "veloura_site_bg_image_home_only_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تثبيت صورة الخلفية أثناء التمرير",
+      "description": "تعطي تأثيراً بصرياً أفضل عند النزول في الصفحة",
+      "id": "veloura_site_bg_fixed_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_site_bg_image_2026",
+          "operation": "!=",
+          "value": null
+        }
+      ]
+    },
+    {
       "type": "static",
       "format": "title",
       "id": "veloura_global_shape_title_2026",
@@ -462,91 +547,6 @@
           "id": "veloura_general_panel_open_v4_2026",
           "operation": "=",
           "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_site_bg_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون خلفية الموقع في الوضع الفاتح",
-      "description": "هذا اللون يظهر خلف كل الصفحات والأقسام",
-      "value": "#ffffff",
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_site_second_bg_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون الخلفية الثانوي في الوضع الفاتح",
-      "description": "يستخدم للأقسام أو الكروت التي تحتاج خلفية مختلفة",
-      "value": "#f8fafc",
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_site_bg_image_2026",
-      "type": "string",
-      "format": "image",
-      "label": "خلفية المتجر صورة في الوضع الفاتح",
-      "description": "المقاس المفضل 1600 × 900 وتظهر في جميع الصفحات",
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل صورة الخلفية في الصفحة الرئيسية فقط",
-      "description": "عند التفعيل تظهر صورة الخلفية في الصفحة الرئيسية فقط ولا تظهر في باقي الصفحات",
-      "id": "veloura_site_bg_image_home_only_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تثبيت صورة الخلفية أثناء التمرير",
-      "description": "تعطي تأثيراً بصرياً أفضل عند النزول في الصفحة",
-      "id": "veloura_site_bg_fixed_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_site_bg_image_2026",
-          "operation": "!=",
-          "value": null
         }
       ]
     },
@@ -686,8 +686,8 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "إخفاء الحدود الافتراضية لبعض الأقسام",
-      "description": "مفيد للحصول على شكل أنظف وأكثر بساطة",
+      "label": "خيارات إخفاء خلفيات العناصر",
+      "description": "إظهار أو طيّ الخيارات فقط؛ تبقى الخيارات المفعّلة مطبّقة.",
       "id": "veloura_general_clean_borders_2026",
       "format": "switch",
       "required": false,
@@ -696,6 +696,116 @@
       "conditions": [
         {
           "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_clear_features_bg_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء خلفية المميزات",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_general_clean_borders_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_clear_faq_bg_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء خلفية الأسئلة الشائعة",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_general_clean_borders_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_clear_testimonials_bg_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء خلفية آراء العملاء",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_general_clean_borders_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_clear_product_details_bg_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء خلفية تفاصيل ووصف المنتج",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_general_clean_borders_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_clear_product_purchase_bg_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء خلفية خيارات وشراء المنتج",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_general_clean_borders_2026",
           "operation": "=",
           "value": true
         }
@@ -1617,20 +1727,6 @@
         }
       ],
       "description": "لون النص الأساسي داخل بطاقة المنتج في الوضع الداكن، ويعمل مع لون خلفية البطاقة حتى تحافظ على تباين واضح."
-    },
-    {
-      "id": "veloura_dark_product_card_border_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون إطار بطاقة المنتج في الوضع الداكن",
-      "value": "#111111",
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
     },
     {
       "type": "static",

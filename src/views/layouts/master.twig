@@ -1118,7 +1118,7 @@
         --veloura-dark-secondary-text: {{ theme.settings.get('veloura_dark_secondary_text_2026', '#ededed') }};
         --veloura-dark-product-card-bg: {{ theme.settings.get('veloura_dark_product_card_bg_2026', '#111111') }};
         --veloura-dark-product-card-text: {{ theme.settings.get('veloura_dark_product_card_text_2026', '#ffffff') }};
-        --veloura-dark-product-card-border: {{ theme.settings.get('veloura_dark_product_card_border_2026', '#111111') }};
+        --veloura-dark-product-card-border: transparent;
         {# --veloura-dark-glass-tint removed with veloura_dark_glass_tint_2026:
            nothing in the theme ever read this custom property, so the colour
            picker could not change anything. Every dark glass surface (header,
@@ -1232,13 +1232,7 @@
         }
       }
 
-      body.veloura-general-enabled.veloura-clean-borders .s-product-card,
-      body.veloura-general-enabled.veloura-clean-borders .s-block,
-      body.veloura-general-enabled.veloura-clean-borders .main-nav-container,
-      body.veloura-general-enabled.veloura-clean-borders .store-footer {
-        border-color: transparent !important;
-        box-shadow: none !important;
-      }
+
 
       /* Global glass is applied only to explicit floating/overlay surfaces.
          Product cards and the header keep their own independent settings. */
@@ -6138,3 +6132,52 @@ html body#app #veloura-home-tabs .veloura-home-tabs__track {
 html body#app #veloura-home-tabs .veloura-home-tabs__button {width:100%!important;min-width:0!important;max-width:none!important;justify-content:center!important;}
 </style>
 
+
+{% set clear_bg = theme.settings.get('veloura_clear_features_bg_2026', false) %}
+{% if clear_bg.value is defined %}{% set clear_bg = clear_bg.value %}{% elseif clear_bg.selected is defined %}{% set clear_bg = clear_bg.selected %}{% endif %}
+{% if clear_bg is same as(true) or clear_bg == 'true' or clear_bg is same as(1) or clear_bg == '1' %}
+<style data-veloura-clear-bg="features">
+html body#app :is(.veloura-store-features,.veloura-store-features__item,.s-block--features,.s-block--features__item) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+</style>
+{% endif %}
+
+{% set clear_bg = theme.settings.get('veloura_clear_faq_bg_2026', false) %}
+{% if clear_bg.value is defined %}{% set clear_bg = clear_bg.value %}{% elseif clear_bg.selected is defined %}{% set clear_bg = clear_bg.selected %}{% endif %}
+{% if clear_bg is same as(true) or clear_bg == 'true' or clear_bg is same as(1) or clear_bg == '1' %}
+<style data-veloura-clear-bg="faq">
+html body#app :is(.veloura-faq,.veloura-faq__inner,.veloura-faq__item,.veloura-faq__question,.veloura-faq__answer) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+</style>
+{% endif %}
+
+{% set clear_bg = theme.settings.get('veloura_clear_testimonials_bg_2026', false) %}
+{% if clear_bg.value is defined %}{% set clear_bg = clear_bg.value %}{% elseif clear_bg.selected is defined %}{% set clear_bg = clear_bg.selected %}{% endif %}
+{% if clear_bg is same as(true) or clear_bg == 'true' or clear_bg is same as(1) or clear_bg == '1' %}
+<style data-veloura-clear-bg="testimonials">
+html body#app :is(.veloura-testimonials,.veloura-testimonials__card,.s-block--testimonials,.s-reviews-testimonial) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+</style>
+{% endif %}
+
+{% set clear_bg = theme.settings.get('veloura_clear_product_details_bg_2026', false) %}
+{% if clear_bg.value is defined %}{% set clear_bg = clear_bg.value %}{% elseif clear_bg.selected is defined %}{% set clear_bg = clear_bg.selected %}{% endif %}
+{% if clear_bg is same as(true) or clear_bg == 'true' or clear_bg is same as(1) or clear_bg == '1' %}
+<style data-veloura-clear-bg="product_details">
+html body#app :is(.veloura-product-page [data-v42-group="description"],.veloura-product-page [data-v42-group="details"]) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+</style>
+{% endif %}
+
+{% set clear_bg = theme.settings.get('veloura_clear_product_purchase_bg_2026', false) %}
+{% if clear_bg.value is defined %}{% set clear_bg = clear_bg.value %}{% elseif clear_bg.selected is defined %}{% set clear_bg = clear_bg.selected %}{% endif %}
+{% if clear_bg is same as(true) or clear_bg == 'true' or clear_bg is same as(1) or clear_bg == '1' %}
+<style data-veloura-clear-bg="product_purchase">
+html body#app :is(.veloura-product-page .veloura-product-purchase-card,.veloura-product-page [data-v42-group="options"]) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+</style>
+{% endif %}
+<style id="veloura-light-header-glass-v80">
+html:not(.dark):not(.veloura-no-glass) body#app:not(.dark):not(.veloura-no-glass):not(.veloura-hero-merged) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+ background:color-mix(in srgb,var(--veloura-site-second-bg,#e6e8eb) 62%,transparent)!important;background-image:none!important;backdrop-filter:blur(20px) saturate(180%)!important;-webkit-backdrop-filter:blur(20px) saturate(180%)!important;
+}
+html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(.store-header,#mainnav,#mainnav>.inner,.veloura-home-tabs) {
+ background:transparent!important;background-image:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header::before {background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+</style>
