@@ -6113,6 +6113,22 @@ html body#app.veloura-hero-merged .veloura-tabs-detached-frame .veloura-home-tab
 html body#app .veloura-tabs-detached-frame #veloura-home-tabs > .container {width:100%!important;max-width:none!important;padding-inline:0!important}
 
 </style>
+
+<style id="veloura-header-solid-edges-v75">
+html body#app .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface,
+html body#app.veloura-no-glass .veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+border:0!important;box-shadow:none!important;
+}
+html body#app .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface::before,
+html body#app .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface::after,
+html body#app.veloura-no-glass .veloura-header-tabs-stack .veloura-header-tabs-stack__surface::before,
+html body#app.veloura-no-glass .veloura-header-tabs-stack .veloura-header-tabs-stack__surface::after {border:0!important;box-shadow:none!important;background-image:none!important}
+html body#app .store-header:not(.veloura-top-blur) :is(#mainnav,.main-nav-container,.inner),
+html body#app.veloura-no-glass .store-header :is(#mainnav,.main-nav-container,.inner) {border-bottom:0!important;box-shadow:none!important}
+html body#app.veloura-hero-merged .veloura-header-tabs-stack__surface,
+html body#app.veloura-hero-merged #veloura-home-tabs {border:0!important;box-shadow:none!important}
+</style>
+
 </body>
 </html>
 <style id="veloura-detached-tabs-visible-v67">
@@ -6182,27 +6198,30 @@ border-top-color:rgba(255,255,255,.20)!important;border-bottom-color:rgba(255,25
 <style id="veloura-tabs-header-material-v74">
 html body#app .veloura-tabs-detached-frame {margin-top:0!important;margin-bottom:0!important;top:var(--veloura-detached-tabs-top,10px)!important}
 </style>
-<script id="veloura-tabs-header-material-runtime-v74">
+<script id="veloura-tabs-header-material-runtime-v75">
 (()=>{
-const frame=document.querySelector('.veloura-tabs-detached-frame');const tabs=frame?.querySelector('#veloura-home-tabs');const header=document.querySelector('.veloura-header-tabs-stack__surface');const stack=document.querySelector('[data-veloura-header-tabs-stack]');
-if(!frame||!tabs||!header||!stack)return;
+const frame=document.querySelector('.veloura-tabs-detached-frame');const tabs=frame?.querySelector('#veloura-home-tabs');const header=document.querySelector('.veloura-header-tabs-stack__surface');const stack=document.querySelector('[data-veloura-header-tabs-stack]');const storeHeader=document.querySelector('.store-header');
+if(!tabs||!header||!stack)return;
 let pending=0;
-const update=()=>{pending=0;const style=getComputedStyle(header);const merged=document.body.classList.contains('veloura-hero-merged');
-for(const prop of ['background-color','background-image','backdrop-filter','-webkit-backdrop-filter','border-radius'])tabs.style.setProperty(prop,merged&&prop==='background-color'?'transparent':style.getPropertyValue(prop),'important');
-tabs.style.setProperty('box-shadow','none','important');
-const dark=document.documentElement.classList.contains('dark')||document.body.classList.contains('dark')||merged;
-tabs.style.setProperty('border-top','1px solid '+(dark?'rgba(255,255,255,.18)':'rgba(15,23,42,.18)'),'important');
-tabs.style.setProperty('border-bottom','1px solid '+(dark?'rgba(255,255,255,.10)':'rgba(15,23,42,.09)'),'important');
-// Account for the header container's padding below its painted surface.
+const update=()=>{
+pending=0;
+const hs=getComputedStyle(header);const merged=document.body.classList.contains('veloura-hero-merged');
+const disabled=document.body.classList.contains('veloura-no-glass')||document.documentElement.classList.contains('veloura-no-glass');
+const glass=!disabled&&(stack.classList.contains('veloura-header-tabs-stack--blur')||storeHeader?.classList.contains('veloura-top-blur'));
+const filter=glass&&!merged?(hs.backdropFilter!=='none'?hs.backdropFilter:'var(--veloura-header-glass-filter,blur(20px) saturate(200%))'):'none';
+tabs.style.setProperty('background-color',merged?'transparent':glass?'var(--veloura-header-glass-background)': 'var(--veloura-tabs-bar-bg, '+hs.backgroundColor+')','important');
+tabs.style.setProperty('background-image','none','important');
+tabs.style.setProperty('backdrop-filter',filter,'important');tabs.style.setProperty('-webkit-backdrop-filter',filter,'important');
+tabs.style.setProperty('border-radius',hs.borderRadius,'important');tabs.style.setProperty('box-shadow','none','important');
+const dark=document.documentElement.classList.contains('dark')||document.body.classList.contains('dark');
+tabs.style.setProperty('border-top',glass&&!merged?'1px solid '+(dark?'rgba(255,255,255,.18)':'rgba(15,23,42,.18)'):'0px solid transparent','important');
+tabs.style.setProperty('border-bottom',glass&&!merged?'1px solid '+(dark?'rgba(255,255,255,.10)':'rgba(15,23,42,.09)'):'0px solid transparent','important');
 const tail=Math.max(0,stack.getBoundingClientRect().bottom-header.getBoundingClientRect().bottom);
-frame.style.setProperty('margin-top',(10-tail)+'px','important');
-frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,header.getBoundingClientRect().bottom)+10+'px');
+frame.style.setProperty('margin-top',(10-tail)+'px','important');frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,header.getBoundingClientRect().bottom)+10+'px');
 };
 const schedule=()=>{if(!pending)pending=requestAnimationFrame(update);};
 new ResizeObserver(schedule).observe(stack);new ResizeObserver(schedule).observe(header);
-new MutationObserver(schedule).observe(header,{attributes:true,attributeFilter:['class','style']});
-new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});
-new MutationObserver(schedule).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+const observer=new MutationObserver(schedule);for(const el of [header,stack,storeHeader,document.body,document.documentElement])if(el)observer.observe(el,{attributes:true,attributeFilter:['class','style']});
 window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule,{passive:true});document.addEventListener('veloura:header:position',schedule);update();
 })();
 </script>
