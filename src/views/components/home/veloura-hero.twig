@@ -1240,3 +1240,13 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 })();
 </script>
 {% endif %}
+<style id="veloura-active-tab-color-v70">
+html body#app #veloura-home-tabs [data-veloura-tab-target].is-active,
+html body#app #veloura-home-tabs [data-veloura-tab-target][aria-selected="true"] {
+--veloura-tab-merge-color:var(--veloura-tabs-active-color,#003848);
+}
+html body#app #veloura-home-tabs :is([data-veloura-tab-target].is-active,[data-veloura-tab-target][aria-selected="true"]),
+html body#app #veloura-home-tabs :is([data-veloura-tab-target].is-active,[data-veloura-tab-target][aria-selected="true"]) :is(span,i) {
+color:var(--veloura-tabs-active-color,#003848)!important;-webkit-text-fill-color:var(--veloura-tabs-active-color,#003848)!important;
+}
+</style>
