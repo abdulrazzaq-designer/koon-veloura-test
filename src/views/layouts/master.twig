@@ -6137,7 +6137,7 @@ const filter=glass&&!merged?(hs.backdropFilter!=='none'?hs.backdropFilter:'var(-
 tabs.style.setProperty('background-color',merged?'transparent':glass?'var(--veloura-header-glass-background)': 'var(--veloura-tabs-bar-bg, '+hs.backgroundColor+')','important');
 tabs.style.setProperty('background-image','none','important');
 tabs.style.setProperty('backdrop-filter',filter,'important');tabs.style.setProperty('-webkit-backdrop-filter',filter,'important');
-tabs.style.setProperty('border-radius',hs.borderRadius,'important');tabs.style.setProperty('box-shadow','none','important');
+tabs.style.setProperty('border-radius',getComputedStyle(tabs).getPropertyValue('--veloura-radius').trim()||'16px','important');tabs.style.setProperty('box-shadow','none','important');
 const dark=document.documentElement.classList.contains('dark')||document.body.classList.contains('dark');
 tabs.style.setProperty('border-top',glass&&!merged?'1px solid '+(dark?'rgba(255,255,255,.18)':'rgba(15,23,42,.18)'):'0px solid transparent','important');
 tabs.style.setProperty('border-bottom',glass&&!merged?'1px solid '+(dark?'rgba(255,255,255,.10)':'rgba(15,23,42,.09)'):'0px solid transparent','important');

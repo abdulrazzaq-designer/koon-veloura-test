@@ -977,3 +977,23 @@ html body#app .store-header[data-veloura-header].veloura-desktop-search-bar #mai
 html body#app .store-header[data-veloura-header] #mainnav :is(.sub-menu,.veloura-submenu-surface) {border-radius:min(var(--veloura-header-surface-radius,16px),20px)!important;}
 }
 </style>
+
+<style id="veloura-desktop-header-density-v77">
+@media(min-width:1024px){
+html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header].veloura-desktop-menu-links #mainnav .veloura-header-grid {
+ --veloura-header-rail-pad-top:6px!important;
+ padding-top:6px!important;padding-bottom:6px!important;row-gap:4px!important;min-height:0!important;align-content:start!important;
+}
+html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header].veloura-desktop-menu-links #mainnav .veloura-menu-links-wrap,
+html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header].veloura-desktop-menu-links #mainnav .veloura-menu-links-wrap custom-main-menu,
+html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header].veloura-desktop-menu-links #mainnav .veloura-menu-links-wrap :is(.main-menu,.veloura-main-menu-desktop) {
+ margin-block:0!important;padding-block:0!important;min-height:0!important;
+}
+html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header].veloura-desktop-menu-links #mainnav :is(.main-menu,.veloura-main-menu-desktop)>li.root-level>a {
+ padding-block:4px!important;min-height:32px!important;line-height:24px!important;
+}
+html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-veloura-header].veloura-desktop-menu-links #mainnav :is(.main-menu,.veloura-main-menu-desktop)>li.root-level>a img {
+ width:24px!important;height:24px!important;object-fit:contain!important;
+}
+}
+</style>
