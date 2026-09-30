@@ -2649,49 +2649,24 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     }
 
     .veloura-loader-skip-check:checked ~ #veloura-loader-2026{
-      display:none!important;opacity:0!important;visibility:hidden!important;animation:none!important;
+      opacity:0!important;visibility:hidden!important;animation:none!important;transition:opacity var(--vl-fade) ease,visibility 0s linear var(--vl-fade)!important;
     }
 
-    /* HIDING WITHOUT SNAPPING THE BLUR OFF.
-
-       Fading the root's opacity looks wrong here, and for the same reason the
-       glass was broken in the first place: the moment opacity drops below 1
-       the element becomes a backdrop root, so the blur vanishes instantly on
-       frame one while the tint and the text carry on fading. That is exactly
-       the "blur disappears suddenly, the rest fades" behaviour.
-
-       So the root keeps opacity: 1 throughout. What fades is the blur itself
-       (backdrop-filter easing to blur(0)), the tint, and the content — each on
-       its own transition, all over the same duration. visibility flips only
-       after the fade has finished. */
-    #veloura-loader-2026.veloura-loader-is-hidden{
-      opacity:1!important;
-      animation:none!important;
-      pointer-events:none!important;
-      visibility:hidden!important;
-      transition:visibility 0s linear var(--vl-fade)!important;
+    /* Keep the backdrop root stable; fade all painted layers together. */
+    html body #veloura-loader-2026 .veloura-loader-bg,
+    html body #veloura-loader-2026 .veloura-loader-content,
+    html body #veloura-loader-2026 .veloura-loader-skip-label {
+      transition:opacity var(--vl-fade) ease!important;
     }
-
-    /* The dark-mode tint above is written as html.dark #id.class .class, so
-       the hide state has to out-rank that, not just come after it — hence the
-       html body prefix and both state classes on the root. */
-    html body #veloura-loader-2026.veloura-loader-bg-glass.veloura-loader-is-hidden .veloura-loader-bg,
-    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-bg{
-      background-color:transparent!important;
-      backdrop-filter:blur(0px) saturate(100%)!important;
-      -webkit-backdrop-filter:blur(0px) saturate(100%)!important;
+    html body #veloura-loader-2026.veloura-loader-is-hidden {
+      opacity:1!important;animation:none!important;pointer-events:none!important;
+      visibility:hidden!important;transition:visibility 0s linear var(--vl-fade)!important;
     }
-
-    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-content{
-      opacity:0!important;
-      transform:translateY(-6px)!important;
-    }
-
-    #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-skip-label,
-    .veloura-loader-skip-check:checked ~ .veloura-loader-skip-label{
+    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-bg,
+    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-content,
+    html body #veloura-loader-2026.veloura-loader-is-hidden .veloura-loader-skip-label {
       opacity:0!important;
     }
-
     @keyframes velouraLoaderStableFadeOut{
       from{opacity:1;visibility:visible}
       to{opacity:0;visibility:hidden}
@@ -6133,8 +6108,9 @@ pending=0;
 const hs=getComputedStyle(header);const merged=document.body.classList.contains('veloura-hero-merged');
 const disabled=document.body.classList.contains('veloura-no-glass')||document.documentElement.classList.contains('veloura-no-glass');
 const glass=!disabled&&(stack.classList.contains('veloura-header-tabs-stack--blur')||storeHeader?.classList.contains('veloura-top-blur'));
-const filter=glass&&!merged?(hs.backdropFilter!=='none'?hs.backdropFilter:'var(--veloura-header-glass-filter,blur(20px) saturate(200%))'):'none';
-tabs.style.setProperty('background-color',merged?'transparent':glass?'var(--veloura-header-glass-background)': 'var(--veloura-tabs-bar-bg, '+hs.backgroundColor+')','important');
+const material=[hs,storeHeader?getComputedStyle(storeHeader,'::before'):null,storeHeader?getComputedStyle(storeHeader.querySelector('#mainnav > .inner')||storeHeader):null].find(c=>c&&c.backgroundColor!=='transparent'&&c.backgroundColor!=='rgba(0, 0, 0, 0)')||hs;
+const filter=glass&&!merged?(material.backdropFilter!=='none'?material.backdropFilter:'var(--veloura-header-glass-filter,blur(20px) saturate(200%))'):'none';
+tabs.style.setProperty('background-color',merged?'transparent':glass?material.backgroundColor: 'var(--veloura-tabs-bar-bg, '+hs.backgroundColor+')','important');
 tabs.style.setProperty('background-image','none','important');
 tabs.style.setProperty('backdrop-filter',filter,'important');tabs.style.setProperty('-webkit-backdrop-filter',filter,'important');
 tabs.style.setProperty('border-radius',getComputedStyle(tabs).getPropertyValue('--veloura-radius').trim()||'16px','important');tabs.style.setProperty('box-shadow','none','important');
@@ -6149,4 +6125,18 @@ new ResizeObserver(schedule).observe(stack);new ResizeObserver(schedule).observe
 const observer=new MutationObserver(schedule);for(const el of [header,stack,storeHeader,document.body,document.documentElement])if(el)observer.observe(el,{attributes:true,attributeFilter:['class','style']});
 window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule,{passive:true});document.addEventListener('veloura:header:position',schedule);update();
 })();
+</script>
+
+<style id="veloura-tabs-container-v78">
+html body#app #veloura-home-tabs > .container {
+ width:min(100%,var(--veloura-tabs-content-width,1280px))!important;max-width:none!important;margin-inline:auto!important;padding-inline:0!important;background:transparent!important;
+}
+html body#app #veloura-home-tabs .veloura-home-tabs__track {
+ display:grid!important;grid-auto-flow:column!important;grid-auto-columns:minmax(0,1fr)!important;gap:0!important;padding-inline:0!important;
+}
+html body#app #veloura-home-tabs .veloura-home-tabs__button {width:100%!important;min-width:0!important;max-width:none!important;justify-content:center!important;}
+</style>
+<script id="veloura-tabs-container-runtime-v78">
+(()=>{const tabs=document.querySelector('#veloura-home-tabs'),grid=document.querySelector('[data-veloura-header] .veloura-header-grid');if(!tabs||!grid)return;
+const sync=()=>{const width=grid.getBoundingClientRect().width;if(width>0)tabs.style.setProperty('--veloura-tabs-content-width',width+'px');};new ResizeObserver(sync).observe(grid);window.addEventListener('resize',sync,{passive:true});sync();})();
 </script>
