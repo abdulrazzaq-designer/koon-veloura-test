@@ -6124,3 +6124,30 @@ html body#app .veloura-tabs-detached-frame .veloura-home-tabs__button {flex:0 0 
 </style>
 
 
+
+<style id="veloura-detached-tabs-sticky-v71">
+html body#app .veloura-tabs-detached-frame {position:sticky!important;top:var(--veloura-detached-tabs-top,12px)!important;z-index:139}
+html body#app .veloura-tabs-detached-frame.is-scroll-hidden {visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+</style>
+<script id="veloura-detached-tabs-sticky-runtime-v71">
+(()=>{
+const frame=document.querySelector('.veloura-tabs-detached-frame');
+const tabs=frame?.querySelector('[data-veloura-home-tabs]');
+if(!tabs)return;
+const header=document.querySelector('[data-veloura-header-tabs-stack]');
+let pending=0;
+const update=()=>{
+pending=0;
+let bottom=0;
+if(header){const rect=header.getBoundingClientRect();const style=getComputedStyle(header);if(['sticky','fixed'].includes(style.position)&&rect.bottom>0&&rect.top<innerHeight)bottom=rect.bottom;}
+frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,bottom)+12+'px');
+const hide=tabs.dataset.velouraTabsHideScroll==='true'&&window.scrollY>4;
+frame.classList.toggle('is-scroll-hidden',hide);
+if(hide)frame.setAttribute('inert','');else frame.removeAttribute('inert');
+};
+const schedule=()=>{if(!pending)pending=requestAnimationFrame(update);};
+window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule,{passive:true});document.addEventListener('veloura:header:position',schedule);
+if(header)new ResizeObserver(schedule).observe(header);
+update();
+})();
+</script>
