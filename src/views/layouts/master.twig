@@ -6102,7 +6102,7 @@ pending=0;
 const hs=getComputedStyle(header);const merged=document.body.classList.contains('veloura-hero-merged');
 const disabled=document.body.classList.contains('veloura-no-glass')||document.documentElement.classList.contains('veloura-no-glass');
 const glass=!disabled&&(stack.classList.contains('veloura-header-tabs-stack--blur')||storeHeader?.classList.contains('veloura-top-blur'));
-const material=[hs,storeHeader?getComputedStyle(storeHeader,'::before'):null,storeHeader?getComputedStyle(storeHeader.querySelector('#mainnav > .inner')||storeHeader):null].find(c=>c&&c.backgroundColor!=='transparent'&&c.backgroundColor!=='rgba(0, 0, 0, 0)')||hs;
+const material=[hs,getComputedStyle(header,'::before'),storeHeader?getComputedStyle(storeHeader,'::before'):null,storeHeader?getComputedStyle(storeHeader.querySelector('#mainnav > .inner')||storeHeader):null].find(c=>c&&c.backgroundColor!=='transparent'&&c.backgroundColor!=='rgba(0, 0, 0, 0)')||hs;
 const filter=glass&&!merged?(material.backdropFilter!=='none'?material.backdropFilter:'var(--veloura-header-glass-filter,blur(20px) saturate(200%))'):'none';
 tabs.style.setProperty('background-color',merged?'transparent':glass?material.backgroundColor: 'var(--veloura-tabs-bar-bg, '+hs.backgroundColor+')','important');
 tabs.style.setProperty('background-image','none','important');
@@ -6172,12 +6172,20 @@ html body#app :is(.veloura-product-page [data-v42-group="description"],.veloura-
 html body#app :is(.veloura-product-page .veloura-product-purchase-card,.veloura-product-page [data-v42-group="options"]) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 </style>
 {% endif %}
-<style id="veloura-light-header-glass-v80">
-html:not(.dark):not(.veloura-no-glass) body#app:not(.dark):not(.veloura-no-glass):not(.veloura-hero-merged) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
- background:color-mix(in srgb,var(--veloura-site-second-bg,#e6e8eb) 62%,transparent)!important;background-image:none!important;backdrop-filter:blur(20px) saturate(180%)!important;-webkit-backdrop-filter:blur(20px) saturate(180%)!important;
-}
-html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(.store-header,#mainnav,#mainnav>.inner,.veloura-home-tabs) {
+<style id="veloura-light-header-glass-v81">
+html:not(.dark):not(.veloura-no-glass) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
  background:transparent!important;background-image:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
 }
-html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header::before {background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+html:not(.dark):not(.veloura-no-glass) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::before {
+ content:''!important;position:absolute!important;inset:0!important;z-index:0!important;border-radius:inherit!important;pointer-events:none!important;
+ background:color-mix(in srgb,var(--veloura-site-second-bg,#e6e8eb) 62%,transparent)!important;background-image:none!important;backdrop-filter:blur(20px) saturate(180%)!important;-webkit-backdrop-filter:blur(20px) saturate(180%)!important;opacity:1!important;
+}
+html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::after,
+html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .store-header::before,
+html:not(.dark) body#app:not(.dark):not(.veloura-no-glass) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface :is(.store-header,#mainnav,#mainnav>.inner,.main-nav-container,.main-nav-container>.inner,.veloura-header-container,.veloura-header-grid,.veloura-home-tabs,.veloura-home-tabs__inner) {
+ background:transparent!important;background-image:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+html:not(.dark):not(.veloura-no-glass) body#app:not(.dark):not(.veloura-no-glass).veloura-hero-merged #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface::before {
+ background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
 </style>
