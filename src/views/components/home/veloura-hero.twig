@@ -208,7 +208,7 @@ body .veloura-hero > .hero__wrap.container {
    اللابتوب والجوال وبين المتاجر. وعند أول تمرير تعود خلفية الهيدر حتى
    يبقى مقروءاً فوق بقية الصفحة. */
 .veloura-hero.hero--merged {
-  margin-top: calc(var(--hero-header-h, 0px) * -1);
+  margin-top: calc(var(--hero-header-h, 0px) * -1) !important;
   padding-top: calc(var(--hero-header-h, 0px) + clamp(28px, 5vw, 72px)) !important;
   border-start-start-radius: 0;
   border-start-end-radius: 0;
@@ -1086,6 +1086,8 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     var measure = function () {
       if (!headerEl) return;
       var h = Math.round(headerEl.getBoundingClientRect().height);
+      var detachedTabs = document.querySelector('.veloura-tabs-detached-frame');
+      if (detachedTabs) { var tabsStyle = getComputedStyle(detachedTabs); h += detachedTabs.getBoundingClientRect().height + (parseFloat(tabsStyle.marginTop)||0) + (parseFloat(tabsStyle.marginBottom)||0); }
       if (h > 0) root.style.setProperty('--hero-header-h', h + 'px');
     };
 

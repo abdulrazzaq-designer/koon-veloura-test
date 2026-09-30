@@ -2955,6 +2955,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {% set vht_display = _self.veloura_dm_value(theme.settings.get('veloura_home_tabs_display_2026', true), true)|trim|lower in ['true','1','on'] %}
 {% set vht_connect = _self.veloura_dm_value(theme.settings.get('veloura_home_tabs_sticky_v4_2026', true), true)|trim|lower in ['true','1','on'] %}
+{% set vht_normalized_items = [] %}
+{% for tab in vht_items|default([]) %}
+  {% if tab.value is defined and tab.name is not defined %}{% set tab = tab.value %}{% endif %}
+  {% set tab_name = _self.veloura_dm_value(tab.name|default(''), '')|trim %}
+  {% if tab_name != '' %}{% set vht_normalized_items = vht_normalized_items|merge([tab|merge({'name':tab_name})]) %}{% endif %}
+{% endfor %}
+{% set vht_items = vht_normalized_items %}
 {% set vht_valid_tabs = vht_items|default([])|slice(0,10)|filter(tab => tab.name|default('') != '') %}
 {% set vht_has_tabs = is_page('index') and vht_display and vht_valid_tabs|length > 0 %}
 {% set vht_tabs_connected = vht_has_tabs and vht_connect %}
