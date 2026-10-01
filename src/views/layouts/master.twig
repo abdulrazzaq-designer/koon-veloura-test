@@ -262,7 +262,7 @@
         {% set vh_blur_raw = vh_blur_setting.selected %}
       {% endif %}
     {% endif %}
-    {% set vh_blur = vh_blur_raw == true or vh_blur_raw == 'true' or vh_blur_raw == 1 or vh_blur_raw == '1' or vh_blur_raw == 'on' %}
+    {% set vh_blur = vh_blur_raw is same as(true) or vh_blur_raw is same as(1) or vh_blur_raw == 'true' or vh_blur_raw == '1' or vh_blur_raw == 'on' %}
 
     {% set vh_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v6_2026', false) %}
     {% set vh_hide_raw = vh_hide_setting %}
@@ -6200,12 +6200,12 @@ html:not(.dark) body#app:not(.dark).veloura-hero-merged #veloura-header-tabs-sta
 <style id="veloura-background-single-layer-v84">
 html body#app {
  --veloura-active-page-image:{% if v84_background_allowed and veloura_site_bg_image %}url('{{ veloura_site_bg_image }}'){% else %}none{% endif %};
- --veloura-page-image-size:auto;--veloura-page-image-repeat:repeat;
+ --veloura-page-image-size:100% auto;--veloura-page-image-repeat:repeat-y;
  position:relative!important;z-index:0;background-image:none!important;
 }
 html.dark body#app,html body#app.dark {
  --veloura-active-page-image:{% if v84_background_allowed and v82_dark_image %}url('{{ v82_dark_image }}'){% else %}none{% endif %};
- --veloura-page-image-size:cover;--veloura-page-image-repeat:no-repeat;
+ --veloura-page-image-size:100% auto;--veloura-page-image-repeat:repeat-y;
  background-image:none!important;
 }
 html body#app::before,html body#app.veloura-general-enabled.veloura-site-has-bg-image::before,html body#app.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-bg-fixed::before {
@@ -6215,3 +6215,25 @@ html body#app::before,html body#app.veloura-general-enabled.veloura-site-has-bg-
 }
 @media(max-width:1023px){html:not(.dark) body#app:not(.dark){--veloura-page-image-size:100% auto;--veloura-page-image-repeat:repeat-y;}}
 </style>
+
+<style id="veloura-header-glass-off-v85">
+html body#app #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface,
+html body#app #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface :is(.store-header,#mainnav,.inner) {
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;box-shadow:none!important;
+}
+html body#app #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface {background:var(--veloura-header-solid-bg,#fff)!important;}
+html.dark body#app #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface,
+html body#app.dark #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface {background:var(--veloura-dark-secondary-bg,#161b22)!important;}
+html body#app #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) :is(.veloura-header-tabs-stack__surface,.store-header)::before,
+html body#app #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) :is(.veloura-header-tabs-stack__surface,.store-header)::after {display:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+html body#app.veloura-hero-merged #veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) .veloura-header-tabs-stack__surface {background:transparent!important;}
+@media(max-width:1023px){
+html body#app.veloura-product-sticky-active {padding-bottom:0!important;}
+html body#app.veloura-product-sticky-active .store-footer .veloura-footer-bottom::after {content:'';display:block;height:var(--veloura-purchase-clearance,0px);}
+}
+</style>
+<script id="veloura-purchase-footer-clearance-v85">
+(()=>{const page=document.querySelector('.veloura-product-page'),bar=page?.querySelector('.sticky-product-bar'),footer=document.querySelector('.store-footer');if(!bar||!footer)return;
+const sync=()=>{const c=getComputedStyle(bar),r=bar.getBoundingClientRect();const active=innerWidth<1024&&document.body.classList.contains('veloura-product-sticky-active')&&c.position==='fixed'&&c.display!=='none'&&c.visibility!=='hidden'&&r.height>0;footer.style.setProperty('--veloura-purchase-clearance',(active?Math.max(0,innerHeight-r.top):0)+'px');};
+new ResizeObserver(sync).observe(bar);new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']});window.addEventListener('resize',sync,{passive:true});sync();})();
+</script>

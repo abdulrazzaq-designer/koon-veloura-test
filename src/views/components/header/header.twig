@@ -44,7 +44,7 @@
     {% set top_blur_raw = top_blur_setting.selected %}
   {% endif %}
 {% endif %}
-{% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
+{% set top_blur = top_blur_raw is same as(true) or top_blur_raw is same as(1) or top_blur_raw == 'true' or top_blur_raw == '1' or top_blur_raw == 'on' %}
 
 {# Category icons in the desktop dropdown. Same tolerant unwrapping as the
    settings above: Salla returns a bare value, {value}, or {selected}. #}
