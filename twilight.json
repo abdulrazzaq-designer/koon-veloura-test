@@ -3696,38 +3696,6 @@
       ]
     },
     {
-      "id": "veloura_newsletter_icon_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "إظهار أيقونة البريد",
-      "value": true,
-      "required": false,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_newsletter_glass_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "تفعيل الخلفية الزجاجية",
-      "value": true,
-      "required": false,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_newsletter_bg_2026",
       "type": "string",
       "format": "color",
@@ -3803,30 +3771,10 @@
       ]
     },
     {
-      "id": "veloura_newsletter_width_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "العرض الأقصى للبطاقة — بكسل",
-      "value": "920",
-      "description": "عرض البطاقة بالبكسل، بحد أدنى فعلي 560 بكسل. تتناسب تلقائيًا مع شاشة الجوال.",
-      "required": false,
-      "inputType": "range",
-      "minimum": "0",
-      "maximum": "1200",
-      "step": "20",
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_newsletter_radius_2026",
       "type": "number",
       "format": "slider",
-      "label": "تدوير حواف البطاقة — بكسل",
+      "label": "تدوير جميع الحواف",
       "value": 24,
       "required": false,
       "inputType": "range",
@@ -3839,27 +3787,8 @@
           "operation": "=",
           "value": true
         }
-      ]
-    },
-    {
-      "id": "veloura_newsletter_opacity_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "كثافة لون الخلفية الزجاجية — %",
-      "value": "72",
-      "description": "كثافة اللون من 0 إلى 95٪؛ القيمة الأقل تُظهر الخلفية أكثر.",
-      "required": false,
-      "inputType": "range",
-      "minimum": "0",
-      "maximum": "95",
-      "step": "1",
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
+      ],
+      "description": "يشمل البطاقة وحقل الاشتراك والزر والأيقونة."
     },
     {
       "type": "static",
