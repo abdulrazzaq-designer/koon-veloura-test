@@ -1525,6 +1525,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
 
                     {% hook 'product:single.form.start' %}
 
+                    <span id="veloura-size-product" hidden data-product-type="{{ product.type|e }}" data-category-id="{{ product.category.id|default('')|e }}"></span>
                     <div class="veloura-product-options-wrap">
                         {% include 'pages.partials.product.options' %}
                     </div>
