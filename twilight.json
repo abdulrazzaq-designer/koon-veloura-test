@@ -3565,6 +3565,41 @@
       ]
     },
     {
+      "id": "veloura_newsletter_placement_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "مكان عرض النشرة البريدية",
+      "icon": "sicon-location",
+      "selected": [
+        {
+          "label": "متداخلة مع الحافة العلوية للفوتر",
+          "value": "edge",
+          "key": "newsletter-edge"
+        }
+      ],
+      "options": [
+        {
+          "label": "متداخلة مع الحافة العلوية للفوتر",
+          "value": "edge",
+          "key": "newsletter-edge"
+        },
+        {
+          "label": "داخل الفوتر — فوق المحتوى",
+          "value": "inside",
+          "key": "newsletter-inside"
+        }
+      ],
+      "source": "Manual",
+      "required": true,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_newsletter_title_2026",
       "type": "string",
       "format": "text",

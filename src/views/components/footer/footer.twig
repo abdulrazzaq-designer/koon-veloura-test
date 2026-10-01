@@ -238,8 +238,12 @@
 {% if vn_opacity.value is defined %}{% set vn_opacity = vn_opacity.value %}{% elseif vn_opacity.selected is defined %}{% set vn_opacity = vn_opacity.selected %}{% endif %}
 {% set vn_opacity = vn_opacity < 0 ? 0 : (vn_opacity > 95 ? 95 : vn_opacity) %}
 
-{% if vn_active %}
-<section id="veloura-newsletter" aria-labelledby="veloura-newsletter-heading" dir="rtl" data-glass="{{ vn_glass ? 'true' : 'false' }}" style="--vn-width:{{ vn_width }}px;--vn-radius:{{ vn_radius }}px;--vn-bg:{{ vn_bg }};--vn-dark-bg:{{ vn_dark_bg }};--vn-text:{{ vn_text }};--vn-dark-text:{{ vn_dark_text }};--vn-button-bg:{{ vn_button_bg }};--vn-button-text:{{ vn_button_text }};--vn-field-bg:{{ vn_field_bg }};--vn-field-text:{{ vn_field_text }};--vn-opacity:{{ vn_opacity }}%;">
+{% set vn_placement = theme.settings.get('veloura_newsletter_placement_2026', 'edge') %}
+{% if vn_placement.selected is defined %}{% set vn_placement = vn_placement.selected %}{% endif %}
+{% if vn_placement is iterable %}{% set vn_placement = vn_placement.value is defined ? vn_placement.value : (vn_placement|first).value %}{% endif %}
+{% set vn_placement = vn_placement == 'inside' ? 'inside' : 'edge' %}
+{% set vn_markup %}
+<section id="veloura-newsletter" aria-labelledby="veloura-newsletter-heading" dir="rtl" data-placement="{{ vn_placement }}" data-icon="{{ vn_icon ? 'true' : 'false' }}" data-glass="{{ vn_glass ? 'true' : 'false' }}" style="--vn-width:{{ vn_width }}px;--vn-radius:{{ vn_radius }}px;--vn-bg:{{ vn_bg }};--vn-dark-bg:{{ vn_dark_bg }};--vn-text:{{ vn_text }};--vn-dark-text:{{ vn_dark_text }};--vn-button-bg:{{ vn_button_bg }};--vn-button-text:{{ vn_button_text }};--vn-field-bg:{{ vn_field_bg }};--vn-field-text:{{ vn_field_text }};--vn-opacity:{{ vn_opacity }}%;">
   <div class="vn-card">
     {% if vn_image %}<div class="vn-image" style="background-image:url('{{ vn_image|e('html_attr') }}')" aria-hidden="true"></div>{% endif %}
     <div class="vn-content">
@@ -253,7 +257,8 @@
     </div>
   </div>
 </section>
-{% endif %}
+{% endset %}
+{% if vn_active and vn_placement == 'edge' %}{{ vn_markup|raw }}{% endif %}
 <footer
   id="veloura-footer"
   data-veloura-footer-build="split-files-v153"
@@ -298,7 +303,7 @@
 >
   <div class="veloura-footer-shell">
   <div aria-label="footer" class="store-footer__inner veloura-footer-main">
-    {% if vn_active %}<div class="vn-footer-space" aria-hidden="true"></div>{% endif %}
+    {% if vn_active %}{% if vn_placement == 'inside' %}{{ vn_markup|raw }}{% else %}<div class="vn-footer-space" aria-hidden="true"></div>{% endif %}{% endif %}
     <div class="veloura-footer-container">
       {% if footer_featured_layout %}
         <div class="veloura-footer-hero">
@@ -556,28 +561,32 @@ html.dark body#app #veloura-newsletter,html body#app.dark #veloura-newsletter {-
 html body#app #veloura-newsletter .vn-card {position:relative;isolation:isolate;overflow:hidden;border-radius:var(--vn-radius);color:var(--vn-ink);background:var(--vn-fill);border:1px solid color-mix(in srgb,var(--vn-ink) 15%,transparent);box-shadow:0 14px 38px rgba(0,30,45,.13);}
 html body#app #veloura-newsletter[data-glass="true"] .vn-card {background:color-mix(in srgb,var(--vn-fill) var(--vn-opacity),transparent)!important;backdrop-filter:blur(22px) saturate(150%)!important;-webkit-backdrop-filter:blur(22px) saturate(150%)!important;}
 html body#app #veloura-newsletter .vn-image {position:absolute;inset:0;z-index:-1;background-size:cover;background-position:center;opacity:.22;pointer-events:none;}
-html body#app #veloura-newsletter .vn-content {display:grid;grid-template-columns:auto 1fr;align-items:center;gap:20px;padding:28px 32px;}
+html body#app #veloura-newsletter .vn-content {display:grid;grid-template-columns:auto minmax(0,1fr) minmax(280px,1.15fr);align-items:center;gap:20px;padding:24px 28px;}
 html body#app #veloura-newsletter .vn-icon {width:56px;height:56px;border-radius:min(var(--vn-radius),18px);display:grid;place-items:center;background:var(--vn-button-bg);color:var(--vn-button-text);}
 html body#app #veloura-newsletter .vn-copy {min-width:0;grid-column:2;}
-html body#app #veloura-newsletter .vn-copy:first-child {grid-column:1/-1;}
+html body#app #veloura-newsletter .vn-copy:first-child {grid-column:1;}
 html body#app #veloura-newsletter h2 {font-size:24px;font-weight:800;line-height:1.5;color:var(--vn-ink);margin:0;}
 html body#app #veloura-newsletter .vn-copy p {font-size:14px;line-height:1.8;margin:4px 0 0;color:var(--vn-ink);opacity:.8;}
-html body#app #veloura-newsletter .vn-form {grid-column:1/-1;margin:0;min-width:0;}
-html body#app #veloura-newsletter .vn-input-row {display:flex;gap:8px;padding:6px;background:var(--vn-field-bg);border-radius:min(var(--vn-radius),16px);border:1px solid color-mix(in srgb,var(--vn-field-text) 14%,transparent);}
+html body#app #veloura-newsletter .vn-form {grid-column:auto;margin:0;min-width:0;}
+html body#app #veloura-newsletter .vn-input-row {display:flex;flex-direction:row;gap:8px;padding:6px;background:var(--vn-field-bg);border-radius:min(var(--vn-radius),16px);border:1px solid color-mix(in srgb,var(--vn-field-text) 14%,transparent);}
 html body#app #veloura-newsletter input {min-width:0;flex:1;border:0!important;background:transparent!important;color:var(--vn-field-text)!important;padding:10px 12px;font-size:14px;box-shadow:none!important;text-align:right;}
 html body#app #veloura-newsletter input::placeholder {color:var(--vn-field-text);opacity:.6;}
-html body#app #veloura-newsletter button {display:flex;align-items:center;justify-content:center;gap:16px;background:var(--vn-button-bg)!important;color:var(--vn-button-text)!important;border-radius:min(var(--vn-radius),12px);border:0;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
+html body#app #veloura-newsletter button {display:flex;align-items:center;justify-content:center;gap:8px;background:var(--vn-button-bg)!important;color:var(--vn-button-text)!important;border-radius:min(var(--vn-radius),12px);border:0;padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
 html body#app #veloura-newsletter :is(input,button):focus-visible {outline:2px solid var(--vn-button-bg);outline-offset:3px;}
 html body#app #veloura-newsletter .vn-note {margin:10px 0 0;font-size:11px;color:var(--vn-ink);opacity:.75;line-height:1.6;}
 html body#app #veloura-newsletter + #veloura-footer {margin-top:0!important;}
 html body#app #veloura-newsletter + #veloura-footer .veloura-footer-main {padding-top:0!important;}
 html body#app #veloura-newsletter + #veloura-footer .vn-footer-space {height:calc(var(--vn-half,110px) + 36px);}
-@media(max-width:600px){
-html body#app #veloura-newsletter .vn-content {padding:22px 18px;gap:14px;}
+html body#app #veloura-newsletter[data-icon="false"] .vn-content {grid-template-columns:minmax(0,1fr) minmax(280px,1.15fr);}
+html body#app #veloura-footer #veloura-newsletter[data-placement="inside"] {height:auto;margin:0 auto 32px;padding-top:28px;}
+@media(max-width:767px){
+html body#app #veloura-newsletter[data-icon="false"] .vn-content {grid-template-columns:minmax(0,1fr);}
+html body#app #veloura-newsletter .vn-content {grid-template-columns:auto minmax(0,1fr);padding:20px 16px;gap:12px;}
 html body#app #veloura-newsletter h2 {font-size:20px;}
 html body#app #veloura-newsletter .vn-icon {width:44px;height:44px;}
-html body#app #veloura-newsletter .vn-input-row {flex-direction:column;}
-html body#app #veloura-newsletter button {width:100%;}
+html body#app #veloura-newsletter .vn-form {grid-column:1/-1;}
+html body#app #veloura-newsletter button {width:auto;flex:0 0 auto;padding:10px 12px;font-size:13px;}
+html body#app #veloura-newsletter input {width:0;padding:10px 6px;font-size:13px;}
 }
 </style>
 <script id="veloura-newsletter-runtime-v88">
