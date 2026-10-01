@@ -10784,6 +10784,16 @@
               "key": "fba699c6-0d42-12e5-02c6-fa21962ac285"
             },
             {
+              "label": "دليل المقاسات",
+              "value": "sizes",
+              "key": "veloura-fab-sizes-2026"
+            },
+            {
+              "label": "ولاء العملاء",
+              "value": "loyalty",
+              "key": "veloura-fab-loyalty-2026"
+            },
+            {
               "label": "رابط مخصص",
               "value": "custom",
               "key": "dd1753ca-2703-10ef-ce79-37b0fc9650c4"
@@ -10798,7 +10808,7 @@
           "icon": "sicon-link",
           "value": "",
           "required": false,
-          "description": "واتساب واتصال: الرقم بصيغة دولية بلا صفر ولا رموز، مثل 9665xxxxxxxx. الشبكات: المعرّف فقط أو الرابط كاملًا. المخصص: الرابط كاملًا."
+          "description": "واتساب واتصال: الرقم بصيغة دولية بلا صفر ولا رموز، مثل 9665xxxxxxxx. الشبكات: المعرّف فقط أو الرابط كاملًا. المقاسات والولاء: رابط الصفحة أو الدليل الكامل، مثل /pages/sizes أو /loyalty."
         },
         {
           "id": "label",
