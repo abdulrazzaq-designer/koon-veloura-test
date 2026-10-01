@@ -2354,6 +2354,70 @@
       ]
     },
     {
+      "id": "veloura_top_login_bg_2026",
+      "type": "string",
+      "format": "color",
+      "label": "خلفية زر تسجيل الدخول — اللابتوب",
+      "icon": "sicon-format-fill",
+      "value": "#ffffff",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_top_login_text_2026",
+      "type": "string",
+      "format": "color",
+      "label": "نص وأيقونة تسجيل الدخول — اللابتوب",
+      "icon": "sicon-format-fill",
+      "value": "#6b7280",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_top_locale_bg_2026",
+      "type": "string",
+      "format": "color",
+      "label": "خلفية زر اللغة والعملة — اللابتوب",
+      "icon": "sicon-format-fill",
+      "value": "#ffffff",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_top_locale_text_2026",
+      "type": "string",
+      "format": "color",
+      "label": "نص وأيقونات اللغة والعملة — اللابتوب",
+      "icon": "sicon-format-fill",
+      "value": "#6b7280",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "جعل القسم العلوي ملء الشاشة في اللابتوب",

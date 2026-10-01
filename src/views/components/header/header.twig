@@ -997,3 +997,24 @@ html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-
 }
 }
 </style>
+{% set v86_login_bg = theme.settings.get('veloura_top_login_bg_2026', '#ffffff') %}
+{% if v86_login_bg.value is defined %}{% set v86_login_bg = v86_login_bg.value %}{% endif %}
+{% set v86_login_text = theme.settings.get('veloura_top_login_text_2026', '#6b7280') %}
+{% if v86_login_text.value is defined %}{% set v86_login_text = v86_login_text.value %}{% endif %}
+{% set v86_locale_bg = theme.settings.get('veloura_top_locale_bg_2026', '#ffffff') %}
+{% if v86_locale_bg.value is defined %}{% set v86_locale_bg = v86_locale_bg.value %}{% endif %}
+{% set v86_locale_text = theme.settings.get('veloura_top_locale_text_2026', '#6b7280') %}
+{% if v86_locale_text.value is defined %}{% set v86_locale_text = v86_locale_text.value %}{% endif %}
+<style id="veloura-desktop-controls-v86">
+@media(min-width:1024px){
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-header-icon.veloura-lang-desktop {
+ order:4!important;position:static!important;inset:auto!important;transform:none!important;margin:0!important;margin-inline:0!important;flex:0 0 auto!important;
+}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header].veloura-desktop-search-icon_right #mainnav .veloura-search-toggle {margin:0!important;margin-left:auto!important;}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header].veloura-desktop-search-icon_left #mainnav .veloura-dark-toggle {margin:0!important;margin-left:auto!important;}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-login-btn {background:{{ v86_login_bg }}!important;background-image:none!important;color:{{ v86_login_text }}!important;-webkit-text-fill-color:{{ v86_login_text }}!important;}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-login-btn :is(span,i) {color:{{ v86_login_text }}!important;-webkit-text-fill-color:{{ v86_login_text }}!important;}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-lang-desktop {background:{{ v86_locale_bg }}!important;background-image:none!important;color:{{ v86_locale_text }}!important;-webkit-text-fill-color:{{ v86_locale_text }}!important;}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-lang-desktop :is(span,i) {color:{{ v86_locale_text }}!important;-webkit-text-fill-color:{{ v86_locale_text }}!important;}
+}
+</style>
