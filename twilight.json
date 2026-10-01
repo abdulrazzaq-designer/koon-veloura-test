@@ -3584,7 +3584,7 @@
           "key": "newsletter-edge"
         },
         {
-          "label": "داخل الفوتر — فوق المحتوى",
+          "label": "أسفل الفوتر — فوق وسائل الدفع",
           "value": "inside",
           "key": "newsletter-inside"
         }
@@ -3598,6 +3598,42 @@
           "value": true
         }
       ]
+    },
+    {
+      "id": "veloura_newsletter_channel_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "طريقة الاشتراك",
+      "icon": "sicon-location",
+      "selected": [
+        {
+          "label": "البريد الإلكتروني",
+          "value": "email",
+          "key": "newsletter-email"
+        }
+      ],
+      "options": [
+        {
+          "label": "البريد الإلكتروني",
+          "value": "email",
+          "key": "newsletter-email"
+        },
+        {
+          "label": "رقم واتساب",
+          "value": "whatsapp",
+          "key": "newsletter-whatsapp"
+        }
+      ],
+      "source": "Manual",
+      "required": true,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "description": "اختيار نوع الحقل للمعاينة؛ استقبال الاشتراكات يحتاج ربط خدمة لاحقًا."
     },
     {
       "id": "veloura_newsletter_title_2026",
@@ -3695,23 +3731,8 @@
       "id": "veloura_newsletter_bg_2026",
       "type": "string",
       "format": "color",
-      "label": "لون الخلفية في الوضع الفاتح",
+      "label": "خلفية البطاقة",
       "value": "#f0f8fa",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_newsletter_dark_bg_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون الخلفية في الوضع الداكن",
-      "value": "#102c36",
       "required": false,
       "conditions": [
         {
@@ -3725,23 +3746,8 @@
       "id": "veloura_newsletter_text_2026",
       "type": "string",
       "format": "color",
-      "label": "لون النصوص في الوضع الفاتح",
+      "label": "نصوص البطاقة",
       "value": "#12333f",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_newsletter_dark_text_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون النصوص في الوضع الداكن",
-      "value": "#f1fafb",
       "required": false,
       "conditions": [
         {
@@ -3755,7 +3761,7 @@
       "id": "veloura_newsletter_button_bg_2026",
       "type": "string",
       "format": "color",
-      "label": "خلفية زر الاشتراك وأيقونة البريد",
+      "label": "خلفية الزر والأيقونة",
       "value": "#005369",
       "required": false,
       "conditions": [
@@ -3770,38 +3776,8 @@
       "id": "veloura_newsletter_button_text_2026",
       "type": "string",
       "format": "color",
-      "label": "نص زر الاشتراك وأيقونة البريد",
+      "label": "نص الزر والأيقونة",
       "value": "#ffffff",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_newsletter_field_bg_2026",
-      "type": "string",
-      "format": "color",
-      "label": "خلفية حقل البريد",
-      "value": "#ffffff",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_newsletter_panel_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_newsletter_field_text_2026",
-      "type": "string",
-      "format": "color",
-      "label": "نص حقل البريد",
-      "value": "#18333d",
       "required": false,
       "conditions": [
         {
