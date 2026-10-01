@@ -389,7 +389,7 @@
     </div>
   </div>
 
-  <div class="veloura-footer-bottom">
+  <div class="veloura-footer-bottom" style="background: {{ footer_bottom_bg }} !important; background-image: none !important; color: {{ footer_bottom_text_color }} !important;">
     <div class="veloura-footer-container veloura-footer-bottom__inner">
       <span class="veloura-footer-copyright">
         {% if footer_bottom_text %}
@@ -480,3 +480,9 @@ const observer=new ResizeObserver(schedule);
 sync();document.addEventListener('DOMContentLoaded',schedule,{once:true});window.addEventListener('load',schedule,{once:true});window.addEventListener('resize',schedule,{passive:true});
 })();
 </script>
+
+<style id="veloura-footer-bottom-colors-v87">
+html body#app #veloura-footer .veloura-footer-bottom {isolation:isolate!important;opacity:1!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+html body#app #veloura-footer .veloura-footer-bottom__inner {background:transparent!important;background-image:none!important;}
+html body#app #veloura-footer .veloura-footer-bottom :is(.veloura-footer-copyright,.veloura-footer-copyright a,.veloura-footer-copyright span) {color:{{ footer_bottom_text_color }}!important;-webkit-text-fill-color:{{ footer_bottom_text_color }}!important;}
+</style>

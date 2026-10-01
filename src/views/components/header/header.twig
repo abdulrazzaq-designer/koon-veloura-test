@@ -1001,10 +1001,8 @@ html body#app .veloura-header-tabs-stack .store-header.veloura-top-enabled[data-
 {% if v86_login_bg.value is defined %}{% set v86_login_bg = v86_login_bg.value %}{% endif %}
 {% set v86_login_text = theme.settings.get('veloura_top_login_text_2026', '#6b7280') %}
 {% if v86_login_text.value is defined %}{% set v86_login_text = v86_login_text.value %}{% endif %}
-{% set v86_locale_bg = theme.settings.get('veloura_top_locale_bg_2026', '#ffffff') %}
-{% if v86_locale_bg.value is defined %}{% set v86_locale_bg = v86_locale_bg.value %}{% endif %}
-{% set v86_locale_text = theme.settings.get('veloura_top_locale_text_2026', '#6b7280') %}
-{% if v86_locale_text.value is defined %}{% set v86_locale_text = v86_locale_text.value %}{% endif %}
+{% set v86_locale_bg = v86_login_bg %}
+{% set v86_locale_text = v86_login_text %}
 <style id="veloura-desktop-controls-v86">
 @media(min-width:1024px){
 html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-header-icon.veloura-lang-desktop {
