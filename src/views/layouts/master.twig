@@ -320,6 +320,11 @@
     {% set veloura_site_bg_image = theme.settings.get('veloura_site_bg_image_2026') %}
     {% set veloura_site_bg_home_only = theme.settings.get('veloura_site_bg_image_home_only_2026', false) %}
     {% set veloura_site_bg_fixed = theme.settings.get('veloura_site_bg_fixed_2026', false) %}
+    {% if veloura_site_bg_image.value is defined %}{% set veloura_site_bg_image = veloura_site_bg_image.value %}{% endif %}
+    {% if veloura_site_bg_home_only.value is defined %}{% set veloura_site_bg_home_only = veloura_site_bg_home_only.value %}{% elseif veloura_site_bg_home_only.selected is defined %}{% set veloura_site_bg_home_only = veloura_site_bg_home_only.selected %}{% endif %}
+    {% set veloura_site_bg_home_only = veloura_site_bg_home_only is same as(true) or veloura_site_bg_home_only is same as(1) or veloura_site_bg_home_only == 'true' or veloura_site_bg_home_only == '1' %}
+    {% if veloura_site_bg_fixed.value is defined %}{% set veloura_site_bg_fixed = veloura_site_bg_fixed.value %}{% elseif veloura_site_bg_fixed.selected is defined %}{% set veloura_site_bg_fixed = veloura_site_bg_fixed.selected %}{% endif %}
+    {% set veloura_site_bg_fixed = veloura_site_bg_fixed is same as(true) or veloura_site_bg_fixed is same as(1) or veloura_site_bg_fixed == 'true' or veloura_site_bg_fixed == '1' %}
 
     {% set veloura_site_spacing = theme.settings.get('veloura_site_horizontal_spacing_2026', 12) %}
     {% if veloura_site_spacing.value is defined %}
@@ -6191,9 +6196,22 @@ html:not(.dark) body#app:not(.dark).veloura-hero-merged #veloura-header-tabs-sta
 
 {% set v82_dark_image = theme.settings.get('veloura_dark_store_bg_image_2026', '') %}
 {% if v82_dark_image.value is defined %}{% set v82_dark_image = v82_dark_image.value %}{% endif %}
-<style id="veloura-background-modes-v82">
-html.dark body#app,html body#app.dark {
- background-image:{% if v82_dark_image %}url('{{ v82_dark_image }}'){% else %}none{% endif %}!important;
- background-size:cover!important;background-position:top center!important;background-repeat:no-repeat!important;
+{% set v84_background_allowed = not veloura_site_bg_home_only or is_page('index') %}
+<style id="veloura-background-single-layer-v84">
+html body#app {
+ --veloura-active-page-image:{% if v84_background_allowed and veloura_site_bg_image %}url('{{ veloura_site_bg_image }}'){% else %}none{% endif %};
+ --veloura-page-image-size:auto;--veloura-page-image-repeat:repeat;
+ position:relative!important;z-index:0;background-image:none!important;
 }
+html.dark body#app,html body#app.dark {
+ --veloura-active-page-image:{% if v84_background_allowed and v82_dark_image %}url('{{ v82_dark_image }}'){% else %}none{% endif %};
+ --veloura-page-image-size:cover;--veloura-page-image-repeat:no-repeat;
+ background-image:none!important;
+}
+html body#app::before,html body#app.veloura-general-enabled.veloura-site-has-bg-image::before,html body#app.veloura-general-enabled.veloura-site-has-bg-image.veloura-site-bg-fixed::before {
+ content:''!important;display:block!important;position:{{ veloura_site_bg_fixed ? 'fixed' : 'absolute' }}!important;
+ inset:0!important;width:100%!important;max-width:none!important;transform:none!important;z-index:-1!important;pointer-events:none!important;border-radius:0!important;
+ background-image:var(--veloura-active-page-image)!important;background-size:var(--veloura-page-image-size)!important;background-repeat:var(--veloura-page-image-repeat)!important;background-position:top center!important;background-attachment:scroll!important;
+}
+@media(max-width:1023px){html:not(.dark) body#app:not(.dark){--veloura-page-image-size:100% auto;--veloura-page-image-repeat:repeat-y;}}
 </style>
