@@ -3982,80 +3982,6 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
    later work: the bundled assets go through a build and a CDN, and this has to
    be right the moment the Twig is published.
    ========================================================================== #}
-<div id="veloura-edge-config" hidden data-build="102"
- data-enabled="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_enabled', 'false'), 'false')|trim|e }}"
- data-mode="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_mode', 'sizes'), 'sizes')|trim|e }}"
- data-side="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_side', 'right'), 'right')|trim|e }}"
- data-label="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_label', ''), '')|trim|e }}"
- data-color="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_color', '#005369'), '#005369')|trim|e }}"
- data-size-image="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_size_image', ''), '')|trim|e }}"
- data-size-text="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_size_text', ''), '')|trim|e }}"
- data-product-button="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_product_button', 'true'), 'true')|trim|e }}"
- data-loyalty-text="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_loyalty_text', ''), '')|trim|e }}"
- data-loyalty-url="{{ _self.veloura_dm_value(theme.settings.get('veloura_edge_loyalty_url', ''), '')|trim|e }}"
- data-categories="{{ theme.settings.get('veloura_edge_categories', [])|json_encode|e }}"></div>
-<style>
-
-#veloura-edge-tool .ve-tab {position:fixed;top:45%;right:0;z-index:2147481900;display:flex;align-items:center;gap:8px;writing-mode:vertical-rl;padding:14px 9px;border:1px solid #ffffff55;border-radius:14px 0 0 14px;background:var(--edge-color);color:#fff;box-shadow:0 5px 20px #0002;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;max-height:220px;}
-#veloura-edge-tool[data-side="left"] .ve-tab {right:auto;left:0;border-radius:0 14px 14px 0;}
-#ve-dialog {position:fixed;inset:0;margin:auto;width:min(640px,calc(100% - 32px));max-height:85dvh;overflow:auto;padding:24px;border:1px solid #ffffff55;border-radius:22px;background:#f8fafc;color:#15313b;box-shadow:0 25px 90px #0005;}
-#ve-dialog::backdrop {background:#07182099;backdrop-filter:blur(7px);}
-html.dark #ve-dialog,body.dark #ve-dialog {background:#14262e;color:#f1f7fa;}
-#ve-dialog .ve-head {display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px;}
-#ve-dialog h2 {font-size:22px;font-weight:800;margin:0;color:inherit;}
-#ve-dialog h3 {font-size:17px;font-weight:700;color:inherit;}
-#ve-dialog .ve-close {width:40px;height:40px;border-radius:50%;border:0;background:#8882;color:inherit;font-size:27px;cursor:pointer;}
-#ve-dialog .ve-description {white-space:pre-line;line-height:1.9;margin:12px 0 22px;color:inherit;}
-#ve-dialog img {display:block;max-width:100%;height:auto;border-radius:12px;margin:16px auto;}
-#ve-dialog .ve-action {display:block;text-align:center;padding:13px 18px;border-radius:12px;background:var(--edge-color);color:#fff;text-decoration:none;}
-.ve-product-size {display:inline-flex;gap:8px;align-items:center;margin:12px 0;padding:10px 15px;border:1px solid currentColor;border-radius:12px;background:transparent;color:inherit;cursor:pointer;}
-#veloura-edge-tool :is(button,a):focus-visible,.ve-product-size:focus-visible {outline:2px solid currentColor;outline-offset:4px;}
-@media(max-width:767px){#veloura-edge-tool .ve-tab {font-size:12px;padding:10px 6px;top:42%;}}
-
-</style>
-<script>
-
-(function(){
-'use strict';
-var config=document.getElementById('veloura-edge-config');if(!config||document.getElementById('veloura-edge-tool'))return;
-function raw(key){try{return JSON.parse(config.getAttribute('data-'+key)||'null');}catch(e){return config.getAttribute('data-'+key);}}
-function unwrap(v){for(var i=0;i<6&&v&&typeof v==='object';i++){if(Array.isArray(v)){v=v[0];}else if('selected' in v){v=v.selected;}else if('value' in v){v=v.value;}else break;}return v;}
-function get(key,fallback){var v=unwrap(raw(key));return v===null||v===undefined||typeof v==='object'?fallback:v;}
-function yes(key){var v=get(key,false);return v===true||v===1||v==='true'||v==='1';}
-if(!yes('enabled'))return;
-var mode=get('mode','sizes')==='loyalty'?'loyalty':'sizes';
-var label=String(get('label','')||(mode==='sizes'?'دليل المقاسات':'ولاء العملاء'));
-var root=document.createElement('div');root.id='veloura-edge-tool';root.dataset.side=get('side','right')==='left'?'left':'right';
-var color=String(get('color','#005369'));root.style.setProperty('--edge-color',CSS.supports('color',color)?color:'#005369');
-root.innerHTML='<button class="ve-tab" type="button" aria-haspopup="dialog" aria-controls="ve-dialog"><span class="ve-symbol" aria-hidden="true"></span><span class="ve-label"></span></button><dialog id="ve-dialog" aria-labelledby="ve-title" dir="rtl"><div class="ve-head"><h2 id="ve-title"></h2><button class="ve-close" type="button" aria-label="إغلاق">×</button></div><div class="ve-body"></div></dialog>';
-root.querySelector('.ve-label').textContent=label;root.querySelector('#ve-title').textContent=label;root.querySelector('.ve-symbol').textContent=mode==='sizes'?'↔':'✦';
-var body=root.querySelector('.ve-body');
-function paragraph(text){var p=document.createElement('p');p.className='ve-description';p.textContent=text;body.appendChild(p);}
-function safeUrl(value){try{var url=new URL(String(value),location.href);return /^(https?:)$/.test(url.protocol)?url.href:null;}catch(e){return null;}}
-if(mode==='sizes'){
-var h=document.createElement('h3');h.textContent='كيف آخذ مقاسي؟';body.appendChild(h);
-paragraph(String(get('size-text','')||'استخدم شريط قياس مرنًا دون شدّه. قِس محيط الصدر والخصر والورك، ثم قارن القياسات بجدول المتجر. تأكد هل الجدول يوضح قياسات الجسم أم القطعة.'));
-var image=String(get('size-image','')||'');var imageUrl=image?safeUrl(image):null;
-if(imageUrl){var link=document.createElement('a');link.href=imageUrl;link.target='_blank';link.rel='noopener';link.setAttribute('aria-label','فتح جدول المقاسات بالحجم الكامل');var img=document.createElement('img');img.src=imageUrl;img.alt='جدول مقاسات المتجر';img.loading='lazy';link.appendChild(img);body.appendChild(link);}
-}else{
-paragraph(String(get('loyalty-text','')||'تعرّف على طرق كسب النقاط والمكافآت المتاحة في برنامج ولاء المتجر.'));
-var a=document.createElement('a');a.className='ve-action';a.textContent='اكتشف النقاط والمكافآت';var custom=String(get('loyalty-url','')||'');var loyaltyUrl=custom?safeUrl(custom):null;
-if(!loyaltyUrl){try{loyaltyUrl=window.salla&&salla.url&&salla.url.get?salla.url.get('loyalty'):'/loyalty';}catch(e){loyaltyUrl='/loyalty';}}
-a.href=safeUrl(loyaltyUrl)||'/loyalty';body.appendChild(a);
-}
-document.body.appendChild(root);
-var dialog=root.querySelector('dialog'),opener;
-function open(event){opener=event.currentTarget;dialog.showModal();}
-root.querySelector('.ve-tab').addEventListener('click',open);root.querySelector('.ve-close').addEventListener('click',function(){dialog.close();});
-dialog.addEventListener('close',function(){if(opener)opener.focus();});dialog.addEventListener('click',function(e){if(e.target!==dialog)return;var r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
-var categories=raw('categories');if(categories&&categories.selected!==undefined)categories=categories.selected;else if(categories&&categories.value!==undefined)categories=categories.value;if(!Array.isArray(categories))categories=categories?[categories]:[];
-var ids=categories.map(function(c){var v=unwrap(c);if(v&&typeof v==='object')v=v.id;return String(v);});
-var productMarker=document.getElementById('veloura-size-product');
-var productId=productMarker ? productMarker.getAttribute('data-category-id') : ''; 
-if(mode==='sizes'&&yes('product-button')&&productMarker&&productMarker.getAttribute('data-product-type')==='product'&&productId&&ids.indexOf(productId)!==-1){var options=document.querySelector('.veloura-product-options-wrap');if(options){var button=document.createElement('button');button.type='button';button.className='ve-product-size';button.textContent='كيف آخذ مقاسي؟ · جدول المقاسات';button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls','ve-dialog');button.addEventListener('click',open);options.prepend(button);}}
-})();
-</script>
-
 {% set vfab_enabled = _self.veloura_dm_value(theme.settings.get('veloura_fab_enabled_2026', false), false)|trim in [true, 1, '1', 'true', 'on'] %}
 
 {% if vfab_enabled %}
@@ -4099,8 +4025,6 @@ if(mode==='sizes'&&yes('product-button')&&productMarker&&productMarker.getAttrib
     'telegram':  {'icon': 'sicon-telegram', 'color': '#229ED9', 'label': 'تيليجرام', 'prefix': 'https://t.me/'},
     'email':     {'icon': 'sicon-email',    'color': '#6366f1', 'label': 'راسلنا',   'prefix': 'mailto:'},
     'maps':      {'icon': 'sicon-location', 'color': '#16a34a', 'label': 'موقعنا',   'prefix': 'https://maps.google.com/?q='},
-    'sizes':     {'icon': 'sicon-ruler',    'color': '#005369', 'label': 'دليل المقاسات', 'prefix': ''},
-    'loyalty':   {'icon': 'sicon-star',     'color': '#d97706', 'label': 'ولاء العملاء', 'prefix': ''},
     'custom':    {'icon': 'sicon-link',     'color': '#004956', 'label': 'رابط',     'prefix': ''}
   } %}
 
