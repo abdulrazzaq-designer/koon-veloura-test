@@ -82,6 +82,7 @@
   {% set hero_media_mode = hero_media_mode|trim %}
   {% set hero_orbit_center %}{{ _self.pick(component.hero_orbit_center, 'image') }}{% endset %}
   {% set hero_orbit_center = hero_orbit_center|trim %}
+  {% set hero_orbit_search = hero_media_mode == 'orbits' and hero_side != 'none' and hero_orbit_center in ['search_icon', 'search_bar'] %}
   {% set hero_bg_image = component.hero_bg_image %}
   {% set hero_bg_image_m = component.hero_bg_image_mobile ?: hero_bg_image %}
   {% set hero_words_raw = component.hero_words|default('') %}
@@ -735,15 +736,20 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 .veloura-hero .hero-orbits__face img {padding:5px;}
 .veloura-hero .hero-orbits__center {position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
 .veloura-hero .hero-orbits__center>img {width:24%;height:24%;}
-.veloura-hero .hero-orbits__search {pointer-events:auto;display:flex;align-items:center;justify-content:center;gap:10px;width:58px;height:58px;border-radius:50%;border:1px solid #ffffff60;background:color-mix(in srgb,var(--hero-ink) 16%,transparent);backdrop-filter:blur(16px);color:var(--hero-ink);font-size:23px;cursor:pointer;}
-.veloura-hero .hero-orbits__search--bar {width:44%;height:50px;border-radius:999px;font-size:14px;}
+.veloura-hero .hero-orbits__search {pointer-events:auto;display:flex;align-items:center;justify-content:center;gap:10px;width:clamp(76px,7vw,100px);height:clamp(76px,7vw,100px);border-radius:50%;border:2px solid color-mix(in srgb,var(--hero-btn1-color,#fff) 50%,transparent);background:var(--hero-btn1-bg,#7c3aed);box-shadow:0 0 0 8px color-mix(in srgb,var(--hero-btn1-bg,#7c3aed) 16%,transparent),0 12px 40px color-mix(in srgb,var(--hero-btn1-bg,#7c3aed) 38%,transparent);color:var(--hero-btn1-color,#fff);font-size:34px;cursor:pointer;}
+.veloura-hero .hero-orbits__search--bar {width:44%;height:58px;border-radius:999px;font-size:14px;padding:8px 14px;gap:10px;}
+.veloura-hero .hero-orbits__search svg {width:36px;height:36px;flex:0 0 auto;}
+.veloura-hero .hero-orbits__search--bar svg {width:25px;height:25px;}
+.veloura-hero .hero-orbits__search--bar span {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.veloura-hero .hero__searchwrap--orbit-fallback {display:none;}
+@media(max-width:767px){.veloura-hero.hero--mob-hidden .hero__searchwrap--orbit-fallback {display:flex;}}
 .veloura-hero .hero-orbits__pause {position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--hero-ink);padding:5px 12px;border:1px solid #ffffff40;border-radius:999px;background:#0002;cursor:pointer;}
 .veloura-hero .hero-orbits:is(:hover,:focus-within,.is-paused) :is(.hero-orbits__ring,.hero-orbits__face) {animation-play-state:paused;}
 .veloura-hero .hero-orbits a:focus-visible,.veloura-hero .hero-orbits button:focus-visible {outline:2px solid currentColor;outline-offset:4px;}
 .veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--1 {inset:20%;}
 .veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--2 {inset:12%;}
 .veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--3 {inset:4%;}
-@media(max-width:480px){.veloura-hero .hero-orbits__search--bar {font-size:11px;gap:6px;height:42px;}}
+@media(max-width:480px){.veloura-hero .hero-orbits__search--bar {font-size:12px;gap:7px;height:48px;padding:6px 10px;}}
 @keyframes hero-orbit-turn {to {transform:rotate(360deg);}}
 @media(prefers-reduced-motion:reduce){.veloura-hero .hero-orbits :is(.hero-orbits__ring,.hero-orbits__face){animation:none!important;}.veloura-hero .hero-orbits__pause{display:none;}}
 
@@ -846,8 +852,8 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
           </div>
         {% endif %}
 
-        {% if component.hero_search_enabled %}
-          <div class="hero__searchwrap">
+        {% if component.hero_search_enabled and (not hero_orbit_search or hero_mob == 'hidden') %}
+          <div class="hero__searchwrap{{ hero_orbit_search ? ' hero__searchwrap--orbit-fallback' : '' }}">
             {# ليس نموذجاً يذهب لصفحة بحث بديلة — تلك كانت تعطي «لا توجد منتجات»
                لأن سلة لا تملك صفحة نتائج مستقلة أصلاً: البحث عندها نافذة
                بمكوّنها الخاص. هذا الحقل يفتح بحث المتجر نفسه بنتائجه الحقيقية،
@@ -956,7 +962,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
             <div class="hero-orbits__center">
               {% if hero_orbit_center == 'image' and component.hero_media_image %}<img src="{{ component.hero_media_image|e('html_attr') }}" alt="{{ hero_title_text|e('html_attr') }}" decoding="async">
               {% elseif hero_orbit_center in ['search_icon','search_bar'] %}
-                <button type="button" data-hero-search class="hero-orbits__search {{ hero_orbit_center == 'search_bar' ? 'hero-orbits__search--bar' : '' }}" aria-label="بحث"><i class="sicon-search" aria-hidden="true"></i>{% if hero_orbit_center == 'search_bar' %}<span>ابحث عن منتج…</span>{% endif %}</button>
+                <button type="button" data-hero-search class="hero-orbits__search {{ hero_orbit_center == 'search_bar' ? 'hero-orbits__search--bar' : '' }}" aria-label="بحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>{% if hero_orbit_center == 'search_bar' %}<span>{{ component.hero_search_placeholder|default('ابحث عن منتج…')|e }}</span>{% endif %}</button>
               {% endif %}
             </div>
             <button type="button" class="hero-orbits__pause" aria-pressed="false" aria-label="إيقاف حركة المدارات">إيقاف الحركة</button>
