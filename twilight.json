@@ -3533,6 +3533,324 @@
     {
       "type": "static",
       "format": "title",
+      "id": "veloura_newsletter_title_panel_2026",
+      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-mail\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">النشرة البريدية</strong></div></div>",
+      "variant": "h1",
+      "icon": "sicon-mail"
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_newsletter_panel_2026",
+      "label": " ",
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "id": "veloura_newsletter_active_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار النشرة البريدية للزوار",
+      "value": false,
+      "required": false,
+      "selected": false,
+      "description": "عرض تجريبي للتصميم فقط. لن تُحفظ عناوين البريد حتى ربط خدمة اشتراك.",
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_title_2026",
+      "type": "string",
+      "format": "text",
+      "label": "عنوان النشرة",
+      "value": "خلك أول من يعرف جديدنا",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_description_2026",
+      "type": "string",
+      "format": "textarea",
+      "label": "وصف النشرة",
+      "value": "جديد المنتجات والعروض المختارة، في بريدك.",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_placeholder_2026",
+      "type": "string",
+      "format": "text",
+      "label": "النص داخل حقل البريد",
+      "value": "أدخل بريدك الإلكتروني",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_button_2026",
+      "type": "string",
+      "format": "text",
+      "label": "نص زر الاشتراك",
+      "value": "اشترك",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_icon_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار أيقونة البريد",
+      "value": true,
+      "required": false,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_glass_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "تفعيل الخلفية الزجاجية",
+      "value": true,
+      "required": false,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_bg_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون الخلفية في الوضع الفاتح",
+      "value": "#f0f8fa",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_dark_bg_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون الخلفية في الوضع الداكن",
+      "value": "#102c36",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_text_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون النصوص في الوضع الفاتح",
+      "value": "#12333f",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_dark_text_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون النصوص في الوضع الداكن",
+      "value": "#f1fafb",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_button_bg_2026",
+      "type": "string",
+      "format": "color",
+      "label": "خلفية زر الاشتراك وأيقونة البريد",
+      "value": "#005369",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_button_text_2026",
+      "type": "string",
+      "format": "color",
+      "label": "نص زر الاشتراك وأيقونة البريد",
+      "value": "#ffffff",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_field_bg_2026",
+      "type": "string",
+      "format": "color",
+      "label": "خلفية حقل البريد",
+      "value": "#ffffff",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_field_text_2026",
+      "type": "string",
+      "format": "color",
+      "label": "نص حقل البريد",
+      "value": "#18333d",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_image_2026",
+      "type": "string",
+      "format": "image",
+      "label": "صورة خلفية خاصة بالنشرة",
+      "value": "",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_width_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "العرض الأقصى للبطاقة — بكسل",
+      "value": 920,
+      "required": false,
+      "inputType": "range",
+      "minimum": "560",
+      "maximum": "1200",
+      "step": "20",
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_radius_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "تدوير حواف البطاقة — بكسل",
+      "value": 24,
+      "required": false,
+      "inputType": "range",
+      "minimum": "0",
+      "maximum": "40",
+      "step": "1",
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_newsletter_opacity_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "كثافة لون الخلفية الزجاجية — %",
+      "value": 72,
+      "required": false,
+      "inputType": "range",
+      "minimum": "20",
+      "maximum": "95",
+      "step": "1",
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "static",
+      "format": "title",
       "id": "veloura_side_categories_title_2026",
       "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-menu\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">القائمة الجانبية</strong></div></div>",
       "icon": "sicon-menu"
