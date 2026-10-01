@@ -231,10 +231,12 @@
 {% if vn_image.value is defined %}{% set vn_image = vn_image.value %}{% elseif vn_image.selected is defined %}{% set vn_image = vn_image.selected %}{% endif %}
 {% set vn_width = theme.settings.get('veloura_newsletter_width_2026', 920) %}
 {% if vn_width.value is defined %}{% set vn_width = vn_width.value %}{% elseif vn_width.selected is defined %}{% set vn_width = vn_width.selected %}{% endif %}
+{% set vn_width = vn_width < 560 ? 560 : (vn_width > 1200 ? 1200 : vn_width) %}
 {% set vn_radius = theme.settings.get('veloura_newsletter_radius_2026', 24) %}
 {% if vn_radius.value is defined %}{% set vn_radius = vn_radius.value %}{% elseif vn_radius.selected is defined %}{% set vn_radius = vn_radius.selected %}{% endif %}
 {% set vn_opacity = theme.settings.get('veloura_newsletter_opacity_2026', 72) %}
 {% if vn_opacity.value is defined %}{% set vn_opacity = vn_opacity.value %}{% elseif vn_opacity.selected is defined %}{% set vn_opacity = vn_opacity.selected %}{% endif %}
+{% set vn_opacity = vn_opacity < 0 ? 0 : (vn_opacity > 95 ? 95 : vn_opacity) %}
 
 {% if vn_active %}
 <section id="veloura-newsletter" aria-labelledby="veloura-newsletter-heading" dir="rtl" data-glass="{{ vn_glass ? 'true' : 'false' }}" style="--vn-width:{{ vn_width }}px;--vn-radius:{{ vn_radius }}px;--vn-bg:{{ vn_bg }};--vn-dark-bg:{{ vn_dark_bg }};--vn-text:{{ vn_text }};--vn-dark-text:{{ vn_dark_text }};--vn-button-bg:{{ vn_button_bg }};--vn-button-text:{{ vn_button_text }};--vn-field-bg:{{ vn_field_bg }};--vn-field-text:{{ vn_field_text }};--vn-opacity:{{ vn_opacity }}%;">
