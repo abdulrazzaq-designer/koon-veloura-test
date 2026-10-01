@@ -6028,6 +6028,85 @@ html body#app.veloura-hero-merged .veloura-header-tabs-stack__surface,
 html body#app.veloura-hero-merged #veloura-home-tabs {border:0!important;box-shadow:none!important}
 </style>
 
+{% set ve_enabled = theme.settings.get('veloura_edge_enabled', false) %}
+{% if ve_enabled.selected is defined %}{% set ve_enabled = ve_enabled.selected %}{% elseif ve_enabled.value is defined %}{% set ve_enabled = ve_enabled.value %}{% endif %}
+{% if ve_enabled is iterable %}{% set ve_enabled = (ve_enabled|first).value|default(false) %}{% endif %}
+{% set ve_mode = theme.settings.get('veloura_edge_mode', "sizes") %}
+{% if ve_mode.selected is defined %}{% set ve_mode = ve_mode.selected %}{% elseif ve_mode.value is defined %}{% set ve_mode = ve_mode.value %}{% endif %}
+{% if ve_mode is iterable %}{% set ve_mode = (ve_mode|first).value|default("sizes") %}{% endif %}
+{% set ve_side = theme.settings.get('veloura_edge_side', "right") %}
+{% if ve_side.selected is defined %}{% set ve_side = ve_side.selected %}{% elseif ve_side.value is defined %}{% set ve_side = ve_side.value %}{% endif %}
+{% if ve_side is iterable %}{% set ve_side = (ve_side|first).value|default("right") %}{% endif %}
+{% set ve_label = theme.settings.get('veloura_edge_label', "") %}
+{% if ve_label.selected is defined %}{% set ve_label = ve_label.selected %}{% elseif ve_label.value is defined %}{% set ve_label = ve_label.value %}{% endif %}
+{% if ve_label is iterable %}{% set ve_label = (ve_label|first).value|default("") %}{% endif %}
+{% set ve_color = theme.settings.get('veloura_edge_color', "#005369") %}
+{% if ve_color.selected is defined %}{% set ve_color = ve_color.selected %}{% elseif ve_color.value is defined %}{% set ve_color = ve_color.value %}{% endif %}
+{% if ve_color is iterable %}{% set ve_color = (ve_color|first).value|default("#005369") %}{% endif %}
+{% set ve_size_image = theme.settings.get('veloura_edge_size_image', "") %}
+{% if ve_size_image.selected is defined %}{% set ve_size_image = ve_size_image.selected %}{% elseif ve_size_image.value is defined %}{% set ve_size_image = ve_size_image.value %}{% endif %}
+{% if ve_size_image is iterable %}{% set ve_size_image = (ve_size_image|first).value|default("") %}{% endif %}
+{% set ve_size_text = theme.settings.get('veloura_edge_size_text', "") %}
+{% if ve_size_text.selected is defined %}{% set ve_size_text = ve_size_text.selected %}{% elseif ve_size_text.value is defined %}{% set ve_size_text = ve_size_text.value %}{% endif %}
+{% if ve_size_text is iterable %}{% set ve_size_text = (ve_size_text|first).value|default("") %}{% endif %}
+{% set ve_product_button = theme.settings.get('veloura_edge_product_button', true) %}
+{% if ve_product_button.selected is defined %}{% set ve_product_button = ve_product_button.selected %}{% elseif ve_product_button.value is defined %}{% set ve_product_button = ve_product_button.value %}{% endif %}
+{% if ve_product_button is iterable %}{% set ve_product_button = (ve_product_button|first).value|default(true) %}{% endif %}
+{% set ve_categories = theme.settings.get('veloura_edge_categories', []) %}
+{% if ve_categories.selected is defined %}{% set ve_categories = ve_categories.selected %}{% elseif ve_categories.value is defined %}{% set ve_categories = ve_categories.value %}{% endif %}
+{% set ve_loyalty_text = theme.settings.get('veloura_edge_loyalty_text', "") %}
+{% if ve_loyalty_text.selected is defined %}{% set ve_loyalty_text = ve_loyalty_text.selected %}{% elseif ve_loyalty_text.value is defined %}{% set ve_loyalty_text = ve_loyalty_text.value %}{% endif %}
+{% if ve_loyalty_text is iterable %}{% set ve_loyalty_text = (ve_loyalty_text|first).value|default("") %}{% endif %}
+{% set ve_loyalty_url = theme.settings.get('veloura_edge_loyalty_url', "") %}
+{% if ve_loyalty_url.selected is defined %}{% set ve_loyalty_url = ve_loyalty_url.selected %}{% elseif ve_loyalty_url.value is defined %}{% set ve_loyalty_url = ve_loyalty_url.value %}{% endif %}
+{% if ve_loyalty_url is iterable %}{% set ve_loyalty_url = (ve_loyalty_url|first).value|default("") %}{% endif %}
+
+{% if ve_enabled is same as(true) or ve_enabled == 'true' or ve_enabled is same as(1) %}
+{% set ve_mode = ve_mode == 'loyalty' ? 'loyalty' : 'sizes' %}
+{% set ve_label = ve_label ?: (ve_mode == 'sizes' ? 'دليل المقاسات' : 'ولاء العملاء') %}
+{% set ve_product = false %}
+{% if ve_mode == 'sizes' and (ve_product_button is same as(true) or ve_product_button == 'true') and product is defined and product.type == 'product' %}
+{% for category in ve_categories %}{% set ve_category = category.value|default(category.id|default(category)) %}{% if ve_category == product.category.id|default('__none') %}{% set ve_product = true %}{% endif %}{% endfor %}
+{% endif %}
+<div id="veloura-edge-tool" data-side="{{ ve_side == 'left' ? 'left' : 'right' }}" data-product="{{ ve_product ? 'true' : 'false' }}" style="--edge-color:{{ ve_color|e('html_attr') }}">
+<button class="ve-tab" type="button" aria-haspopup="dialog" aria-controls="ve-dialog"><i class="{{ ve_mode == 'sizes' ? 'sicon-ruler' : 'sicon-star' }}" aria-hidden="true"></i><span>{{ ve_label|e }}</span></button>
+<dialog id="ve-dialog" aria-labelledby="ve-title" dir="rtl">
+<div class="ve-head"><h2 id="ve-title">{{ ve_label|e }}</h2><button type="button" class="ve-close" aria-label="إغلاق">×</button></div>
+{% if ve_mode == 'sizes' %}
+<h3>كيف آخذ مقاسي؟</h3><p class="ve-description">{{ ve_size_text|e }}</p>
+{% if ve_size_image %}<a href="{{ ve_size_image|e('html_attr') }}" target="_blank" rel="noopener" aria-label="فتح جدول المقاسات بالحجم الكامل"><img src="{{ ve_size_image|e('html_attr') }}" alt="جدول مقاسات المتجر" loading="lazy"></a>{% endif %}
+{% else %}
+<p class="ve-description">{{ ve_loyalty_text|e }}</p><a class="ve-action" data-ve-loyalty data-url="{{ ve_loyalty_url|e('html_attr') }}" href="#">اكتشف النقاط والمكافآت</a>
+{% endif %}
+</dialog>
+</div>
+<style>
+#veloura-edge-tool .ve-tab {position:fixed;top:45%;right:0;z-index:45;display:flex;align-items:center;gap:8px;writing-mode:vertical-rl;padding:14px 9px;border:1px solid #ffffff55;border-radius:14px 0 0 14px;background:var(--edge-color);color:#fff;box-shadow:0 5px 20px #0002;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;max-height:220px;}
+#veloura-edge-tool[data-side="left"] .ve-tab {right:auto;left:0;border-radius:0 14px 14px 0;}
+#ve-dialog {position:fixed;inset:0;margin:auto;width:min(640px,calc(100% - 32px));max-height:85dvh;overflow:auto;padding:24px;border:1px solid #ffffff55;border-radius:22px;background:#f8fafc;color:#15313b;box-shadow:0 25px 90px #0005;}
+#ve-dialog::backdrop {background:#07182099;backdrop-filter:blur(7px);}
+html.dark #ve-dialog,body.dark #ve-dialog {background:#14262e;color:#f1f7fa;}
+#ve-dialog .ve-head {display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px;}
+#ve-dialog h2 {font-size:22px;font-weight:800;margin:0;color:inherit;}
+#ve-dialog h3 {font-size:17px;font-weight:700;color:inherit;}
+#ve-dialog .ve-close {width:40px;height:40px;border-radius:50%;border:0;background:#8882;color:inherit;font-size:27px;cursor:pointer;}
+#ve-dialog .ve-description {white-space:pre-line;line-height:1.9;margin:12px 0 22px;color:inherit;}
+#ve-dialog img {display:block;max-width:100%;height:auto;border-radius:12px;margin:16px auto;}
+#ve-dialog .ve-action {display:block;text-align:center;padding:13px 18px;border-radius:12px;background:var(--edge-color);color:#fff;text-decoration:none;}
+.ve-product-size {display:inline-flex;gap:8px;align-items:center;margin:12px 0;padding:10px 15px;border:1px solid currentColor;border-radius:12px;background:transparent;color:inherit;cursor:pointer;}
+#veloura-edge-tool :is(button,a):focus-visible,.ve-product-size:focus-visible {outline:2px solid currentColor;outline-offset:4px;}
+@media(max-width:767px){#veloura-edge-tool .ve-tab {font-size:12px;padding:10px 6px;top:42%;}}
+</style>
+<script>
+(()=>{const root=document.getElementById('veloura-edge-tool');if(!root)return;const dialog=root.querySelector('dialog');let opener;
+function open(e){opener=e.currentTarget;dialog.showModal();}
+root.querySelector('.ve-tab').addEventListener('click',open);root.querySelector('.ve-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});dialog.addEventListener('close',()=>opener?.focus());
+if(root.dataset.product==='true'){const options=document.querySelector('.veloura-product-options-wrap');if(options){const button=document.createElement('button');button.type='button';button.className='ve-product-size';button.textContent='كيف آخذ مقاسي؟ · جدول المقاسات';button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls','ve-dialog');button.addEventListener('click',open);options.prepend(button);}}
+const loyalty=root.querySelector('[data-ve-loyalty]');if(loyalty){const custom=loyalty.dataset.url.trim();const valid=/^(https?:\/\/|\/(?!\/))/i.test(custom);loyalty.href=valid?custom:(window.salla?.url?.get?window.salla.url.get('loyalty'):'/loyalty');}
+})();
+</script>
+{% endif %}
+
 </body>
 </html>
 <style id="veloura-detached-tabs-visible-v67">

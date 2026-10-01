@@ -743,7 +743,6 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 .veloura-hero .hero-orbits__search--bar span {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .veloura-hero .hero__searchwrap--orbit-fallback {display:none;}
 @media(max-width:767px){.veloura-hero.hero--mob-hidden .hero__searchwrap--orbit-fallback {display:flex;}}
-.veloura-hero .hero-orbits__pause {position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--hero-ink);padding:5px 12px;border:1px solid #ffffff40;border-radius:999px;background:#0002;cursor:pointer;}
 .veloura-hero .hero-orbits:is(:hover,:focus-within,.is-paused) :is(.hero-orbits__ring,.hero-orbits__face) {animation-play-state:paused;}
 .veloura-hero .hero-orbits a:focus-visible,.veloura-hero .hero-orbits button:focus-visible {outline:2px solid currentColor;outline-offset:4px;}
 .veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--1 {inset:20%;}
@@ -751,7 +750,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 .veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--3 {inset:4%;}
 @media(max-width:480px){.veloura-hero .hero-orbits__search--bar {font-size:12px;gap:7px;height:48px;padding:6px 10px;}}
 @keyframes hero-orbit-turn {to {transform:rotate(360deg);}}
-@media(prefers-reduced-motion:reduce){.veloura-hero .hero-orbits :is(.hero-orbits__ring,.hero-orbits__face){animation:none!important;}.veloura-hero .hero-orbits__pause{display:none;}}
+@media(prefers-reduced-motion:reduce){.veloura-hero .hero-orbits :is(.hero-orbits__ring,.hero-orbits__face){animation:none!important;}}
 
 </style>
 
@@ -852,36 +851,6 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
           </div>
         {% endif %}
 
-        {% if component.hero_search_enabled and (not hero_orbit_search or hero_mob == 'hidden') %}
-          <div class="hero__searchwrap{{ hero_orbit_search ? ' hero__searchwrap--orbit-fallback' : '' }}">
-            {# ليس نموذجاً يذهب لصفحة بحث بديلة — تلك كانت تعطي «لا توجد منتجات»
-               لأن سلة لا تملك صفحة نتائج مستقلة أصلاً: البحث عندها نافذة
-               بمكوّنها الخاص. هذا الحقل يفتح بحث المتجر نفسه بنتائجه الحقيقية،
-               وبنسخته الوحيدة في الصفحة — بلا أي مكوّن بحث ثانٍ. #}
-            <button type="button" class="hero__search" data-hero-search
-              aria-label="{{ component.hero_search_placeholder|default('بحث') }}">
-              <i class="sicon-search" aria-hidden="true"></i>
-              <span class="hero__searchtext">{{ component.hero_search_placeholder|default('ابحث عن منتج أو خدمة…') }}</span>
-              <span class="hero__searchgo">بحث</span>
-            </button>
-
-            {% if component.hero_top_searches|length %}
-              <div class="hero__tags">
-                {% if component.hero_top_searches_title %}<b>{{ component.hero_top_searches_title }}</b>{% endif %}
-                {% for tag in component.hero_top_searches %}
-                  {% if tag.label %}
-                    {% if tag.url %}
-                      <a class="hero__tag" href="{{ tag.url }}">{{ tag.label }}</a>
-                    {% else %}
-                      <button type="button" class="hero__tag" data-hero-search data-hero-term="{{ tag.label|e('html_attr') }}">{{ tag.label }}</button>
-                    {% endif %}
-                  {% endif %}
-                {% endfor %}
-              </div>
-            {% endif %}
-          </div>
-        {% endif %}
-
         {% if component.hero_btn1_text or component.hero_btn2_text %}
           <div class="hero__cta">
             {% if component.hero_btn1_text %}
@@ -962,10 +931,9 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
             <div class="hero-orbits__center">
               {% if hero_orbit_center == 'image' and component.hero_media_image %}<img src="{{ component.hero_media_image|e('html_attr') }}" alt="{{ hero_title_text|e('html_attr') }}" decoding="async">
               {% elseif hero_orbit_center in ['search_icon','search_bar'] %}
-                <button type="button" data-hero-search class="hero-orbits__search {{ hero_orbit_center == 'search_bar' ? 'hero-orbits__search--bar' : '' }}" aria-label="بحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>{% if hero_orbit_center == 'search_bar' %}<span>{{ component.hero_search_placeholder|default('ابحث عن منتج…')|e }}</span>{% endif %}</button>
+                <button type="button" data-hero-search class="hero-orbits__search {{ hero_orbit_center == 'search_bar' ? 'hero-orbits__search--bar' : '' }}" aria-label="بحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>{% if hero_orbit_center == 'search_bar' %}<span>ابحث عن منتج…</span>{% endif %}</button>
               {% endif %}
             </div>
-            <button type="button" class="hero-orbits__pause" aria-pressed="false" aria-label="إيقاف حركة المدارات">إيقاف الحركة</button>
           </div>
           {% else %}
             {% if component.hero_media_glow %}<span class="hero__glow" aria-hidden="true"></span>{% endif %}
@@ -1002,7 +970,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
   var root = document.getElementById('veloura-hero-{{ position }}');
   if (!root) return;
   root.classList.remove('no-js');
-  root.querySelectorAll('.hero-orbits__pause').forEach(function(button){button.addEventListener('click',function(){var paused=button.closest('.hero-orbits').classList.toggle('is-paused');button.setAttribute('aria-pressed',String(paused));button.textContent=paused?'تشغيل الحركة':'إيقاف الحركة';button.setAttribute('aria-label',paused?'تشغيل حركة المدارات':'إيقاف حركة المدارات');});});
+  root.querySelectorAll('.hero-orbits__face').forEach(function(item){item.addEventListener('pointerdown',function(){item.closest('.hero-orbits').classList.add('is-paused');});});
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

@@ -10859,6 +10859,234 @@
           "value": true
         }
       ]
+    },
+    {
+      "id": "veloura_edge_heading",
+      "type": "static",
+      "format": "title",
+      "value": "الشريط الجانبي — المقاسات أو الولاء",
+      "label": "الشريط الجانبي"
+    },
+    {
+      "id": "veloura_edge_panel",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار إعدادات الشريط",
+      "value": false,
+      "required": false,
+      "conditions": []
+    },
+    {
+      "id": "veloura_edge_enabled",
+      "type": "boolean",
+      "format": "switch",
+      "label": "تفعيل الشريط الجانبي",
+      "value": false,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_mode",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "وظيفة الشريط",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "source": "Manual",
+      "selected": [
+        {
+          "value": "sizes",
+          "label": "دليل المقاسات",
+          "key": "veloura_edge_mode-sizes"
+        }
+      ],
+      "options": [
+        {
+          "value": "sizes",
+          "label": "دليل المقاسات",
+          "key": "veloura_edge_mode-sizes"
+        },
+        {
+          "value": "loyalty",
+          "label": "ولاء العملاء",
+          "key": "veloura_edge_mode-loyalty"
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_side",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "جهة الشريط",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "source": "Manual",
+      "selected": [
+        {
+          "value": "right",
+          "label": "يمين",
+          "key": "veloura_edge_side-right"
+        }
+      ],
+      "options": [
+        {
+          "value": "right",
+          "label": "يمين",
+          "key": "veloura_edge_side-right"
+        },
+        {
+          "value": "left",
+          "label": "يسار",
+          "key": "veloura_edge_side-left"
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_label",
+      "type": "string",
+      "format": "text",
+      "label": "نص الشريط (اختياري)",
+      "value": "",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_color",
+      "type": "string",
+      "format": "color",
+      "label": "لون الشريط",
+      "value": "#005369",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "inputType": "color"
+    },
+    {
+      "id": "veloura_edge_size_image",
+      "type": "string",
+      "format": "image",
+      "label": "صورة جدول المقاسات",
+      "value": null,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_size_text",
+      "type": "string",
+      "format": "textarea",
+      "label": "طريقة أخذ المقاس",
+      "value": "استخدم شريط قياس مرنًا دون شدّه. قِس محيط الصدر عند أعرض نقطة، والخصر عند أضيق نقطة، والورك عند أعرض نقطة. قارن القياسات بجدول المتجر وتأكد هل يوضح قياسات الجسم أم القطعة.",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_product_button",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار زر المقاسات داخل المنتجات المحددة",
+      "value": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_categories",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "تصنيفات الملابس المشمولة",
+      "value": [],
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "source": "categories",
+      "searchable": true,
+      "multichoice": true,
+      "selected": [],
+      "options": [],
+      "maxLength": 20,
+      "description": "اختر تصنيفات الملابس التي يظهر داخل منتجاتها زر دليل المقاسات."
+    },
+    {
+      "id": "veloura_edge_loyalty_text",
+      "type": "string",
+      "format": "textarea",
+      "label": "شرح برنامج الولاء",
+      "value": "تعرّف على طرق كسب النقاط والمكافآت المتاحة في برنامج ولاء المتجر. شروط الكسب والاستبدال موضّحة في صفحة البرنامج.",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_edge_loyalty_url",
+      "type": "string",
+      "format": "text",
+      "label": "رابط صفحة الولاء (اختياري)",
+      "value": "",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_edge_panel",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "description": "اتركه فارغًا لاستخدام صفحة loyalty في المتجر. يجب تفعيل برنامج الولاء في سلة أولًا."
     }
   ],
   "components": [
@@ -11428,134 +11656,6 @@
           "icon": "sicon-format-fill",
           "value": "#e2e8f0",
           "required": false
-        },
-        {
-          "id": "hero_h_search",
-          "type": "static",
-          "format": "title",
-          "label": "البحث والأكثر بحثًا",
-          "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,#10b98133,#10b9811a);color:inherit;text-align:right;border:1px solid #10b98166;border-right:4px solid #10b981;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,#10b98133,#10b9811a);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><strong style=\"font-size:15px;font-weight:800\">البحث والأكثر بحثًا</strong></div>",
-          "variant": "h1",
-          "icon": "sicon-format-text"
-        },
-        {
-          "id": "hero_search_enabled",
-          "type": "boolean",
-          "format": "switch",
-          "label": "إظهار شريط البحث",
-          "icon": "sicon-toggle-off",
-          "value": true,
-          "selected": true,
-          "required": false,
-          "description": "الضغط عليه يفتح بحث سلة نفسه بنتائجه الحقيقية — لا صفحة بحث بديلة."
-        },
-        {
-          "id": "hero_search_placeholder",
-          "type": "string",
-          "format": "text",
-          "label": "النص داخل شريط البحث",
-          "icon": "sicon-format-text-alt",
-          "value": "ابحث عن منتج أو خدمة…",
-          "required": false,
-          "maxLength": 60
-        },
-        {
-          "id": "hero_top_searches_title",
-          "type": "string",
-          "format": "text",
-          "label": "عنوان شرائح البحث",
-          "icon": "sicon-format-text-alt",
-          "value": "الأكثر بحثًا",
-          "required": false,
-          "maxLength": 40
-        },
-        {
-          "id": "hero_top_searches",
-          "type": "collection",
-          "format": "collection",
-          "label": null,
-          "description": "كل شريحة رابط: منتج أو تصنيف أو رابط خارجي. إن تركت الرابط فارغًا فتحت الشريحة بحث المتجر.",
-          "item_label": "كلمة رقم",
-          "icon": "sicon-list-add",
-          "value": [],
-          "minLength": 0,
-          "maxLength": 10,
-          "fields": [
-            {
-              "id": "hero_top_searches.label",
-              "type": "string",
-              "format": "text",
-              "label": "الكلمة",
-              "icon": "sicon-format-text-alt",
-              "value": "",
-              "required": false,
-              "maxLength": 40
-            },
-            {
-              "type": "items",
-              "icon": "sicon-link",
-              "label": "رابط مخصص (اختياري)",
-              "id": "hero_top_searches.url",
-              "value": [],
-              "description": null,
-              "required": false,
-              "format": "variable-list",
-              "searchable": true,
-              "source": "custom",
-              "sources": [
-                {
-                  "label": "منتج",
-                  "key": "products",
-                  "value": "products"
-                },
-                {
-                  "label": "تصنيف",
-                  "key": "categories",
-                  "value": "categories"
-                },
-                {
-                  "label": "ماركة تجارية",
-                  "key": "brands",
-                  "value": "brands"
-                },
-                {
-                  "label": "صفحة تعريفية",
-                  "key": "pages",
-                  "value": "pages"
-                },
-                {
-                  "label": "مقالة",
-                  "key": "blog_articles",
-                  "value": "blog_articles"
-                },
-                {
-                  "label": "تصنيف ضمن المدونة",
-                  "key": "blog_categories",
-                  "value": "blog_categories"
-                },
-                {
-                  "label": "التخفيضات",
-                  "key": "offers_link",
-                  "value": "offers_link"
-                },
-                {
-                  "label": "الماركات التجارية",
-                  "key": "brands_link",
-                  "value": "brands_link"
-                },
-                {
-                  "label": "المدونة",
-                  "key": "blog_link",
-                  "value": "blog_link"
-                },
-                {
-                  "label": "رابط خارجي",
-                  "key": "custom",
-                  "value": "custom"
-                }
-              ]
-            }
-          ]
         },
         {
           "id": "hero_h_buttons",
