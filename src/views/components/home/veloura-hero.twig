@@ -78,6 +78,10 @@
   {# أقل من ثماني ثوانٍ يصير الشريط ضبابياً، فنرفعه مهما كتب في الإعداد. #}
   {% if hero_logo_speed in ['0','1','2','3','4','5','6','7'] %}{% set hero_logo_speed = '8' %}{% endif %}
 
+  {% set hero_media_mode %}{{ _self.pick(component.hero_media_mode, 'image') }}{% endset %}
+  {% set hero_media_mode = hero_media_mode|trim %}
+  {% set hero_orbit_center %}{{ _self.pick(component.hero_orbit_center, 'image') }}{% endset %}
+  {% set hero_orbit_center = hero_orbit_center|trim %}
   {% set hero_bg_image = component.hero_bg_image %}
   {% set hero_bg_image_m = component.hero_bg_image_mobile ?: hero_bg_image %}
   {% set hero_words_raw = component.hero_words|default('') %}
@@ -715,6 +719,34 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
   .veloura-hero .hero__body > *,
   .veloura-hero .hero__media { opacity: 1 !important; transform: none !important; }
 }
+
+/* Orbit media: fixed aspect ratio, upright items and independent links. */
+.veloura-hero .hero-orbits {position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto 32px;isolation:isolate;--orbit-size:clamp(34px,4.5vw,58px);}
+.veloura-hero .hero-orbits__ring {position:absolute;border:1px solid currentColor;border-color:color-mix(in srgb,var(--hero-ink) 23%,transparent);border-radius:50%;animation:hero-orbit-turn var(--duration) linear infinite;pointer-events:none;}
+.veloura-hero .hero-orbits__ring--1 {inset:30%;--duration:32s;}
+.veloura-hero .hero-orbits__ring--2 {inset:18%;--duration:46s;animation-direction:reverse;}
+.veloura-hero .hero-orbits__ring--3 {inset:6%;--duration:62s;}
+.veloura-hero .hero-orbits__spoke {position:absolute;inset:0;transform:rotate(var(--angle));}
+.veloura-hero .hero-orbits__node {position:absolute;left:100%;top:50%;width:var(--orbit-size);height:var(--orbit-size);transform:translate(-50%,-50%) rotate(calc(-1 * var(--angle)));}
+.veloura-hero .hero-orbits__face {width:100%;height:100%;display:grid;place-items:center;overflow:hidden;border-radius:28%;background:color-mix(in srgb,var(--hero-ink) 14%,transparent);border:1px solid color-mix(in srgb,var(--hero-ink) 30%,transparent);backdrop-filter:blur(12px);color:var(--hero-ink);box-shadow:0 5px 20px #0002;animation:hero-orbit-turn var(--duration) linear infinite reverse;pointer-events:auto;text-decoration:none;}
+.veloura-hero .hero-orbits__ring--2 .hero-orbits__face {animation-direction:normal;}
+.veloura-hero .hero-orbits__face i {font-size:clamp(18px,2.4vw,28px);}
+.veloura-hero .hero-orbits img {width:100%;height:100%;object-fit:contain;animation:none!important;filter:none;transform:none;}
+.veloura-hero .hero-orbits__face img {padding:5px;}
+.veloura-hero .hero-orbits__center {position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.veloura-hero .hero-orbits__center>img {width:24%;height:24%;}
+.veloura-hero .hero-orbits__search {pointer-events:auto;display:flex;align-items:center;justify-content:center;gap:10px;width:58px;height:58px;border-radius:50%;border:1px solid #ffffff60;background:color-mix(in srgb,var(--hero-ink) 16%,transparent);backdrop-filter:blur(16px);color:var(--hero-ink);font-size:23px;cursor:pointer;}
+.veloura-hero .hero-orbits__search--bar {width:44%;height:50px;border-radius:999px;font-size:14px;}
+.veloura-hero .hero-orbits__pause {position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--hero-ink);padding:5px 12px;border:1px solid #ffffff40;border-radius:999px;background:#0002;cursor:pointer;}
+.veloura-hero .hero-orbits:is(:hover,:focus-within,.is-paused) :is(.hero-orbits__ring,.hero-orbits__face) {animation-play-state:paused;}
+.veloura-hero .hero-orbits a:focus-visible,.veloura-hero .hero-orbits button:focus-visible {outline:2px solid currentColor;outline-offset:4px;}
+.veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--1 {inset:20%;}
+.veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--2 {inset:12%;}
+.veloura-hero .hero-orbits[data-center="search_bar"] .hero-orbits__ring--3 {inset:4%;}
+@media(max-width:480px){.veloura-hero .hero-orbits__search--bar {font-size:11px;gap:6px;height:42px;}}
+@keyframes hero-orbit-turn {to {transform:rotate(360deg);}}
+@media(prefers-reduced-motion:reduce){.veloura-hero .hero-orbits :is(.hero-orbits__ring,.hero-orbits__face){animation:none!important;}.veloura-hero .hero-orbits__pause{display:none;}}
+
 </style>
 
 <section
@@ -895,10 +927,44 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
         {% endif %}
       </div>
 
-      {% if hero_side != 'none' and component.hero_media_image %}
+      {% if hero_side != 'none' and (hero_media_mode == 'orbits' or component.hero_media_image) %}
         <div class="hero__media">
-          {% if component.hero_media_glow %}<span class="hero__glow" aria-hidden="true"></span>{% endif %}
-          <img src="{{ component.hero_media_image }}" alt="{{ hero_title_text }}" fetchpriority="high" decoding="async">
+          {% if hero_media_mode == 'orbits' %}
+          <div class="hero-orbits" data-center="{{ hero_orbit_center|e('html_attr') }}" aria-label="روابط المدارات">
+            {% for ring in 1..3 %}
+              <div class="hero-orbits__ring hero-orbits__ring--{{ ring }}">
+                {% set orbit_items = [] %}
+                {% for item in component.hero_orbit_items|default([]) %}
+                  {% set item_ring %}{{ _self.pick(item.ring, '1') }}{% endset %}
+                  {% if item_ring|trim == ring and (item.image or item.icon) %}{% set orbit_items = orbit_items|merge([item]) %}{% endif %}
+                {% endfor %}
+                {% for item in orbit_items %}
+                  {% set angle = (loop.index0 * 360 / orbit_items|length) + ring * 27 %}
+                  {% set orbit_link %}{{ _self.pick(item.url, '') }}{% endset %}
+                  {% set orbit_link = orbit_link|trim %}
+                  {% if orbit_link and not (orbit_link starts with '/' or orbit_link starts with 'https://' or orbit_link starts with 'http://' or orbit_link starts with '#') %}{% set orbit_link = '' %}{% endif %}
+                  <div class="hero-orbits__spoke" style="--angle:{{ angle }}deg">
+                    <div class="hero-orbits__node">
+                      {% if orbit_link %}<a class="hero-orbits__face" href="{{ orbit_link|e('html_attr') }}" aria-label="{{ item.label|default('استكشف')|e('html_attr') }}">{% else %}<span class="hero-orbits__face" role="img" aria-label="{{ item.label|default('عنصر المدار')|e('html_attr') }}">{% endif %}
+                        {% if item.image %}<img src="{{ item.image|e('html_attr') }}" alt="" loading="lazy" decoding="async">{% else %}<i class="{{ item.icon|e('html_attr') }}" aria-hidden="true"></i>{% endif %}
+                      {% if orbit_link %}</a>{% else %}</span>{% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+            <div class="hero-orbits__center">
+              {% if hero_orbit_center == 'image' and component.hero_media_image %}<img src="{{ component.hero_media_image|e('html_attr') }}" alt="{{ hero_title_text|e('html_attr') }}" decoding="async">
+              {% elseif hero_orbit_center in ['search_icon','search_bar'] %}
+                <button type="button" data-hero-search class="hero-orbits__search {{ hero_orbit_center == 'search_bar' ? 'hero-orbits__search--bar' : '' }}" aria-label="بحث"><i class="sicon-search" aria-hidden="true"></i>{% if hero_orbit_center == 'search_bar' %}<span>ابحث عن منتج…</span>{% endif %}</button>
+              {% endif %}
+            </div>
+            <button type="button" class="hero-orbits__pause" aria-pressed="false" aria-label="إيقاف حركة المدارات">إيقاف الحركة</button>
+          </div>
+          {% else %}
+            {% if component.hero_media_glow %}<span class="hero__glow" aria-hidden="true"></span>{% endif %}
+            <img src="{{ component.hero_media_image }}" alt="{{ hero_title_text }}" fetchpriority="high" decoding="async">
+          {% endif %}
         </div>
       {% endif %}
 
@@ -930,6 +996,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
   var root = document.getElementById('veloura-hero-{{ position }}');
   if (!root) return;
   root.classList.remove('no-js');
+  root.querySelectorAll('.hero-orbits__pause').forEach(function(button){button.addEventListener('click',function(){var paused=button.closest('.hero-orbits').classList.toggle('is-paused');button.setAttribute('aria-pressed',String(paused));button.textContent=paused?'تشغيل الحركة':'إيقاف الحركة';button.setAttribute('aria-label',paused?'تشغيل حركة المدارات':'إيقاف حركة المدارات');});});
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

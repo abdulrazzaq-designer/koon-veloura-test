@@ -11990,6 +11990,153 @@
           "icon": "sicon-format-text"
         },
         {
+          "id": "hero_media_mode",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "شكل العنصر الجانبي",
+          "icon": "sicon-list",
+          "selected": [
+            {
+              "value": "image",
+              "label": "صورة واحدة",
+              "key": "hero_media_mode-image"
+            }
+          ],
+          "options": [
+            {
+              "value": "image",
+              "label": "صورة واحدة",
+              "key": "hero_media_mode-image"
+            },
+            {
+              "value": "orbits",
+              "label": "مدارات تفاعلية",
+              "key": "hero_media_mode-orbits"
+            }
+          ],
+          "source": "Manual",
+          "required": true
+        },
+        {
+          "id": "hero_orbit_center",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "منتصف المدارات",
+          "icon": "sicon-list",
+          "selected": [
+            {
+              "value": "image",
+              "label": "الصورة المختارة",
+              "key": "hero_orbit_center-image"
+            }
+          ],
+          "options": [
+            {
+              "value": "image",
+              "label": "الصورة المختارة",
+              "key": "hero_orbit_center-image"
+            },
+            {
+              "value": "search_icon",
+              "label": "أيقونة بحث",
+              "key": "hero_orbit_center-search_icon"
+            },
+            {
+              "value": "search_bar",
+              "label": "شريط بحث",
+              "key": "hero_orbit_center-search_bar"
+            },
+            {
+              "value": "none",
+              "label": "بدون محتوى",
+              "key": "hero_orbit_center-none"
+            }
+          ],
+          "source": "Manual",
+          "required": true
+        },
+        {
+          "id": "hero_orbit_items",
+          "type": "collection",
+          "format": "collection",
+          "label": "عناصر المدارات",
+          "item_label": "عنصر المدار",
+          "icon": "sicon-list-add",
+          "value": [],
+          "minLength": 0,
+          "maxLength": 12,
+          "description": "اختر صورة أو أيقونة لكل عنصر. الصورة لها الأولوية. توزّع العناصر بالتساوي داخل المدار المختار؛ يُفضّل أربعة عناصر لكل مدار.",
+          "fields": [
+            {
+              "id": "hero_orbit_items.image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة العنصر",
+              "value": null,
+              "required": false
+            },
+            {
+              "id": "hero_orbit_items.icon",
+              "type": "string",
+              "format": "icon",
+              "label": "أيقونة بديلة للصورة",
+              "value": "sicon-star",
+              "required": false
+            },
+            {
+              "id": "hero_orbit_items.label",
+              "type": "string",
+              "format": "text",
+              "label": "اسم العنصر",
+              "value": "",
+              "required": true,
+              "maxLength": 60
+            },
+            {
+              "id": "hero_orbit_items.url",
+              "type": "string",
+              "format": "text",
+              "label": "رابط عند الضغط (اختياري)",
+              "value": "",
+              "required": false,
+              "description": "رابط كامل https:// أو مسار يبدأ بشرطة /."
+            },
+            {
+              "id": "hero_orbit_items.ring",
+              "type": "items",
+              "format": "dropdown-list",
+              "label": "المدار",
+              "icon": "sicon-list",
+              "selected": [
+                {
+                  "value": "1",
+                  "label": "الداخلي",
+                  "key": "hero_orbit_items.ring-1"
+                }
+              ],
+              "options": [
+                {
+                  "value": "1",
+                  "label": "الداخلي",
+                  "key": "hero_orbit_items.ring-1"
+                },
+                {
+                  "value": "2",
+                  "label": "الأوسط",
+                  "key": "hero_orbit_items.ring-2"
+                },
+                {
+                  "value": "3",
+                  "label": "الخارجي",
+                  "key": "hero_orbit_items.ring-3"
+                }
+              ],
+              "source": "Manual",
+              "required": true
+            }
+          ]
+        },
+        {
           "id": "hero_media_image",
           "type": "string",
           "format": "image",
