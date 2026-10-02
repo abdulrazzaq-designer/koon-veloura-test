@@ -72,7 +72,8 @@
   {%- endif -%}
 {%- endmacro %}
 
-{% set vdm_enabled_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_enabled_2026', false), false)|trim %}
+{# The dark settings heading only controls editor visibility. #}
+{% set vdm_enabled_raw = 'true' %}
 {% set vdm_enabled = vdm_enabled_raw == true or vdm_enabled_raw == 'true' or vdm_enabled_raw == 1 or vdm_enabled_raw == '1' or vdm_enabled_raw == 'on' %}
 
 {% set vdm_mode = _self.veloura_dm_value(theme.settings.get('veloura_dark_theme_mode_2026', 'light'), 'light')|trim %}
@@ -368,7 +369,8 @@
     {# The main glass switch also disables legacy glass surfaces. #}
     {% set veloura_no_glass = not veloura_glass_effect %}
 
-    {% set veloura_clean_borders = theme.settings.get('veloura_general_clean_borders_2026', false) %}
+    {% set veloura_clean_borders_raw = _self.veloura_dm_value(theme.settings.get('veloura_general_clean_borders_2026', false), false)|trim %}
+    {% set veloura_clean_borders = veloura_clean_borders_raw in ['true', '1', 'on'] %}
 
     {% set veloura_should_show_bg_image = veloura_site_bg_image and (not veloura_site_bg_home_only or is_page('index')) %}
 
@@ -3982,6 +3984,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
    later work: the bundled assets go through a build and a CDN, and this has to
    be right the moment the Twig is published.
    ========================================================================== #}
+
 {% set vfab_enabled = _self.veloura_dm_value(theme.settings.get('veloura_fab_enabled_2026', false), false)|trim in [true, 1, '1', 'true', 'on'] %}
 
 {% if vfab_enabled %}
@@ -4025,6 +4028,8 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     'telegram':  {'icon': 'sicon-telegram', 'color': '#229ED9', 'label': 'تيليجرام', 'prefix': 'https://t.me/'},
     'email':     {'icon': 'sicon-email',    'color': '#6366f1', 'label': 'راسلنا',   'prefix': 'mailto:'},
     'maps':      {'icon': 'sicon-location', 'color': '#16a34a', 'label': 'موقعنا',   'prefix': 'https://maps.google.com/?q='},
+    'sizes':     {'icon': 'sicon-ruler',    'color': '#005369', 'label': 'دليل المقاسات', 'prefix': ''},
+    'loyalty':   {'icon': 'sicon-star',     'color': '#d97706', 'label': 'ولاء العملاء', 'prefix': ''},
     'custom':    {'icon': 'sicon-link',     'color': '#004956', 'label': 'رابط',     'prefix': ''}
   } %}
 
@@ -6131,12 +6136,14 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs > .container {
  width:100%!important;max-width:var(--veloura-global-container,1280px)!important;margin-inline:auto!important;padding-inline:var(--veloura-global-spacing,12px)!important;box-sizing:border-box!important;background:transparent!important;
 }
 html body#app #veloura-home-tabs .veloura-home-tabs__track {
- display:grid!important;grid-auto-flow:column!important;grid-auto-columns:minmax(0,1fr)!important;gap:0!important;padding-inline:0!important;
+ display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:0!important;padding-inline:0!important;width:100%!important;
 }
-html body#app #veloura-home-tabs .veloura-home-tabs__button {width:100%!important;min-width:0!important;max-width:none!important;justify-content:center!important;}
+html body#app #veloura-home-tabs .veloura-home-tabs__button {flex:1 1 0!important;width:0!important;min-width:0!important;max-width:none!important;margin-inline:0!important;padding-inline:4px!important;justify-content:center!important;}
+html body#app #veloura-home-tabs .veloura-home-tabs__divider {display:block!important;visibility:visible!important;opacity:1!important;position:static!important;flex:0 0 1px!important;width:1px!important;min-width:1px!important;height:12px!important;align-self:center!important;margin:0!important;padding:0!important;border:0!important;background:color-mix(in srgb,var(--veloura-tabs-text-color,#64748b) 38%,transparent)!important;}
 </style>
 
 
+{% if veloura_clean_borders %}
 {% set clear_bg = theme.settings.get('veloura_clear_features_bg_2026', false) %}
 {% if clear_bg.value is defined %}{% set clear_bg = clear_bg.value %}{% elseif clear_bg.selected is defined %}{% set clear_bg = clear_bg.selected %}{% endif %}
 {% if clear_bg is same as(true) or clear_bg == 'true' or clear_bg is same as(1) or clear_bg == '1' %}
@@ -6175,6 +6182,7 @@ html body#app :is(.veloura-product-page [data-v42-group="description"],.veloura-
 <style data-veloura-clear-bg="product_purchase">
 html body#app :is(.veloura-product-page .veloura-product-purchase-card,.veloura-product-page [data-v42-group="options"]) {background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 </style>
+{% endif %}
 {% endif %}
 <style id="veloura-light-header-glass-v81">
 html:not(.dark) body#app:not(.dark) #veloura-header-tabs-stack.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {

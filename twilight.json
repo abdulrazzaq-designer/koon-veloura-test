@@ -687,7 +687,7 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "خيارات إخفاء خلفيات العناصر",
-      "description": "إظهار أو طيّ الخيارات فقط؛ تبقى الخيارات المفعّلة مطبّقة.",
+      "description": "تشغيل إخفاء الخلفيات للعناصر التي تختارها أدناه. عند الإيقاف تستعيد جميع العناصر خلفياتها المعتادة.",
       "id": "veloura_general_clean_borders_2026",
       "format": "switch",
       "required": false,

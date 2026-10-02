@@ -286,7 +286,8 @@
   {% set dark_pos = dark_pos[0].value %}
 {% endif %}
 
-{% set dark_enabled_setting = theme.settings.get('veloura_dark_enabled_2026', false) %}
+{# The settings panel switch must not disable the storefront feature. #}
+{% set dark_enabled_setting = true %}
 {% set dark_enabled = dark_enabled_setting %}
 {% if dark_enabled_setting.selected is defined %}
   {% if dark_enabled_setting.selected.value is defined %}
