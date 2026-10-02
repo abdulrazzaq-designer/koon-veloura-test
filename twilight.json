@@ -11141,12 +11141,38 @@
       "path": "home.veloura-guide-links",
       "fields": [
         {
-          "id": "show_sizes",
-          "type": "boolean",
-          "format": "switch",
-          "label": "إظهار زر المقاسات",
-          "value": true,
-          "required": false
+          "id": "button_mode",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "الأزرار المعروضة",
+          "icon": "sicon-list",
+          "source": "Manual",
+          "required": true,
+          "value": "both",
+          "selected": [
+            {
+              "value": "both",
+              "label": "الزران تحت بعض",
+              "key": "guide-mode-both"
+            }
+          ],
+          "options": [
+            {
+              "value": "sizes",
+              "label": "زر المقاسات فقط",
+              "key": "guide-mode-sizes"
+            },
+            {
+              "value": "loyalty",
+              "label": "زر الولاء والمكافآت فقط",
+              "key": "guide-mode-loyalty"
+            },
+            {
+              "value": "both",
+              "label": "الزران تحت بعض",
+              "key": "guide-mode-both"
+            }
+          ]
         },
         {
           "id": "size_label",
@@ -11210,14 +11236,6 @@
           ]
         },
         {
-          "id": "show_loyalty",
-          "type": "boolean",
-          "format": "switch",
-          "label": "إظهار زر ولاء العملاء",
-          "value": true,
-          "required": false
-        },
-        {
           "id": "loyalty_label",
           "type": "string",
           "format": "text",
@@ -11229,10 +11247,10 @@
           "id": "loyalty_url",
           "type": "string",
           "format": "text",
-          "label": "رابط صفحة ولاء العملاء",
+          "label": "رابط مخصص للولاء (اختياري)",
           "value": "",
           "required": false,
-          "description": "انسخ رابط صفحة برنامج الولاء المفعّل في متجرك هنا."
+          "description": "اتركه فارغًا لفتح صفحة loyalty التابعة لهذا المتجر تلقائيًا."
         },
         {
           "id": "left_side",

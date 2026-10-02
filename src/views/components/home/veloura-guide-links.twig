@@ -1,23 +1,30 @@
-{# A homepage component with ordinary links; no global template dependency. #}
+{# Independent homepage guide; appearance follows the global theme tokens. #}
 {% if not component.hide %}
+  {% set guide_mode = component.button_mode|default('both') %}
+  {% if guide_mode.selected is defined %}{% set guide_mode = guide_mode.selected %}{% endif %}
+  {% if guide_mode is iterable and guide_mode.value is not defined %}{% set guide_mode = guide_mode|first %}{% endif %}
+  {% if guide_mode.value is defined %}{% set guide_mode = guide_mode.value %}{% endif %}
+  {% set guide_sizes = guide_mode in ['sizes','both'] %}
+  {% set guide_loyalty = guide_mode in ['loyalty','both'] %}
   {% set loyalty_url = component.loyalty_url|default('')|trim %}
+  {% if not loyalty_url %}{% set loyalty_url = store.url|trim('/') ~ '/loyalty' %}{% endif %}
   {% set loyalty_valid = loyalty_url starts with 'https://' or loyalty_url starts with 'http://' or loyalty_url starts with '/' %}
-  {% if component.show_sizes or (component.show_loyalty and loyalty_valid) %}
+  {% if guide_sizes or (guide_loyalty and loyalty_valid) %}
     <nav class="veloura-guide-links {{ component.left_side ? 'veloura-guide-links--left' : '' }}" aria-label="المقاسات والولاء" style="--guide-bg:{{ component.background|default('#005369')|e }};--guide-ink:{{ component.text_color|default('#ffffff')|e }};">
-      {% if component.show_sizes %}
+      {% if guide_sizes %}
         <button type="button" data-guide-open aria-haspopup="dialog" aria-controls="guide-dialog-{{ position }}">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 7v5m5-5v3m5-3v5"/></svg>
           <span>{{ component.size_label|default('دليل المقاسات')|e }}</span>
         </button>
       {% endif %}
-      {% if component.show_loyalty and loyalty_valid %}
+      {% if guide_loyalty and loyalty_valid %}
         <a href="{{ loyalty_url|e }}" target="_blank" rel="noopener" aria-label="ولاء العملاء — يفتح في صفحة جديدة">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/></svg>
           <span>{{ component.loyalty_label|default('ولاء العملاء')|e }}</span>
         </a>
       {% endif %}
     </nav>
-    {% if component.show_sizes %}
+    {% if guide_sizes %}
       <dialog id="guide-dialog-{{ position }}" class="veloura-size-guide" aria-labelledby="guide-title-{{ position }}" dir="rtl">
         <header><h2 id="guide-title-{{ position }}">{{ component.size_title|default('دليل المقاسات وطريقة القياس')|e }}</h2><button type="button" data-guide-close aria-label="إغلاق دليل المقاسات">×</button></header>
         <div class="veloura-size-guide__content">
@@ -63,6 +70,16 @@
       .veloura-size-guide :is(button,a):focus-visible{outline:2px solid currentColor;outline-offset:3px;}
       html.dark .veloura-size-guide,body.dark .veloura-size-guide{background:#14262e;color:#f1f7fa;}
       @media(max-width:600px){.veloura-size-guide{width:100%;height:100dvh;max-height:100dvh;border-radius:0;}.veloura-size-guide header{padding:14px 16px;}.veloura-size-guide h2{font-size:19px;}.veloura-size-guide__content{padding:20px 16px;}}
+    </style>
+    <style>
+      .veloura-guide-links,.veloura-size-guide{--guide-radius:min(var(--veloura-global-radius,16px),40px);}
+      .veloura-guide-links :is(a,button){border-radius:var(--guide-radius) 0 0 var(--guide-radius);}
+      .veloura-guide-links--left :is(a,button){border-radius:0 var(--guide-radius) var(--guide-radius) 0;}
+      .veloura-size-guide{background:var(--veloura-site-second-bg,#f4f5f7);color:var(--veloura-primary-text,var(--color-text,#15313b));border-radius:var(--guide-radius);}
+      .veloura-size-guide header button{border-radius:var(--guide-radius);background:color-mix(in srgb,currentColor 8%,transparent);}
+      .veloura-size-guide img{border-radius:var(--guide-radius);}
+      html.dark .veloura-size-guide,body.dark .veloura-size-guide{background:var(--veloura-dark-secondary-bg,#14262e);color:var(--veloura-dark-primary-text,var(--veloura-dark-secondary-text,#f1f7fa));}
+      @media(max-width:600px){.veloura-size-guide{border-radius:0;}}
     </style>
   {% endif %}
 {% endif %}

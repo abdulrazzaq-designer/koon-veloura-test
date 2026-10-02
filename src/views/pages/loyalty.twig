@@ -38,7 +38,15 @@
          style="background-image:url({{ loyalty.image }})">
         <div class="overlay h-full w-full bg-black opacity-50 absolute top-0 left-0"></div>
     </div>
-    <div class="container space-y-8 lg:space-y-16">
+    <style>
+      .veloura-loyalty-theme{--loyalty-surface:var(--veloura-site-second-bg,#f4f5f7);--loyalty-ink:var(--veloura-primary-text,var(--color-text,#15313b));--loyalty-radius:min(var(--veloura-global-radius,16px),40px);color:var(--loyalty-ink);}
+      html.dark .veloura-loyalty-theme,body.dark .veloura-loyalty-theme{--loyalty-surface:var(--veloura-dark-secondary-bg,#14262e);--loyalty-ink:var(--veloura-dark-primary-text,#f1f7fa);}
+      .veloura-loyalty-theme :is(.loyalty__banner,.way-item,.product-entry){background:var(--loyalty-surface);color:var(--loyalty-ink);border-radius:var(--loyalty-radius);}
+      .veloura-loyalty-theme :is(.info,.way-item__content,.product-entry) p,.veloura-loyalty-theme .product-entry__title{color:var(--loyalty-ink);}
+      .veloura-loyalty-theme .product-entry :is(img,.product-entry__image){border-radius:var(--loyalty-radius) var(--loyalty-radius) 0 0;}
+      .veloura-loyalty-theme .way-item__action .rounded-3xl{border-radius:var(--loyalty-radius)!important;}
+    </style>
+    <div class="container space-y-8 lg:space-y-16 veloura-loyalty-theme">
         {# Breadcrumbs #}
         <nav class="breadcrumbs w-full py-5"><salla-breadcrumb></salla-breadcrumb></nav>
 
