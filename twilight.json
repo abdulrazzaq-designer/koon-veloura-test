@@ -11157,13 +11157,57 @@
           "required": false
         },
         {
-          "id": "size_url",
+          "id": "size_title",
           "type": "string",
           "format": "text",
-          "label": "رابط صفحة المقاسات",
+          "label": "عنوان دليل المقاسات",
+          "value": "دليل المقاسات وطريقة القياس",
+          "required": false
+        },
+        {
+          "id": "size_intro",
+          "type": "string",
+          "format": "textarea",
+          "label": "مقدمة الدليل",
           "value": "",
-          "required": false,
-          "description": "أنشئ صفحة المقاسات في صفحات المتجر وأضف الجدول وطريقة القياس، ثم انسخ رابطها الكامل هنا. يظهر الزر بعد إضافة الرابط."
+          "required": false
+        },
+        {
+          "id": "size_sections",
+          "type": "collection",
+          "format": "collection",
+          "label": "صور وتفاصيل دليل المقاسات",
+          "item_label": "قسم في الدليل",
+          "icon": "sicon-list-add",
+          "value": [],
+          "minLength": 0,
+          "maxLength": 15,
+          "fields": [
+            {
+              "id": "size_sections.title",
+              "type": "string",
+              "format": "text",
+              "label": "عنوان القسم",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "size_sections.text",
+              "type": "string",
+              "format": "textarea",
+              "label": "الشرح والتفاصيل",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "size_sections.image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة جدول المقاسات أو طريقة القياس",
+              "value": null,
+              "required": false
+            }
+          ]
         },
         {
           "id": "show_loyalty",
