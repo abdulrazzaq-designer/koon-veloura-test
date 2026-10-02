@@ -11132,6 +11132,101 @@
   ],
   "components": [
     {
+      "key": "4d33b658-57aa-4911-b971-7da8e37cba04",
+      "title": {
+        "ar": "أزرار المقاسات والولاء (فيلورا)",
+        "en": "Size Guide and Loyalty Links - Veloura"
+      },
+      "icon": "sicon-link",
+      "path": "home.veloura-guide-links",
+      "fields": [
+        {
+          "id": "show_sizes",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار زر المقاسات",
+          "value": true,
+          "required": false
+        },
+        {
+          "id": "size_label",
+          "type": "string",
+          "format": "text",
+          "label": "نص زر المقاسات",
+          "value": "دليل المقاسات",
+          "required": false
+        },
+        {
+          "id": "size_url",
+          "type": "string",
+          "format": "text",
+          "label": "رابط صفحة المقاسات",
+          "value": "",
+          "required": false,
+          "description": "أنشئ صفحة المقاسات في صفحات المتجر وأضف الجدول وطريقة القياس، ثم انسخ رابطها الكامل هنا. يظهر الزر بعد إضافة الرابط."
+        },
+        {
+          "id": "show_loyalty",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار زر ولاء العملاء",
+          "value": true,
+          "required": false
+        },
+        {
+          "id": "loyalty_label",
+          "type": "string",
+          "format": "text",
+          "label": "نص زر الولاء",
+          "value": "ولاء العملاء",
+          "required": false
+        },
+        {
+          "id": "loyalty_url",
+          "type": "string",
+          "format": "text",
+          "label": "رابط صفحة ولاء العملاء",
+          "value": "",
+          "required": false,
+          "description": "انسخ رابط صفحة برنامج الولاء المفعّل في متجرك هنا."
+        },
+        {
+          "id": "left_side",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار الأزرار يسار الشاشة",
+          "value": false,
+          "required": false
+        },
+        {
+          "id": "background",
+          "type": "string",
+          "format": "color",
+          "label": "خلفية الأزرار",
+          "value": "#005369",
+          "required": false,
+          "inputType": "color"
+        },
+        {
+          "id": "text_color",
+          "type": "string",
+          "format": "color",
+          "label": "النصوص والأيقونات",
+          "value": "#ffffff",
+          "required": false,
+          "inputType": "color"
+        },
+        {
+          "id": "hide",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء العنصر",
+          "value": false,
+          "required": false
+        }
+      ]
+    },
+    {
       "key": "9c1f4e28-7b60-4d3a-9f52-2ea8c6d71b4f",
       "title": {
         "ar": "واجهة المتجر (هيرو)",

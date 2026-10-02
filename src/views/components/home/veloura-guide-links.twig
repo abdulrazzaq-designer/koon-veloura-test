@@ -1,0 +1,31 @@
+{# A homepage component with ordinary links; no global template dependency. #}
+{% if not component.hide %}
+  {% set size_url = component.size_url|default('')|trim %}
+  {% set loyalty_url = component.loyalty_url|default('')|trim %}
+  {% set size_valid = size_url starts with 'https://' or size_url starts with 'http://' or size_url starts with '/' %}
+  {% set loyalty_valid = loyalty_url starts with 'https://' or loyalty_url starts with 'http://' or loyalty_url starts with '/' %}
+  {% if (component.show_sizes and size_valid) or (component.show_loyalty and loyalty_valid) %}
+    <nav class="veloura-guide-links {{ component.left_side ? 'veloura-guide-links--left' : '' }}" aria-label="المقاسات والولاء" style="--guide-bg:{{ component.background|default('#005369')|e }};--guide-ink:{{ component.text_color|default('#ffffff')|e }};">
+      {% if component.show_sizes and size_valid %}
+        <a href="{{ size_url|e }}" target="_blank" rel="noopener" aria-label="دليل المقاسات — يفتح في صفحة جديدة">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 7v5m5-5v3m5-3v5"/></svg>
+          <span>{{ component.size_label|default('دليل المقاسات')|e }}</span>
+        </a>
+      {% endif %}
+      {% if component.show_loyalty and loyalty_valid %}
+        <a href="{{ loyalty_url|e }}" target="_blank" rel="noopener" aria-label="ولاء العملاء — يفتح في صفحة جديدة">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/></svg>
+          <span>{{ component.loyalty_label|default('ولاء العملاء')|e }}</span>
+        </a>
+      {% endif %}
+    </nav>
+    <style>
+      .veloura-guide-links{position:fixed;right:0;left:auto;top:40%;z-index:2147481900;display:flex;flex-direction:column;gap:7px;direction:rtl;pointer-events:none;}
+      .veloura-guide-links--left{left:0;right:auto;}
+      .veloura-guide-links a{display:flex;align-items:center;gap:8px;writing-mode:vertical-rl;max-height:180px;overflow:auto;padding:13px 8px;border:1px solid #ffffff55;border-radius:14px 0 0 14px;background:var(--guide-bg);color:var(--guide-ink);box-shadow:0 5px 18px #0002;text-decoration:none;font-size:12px;font-weight:700;line-height:1.4;pointer-events:auto;}
+      .veloura-guide-links--left a{border-radius:0 14px 14px 0;}
+      .veloura-guide-links svg{flex-shrink:0;}
+      .veloura-guide-links a:focus-visible{outline:3px solid var(--guide-ink);outline-offset:-4px;}
+    </style>
+  {% endif %}
+{% endif %}
