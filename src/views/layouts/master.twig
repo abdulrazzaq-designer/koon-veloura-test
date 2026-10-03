@@ -3729,6 +3729,8 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     #veloura-bottom-categories .vbc-card:hover{background:color-mix(in srgb,currentColor 12%,var(--vbc-bg))}
     #veloura-bottom-categories .vbc-card img,#veloura-bottom-categories .vbc-card i{width:38px;height:38px;flex:none;object-fit:contain;border-radius:var(--veloura-global-radius,12px);font-size:26px;display:grid;place-items:center}
     #veloura-bottom-categories .vbc-card span{font-size:13px;font-weight:600;overflow-wrap:anywhere}
+    #veloura-bottom-categories .vbc-chevron{width:18px;height:18px;flex:0 0 18px;margin-inline-start:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    html body #veloura-bottom-categories,html body #veloura-bottom-categories :is(h2,button,a,span,p){color:var(--vbc-text)!important;-webkit-text-fill-color:currentColor!important}
     #veloura-bottom-categories .vbc-empty{grid-column:1/-1;text-align:center;padding:24px 8px}
     @keyframes vbc-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
     @media(prefers-reduced-motion:reduce){
@@ -3753,22 +3755,43 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     };
     const render=(items,title=rootTitle,parentUrl='')=>{
       grid.replaceChildren();grid.scrollTop=0;heading.textContent=title;
-      if(trail.length){const back=document.createElement('button');back.type='button';back.className='vbc-card';back.textContent='‹ رجوع';back.addEventListener('click',()=>{const prev=trail.pop();render(prev.items,prev.title,prev.parentUrl);});grid.append(back);}
+      if(trail.length){const back=document.createElement('button');back.type='button';back.className='vbc-card';back.textContent='‹ رجوع';back.addEventListener('click',()=>navigate(()=>{const prev=trail.pop();render(prev.items,prev.title,prev.parentUrl);},-1));grid.append(back);}
       if(parentUrl){const all=document.createElement('a');all.className='vbc-card';all.href=parentUrl;all.textContent='عرض الكل — '+title;grid.append(all);}
       items.forEach(item=>{
       const label=scalar(item.title||item.name||item.label).trim(),url=safeUrl(item.url);
       const children=Array.isArray(item.children)?item.children:[];
       if(!label||(!url&&!children.length))return;
       const card=document.createElement(children.length?'button':'a');card.className='vbc-card';
-      if(children.length){card.type='button';card.setAttribute('aria-label',label+' — عرض التصنيفات الفرعية');card.addEventListener('click',()=>{trail.push({items,title,parentUrl});render(children,label,url);});}else card.href=url;
+      if(children.length){card.type='button';card.setAttribute('aria-label',label+' — عرض التصنيفات الفرعية');card.addEventListener('click',()=>navigate(()=>{trail.push({items,title,parentUrl});render(children,label,url);}));}else card.href=url;
       const icon=document.createElement('i');icon.className='sicon-grid';icon.setAttribute('aria-hidden','true');
       let mapped='';try{mapped=menuHost()?.getMappedCategoryImage?.(item)||'';}catch(_){}
       const image=safeUrl(mapped||item.image);
       if(image){const img=document.createElement('img');img.src=image;img.alt='';img.loading='lazy';img.addEventListener('error',()=>img.replaceWith(icon),{once:true});card.append(img);}else card.append(icon);
       const caption=document.createElement('span');caption.textContent=label;card.append(caption);grid.append(card);
+      if(children.length){const arrow=document.createElementNS('http://www.w3.org/2000/svg','svg');arrow.setAttribute('class','vbc-chevron');arrow.setAttribute('viewBox','0 0 24 24');arrow.setAttribute('aria-hidden','true');const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M15 5l-7 7 7 7');arrow.append(path);card.append(arrow);}
       });
       if(!grid.children.length)message('لا توجد عناصر في قائمة المتجر حاليًا');
     };
+    let transitioning=false;
+    async function navigate(update,direction=1){
+      if(transitioning)return;
+      transitioning=true;
+      const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      try{
+        const before=panel.getBoundingClientRect().height;
+        if(!reduced)await grid.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX('+(-10*direction)+'px)'}],{duration:100,easing:'ease-in'}).finished;
+        if(!panel.open)return;
+        update();
+        const after=panel.getBoundingClientRect().height;
+        grid.querySelector('button,a[href]')?.focus({preventScroll:true});
+        if(!reduced){
+          await Promise.all([
+            panel.animate([{height:before+'px'},{height:after+'px'}],{duration:220,easing:'ease-out'}).finished,
+            grid.animate([{opacity:0,transform:'translateX('+(10*direction)+'px)'},{opacity:1,transform:'translateX(0)'}],{duration:220,easing:'ease-out'}).finished
+          ]);
+        }
+      }finally{transitioning=false;}
+    }
     async function load(){
       if(loading)return;
       trail=[];heading.textContent=rootTitle;
@@ -3794,8 +3817,9 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       const glass=document.body.classList.contains('veloura-bottom-nav-glass');
       panel.style.setProperty('--vbc-left',rect.left+'px');panel.style.setProperty('--vbc-width',rect.width+'px');
       panel.style.setProperty('--vbc-clearance',Math.max(72,innerHeight-rect.top+12)+'px');
-      panel.style.setProperty('--vbc-radius',style.borderTopLeftRadius);
-      panel.style.setProperty('--vbc-surface',style.backgroundColor);panel.style.setProperty('--vbc-text',style.color);
+      const radius=parseFloat(style.borderTopLeftRadius)||0;
+      panel.style.setProperty('--vbc-radius',Math.min(24,Math.max(0,radius*.6))+'px');
+      panel.style.setProperty('--vbc-surface',style.backgroundColor);
       panel.style.setProperty('--vbc-filter',glass?(style.backdropFilter||style.webkitBackdropFilter||'blur(20px)'):'none');
       panel.classList.toggle('vbc-glass',glass);
     };
