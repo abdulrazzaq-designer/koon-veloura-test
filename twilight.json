@@ -10234,6 +10234,33 @@
       ]
     },
     {
+      "id": "veloura_bottom_categories_items_2026",
+      "type": "collection",
+      "format": "collection",
+      "label": "تصنيفات القائمة السفلية المستقلة",
+      "description": "بطاقات تظهر عند الضغط على التصنيفات أسفل الجوال. اختر أسماءها وصورها وروابطها ورتبها هنا، بشكل مستقل عن القائمة الجانبية.",
+      "icon": "sicon-apps",
+      "required": false,
+      "minLength": 0,
+      "maxLength": 30,
+      "conditions": [
+        {"id": "veloura_mobile_floating_menu_enabled_2026", "operation": "=", "value": true},
+        {"id": "veloura_mobile_floating_menu_show_categories_2026", "operation": "=", "value": true}
+      ],
+      "fields": [
+        {"id": "label", "type": "string", "format": "text", "label": "اسم التصنيف", "value": "", "required": true},
+        {"id": "image", "type": "string", "format": "image", "label": "صورة التصنيف", "description": "اختيارية؛ تظهر أيقونة التصنيفات عند تركها فارغة.", "value": "", "required": false},
+        {
+          "id": "url", "type": "items", "format": "variable-list", "label": "رابط التصنيف",
+          "icon": "sicon-link", "value": null, "required": false, "searchable": true, "source": "custom",
+          "sources": [
+            {"label": "تصنيف", "key": "categories", "value": "categories"},
+            {"label": "رابط مخصص", "key": "custom", "value": "custom"}
+          ]
+        }
+      ]
+    },
+    {
       "id": "veloura_mobile_floating_menu_show_search_2026",
       "type": "boolean",
       "format": "switch",
