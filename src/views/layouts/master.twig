@@ -3727,7 +3727,9 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     #veloura-bottom-categories .vbc-card span{font-size:13px;font-weight:600;overflow-wrap:anywhere}
     #veloura-bottom-categories .vbc-empty{grid-column:1/-1;text-align:center;padding:24px 8px}
     @keyframes vbc-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    @media(prefers-reduced-motion:reduce){#veloura-bottom-categories[open]{animation:none}}
+    @media(prefers-reduced-motion:reduce){
+      #veloura-bottom-categories[open]{animation:none}
+    }
   </style>
   <script id="veloura-bottom-categories-script">
   (() => {
