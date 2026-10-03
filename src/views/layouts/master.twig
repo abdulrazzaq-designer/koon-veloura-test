@@ -3716,6 +3716,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     #veloura-bottom-categories{--vbc-bg:var(--veloura-site-second-bg,#fff);--vbc-text:var(--veloura-primary-text,#243341);position:fixed;inset:auto auto 0 var(--vbc-left,12px);margin:0;padding:0 0 var(--vbc-clearance,96px);box-sizing:border-box;width:var(--vbc-width,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 24px);z-index:2147483497;color:var(--vbc-text);background:var(--vbc-surface,var(--vbc-bg));border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:var(--vbc-radius,20px) var(--vbc-radius,20px) 0 0;backdrop-filter:var(--vbc-filter,none);-webkit-backdrop-filter:var(--vbc-filter,none);box-shadow:0 -8px 36px #0003;overflow:hidden;direction:rtl}
     #veloura-bottom-categories[open]{display:flex;flex-direction:column;animation:vbc-enter .2s ease-out}
     html.dark #veloura-bottom-categories,body.dark #veloura-bottom-categories{--vbc-bg:var(--veloura-dark-secondary-bg,#18212c);--vbc-text:var(--veloura-dark-primary-text,#f5f7fa)}
+    html:not(.dark) body:not(.dark) #veloura-bottom-categories{--vbc-text:color-mix(in srgb,var(--veloura-primary-text,#6b7280) 65%,#111827)}
     #veloura-categories-shade{position:fixed;inset:0;background:rgba(0,0,0,.22);z-index:2147483496;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
     #veloura-categories-shade[hidden]{display:none!important}
     body.vbc-open [data-vbn]{z-index:2147483498!important}
@@ -3818,7 +3819,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       panel.style.setProperty('--vbc-left',rect.left+'px');panel.style.setProperty('--vbc-width',rect.width+'px');
       panel.style.setProperty('--vbc-clearance',Math.max(72,innerHeight-rect.top+12)+'px');
       const radius=parseFloat(style.borderTopLeftRadius)||0;
-      panel.style.setProperty('--vbc-radius',Math.min(24,Math.max(0,radius*.6))+'px');
+      panel.style.setProperty('--vbc-radius',Math.min(40,Math.max(0,radius))+'px');
       panel.style.setProperty('--vbc-surface',style.backgroundColor);
       panel.style.setProperty('--vbc-filter',glass?(style.backdropFilter||style.webkitBackdropFilter||'blur(20px)'):'none');
       panel.classList.toggle('vbc-glass',glass);
@@ -5671,8 +5672,8 @@ background:rgba(230,232,235,.69)!important;background-image:none!important;
 <style id="veloura-side-colors-v49">
 html body#app .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-side-cats-text,var(--color-text,#111827))}
 html.dark body#app .mm-ocd.veloura-side-menu-drawer,html body#app.dark .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-dark-side-menu-text,var(--veloura-dark-primary-text,#fff))}
-html.veloura-side-cats-glass body#app .mm-ocd.veloura-side-menu-drawer,html body#app.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-primary-text,var(--color-text,#111827))}
-html.dark.veloura-side-cats-glass body#app .mm-ocd.veloura-side-menu-drawer,html.dark body#app.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer,html.veloura-side-cats-glass body#app.dark .mm-ocd.veloura-side-menu-drawer,html body#app.dark.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-dark-primary-text,#fff)}
+html.veloura-side-cats-glass body#app .mm-ocd.veloura-side-menu-drawer,html body#app.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-side-cats-text,var(--color-text,#111827))}
+html.dark.veloura-side-cats-glass body#app .mm-ocd.veloura-side-menu-drawer,html.dark body#app.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer,html.veloura-side-cats-glass body#app.dark .mm-ocd.veloura-side-menu-drawer,html body#app.dark.veloura-side-cats-glass .mm-ocd.veloura-side-menu-drawer {--veloura-menu-effective-text:var(--veloura-dark-side-menu-text,var(--veloura-dark-primary-text,#fff))}
 html body#app .mm-ocd.veloura-side-menu-drawer #mobile-menu.mm-spn::after,
 html body#app .mm-ocd.veloura-side-menu-drawer .mm-ocd__content :is(a,span,li,i,.mm-navbar__title,.veloura-side-menu-row__label) {color:var(--veloura-menu-effective-text)!important;-webkit-text-fill-color:currentColor!important}
 </style>
@@ -5854,7 +5855,7 @@ new MutationObserver(queue).observe(document.body,{childList:true,subtree:true})
 <style id="veloura-side-light-text-v50">
 html:not(.dark).veloura-side-cats-glass body#app:not(.dark) .mm-ocd.veloura-side-menu-drawer,
 html:not(.dark) body#app.veloura-side-cats-glass:not(.dark) .mm-ocd.veloura-side-menu-drawer {
---veloura-menu-effective-text:#202630;
+--veloura-menu-effective-text:var(--veloura-side-cats-text,var(--color-text,#111827));
 }
 html:not(.dark).veloura-side-cats-glass body#app:not(.dark) .mm-ocd.veloura-side-menu-drawer #mobile-menu.mm-spn::after,
 html:not(.dark) body#app.veloura-side-cats-glass:not(.dark) .mm-ocd.veloura-side-menu-drawer #mobile-menu.mm-spn::after,
