@@ -812,7 +812,7 @@
   {% set vqv_button_text = vqv_button_text.value %}
 {% endif %}
 
-{% set vqv_button_position_raw = 'wishlist_icon' %}
+{% set vqv_button_position_raw = theme.settings.get('veloura_quick_view_button_position_2026', 'wishlist_icon') %}
 {% set vqv_under_cart_gap_raw = _self.veloura_dm_value(theme.settings.get('veloura_quick_view_under_cart_gap_2026', 8), 8)|trim %}
 {% set vqv_under_cart_gap = vqv_under_cart_gap_raw + 0 %}
 
@@ -1089,7 +1089,7 @@
         enabled: {{ (vpc_enabled and vqv_enabled) ? 'true' : 'false' }},
         buttonText: {{ vqv_button_text|json_encode|raw }},
         buttonPosition: {{ vqv_button_position|json_encode|raw }},
-        showIcon: true,
+        showIcon: {{ vqv_show_icon ? 'true' : 'false' }},
         icon: {{ vqv_icon|json_encode|raw }},
         showDiscount: {{ vqv_show_discount ? 'true' : 'false' }},
         showProductLink: {{ vqv_show_product_link ? 'true' : 'false' }},
@@ -3530,7 +3530,6 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
 {% endif %}
 
 {% block scripts %}{% endblock %}
-{% include 'components.veloura-quick-purchase' %}
 
 {# Veloura V69: dark mode is controlled centrally by app.js. #}
 
