@@ -3707,7 +3707,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     </div>
   </nav>
   {% if vbn_show_categories %}
-  <dialog id="veloura-bottom-categories" aria-labelledby="veloura-bottom-categories-title" data-items="{{ theme.settings.get('veloura_bottom_categories_items_2026', [])|json_encode|e('html_attr') }}">
+  <dialog id="veloura-bottom-categories" aria-labelledby="veloura-bottom-categories-title">
     <header class="vbc-heading"><h2 id="veloura-bottom-categories-title">{{ vbn_categories_label }}</h2><button type="button" data-vbc-close aria-label="إغلاق التصنيفات">×</button></header>
     <div class="vbc-grid"></div>
   </dialog>
@@ -3740,20 +3740,52 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     const grid=panel.querySelector('.vbc-grid');
     const scalar=(value)=>{if(typeof value==='string')return value;if(Array.isArray(value))return scalar(value[0]);if(value&&typeof value==='object')return scalar(value.url||value.href||value.value||value.selected);return '';};
     const safeUrl=(value)=>{try{const text=scalar(value).trim();if(!text)return '';const url=new URL(text,location.origin);return ['http:','https:'].includes(url.protocol)?url.href:'';}catch(_){return '';}};
-    let items=[];try{const raw=JSON.parse(panel.dataset.items||'[]');items=Array.isArray(raw)?raw:(Array.isArray(raw.value)?raw.value:[]);}catch(_){}
-    items.forEach(item=>{
-      const label=scalar(item.label).trim(),url=safeUrl(item.url);
-      if(!label||!url)return;
-      const card=document.createElement('a');card.className='vbc-card';card.href=url;
+    const heading=panel.querySelector('h2'),rootTitle=heading.textContent;
+    let rootItems=null,trail=[],loading=false;
+    const menuHost=()=>document.querySelector('custom-main-menu');
+    const message=(text,retry=false)=>{
+      grid.replaceChildren();const p=document.createElement('p');p.className='vbc-empty';p.textContent=text;grid.append(p);
+      if(retry){const button=document.createElement('button');button.type='button';button.className='vbc-card';button.textContent='إعادة المحاولة';button.addEventListener('click',load);grid.append(button);}
+    };
+    const render=(items,title=rootTitle,parentUrl='')=>{
+      grid.replaceChildren();grid.scrollTop=0;heading.textContent=title;
+      if(trail.length){const back=document.createElement('button');back.type='button';back.className='vbc-card';back.textContent='‹ رجوع';back.addEventListener('click',()=>{const prev=trail.pop();render(prev.items,prev.title,prev.parentUrl);});grid.append(back);}
+      if(parentUrl){const all=document.createElement('a');all.className='vbc-card';all.href=parentUrl;all.textContent='عرض الكل — '+title;grid.append(all);}
+      items.forEach(item=>{
+      const label=scalar(item.title||item.name||item.label).trim(),url=safeUrl(item.url);
+      const children=Array.isArray(item.children)?item.children:[];
+      if(!label||(!url&&!children.length))return;
+      const card=document.createElement(children.length?'button':'a');card.className='vbc-card';
+      if(children.length){card.type='button';card.setAttribute('aria-label',label+' — عرض التصنيفات الفرعية');card.addEventListener('click',()=>{trail.push({items,title,parentUrl});render(children,label,url);});}else card.href=url;
       const icon=document.createElement('i');icon.className='sicon-grid';icon.setAttribute('aria-hidden','true');
-      const image=safeUrl(item.image);
+      let mapped='';try{mapped=menuHost()?.getMappedCategoryImage?.(item)||'';}catch(_){}
+      const image=safeUrl(mapped||item.image);
       if(image){const img=document.createElement('img');img.src=image;img.alt='';img.loading='lazy';img.addEventListener('error',()=>img.replaceWith(icon),{once:true});card.append(img);}else card.append(icon);
-      const title=document.createElement('span');title.textContent=label;card.append(title);grid.append(card);
-    });
-    if(!grid.children.length){const empty=document.createElement('p');empty.className='vbc-empty';empty.textContent='لا توجد تصنيفات مضافة حاليًا';grid.append(empty);}
+      const caption=document.createElement('span');caption.textContent=label;card.append(caption);grid.append(card);
+      });
+      if(!grid.children.length)message('لا توجد عناصر في قائمة المتجر حاليًا');
+    };
+    async function load(){
+      if(loading)return;
+      trail=[];heading.textContent=rootTitle;
+      const cached=menuHost()?.menus;
+      if(Array.isArray(cached)&&cached.length){rootItems=cached;render(rootItems);return;}
+      if(rootItems){render(rootItems);return;}
+      loading=true;message('جارٍ تحميل تصنيفات المتجر…');
+      try{
+        const result=await Promise.race([(async()=>{
+          if(!window.salla?.onReady)throw new Error('not ready');
+          await window.salla.onReady();
+          const response=await window.salla.api.component.getMenus();
+          if(!Array.isArray(response?.data))throw new Error('invalid menu');
+          return response.data;
+        })(),new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),10000))]);
+        rootItems=result;render(rootItems);
+      }catch(_){message('تعذّر تحميل التصنيفات. حاول مرة أخرى.',true);}finally{loading=false;}
+    }
     let previousOverflow='';
     const position=()=>{const nav=trigger.closest('[data-vbn]');const rect=nav?.getBoundingClientRect();const bottom=rect?Math.max(16,innerHeight-rect.top+10):96;panel.style.setProperty('--vbc-bottom',bottom+'px');};
-    trigger.addEventListener('click',()=>{if(panel.open){panel.close();return;}position();previousOverflow=document.body.style.overflow;panel.showModal();document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');});
+    trigger.addEventListener('click',()=>{if(panel.open){panel.close();return;}position();previousOverflow=document.body.style.overflow;panel.showModal();document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');load();});
     panel.querySelector('[data-vbc-close]').addEventListener('click',()=>panel.close());
     panel.addEventListener('click',event=>{if(event.target!==panel)return;const r=panel.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)panel.close();});
     panel.addEventListener('close',()=>{document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');trigger.focus({preventScroll:true});});
