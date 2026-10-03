@@ -6104,54 +6104,47 @@
       ]
     },
     {
-      "id": "veloura_quick_view_button_text_2026",
-      "type": "string",
-      "format": "text",
-      "label": "نص زر العرض السريع",
-      "value": "عرض سريع",
+      "id": "veloura_quick_purchase_enabled_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إظهار زر الشراء السريع",
+      "description": "زر مستقل لخيارات المنتج والشراء. العرض السريع يبقى أيقونة على صورة المنتج.",
+      "icon": "sicon-bolt",
+      "value": true,
+      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
     {
-      "id": "veloura_quick_view_button_position_2026",
+      "id": "veloura_quick_purchase_position_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "مكان زر العرض السريع",
+      "label": "مكان زر الشراء السريع",
       "icon": "sicon-list",
       "source": "Manual",
       "required": true,
       "selected": [
         {
-          "label": "أيقونة بجانب زر المفضلة",
-          "value": "wishlist_icon",
-          "key": "veloura-quick-view-position-wishlist-icon-2026"
+          "label": "أسفل إضافة السلة — زر بنص",
+          "value": "below",
+          "key": "vp-below"
         }
       ],
       "options": [
         {
-          "label": "أيقونة بجانب زر المفضلة",
-          "value": "wishlist_icon",
-          "key": "veloura-quick-view-position-wishlist-icon-2026"
+          "label": "أسفل إضافة السلة — زر بنص",
+          "value": "below",
+          "key": "vp-below"
         },
         {
-          "label": "زر تحت أضف للسلة",
-          "value": "below_add_to_cart",
-          "key": "veloura-quick-view-position-below-add-to-cart-2026"
+          "label": "بجانب إضافة السلة — أيقونة صغيرة",
+          "value": "beside",
+          "key": "vp-beside"
         }
       ],
       "conditions": [
@@ -6161,7 +6154,7 @@
           "value": true
         },
         {
-          "id": "veloura_quick_view_enabled_2026",
+          "id": "veloura_quick_purchase_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -6192,78 +6185,9 @@
           "value": true
         },
         {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "wishlist_icon"
-        },
-        {
           "id": "veloura_pc_hide_wish_2026",
           "operation": "=",
           "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_under_cart_margin_x_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة يمين ويسار زر العرض السريع",
-      "description": "المسافة الفعلية من حافتي بطاقة المنتج إلى زر العرض السريع. 0 يعني أن زر العرض السريع يلتصق بحافتي البطاقة حتى لو كان المحتوى الداخلي عليه Padding.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "0",
-      "default": "0",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "100",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_under_cart_margin_bottom_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة أسفل زر العرض السريع",
-      "description": "تتحكم بالمسافة بين زر العرض السريع والحافة السفلية لبطاقة المنتج.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "10",
-      "default": "10",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "100",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6297,7 +6221,7 @@
       "id": "veloura_quick_view_button_bg_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون خلفية زر العرض السريع",
+      "label": "لون خلفية زر الشراء السريع",
       "value": "#004d65",
       "conditions": [
         {
@@ -6306,14 +6230,9 @@
           "value": true
         },
         {
-          "id": "veloura_quick_view_enabled_2026",
+          "id": "veloura_quick_purchase_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6321,7 +6240,7 @@
       "id": "veloura_quick_view_button_text_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون نص زر العرض السريع",
+      "label": "لون نص زر الشراء السريع",
       "value": "#ffffff",
       "conditions": [
         {
@@ -6330,14 +6249,9 @@
           "value": true
         },
         {
-          "id": "veloura_quick_view_enabled_2026",
+          "id": "veloura_quick_purchase_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6364,65 +6278,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_button_height_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "ارتفاع زر العرض السريع",
-      "description": "القيمة الفعلية = 32 + قيمة السلايدر",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "8",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "30",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "إظهار أيقونة داخل زر العرض السريع",
-      "description": "عند التفعيل تظهر أيقونة بجانب نص الزر",
-      "id": "veloura_quick_view_show_icon_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -7043,28 +6898,6 @@
       "step": "1",
       "minimum": "0",
       "maximum": "100",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_under_cart_gap_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة أسفل زر أضف للسلة",
-      "description": "يبقى هذا الخيار ظاهرًا دائمًا ويتحكم بالمسافة أسفل زر أضف للسلة. إذا كان العرض السريع أسفل زر السلة تصبح هذه المسافة هي الفراغ بين الزرين.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "8",
-      "default": "8",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "60",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -22082,7 +21915,7 @@
           "id": "veloura_tkr_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "value": false,
           "required": false
         },

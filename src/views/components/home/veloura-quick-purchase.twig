@@ -1,0 +1,97 @@
+<div id="veloura-purchase-config" hidden
+ data-enabled="{{ theme.settings.get('veloura_quick_purchase_enabled_2026', true)|json_encode|e('html_attr') }}"
+ data-position="{{ theme.settings.get('veloura_quick_purchase_position_2026', 'below')|json_encode|e('html_attr') }}"></div>
+<style id="veloura-purchase-style">
+.veloura-purchase-trigger{display:flex!important;align-items:center;justify-content:center;gap:6px;width:100%;min-height:40px;margin-top:8px;padding:8px 12px;border:0;border-radius:var(--veloura-global-radius,16px);background:var(--veloura-quick-view-button-bg,#005369);color:var(--veloura-quick-view-button-text,#fff);cursor:pointer;font:inherit;font-size:13px;font-weight:700}
+.veloura-purchase-trigger.is-compact{width:40px;min-width:40px;max-width:40px;height:40px;flex:0 0 40px;margin:0;padding:8px;font-size:21px}
+.veloura-purchase-row{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:nowrap!important}
+.veloura-purchase-row>salla-add-product-button{flex:1 1 0!important;min-width:0!important;width:auto!important}
+#veloura-purchase-dialog{--vp-bg:var(--veloura-site-second-bg,#fff);--vp-text:var(--veloura-primary-text,#243341);width:min(620px,calc(100% - 24px));max-height:88dvh;padding:0;border:1px solid #8883;border-radius:min(var(--veloura-global-radius,24px),40px);background:var(--vp-bg);color:var(--vp-text);overflow:auto;overscroll-behavior:contain;box-shadow:0 20px 60px #0004}
+#veloura-purchase-dialog[open]{display:flex;flex-direction:column;animation:vp-enter .22s ease-out}
+#veloura-purchase-dialog,#veloura-purchase-dialog *{box-sizing:border-box}
+#veloura-purchase-dialog::backdrop{background:#0004;backdrop-filter:none}
+html.dark #veloura-purchase-dialog,body.dark #veloura-purchase-dialog{--vp-bg:var(--veloura-dark-secondary-bg,#18212c);--vp-text:var(--veloura-dark-primary-text,#fff)}
+body.veloura-glass-effect #veloura-purchase-dialog{background:color-mix(in srgb,var(--vp-bg) 82%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+#veloura-purchase-dialog .vp-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #8883;flex:none}
+#veloura-purchase-dialog .vp-close{font-size:26px;width:36px;height:36px;border-radius:50%;background:#8882;color:inherit}
+#veloura-purchase-dialog .vp-content{padding:18px;overflow-y:auto;min-height:0}
+#veloura-purchase-dialog .vp-summary{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+#veloura-purchase-dialog .vp-summary img{width:84px;height:84px;object-fit:contain;border-radius:min(var(--veloura-global-radius,16px),24px)}
+#veloura-purchase-dialog h3{font-size:17px;font-weight:700;margin:0 0 8px;color:inherit}
+#veloura-purchase-dialog .vp-price{font-size:19px;font-weight:700;margin:8px 0}
+#veloura-purchase-dialog .vp-description{font-size:13px;line-height:1.7;margin:0 0 14px}
+#veloura-purchase-dialog .vp-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:sticky;bottom:-18px;background:var(--vp-bg);padding:12px 0;margin-top:14px;z-index:2}
+#veloura-purchase-dialog .vp-add{border:0;border-radius:min(var(--veloura-global-radius,16px),24px);background:var(--veloura-quick-view-button-bg,#005369);color:var(--veloura-quick-view-button-text,#fff);padding:12px;font-weight:700}
+#veloura-purchase-dialog .vp-error{color:#c23636;line-height:1.7}
+#veloura-purchase-dialog .vp-error.is-success{color:#16834b}
+#veloura-purchase-dialog .vp-quantity{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}
+#veloura-purchase-dialog .vp-quantity input{width:88px;min-height:40px;text-align:center;border:1px solid #8885;border-radius:min(var(--veloura-global-radius,12px),20px)}
+#veloura-purchase-dialog .vp-details{display:inline-block;margin-top:12px;text-decoration:underline;font-size:13px;color:inherit}
+#veloura-purchase-dialog input,#veloura-purchase-dialog select,#veloura-purchase-dialog textarea{color:var(--vp-text);background:var(--vp-bg)}
+@media(max-width:767px){
+ #veloura-purchase-dialog{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;max-height:90dvh;border-bottom:0;border-radius:min(var(--veloura-global-radius,24px),40px) min(var(--veloura-global-radius,24px),40px) 0 0;padding-bottom:env(safe-area-inset-bottom)}
+}
+@keyframes vp-enter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){
+ #veloura-purchase-dialog[open]{animation:none}
+}
+</style>
+<script id="veloura-purchase-script">
+(()=>{
+ const config=document.getElementById('veloura-purchase-config');if(!config)return;
+ const unwrap=v=>Array.isArray(v)?unwrap(v[0]):v&&typeof v==='object'?unwrap(v.selected??v.value):v;
+ const read=(key,fallback)=>{try{return unwrap(JSON.parse(config.dataset[key]));}catch(_){return fallback;}};
+ if([false,'false',0,'0','off'].includes(read('enabled',true)))return;
+ const compact=read('position','below')==='beside';
+ const css=document.getElementById('veloura-purchase-style').textContent;
+ const roots=new WeakSet();let pending=false,dialog,content,source,version=0,overflow='',priceTimer;
+ const safeUrl=value=>{try{const raw=typeof value==='string'?value:(value?.url||value?.src||'');if(!raw.trim())return '';const url=new URL(raw,location.origin);return ['http:','https:'].includes(url.protocol)?url.href:'';}catch(_){return '';}};
+ const el=(tag,cls,text)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node;};
+ function scan(root=document){
+  if(!roots.has(root)){roots.add(root);if(root!==document){const style=el('style');style.textContent=css;root.append(style);}new MutationObserver(records=>{if(records.some(r=>r.addedNodes.length)&&!pending){pending=true;requestAnimationFrame(()=>{pending=false;scan(document);});}}).observe(root,{childList:true,subtree:true});}
+  root.querySelectorAll('.s-product-card-entry').forEach(card=>{
+   const add=card.querySelector('salla-add-product-button');if(!add||card.querySelector('.veloura-purchase-trigger'))return;
+   const id=add.getAttribute('product-id');if(!id)return;
+   const button=el('button','veloura-purchase-trigger'+(compact?' is-compact':''));button.type='button';button.setAttribute('aria-label','شراء سريع');button.title='شراء سريع';
+   const icon=el('i','sicon-bolt');icon.setAttribute('aria-hidden','true');button.append(icon);if(!compact)button.append(el('span','','شراء سريع'));
+   if(compact){add.parentElement.classList.add('veloura-purchase-row');add.after(button);}else{const footer=card.querySelector('.s-product-card-content-footer');if(footer)footer.after(button);else add.after(button);}
+   button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();open(id,card,button);});
+  });
+  root.querySelectorAll('*').forEach(node=>{if(node.shadowRoot)scan(node.shadowRoot);});
+ }
+ function ensure(){
+  if(dialog)return;
+  dialog=el('dialog');dialog.id='veloura-purchase-dialog';dialog.dir='rtl';dialog.setAttribute('aria-labelledby','veloura-purchase-title');
+  const head=el('header','vp-head'),title=el('h2','','شراء سريع');title.id='veloura-purchase-title';const close=el('button','vp-close','×');close.type='button';close.setAttribute('aria-label','إغلاق');close.onclick=()=>dialog.close();head.append(title,close);content=el('div','vp-content');dialog.append(head,content);document.body.append(dialog);
+  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();});
+  dialog.addEventListener('close',()=>{version++;clearTimeout(priceTimer);content.replaceChildren();document.body.style.overflow=overflow;source?.focus({preventScroll:true});});
+ }
+ function detailsLink(url){if(url){const a=el('a','vp-details','عرض تفاصيل المنتج');a.href=url;content.append(a);}}
+ async function open(id,card,button){
+  ensure();source=button;const current=++version;const link=card.querySelector('.s-product-card-image a,.s-product-card-content-title a,a[href*="/p"]');const fallback=safeUrl(link?.href);
+  content.replaceChildren(el('p','','جارٍ تحميل خيارات المنتج…'));if(!dialog.open){overflow=document.body.style.overflow;dialog.showModal();document.body.style.overflow='hidden';}
+  try{
+   await salla.onReady();const response=await salla.product.getDetails(id);if(current!==version||!dialog.open)return;
+   const product=response?.data?.product||response?.data;if(!product?.id)throw Error('missing product');
+   content.replaceChildren();const url=safeUrl(product.url)||fallback;
+   const summary=el('div','vp-summary');const image=safeUrl(product.image||product.images?.[0]);if(image){const img=el('img');img.src=image;img.alt='';summary.append(img);}const info=el('div');info.append(el('h3','',product.name||'المنتج'));const price=el('p','vp-price');info.append(price);summary.append(info);content.append(summary);
+   const number=value=>Number(value&&typeof value==='object'?value.amount:value)||0;
+   const amount=number(product.is_on_sale?product.sale_price:product.price);price.textContent=salla.money(amount);
+   const plain=new DOMParser().parseFromString(product.short_description||product.description||'','text/html');const description=(plain.body.textContent||'').trim().slice(0,180);if(description)content.append(el('p','vp-description',description));
+   if(['booking','donating','group_products'].includes(product.type)||product.has_bundle_products||product.has_custom_form||document.querySelector('salla-product-options[product-id="'+id+'"]')){content.append(el('p','','هذا المنتج يحتاج إكمال خياراته من صفحة التفاصيل.'));detailsLink(url);return;}
+   if(product.status!=='sale'||product.is_out_of_stock){content.append(el('p','','المنتج غير متوفر حاليًا'));detailsLink(url);return;}
+   const form=el('form','form veloura-purchase-form');form.enctype='multipart/form-data';const productId=el('input');productId.type='hidden';productId.name='id';productId.value=id;form.append(productId);
+   const options=document.createElement('salla-product-options');options.setAttribute('product-id',id);if(Array.isArray(product.options))options.setAttribute('options',JSON.stringify(product.options));form.append(options);
+   const label=el('label','vp-quantity','الكمية');const quantity=el('input');quantity.type='number';quantity.name='quantity';quantity.min='1';quantity.step='1';quantity.value='1';quantity.required=true;if(product.max_quantity)quantity.max=product.max_quantity;if(product.is_hidden_quantity){quantity.type='hidden';}else label.append(quantity);form.append(product.is_hidden_quantity?quantity:label);
+   const error=el('p','vp-error');error.setAttribute('role','status');const actions=el('div','vp-actions');const add=el('button','vp-add','إضافة للسلة');add.type='submit';
+   const buy=el('button','vp-add vp-buy','اشتري الآن');buy.type='button';actions.append(add,buy);form.append(error,actions);content.append(form);detailsLink(url);
+   let busy=false;
+   async function purchase(checkout){if(busy)return;busy=true;add.disabled=buy.disabled=true;error.classList.remove('is-success');error.textContent='';try{if(!form.reportValidity())return;if(options.reportValidity&&!await options.reportValidity())return;const data=form.getElementSallaData?form.getElementSallaData():new FormData(form);if(checkout){const result=await salla.api.request('checkout/quick-purchase/'+id,data,'post');const redirect=safeUrl(result?.data?.redirect);if(!redirect)throw Error('missing checkout');location.assign(redirect);}else{await salla.form.submit('cart.addItem',data);error.classList.add('is-success');error.textContent='تمت إضافة المنتج للسلة';}}catch(_){error.textContent='تعذّر إكمال الطلب. راجع الخيارات وحاول مجددًا.';}finally{busy=false;add.disabled=buy.disabled=false;}}
+   form.addEventListener('submit',event=>{event.preventDefault();purchase(false);});buy.addEventListener('click',()=>purchase(true));
+   let priceVersion=0;
+   form.addEventListener('change',()=>{clearTimeout(priceTimer);const request=++priceVersion;priceTimer=setTimeout(async()=>{if(!form.isConnected||!form.checkValidity())return;try{const quote=await salla.product.getPrice(new FormData(form));if(current!==version||request!==priceVersion)return;const next=number(quote?.data?.price);if(quote?.data?.price!==undefined)price.textContent=salla.money(next);}catch(_){}},180);});
+  }catch(_){if(current!==version)return;content.replaceChildren(el('p','vp-error','تعذّر تحميل المنتج. يمكنك إعادة المحاولة أو فتح تفاصيله.'));const retry=el('button','vp-add','إعادة المحاولة');retry.type='button';retry.onclick=()=>open(id,card,button);content.append(retry);detailsLink(fallback);}
+ }
+ const init=()=>scan(document);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();document.addEventListener('veloura:product-card:ready',init);
+})();
+</script>
