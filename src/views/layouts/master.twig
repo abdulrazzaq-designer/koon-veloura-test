@@ -3707,15 +3707,19 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     </div>
   </nav>
   {% if vbn_show_categories %}
+  <div id="veloura-categories-shade" hidden aria-hidden="true"></div>
   <dialog id="veloura-bottom-categories" aria-labelledby="veloura-bottom-categories-title">
     <header class="vbc-heading"><h2 id="veloura-bottom-categories-title">{{ vbn_categories_label }}</h2><button type="button" data-vbc-close aria-label="إغلاق التصنيفات">×</button></header>
     <div class="vbc-grid"></div>
   </dialog>
   <style id="veloura-bottom-categories-style">
-    #veloura-bottom-categories{--vbc-bg:var(--veloura-site-second-bg,#fff);--vbc-text:var(--veloura-primary-text,#243341);position:fixed;inset:auto 12px var(--vbc-bottom,96px);margin:0 auto;padding:0;width:calc(100% - 24px);max-width:540px;max-height:calc(100dvh - var(--vbc-bottom,96px) - 24px);color:var(--vbc-text);background:var(--vbc-bg);border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:var(--veloura-global-radius,20px);box-shadow:0 16px 50px #0004;overflow:hidden;direction:rtl}
+    #veloura-bottom-categories{--vbc-bg:var(--veloura-site-second-bg,#fff);--vbc-text:var(--veloura-primary-text,#243341);position:fixed;inset:auto auto 0 var(--vbc-left,12px);margin:0;padding:0 0 var(--vbc-clearance,96px);box-sizing:border-box;width:var(--vbc-width,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 24px);z-index:2147483497;color:var(--vbc-text);background:var(--vbc-surface,var(--vbc-bg));border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:var(--vbc-radius,20px) var(--vbc-radius,20px) 0 0;backdrop-filter:var(--vbc-filter,none);-webkit-backdrop-filter:var(--vbc-filter,none);box-shadow:0 -8px 36px #0003;overflow:hidden;direction:rtl}
     #veloura-bottom-categories[open]{display:flex;flex-direction:column;animation:vbc-enter .2s ease-out}
     html.dark #veloura-bottom-categories,body.dark #veloura-bottom-categories{--vbc-bg:var(--veloura-dark-secondary-bg,#18212c);--vbc-text:var(--veloura-dark-primary-text,#f5f7fa)}
-    #veloura-bottom-categories::backdrop{background:#0006;backdrop-filter:blur(3px)}
+    #veloura-categories-shade{position:fixed;inset:0;background:rgba(0,0,0,.22);z-index:2147483496;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    #veloura-categories-shade[hidden]{display:none!important}
+    body.vbc-open [data-vbn]{z-index:2147483498!important}
+    #veloura-bottom-categories.vbc-glass .vbc-card{background:color-mix(in srgb,currentColor 6%,transparent)}
     #veloura-bottom-categories .vbc-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid color-mix(in srgb,currentColor 12%,transparent);flex:none}
     #veloura-bottom-categories h2{font-size:18px;font-weight:700;margin:0;color:inherit}
     #veloura-bottom-categories [data-vbc-close]{width:36px;height:36px;border-radius:50%;font-size:26px;line-height:1;background:color-mix(in srgb,currentColor 8%,transparent);color:inherit}
@@ -3783,12 +3787,37 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
         rootItems=result;render(rootItems);
       }catch(_){message('تعذّر تحميل التصنيفات. حاول مرة أخرى.',true);}finally{loading=false;}
     }
-    let previousOverflow='';
-    const position=()=>{const nav=trigger.closest('[data-vbn]');const rect=nav?.getBoundingClientRect();const bottom=rect?Math.max(16,innerHeight-rect.top+10):96;panel.style.setProperty('--vbc-bottom',bottom+'px');};
-    trigger.addEventListener('click',()=>{if(panel.open){panel.close();return;}position();previousOverflow=document.body.style.overflow;panel.showModal();document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');load();});
-    panel.querySelector('[data-vbc-close]').addEventListener('click',()=>panel.close());
-    panel.addEventListener('click',event=>{if(event.target!==panel)return;const r=panel.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)panel.close();});
-    panel.addEventListener('close',()=>{document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');trigger.focus({preventScroll:true});});
+    const nav=trigger.closest('[data-vbn]'),shade=document.getElementById('veloura-categories-shade');
+    let previousOverflow='',previousActive=[],opened=false;
+    const position=()=>{
+      const surface=nav.querySelector('.veloura-bottom-nav__surface')||nav,rect=surface.getBoundingClientRect(),style=getComputedStyle(surface);
+      const glass=document.body.classList.contains('veloura-bottom-nav-glass');
+      panel.style.setProperty('--vbc-left',rect.left+'px');panel.style.setProperty('--vbc-width',rect.width+'px');
+      panel.style.setProperty('--vbc-clearance',Math.max(72,innerHeight-rect.top+12)+'px');
+      panel.style.setProperty('--vbc-radius',style.borderTopLeftRadius);
+      panel.style.setProperty('--vbc-surface',style.backgroundColor);panel.style.setProperty('--vbc-text',style.color);
+      panel.style.setProperty('--vbc-filter',glass?(style.backdropFilter||style.webkitBackdropFilter||'blur(20px)'):'none');
+      panel.classList.toggle('vbc-glass',glass);
+    };
+    const active=()=>{if(!opened)return;nav.querySelectorAll('[data-vbn-item]').forEach(item=>item.classList.toggle('is-active',item===trigger));};
+    const finish=(restore=true)=>{if(!opened)return;opened=false;shade.hidden=true;document.body.classList.remove('vbc-open');document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');if(restore){nav.querySelectorAll('[data-vbn-item]').forEach(item=>item.classList.toggle('is-active',previousActive.includes(item)));trigger.focus({preventScroll:true});}};
+    const close=(restore=true)=>{finish(restore);if(panel.open)panel.close();};
+    document.addEventListener('click',event=>{if(!opened&&trigger.contains(event.target))previousActive=[...nav.querySelectorAll('[data-vbn-item].is-active')];},true);
+    trigger.addEventListener('click',()=>{if(panel.open){close();return;}position();previousOverflow=document.body.style.overflow;opened=true;panel.show();shade.hidden=false;document.body.classList.add('vbc-open');document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');active();panel.querySelector('[data-vbc-close]').focus({preventScroll:true});load();});
+    nav.addEventListener('click',event=>{const item=event.target.closest('[data-vbn-item]');if(opened&&item&&item!==trigger)close(false);},true);
+    panel.querySelector('[data-vbc-close]').addEventListener('click',()=>close());
+    shade.addEventListener('click',()=>close());
+    panel.addEventListener('close',()=>{if(!panel.open)finish();});
+    document.addEventListener('keydown',event=>{
+      if(!opened)return;
+      if(event.key==='Escape'){event.preventDefault();close();return;}
+      if(event.key!=='Tab')return;
+      const targets=[...panel.querySelectorAll('button,a[href]'),...nav.querySelectorAll('button,a[href]')].filter(el=>el.getClientRects().length&&!el.disabled);
+      const index=targets.indexOf(document.activeElement);event.preventDefault();targets[(index+(event.shiftKey?-1:1)+targets.length)%targets.length]?.focus();
+    });
+    new MutationObserver(active).observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
+    new MutationObserver(()=>{if(opened)position();}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+    window.addEventListener('veloura:theme-changed',()=>{if(opened)position();});
     window.addEventListener('resize',()=>{if(panel.open)position();});
   })();
   </script>
