@@ -6212,15 +6212,26 @@ html.veloura-qp-lock { overflow: hidden; }
 .s-product-card-entry .veloura-qp-actions--right > .veloura-qp-trigger { order: 2; }
 .s-product-card-entry .veloura-qp-actions > salla-add-product-button { direction: rtl; }
 html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-button { direction: ltr; }
+.s-product-card-entry .s-product-card-image > .veloura-quick-view-btn.veloura-qp-view-fallback { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.88); color: #111827; cursor: pointer; }
+.s-product-card-entry .s-product-card-image:has(.s-product-card-wishlist-btn) > .veloura-quick-view-btn.veloura-qp-view-fallback { top: 58px; }
 @media (max-width:480px) { .veloura-qp__dialog { padding: 16px; } .veloura-qp__summary img { flex-basis: 80px; width: 80px; height: 95px; } }
 </style>
 <script data-cfasync="false" id="veloura-quick-purchase-runtime">
 (function () {
+  // Theme editor re-runs inline scripts after every setting change.
+  if (window.__velouraQuickPurchaseRuntime) {
+    window.__velouraQuickPurchaseRuntime.refresh();
+    return;
+  }
   function ready(fn) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, { once: true });
     else fn();
   }
   ready(function () {
+    if (window.__velouraQuickPurchaseRuntime) {
+      window.__velouraQuickPurchaseRuntime.refresh();
+      return;
+    }
     const config = window.velouraQuickPurchase || {};
     function value(input, fallback) {
       if (input == null) return fallback;
@@ -6229,8 +6240,10 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       return input;
     }
     if ([false, 'false', 0, '0', 'off'].includes(value(config.enabled, true))) return;
-    const rawPosition = value(config.position, 'below');
-    const position = ['below', 'left', 'right'].includes(rawPosition) ? rawPosition : 'below';
+    function getPosition() {
+      const raw = value((window.velouraQuickPurchase || {}).position, 'below');
+      return ['below', 'left', 'right'].includes(raw) ? raw : 'below';
+    }
     let modal, content, message, details, opener, request;
     let sequence = 0;
 
@@ -6244,7 +6257,7 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       opener?.focus();
     }
     function ensureModal() {
-      if (modal) return;
+      if (modal?.isConnected) return;
       modal = document.createElement('div');
       modal.className = 'veloura-qp';
       modal.hidden = true;
@@ -6347,13 +6360,15 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       }
     }
     function inject(card) {
-      if (!card || !card.isConnected || card.querySelector('[data-veloura-purchase]')) return;
+      if (!card || !card.isConnected) return;
       const cart = card.querySelector('salla-add-product-button');
       const footer = card.querySelector('.s-product-card-content-footer') || cart?.parentElement;
       const link = card.querySelector('.s-product-card-content-title a, .s-product-card-image a, .s-product-card-image-full a');
       const id = cart?.getAttribute('product-id') || card.getAttribute('product-id') || card.getAttribute('id');
       if (!footer || !link?.href || !/^\d+$/.test(id || '')) return;
-      const button = document.createElement('button');
+      const position = getPosition();
+      let button = card.querySelector('[data-veloura-purchase]');
+      if (!button) button = document.createElement('button');
       button.type = 'button';
       button.className = 'veloura-qp-trigger veloura-qp-trigger--' + position;
       button.dataset.velouraPurchase = '';
@@ -6362,14 +6377,37 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       button.setAttribute('aria-label', 'شراء سريع');
       button.setAttribute('aria-haspopup', 'dialog');
       button.innerHTML = '<i class="sicon-shopping-bag" aria-hidden="true"></i>' + (position === 'below' ? '<span>شراء سريع</span>' : '');
-      button.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); open(button); });
+      footer.classList.remove('veloura-qp-actions--below', 'veloura-qp-actions--left', 'veloura-qp-actions--right');
       footer.classList.add('veloura-qp-actions', 'veloura-qp-actions--' + position);
-      footer.appendChild(button);
+      if (button.parentNode !== footer) footer.appendChild(button);
+      const viewConfig = window.velouraQuickView || {};
+      const image = card.querySelector('.s-product-card-image');
+      if (image && viewConfig.enabled !== false && viewConfig.enabled !== 'false' && !card.querySelector('.veloura-quick-view-btn, .veloura-quick-view-button')) {
+        const view = document.createElement('button');
+        view.type = 'button';
+        view.className = 'veloura-quick-view-btn is-icon-only veloura-pc-native-quick veloura-qp-view-fallback';
+        view.setAttribute('aria-label', 'عرض سريع');
+        view.innerHTML = '<i class="sicon-eye" aria-hidden="true"></i>';
+        image.classList.add('veloura-quick-view-image-host');
+        image.appendChild(view);
+      }
     }
     function scan(root = document) {
+      if ([false, 'false', 0, '0', 'off'].includes(value((window.velouraQuickPurchase || {}).enabled, true))) {
+        root.querySelectorAll?.('[data-veloura-purchase]').forEach(button => button.remove());
+        return;
+      }
       if (root.matches?.('.s-product-card-entry')) inject(root);
       root.querySelectorAll?.('.s-product-card-entry').forEach(inject);
     }
+    window.__velouraQuickPurchaseRuntime = { refresh: () => scan() };
+    document.addEventListener('click', event => {
+      const button = event.composedPath?.().find(node => node?.matches?.('[data-veloura-purchase]')) || event.target.closest?.('[data-veloura-purchase]');
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      open(button);
+    }, true);
     // Existing Salla lifecycle events avoid observing and repeatedly touching the product grid.
     document.addEventListener('veloura:product-card:ready', event => inject(event.detail?.card || event.target));
     document.addEventListener('salla::product.cards::loaded', () => scan());
@@ -6384,6 +6422,9 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
   });
 })();
 </script>
+
+
+
 
 
 </body>
