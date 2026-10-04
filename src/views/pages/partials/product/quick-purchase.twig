@@ -1,0 +1,46 @@
+{# Inert until opened: render the same Salla options and purchase component as the product page. #}
+<template id="veloura-quick-purchase-template">
+    <div class="veloura-qp__summary">
+        <img src="{{ product.image.url|e('html_attr') }}" alt="{{ product.image.alt|default(product.name)|e('html_attr') }}">
+        <div>
+            <h3>{{ product.name }}</h3>
+            <p class="veloura-qp__description">{{ product.description|striptags|slice(0, 240) }}</p>
+        </div>
+    </div>
+    <form class="form veloura-qp__form" enctype="multipart/form-data" method="post" data-product-id="{{ product.id }}">
+        <input type="hidden" name="id" value="{{ product.id }}">
+        {% include 'pages.partials.product.options' %}
+        <div class="veloura-qp__purchase">
+            {% if product.is_hidden_quantity or product.type == 'booking' %}
+                <input type="hidden" name="quantity" value="1">
+            {% else %}
+                <label class="form-label">{{ trans('pages.products.quantity') }}</label>
+                <salla-quantity-input name="quantity" value="1" max="{{ product.max_quantity }}" aria-label="{{ trans('pages.products.quantity') }}"></salla-quantity-input>
+            {% endif %}
+            <div class="veloura-qp__price" aria-live="polite">
+                <span>{{ trans('pages.products.price') }}</span>
+                <strong data-qp-price>{{ product.is_on_sale ? product.sale_price|money : (product.starting_price ? product.starting_price|money : product.price|money) }}</strong>
+            </div>
+            <salla-add-product-button
+                {{ product.is_require_shipping ? 'required-shipping' : '' }}
+                {{ product.has_preorder_campaign ? 'has-pre-order' : '' }}
+                amount="{{ product.base_currency_price }}"
+                product-status="{{ product.status }}"
+                product-type="{{ product.type }}"
+                product-id="{{ product.id }}"
+                type="submit" width="wide" loader-position="end"
+                {% if product.notify_availability %}
+                    {{ product.notify_availability.subscribed ? 'is-subscribed' : '' }}
+                    channels="{{ product.notify_availability.channels|join(',') }}"
+                    subscribed-options="{{ product.notify_availability.subscribed_options|json_encode|e('html_attr') }}"
+                    {{ product.notify_availability.options ? 'notify-options-availability' : '' }}
+                {% endif %}
+            >{{ product.add_to_cart_label }}</salla-add-product-button>
+            {% if product.can_quick_buy and product.status == 'sale' and product.type != 'booking' %}
+                <salla-quick-buy product-id="{{ product.id }}" amount="{{ product.base_currency_price }}"
+                    {{ product.is_require_shipping ? 'is-require-shipping' : '' }}
+                    type="buy"></salla-quick-buy>
+            {% endif %}
+        </div>
+    </form>
+</template>

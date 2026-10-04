@@ -6089,7 +6089,7 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "تفعيل زر العرض السريع في بطاقة المنتج",
-      "description": "عند التفعيل يظهر زر العرض السريع فوق صورة المنتج أو داخل بطاقة المنتج حسب الإعدادات",
+      "description": "عند التفعيل يظهر العرض السريع كأيقونة فقط على صورة المنتج بجانب المفضلة",
       "id": "veloura_quick_view_enabled_2026",
       "format": "switch",
       "required": false,
@@ -6131,7 +6131,7 @@
       "id": "veloura_quick_view_button_position_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "مكان زر العرض السريع",
+      "label": "العرض السريع: أيقونة على الصورة بجانب المفضلة",
       "icon": "sicon-list",
       "source": "Manual",
       "required": true,
@@ -6147,11 +6147,6 @@
           "label": "أيقونة بجانب زر المفضلة",
           "value": "wishlist_icon",
           "key": "veloura-quick-view-position-wishlist-icon-2026"
-        },
-        {
-          "label": "زر تحت أضف للسلة",
-          "value": "below_add_to_cart",
-          "key": "veloura-quick-view-position-below-add-to-cart-2026"
         }
       ],
       "conditions": [
@@ -6162,6 +6157,69 @@
         },
         {
           "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_purchase_enabled_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل الشراء السريع",
+      "description": "يفتح نافذة بخيارات المنتج والكمية وأزرار الشراء الأصلية في سلة.",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_purchase_position_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "icon": "sicon-list",
+      "label": "مكان زر الشراء السريع",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {
+          "label": "زر أسفل إضافة للسلة",
+          "value": "below",
+          "key": "veloura-qp-below"
+        }
+      ],
+      "options": [
+        {
+          "label": "زر أسفل إضافة للسلة",
+          "value": "below",
+          "key": "veloura-qp-below"
+        },
+        {
+          "label": "أيقونة يمين إضافة للسلة",
+          "value": "right",
+          "key": "veloura-qp-right"
+        },
+        {
+          "label": "أيقونة يسار إضافة للسلة",
+          "value": "left",
+          "key": "veloura-qp-left"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_purchase_enabled_2026",
           "operation": "=",
           "value": true
         }

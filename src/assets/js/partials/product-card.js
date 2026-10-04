@@ -1328,25 +1328,6 @@ if (!customElements.get('custom-salla-product-card')) {
     }
 
     function getQuickViewPosition() {
-      const raw = String(normalizeSettingValue(config.buttonPosition, 'wishlist_icon'));
-
-      if (
-        raw === 'below_add_to_cart' ||
-        raw === 'below-add-to-cart' ||
-        raw === 'inside_card' ||
-        raw === 'inside-card'
-      ) {
-        return 'below_add_to_cart';
-      }
-
-      if (
-        document.body.classList.contains('veloura-quick-view-position-below_add_to_cart') ||
-        document.body.classList.contains('veloura-quick-view-position-below-add-to-cart') ||
-        document.body.classList.contains('veloura-quick-view-position-inside_card')
-      ) {
-        return 'below_add_to_cart';
-      }
-
       return 'wishlist_icon';
     }
 

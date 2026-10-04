@@ -875,6 +875,8 @@ class Product extends BasePage {
         });
 
         salla.product.event.onPriceUpdated((res) => {
+            // Price changes from the quick-purchase form belong to its own UI.
+            if (document.querySelector('.veloura-qp:not([hidden])')) return;
             document.querySelectorAll('.out-of-stock').forEach((el) => el.classList.add('hidden'));
             document.querySelectorAll('.price-wrapper').forEach((el) => el.classList.remove('hidden'));
 

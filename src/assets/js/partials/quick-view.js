@@ -24,7 +24,7 @@
       return;
     }
 
-    const position = config.buttonPosition || 'wishlist_icon';
+    const position = 'wishlist_icon';
 
     function cleanText(value) {
       return (value || '').replace(/\s+/g, ' ').trim();
