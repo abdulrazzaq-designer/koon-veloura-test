@@ -6179,6 +6179,489 @@ html body#app.veloura-hero-merged .veloura-header-tabs-stack__surface,
 html body#app.veloura-hero-merged #veloura-home-tabs {border:0!important;box-shadow:none!important}
 </style>
 
+{# Native Salla product form for the quick-purchase dialog. No asset build needed. #}
+{# Inert until opened: render the same Salla options and purchase component as the product page. #}
+{% if product is defined and is_page('product.single') %}
+<template id="veloura-quick-purchase-template">
+    <div class="veloura-qp__summary">
+        <img src="{{ product.image.url|e('html_attr') }}" alt="{{ product.image.alt|default(product.name)|e('html_attr') }}">
+        <div>
+            <h3>{{ product.name }}</h3>
+            <p class="veloura-qp__description">{{ product.description|striptags|slice(0, 240) }}</p>
+        </div>
+    </div>
+    <form class="form veloura-qp__form" enctype="multipart/form-data" method="post" data-product-id="{{ product.id }}">
+        <input type="hidden" name="id" value="{{ product.id }}">
+        {% include 'pages.partials.product.options' %}
+        <div class="veloura-qp__purchase">
+            {% if product.is_hidden_quantity or product.type == 'booking' %}
+                <input type="hidden" name="quantity" value="1">
+            {% else %}
+                <label class="form-label">{{ trans('pages.products.quantity') }}</label>
+                <salla-quantity-input name="quantity" value="1" max="{{ product.max_quantity }}" aria-label="{{ trans('pages.products.quantity') }}"></salla-quantity-input>
+            {% endif %}
+            <div class="veloura-qp__price" aria-live="polite">
+                <span>{{ trans('pages.products.price') }}</span>
+                <strong data-qp-price>{{ product.is_on_sale ? product.sale_price|money : (product.starting_price ? product.starting_price|money : product.price|money) }}</strong>
+            </div>
+            <salla-add-product-button
+                {{ product.is_require_shipping ? 'required-shipping' : '' }}
+                {{ product.has_preorder_campaign ? 'has-pre-order' : '' }}
+                amount="{{ product.base_currency_price }}"
+                product-status="{{ product.status }}"
+                product-type="{{ product.type }}"
+                product-id="{{ product.id }}"
+                type="submit" width="wide" loader-position="end"
+                {% if product.notify_availability %}
+                    {{ product.notify_availability.subscribed ? 'is-subscribed' : '' }}
+                    channels="{{ product.notify_availability.channels|join(',') }}"
+                    subscribed-options="{{ product.notify_availability.subscribed_options|json_encode|e('html_attr') }}"
+                    {{ product.notify_availability.options ? 'notify-options-availability' : '' }}
+                {% endif %}
+            >{{ product.add_to_cart_label }}</salla-add-product-button>
+            {% if product.can_quick_buy and product.status == 'sale' and product.type != 'booking' %}
+                <salla-quick-buy product-id="{{ product.id }}" amount="{{ product.base_currency_price }}"
+                    {{ product.is_require_shipping ? 'is-require-shipping' : '' }}
+                    type="buy"></salla-quick-buy>
+            {% endif %}
+        </div>
+    </form>
+</template>
+{% endif %}
+
+<style id="veloura-quick-purchase-style">
+html.veloura-qp-lock {
+  overflow: hidden;
+}
+
+.veloura-qp[hidden] {
+  display: none !important;
+}
+
+.veloura-qp {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 16px;
+}
+.veloura-qp__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+}
+.veloura-qp__dialog {
+  position: relative;
+  width: min(680px, 100%);
+  min-width: 0;
+  box-sizing: border-box;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: 24px;
+  border-radius: var(--veloura-quick-view-modal-radius, 24px);
+  background: var(--veloura-quick-view-modal-bg, white);
+  color: var(--veloura-quick-view-modal-text-light, #111827);
+  overscroll-behavior: contain;
+}
+.veloura-qp__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.veloura-qp__header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+.veloura-qp__header button {
+  width: 44px;
+  height: 44px;
+  font-size: 30px;
+  border-radius: 50%;
+}
+.veloura-qp__message:empty {
+  display: none;
+}
+.veloura-qp__message {
+  margin-block: 16px;
+}
+.veloura-qp__summary {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.veloura-qp__summary img {
+  width: 120px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.veloura-qp__summary h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.veloura-qp__description {
+  margin-top: 10px;
+  opacity: 0.8;
+  overflow-wrap: anywhere;
+}
+.veloura-qp__form {
+  display: grid;
+  gap: 16px;
+}
+.veloura-qp__purchase {
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid rgba(127, 127, 127, 0.2);
+  padding-top: 16px;
+}
+.veloura-qp__price {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.veloura-qp__details {
+  display: block;
+  text-align: center;
+  text-decoration: underline;
+  padding: 16px 8px 0;
+}
+.veloura-qp button:focus-visible, .veloura-qp a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.dark .veloura-qp__dialog {
+  background: var(--veloura-dark-secondary-bg, #161b22);
+  color: var(--veloura-dark-primary-text, white);
+}
+
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions > salla-add-product-button,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions > salla-add-product-button {
+  flex: 1 1 0 !important;
+  min-width: 0;
+  width: auto !important;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions > .veloura-qp-trigger,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions > .veloura-qp-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border-radius: var(--veloura-quick-view-button-radius, 999px);
+  background: var(--veloura-quick-view-button-bg, var(--color-primary));
+  color: var(--veloura-quick-view-button-text, white);
+  padding: 10px 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions > .veloura-qp-trigger:focus-visible,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions > .veloura-qp-trigger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions > .veloura-qp-trigger--below,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions > .veloura-qp-trigger--below {
+  flex-basis: 100%;
+  order: 10;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions--right, .s-product-card-entry .s-product-card-content-footer.veloura-qp-actions--left,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions--right,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions--left {
+  direction: ltr;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions--right > .veloura-qp-trigger,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions--right > .veloura-qp-trigger {
+  order: 2;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions--left > .veloura-qp-trigger,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions--left > .veloura-qp-trigger {
+  order: -1;
+}
+.s-product-card-entry .s-product-card-content-footer.veloura-qp-actions > salla-add-product-button,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-footer.veloura-qp-actions > salla-add-product-button {
+  direction: rtl;
+}
+
+html[dir=ltr] .s-product-card-entry .veloura-qp-actions > salla-add-product-button {
+  direction: ltr;
+}
+
+@media (max-width: 480px) {
+  .veloura-qp {
+    padding: 8px;
+  }
+  .veloura-qp__dialog {
+    padding: 16px;
+    max-height: calc(100dvh - 16px);
+  }
+  .veloura-qp__summary {
+    gap: 12px;
+  }
+  .veloura-qp__summary img {
+    width: 80px;
+    height: 100px;
+  }
+}
+</style>
+<script data-cfasync="false" id="veloura-quick-purchase-runtime">
+/* Keep purchase state inside a fresh native Salla form for each product. */
+function initQuickPurchase() {
+  const config = window.velouraQuickPurchase || {};
+  function settingValue(value, fallback) {
+    if (value == null) return fallback;
+    if (Array.isArray(value)) return settingValue(value[0], fallback);
+    if (typeof value === 'object') return settingValue(value.selected ?? value.value, fallback);
+    return value;
+  }
+  if ([false, 'false', 0, '0', 'off'].includes(settingValue(config.enabled, true))) return;
+  const requestedPosition = settingValue(config.position, 'below');
+  const position = ['below', 'right', 'left'].includes(requestedPosition) ? requestedPosition : 'below';
+  let modal, content, message, link, trigger, controller, timeout;
+  let revision = 0;
+
+  function close() {
+    revision++;
+    controller?.abort();
+    clearTimeout(timeout);
+    if (!modal) return;
+    modal.hidden = true;
+    content.replaceChildren();
+    document.documentElement.classList.remove('veloura-qp-lock');
+    trigger?.focus();
+    // Restore the underlying product page price after modal-specific option updates.
+    const pageForm = document.querySelector('.veloura-product-page form.product-form');
+    if (pageForm && window.salla?.product?.getPrice) {
+      window.salla.product.getPrice(new FormData(pageForm)).catch(() => {});
+    }
+  }
+
+  function ensureModal() {
+    if (modal) return;
+    modal = document.createElement('div');
+    modal.className = 'veloura-qp';
+    modal.hidden = true;
+    modal.innerHTML = `
+      <div class="veloura-qp__overlay" data-qp-close></div>
+      <section class="veloura-qp__dialog" role="dialog" aria-modal="true" aria-labelledby="veloura-qp-heading" tabindex="-1">
+        <header class="veloura-qp__header"><h2 id="veloura-qp-heading">شراء سريع</h2>
+          <button type="button" data-qp-close aria-label="إغلاق">×</button></header>
+        <p class="veloura-qp__message" role="status" aria-live="polite"></p>
+        <div class="veloura-qp__content"></div>
+        <a class="veloura-qp__details">عرض تفاصيل المنتج</a>
+      </section>`;
+    // Salla resolves product options by product ID; prefer the open modal when
+    // the same product also exists in the underlying product page.
+    document.body.prepend(modal);
+    content = modal.querySelector('.veloura-qp__content');
+    message = modal.querySelector('.veloura-qp__message');
+    link = modal.querySelector('.veloura-qp__details');
+    modal.addEventListener('click', event => {
+      if (event.target.closest('[data-qp-close]')) close();
+    });
+    document.addEventListener('keydown', event => {
+      if (modal.hidden) return;
+      // Let Salla's own checkout/option overlays handle their keyboard events.
+      if (event.key === 'Escape' && modal.contains(event.target)) {
+        event.preventDefault();
+        close();
+      }
+      if (event.key !== 'Tab' || !modal.contains(event.target)) return;
+      const focusable = [...modal.querySelectorAll('button, a[href], input, select, textarea, [tabindex="0"]')]
+        .filter(el => !el.disabled && el.getClientRects().length);
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === modal.querySelector('[role="dialog"]'))) {
+        event.preventDefault(); last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first?.focus();
+      }
+    });
+  }
+
+  async function open(button) {
+    const url = new URL(button.dataset.productUrl, location.href);
+    if (url.origin !== location.origin || !['https:', 'http:'].includes(url.protocol)) return;
+    ensureModal();
+    controller?.abort();
+    clearTimeout(timeout);
+    controller = new AbortController();
+    const request = controller;
+    const current = ++revision;
+    trigger = button;
+    link.href = url.href;
+    content.replaceChildren();
+    message.textContent = 'جاري تحميل خيارات المنتج…';
+    modal.hidden = false;
+    content.setAttribute('aria-busy', 'true');
+    document.documentElement.classList.add('veloura-qp-lock');
+    modal.querySelector('[data-qp-close][aria-label]').focus();
+    timeout = setTimeout(() => request.abort(), 20000);
+
+    try {
+      const response = await fetch(url.href, { credentials: 'same-origin', signal: request.signal });
+      if (!response.ok || new URL(response.url || url.href).origin !== location.origin) throw new Error('Product unavailable');
+      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+      if (current !== revision) return;
+      const template = page.querySelector('#veloura-quick-purchase-template');
+      const form = template?.content.querySelector('form[data-product-id]');
+      if (!form || form.dataset.productId !== button.dataset.productId) throw new Error('Missing product form');
+      // Only import the inert, theme-owned fragment, never page scripts or handlers.
+      const fragment = document.importNode(template.content, true);
+      fragment.querySelectorAll('script, iframe, object, embed').forEach(node => node.remove());
+      fragment.querySelectorAll('*').forEach(node => {
+        [...node.attributes].filter(attr => /^on/i.test(attr.name)).forEach(attr => node.removeAttribute(attr.name));
+        // The product page may already contain note/file/size-guide IDs.
+        if (node.id) node.id = `qp-${node.id}`;
+        for (const attr of ['for', 'data-show']) {
+          if (node.hasAttribute(attr)) node.setAttribute(attr, `qp-${node.getAttribute(attr)}`);
+        }
+      });
+      content.appendChild(fragment);
+      bindForm(content.querySelector('form'), current);
+      message.textContent = '';
+    } catch (error) {
+      if (current === revision) message.textContent = 'تعذّر تحميل خيارات المنتج. جرّب مجددًا أو افتح تفاصيل المنتج.';
+    } finally {
+      if (current === revision) {
+        clearTimeout(timeout);
+        content.setAttribute('aria-busy', 'false');
+      }
+    }
+  }
+
+  function bindForm(form, current) {
+    let submitting = false;
+    let priceRevision = 0;
+    let priceTimer;
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (submitting || !form.reportValidity()) return;
+      submitting = true;
+      try {
+        const options = form.querySelector('salla-product-options');
+        if (options?.reportValidty && !await options.reportValidty()) return;
+        if (current !== revision) return;
+        // Native serialization includes options, notes, files and quantity.
+        form.setAttribute('aria-busy', 'true');
+        await window.salla.form.submit('cart.addItem', event);
+        if (current === revision) message.textContent = 'تمت إضافة المنتج للسلة';
+      } catch (error) {
+        if (current === revision) message.textContent = 'تعذّرت الإضافة. تحقق من الخيارات وحاول مجددًا.';
+      } finally {
+        submitting = false;
+        form.setAttribute('aria-busy', 'false');
+      }
+    });
+    const updatePrice = () => {
+      clearTimeout(priceTimer);
+      const priceRequest = ++priceRevision;
+      priceTimer = setTimeout(async () => {
+        if (current !== revision || !form.checkValidity()) return;
+        try {
+          const result = await window.salla.product.getPrice(new FormData(form));
+          if (current !== revision || priceRequest !== priceRevision) return;
+          if (result?.data?.price != null) {
+            form.querySelector('[data-qp-price]').innerHTML = window.salla.money(result.data.price);
+            const buy = form.querySelector('salla-quick-buy');
+            const base = result.data.base_currency_price;
+            if (buy) {
+              buy.amount = base?.amount ?? result.data.price;
+              buy.currency = base?.currency || window.salla.config.get('user.currency_code');
+            }
+          }
+        } catch (_) { /* Salla reports unavailable combinations through its option component. */ }
+      }, 200);
+    };
+    form.addEventListener('change', updatePrice);
+    form.addEventListener('changed', updatePrice);
+    // These controls normally bind once at product-page load, so bind the fresh form here.
+    form.addEventListener('click', event => {
+      const toggle = event.target.closest('[data-show]');
+      if (toggle) {
+        const panel = form.querySelector(`#${CSS.escape(toggle.dataset.show)}`);
+        if (panel) {
+          const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+          toggle.setAttribute('aria-expanded', String(expanded));
+          panel.style.display = expanded ? 'block' : 'none';
+        }
+      }
+      if (event.target.closest('salla-button.with-arrow')) {
+        window.salla.event.dispatch('size-guide::open', form.dataset.productId);
+      }
+    });
+  }
+
+  function scan(root) {
+    const cards = [];
+    if (root.matches?.('.s-product-card-entry, custom-salla-product-card, salla-product-card')) cards.push(root);
+    root.querySelectorAll?.('.s-product-card-entry, custom-salla-product-card, salla-product-card').forEach(card => cards.push(card));
+    cards.forEach(card => {
+      if (card.querySelector('[data-veloura-purchase]')) return;
+      const cart = card.querySelector('salla-add-product-button');
+      const footer = card.querySelector('.s-product-card-content-footer') || cart?.parentElement;
+      const productLink = card.querySelector('.s-product-card-content-title a, .s-product-card-image a, .s-product-card-image-full a, a.s-product-card-image, a[href*="/p"], a[href*="/products/"]');
+      const id = cart?.getAttribute('product-id') || card.getAttribute('product-id') || card.getAttribute('data-product-id') || card.getAttribute('id');
+      if (!footer || !productLink?.href || !/^\d+$/.test(id || '')) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `veloura-qp-trigger veloura-qp-trigger--${position}`;
+      button.dataset.velouraPurchase = '';
+      button.dataset.productId = id;
+      button.dataset.productUrl = productLink.href;
+      button.setAttribute('aria-label', 'شراء سريع');
+      button.setAttribute('aria-haspopup', 'dialog');
+      button.title = 'شراء سريع';
+      button.innerHTML = '<i class="sicon-shopping-bag" aria-hidden="true"></i>' + (position === 'below' ? '<span>شراء سريع</span>' : '');
+      button.addEventListener('click', event => {
+        event.preventDefault(); event.stopPropagation(); open(button);
+      });
+      footer.classList.add('veloura-qp-actions', `veloura-qp-actions--${position}`);
+      footer.appendChild(button);
+    });
+  }
+  const watched = new WeakSet();
+  function watch(root) {
+    if (!root || watched.has(root)) return;
+    watched.add(root);
+    scan(root);
+    const observer = new MutationObserver(records => {
+      records.forEach(record => record.addedNodes.forEach(node => {
+        if (node.nodeType !== 1 || node.closest?.('.veloura-qp')) return;
+        scan(node.closest?.('.s-product-card-entry') || node);
+        if (node.shadowRoot) watch(node.shadowRoot);
+        node.querySelectorAll?.('*').forEach(child => { if (child.shadowRoot) watch(child.shadowRoot); });
+      }));
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    root.querySelectorAll?.('*').forEach(node => { if (node.shadowRoot) watch(node.shadowRoot); });
+  }
+  watch(document.body);
+  document.addEventListener('veloura:product-card:ready', event => scan(event.detail?.card || event.target));
+  document.addEventListener('salla-products-slider::products.fetched', () => scan(document));
+  [300, 900, 1800, 3500].forEach(delay => setTimeout(() => scan(document), delay));
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initQuickPurchase, { once: true });
+} else {
+  initQuickPurchase();
+}
+
+</script>
+
 </body>
 </html>
 <style id="veloura-detached-tabs-visible-v67">
