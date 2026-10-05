@@ -1127,9 +1127,12 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 
     var measure = function () {
       if (!headerEl) return;
-      var h = Math.round(headerEl.getBoundingClientRect().height);
-      var detachedTabs = document.querySelector('.veloura-tabs-detached-frame');
-      if (detachedTabs) { var tabsStyle = getComputedStyle(detachedTabs); h += detachedTabs.getBoundingClientRect().height + (parseFloat(tabsStyle.marginTop)||0) + (parseFloat(tabsStyle.marginBottom)||0); }
+      // Include real wrapper gaps and detached tabs, not only their heights.
+      // Undo our current negative margin before measuring the original position.
+      if (window.scrollY > 8) return;
+      var overlap = parseFloat(getComputedStyle(root).getPropertyValue('--hero-header-h')) || 0;
+      var headerTop = headerEl.getBoundingClientRect().top - (parseFloat(getComputedStyle(headerEl).marginTop) || 0);
+      var h = Math.round(root.getBoundingClientRect().top + overlap - headerTop);
       if (h > 0) root.style.setProperty('--hero-header-h', h + 'px');
     };
 
@@ -1263,7 +1266,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     addEventListener('scroll', function () {
       if (rafPending) return;
       rafPending = true;
-      requestAnimationFrame(function () { rafPending = false; paint(); });
+      requestAnimationFrame(function () { rafPending = false; paint(); if (window.scrollY < 8) measure(); });
     }, { passive: true });
 
     var resizeTimer;

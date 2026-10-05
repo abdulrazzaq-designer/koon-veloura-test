@@ -5563,6 +5563,22 @@ document.body.appendChild(nav);
 var wasOpen=false,closingUntil=0;
 function set(el,k,v){if(el.style.getPropertyValue(k)!==v||el.style.getPropertyPriority(k)!=='important')el.style.setProperty(k,v,'important')}
 function opened(selector){return Array.from(document.querySelectorAll(selector)).some(function(m){return m.visible!==false&&getComputedStyle(m).display!=='none'&&(m.visible===true||(!m.classList.contains('s-hidden')&&m.getBoundingClientRect().height>0))})}
+window.addEventListener('click',function(event){
+var item=event.target.closest?.('[data-vbn-item]');if(!item||!nav.contains(item))return;
+var key=item.dataset.vbnKey,home=nav.querySelector('[data-vbn-key="home"]');
+var selector=key==='account'?'salla-modal.s-login-modal':key==='search'?'salla-modal.s-search-modal':null;
+var cartPage=key==='cart'&&item.getAttribute('aria-current')==='page';
+if(!cartPage&&(!selector||!opened(selector)))return;
+event.preventDefault();event.stopImmediatePropagation();
+if(cartPage){if(home?.href)location.assign(home.href);return;}
+document.querySelectorAll(selector).forEach(function(modal){
+if(typeof modal.close==='function')modal.close();else modal.querySelector('.s-modal-close')?.click();
+});
+document.body.classList.remove('veloura-bottom-nav-login-open','veloura-bottom-nav-search-open');
+item.setAttribute('aria-expanded','false');
+route=home||route;
+if(route)nav.querySelectorAll('[data-vbn-item]').forEach(function(button){button.classList.toggle('is-active',button===route)});
+},true);
 function sync(){
 if(innerWidth>767)return;
 var drawer=!!document.querySelector('.mm-ocd--open');if(wasOpen&&!drawer)closingUntil=Date.now()+450;wasOpen=drawer;
