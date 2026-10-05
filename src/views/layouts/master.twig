@@ -6219,7 +6219,7 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
 <script data-cfasync="false" id="veloura-quick-purchase-runtime">
 (function () {
   // Theme editor re-runs inline scripts after every setting change.
-  if (window.__velouraQuickPurchaseRuntime) {
+  if (window.__velouraQuickPurchaseRuntime?.version === 2) {
     window.__velouraQuickPurchaseRuntime.refresh();
     return;
   }
@@ -6228,7 +6228,7 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
     else fn();
   }
   ready(function () {
-    if (window.__velouraQuickPurchaseRuntime) {
+    if (window.__velouraQuickPurchaseRuntime?.version === 2) {
       window.__velouraQuickPurchaseRuntime.refresh();
       return;
     }
@@ -6273,8 +6273,8 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
     }
     function getCard(button) {
       const card = button.closest('.s-product-card-entry');
-      const link = card?.querySelector('.s-product-card-content-title a, .s-product-card-image a, .s-product-card-image-full a');
-      const id = button.dataset.productId;
+      const link = card?.querySelector('.s-product-card-content-title a, .s-product-card-image a, a.s-product-card-image, .s-product-card-image-full a');
+      const id = button.dataset.productId || card?.querySelector('salla-add-product-button')?.getAttribute('product-id') || card?.getAttribute('product-id') || card?.id;
       return { card, id, url: link?.href || button.dataset.productUrl, image: card?.querySelector('.s-product-card-image img, .s-product-card-image-full img')?.src || '', name: link?.textContent?.trim() || card?.querySelector('.s-product-card-content-title')?.textContent?.trim() || 'المنتج' };
     }
     function prepareForm(form) {
@@ -6318,21 +6318,25 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
     }
     async function open(button) {
       const item = getCard(button);
-      if (!item.url || !/^\d+$/.test(item.id || '')) return;
-      const url = new URL(item.url, location.href);
-      if (url.origin !== location.origin) return;
       ensureModal();
       request?.abort();
       request = new AbortController();
       const current = ++sequence;
       opener = button;
-      details.href = url.href;
+      details.removeAttribute('href');
       content.replaceChildren();
       message.textContent = 'جاري تحميل خيارات المنتج…';
       modal.hidden = false;
       document.documentElement.classList.add('veloura-qp-lock');
       modal.querySelector('[data-qp-close][aria-label]').focus();
       try {
+        if (!item.url || !/^\d+$/.test(item.id || '')) throw new Error('Missing product link or ID');
+        const productUrl = new URL(item.url, location.href);
+        if (!['https:', 'http:'].includes(productUrl.protocol)) throw new Error('Invalid product URL');
+        details.href = productUrl.href;
+        // Preview and custom-domain cards can contain the canonical store URL.
+        // Load its path on this storefront so preview state and cookies are preserved.
+        const url = new URL(productUrl.pathname + productUrl.search, location.origin);
         const response = await fetch(url.href, { credentials: 'same-origin', signal: request.signal });
         if (!response.ok || new URL(response.url).origin !== location.origin) throw new Error('Product unavailable');
         const page = new DOMParser().parseFromString(await response.text(), 'text/html');
@@ -6363,7 +6367,7 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       if (!card || !card.isConnected) return;
       const cart = card.querySelector('salla-add-product-button');
       const footer = card.querySelector('.s-product-card-content-footer') || cart?.parentElement;
-      const link = card.querySelector('.s-product-card-content-title a, .s-product-card-image a, .s-product-card-image-full a');
+      const link = card.querySelector('.s-product-card-content-title a, .s-product-card-image a, a.s-product-card-image, .s-product-card-image-full a');
       const id = cart?.getAttribute('product-id') || card.getAttribute('product-id') || card.getAttribute('id');
       if (!footer || !link?.href || !/^\d+$/.test(id || '')) return;
       const position = getPosition();
@@ -6400,12 +6404,13 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       if (root.matches?.('.s-product-card-entry')) inject(root);
       root.querySelectorAll?.('.s-product-card-entry').forEach(inject);
     }
-    window.__velouraQuickPurchaseRuntime = { refresh: () => scan() };
-    document.addEventListener('click', event => {
+    window.__velouraQuickPurchaseRuntime = { version: 2, refresh: () => scan() };
+    window.addEventListener('click', event => {
       const button = event.composedPath?.().find(node => node?.matches?.('[data-veloura-purchase]')) || event.target.closest?.('[data-veloura-purchase]');
       if (!button) return;
       event.preventDefault();
       event.stopPropagation();
+      event.stopImmediatePropagation();
       open(button);
     }, true);
     // Existing Salla lifecycle events avoid observing and repeatedly touching the product grid.
