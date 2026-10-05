@@ -213,6 +213,7 @@ body .veloura-hero > .hero__wrap.container {
    اللابتوب والجوال وبين المتاجر. وعند أول تمرير تعود خلفية الهيدر حتى
    يبقى مقروءاً فوق بقية الصفحة. */
 .veloura-hero.hero--merged {
+  border-radius: 0 !important;
   margin-top: calc(var(--hero-header-h, 0px) * -1) !important;
   padding-top: calc(var(--hero-header-h, 0px) + clamp(28px, 5vw, 72px)) !important;
   border-start-start-radius: 0;
@@ -1131,8 +1132,8 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       // Undo our current negative margin before measuring the original position.
       if (window.scrollY > 8) return;
       var overlap = parseFloat(getComputedStyle(root).getPropertyValue('--hero-header-h')) || 0;
-      var headerTop = headerEl.getBoundingClientRect().top - (parseFloat(getComputedStyle(headerEl).marginTop) || 0);
-      var h = Math.round(root.getBoundingClientRect().top + overlap - headerTop);
+      // Reach the document top, including the store's spacing above the header.
+      var h = Math.round(root.getBoundingClientRect().top + window.scrollY + overlap);
       if (h > 0) root.style.setProperty('--hero-header-h', h + 'px');
     };
 

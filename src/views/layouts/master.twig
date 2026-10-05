@@ -3820,7 +3820,14 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     const position=()=>{
       const surface=nav.querySelector('.veloura-bottom-nav__surface')||nav,rect=surface.getBoundingClientRect(),style=getComputedStyle(surface);
       const glass=document.body.classList.contains('veloura-bottom-nav-glass');
-      panel.style.setProperty('--vbc-left',rect.left+'px');panel.style.setProperty('--vbc-width',rect.width+'px');
+      const viewportWidth=document.documentElement.clientWidth;
+      const panelWidth=Math.min(rect.width,viewportWidth-24);
+      const panelLeft=(viewportWidth-panelWidth)/2;
+      panel.style.setProperty('--vbc-left',panelLeft+'px');panel.style.setProperty('--vbc-width',panelWidth+'px');
+      panel.style.setProperty('left',panelLeft+'px','important');
+      panel.style.setProperty('right','auto','important');
+      panel.style.setProperty('margin','0','important');
+      panel.style.setProperty('width',panelWidth+'px','important');
       panel.style.setProperty('--vbc-clearance',Math.max(72,innerHeight-rect.top+12)+'px');
       const radius=parseFloat(style.borderTopLeftRadius)||0;
       panel.style.setProperty('--vbc-radius',Math.min(40,Math.max(0,radius))+'px');

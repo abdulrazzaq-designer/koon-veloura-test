@@ -169,6 +169,17 @@
   function run() {
     var previous = sibling(el, 'previousElementSibling');
     var requested = window.innerWidth >= 1024 ? {{ sp_d_pull }} : window.innerWidth >= 768 ? {{ sp_t_pull }} : {{ sp_m_pull }};
+    // A negative spacer must not pull the next section over usable pagination.
+    var dots = previous ? Array.from(previous.querySelectorAll('.veloura-dots, .swiper-pagination, .s-slider-pagination')) : [];
+    var visibleDots = dots.filter(function(dot) {
+      var style = getComputedStyle(dot);
+      return style.display !== 'none' && style.visibility !== 'hidden' && dot.getClientRects().length && dot.getBoundingClientRect().height > 0;
+    });
+    if (requested < 0 && visibleDots.length) {
+      var dotsBottom = Math.max.apply(null, visibleDots.map(function(dot) { return dot.getBoundingClientRect().bottom; }));
+      var available = Math.max(0, el.getBoundingClientRect().top - dotsBottom - 12);
+      requested = Math.max(requested, -available);
+    }
     var pull = (document.readyState === 'complete' ? requested : 0) + 'px';
     if (el.style.getPropertyValue('--veloura-spacer-safe-pull') !== pull) el.style.setProperty('--veloura-spacer-safe-pull', pull);
     if (previous && previous !== observedPrevious && sizeObserver) {
