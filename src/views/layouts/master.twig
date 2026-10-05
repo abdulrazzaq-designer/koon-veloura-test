@@ -6215,6 +6215,42 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
 .s-product-card-entry .s-product-card-image > .veloura-quick-view-btn.veloura-qp-view-fallback { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.88); color: #111827; cursor: pointer; }
 .s-product-card-entry .s-product-card-image:has(.s-product-card-wishlist-btn) > .veloura-quick-view-btn.veloura-qp-view-fallback { top: 58px; }
 @media (max-width:480px) { .veloura-qp__dialog { padding: 16px; } .veloura-qp__summary img { flex-basis: 80px; width: 80px; height: 95px; } }
+
+/* Quick purchase uses the store surface and global glass settings. */
+html body .veloura-qp { --qp-bg:var(--veloura-site-bg,#fff); --qp-text:var(--veloura-primary-text,var(--color-text,#111827)); --qp-border:color-mix(in srgb,var(--qp-text) 18%,transparent); }
+html.dark body .veloura-qp, html body.dark .veloura-qp { --qp-bg:var(--veloura-dark-body-bg,#010202); --qp-text:var(--veloura-dark-primary-text,#fff); }
+html body .veloura-qp__dialog { width:min(680px,100%); min-width:0; max-height:calc(100dvh - 24px); overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; background:var(--veloura-site-second-bg,var(--qp-bg)); color:var(--qp-text); border:1px solid var(--qp-border); padding:24px; }
+html.dark body .veloura-qp__dialog, html body.dark .veloura-qp__dialog { background:var(--veloura-dark-secondary-bg,#161b22); }
+html body.veloura-general-enabled.veloura-glass-effect .veloura-qp__dialog { background:var(--veloura-global-glass-bg,var(--veloura-glass-surface)) !important; backdrop-filter:var(--veloura-global-glass-filter,var(--veloura-glass-filter)); -webkit-backdrop-filter:var(--veloura-global-glass-filter,var(--veloura-glass-filter)); box-shadow:0 8px 26px var(--veloura-global-glass-shadow,var(--veloura-glass-shadow)); }
+html body .veloura-qp *, html body .veloura-qp *::before, html body .veloura-qp *::after { box-sizing:border-box; }
+html body .veloura-qp__header { padding-bottom:16px; margin-bottom:20px; border-bottom:1px solid var(--qp-border); }
+html body .veloura-qp__header h2 { color:inherit; font-size:22px; }
+html body .veloura-qp__header button { flex:0 0 44px; border:1px solid var(--qp-border); background:transparent; color:inherit; }
+html body .veloura-qp__summary { align-items:center; gap:16px; margin-bottom:16px; min-width:0; }
+html body .veloura-qp__summary > div { flex:1; min-width:0; }
+html body .veloura-qp__summary img { flex:0 0 80px; width:80px; height:100px; border-radius:12px; }
+html body .veloura-qp__summary h3, html body .veloura-qp__summary p { white-space:normal; overflow-wrap:anywhere; color:inherit; }
+html body .veloura-qp__summary p { font-size:14px; line-height:1.7; margin:8px 0 0; }
+html body .veloura-qp__summary p:empty { display:none; }
+html body .veloura-qp__form { display:grid; grid-template-columns:minmax(0,1fr); gap:20px; width:100%; min-width:0; margin:0; }
+html body .veloura-qp__form > *, html body .veloura-qp salla-conditional-fields { min-width:0; max-width:100%; }
+html body .veloura-qp salla-product-options { display:block; width:100%; padding:20px!important; margin:0!important; border-radius:16px; background:var(--qp-bg)!important; color:var(--qp-text)!important; }
+html body .veloura-qp .s-product-options-option { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); gap:16px; align-items:start; padding:0; margin-bottom:18px; background:transparent!important; }
+html body .veloura-qp .s-product-options-option-container:last-child .s-product-options-option { margin-bottom:0; }
+html body .veloura-qp :is(.s-product-options-option-label,.s-product-options-option-content) { width:100%!important; min-width:0; max-width:100%; margin:0; color:inherit!important; }
+html body .veloura-qp :is(.s-product-options-option-label small,.form-label) { color:inherit; }
+html body .veloura-qp :is(select,textarea,input:not([type=hidden]):not([type=radio]):not([type=checkbox]):not([type=file])) { min-width:0; max-width:100%; background:var(--qp-bg)!important; color:var(--qp-text)!important; border-color:var(--qp-border)!important; }
+html body .veloura-qp :is(select,textarea) { width:100%; }
+html body .veloura-qp__purchase { display:grid!important; grid-template-columns:minmax(0,1fr); gap:16px; padding:0!important; margin:0!important; background:transparent!important; }
+html body .veloura-qp :is(.veloura-product-cart-price-row,.sticky-product-bar__quantity) { display:flex!important; align-items:center; justify-content:space-between; gap:16px; width:100%; min-width:0; padding:0 0 18px; margin:0; border-bottom:1px solid var(--qp-border); }
+html body .veloura-qp .price-wrapper { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:flex-end; gap:8px; min-width:0; margin:0; }
+html body .veloura-qp .total-price { margin:0; font-size:24px; color:var(--color-primary); }
+html body .veloura-qp .before-price { text-decoration:line-through; font-size:14px; opacity:.65; }
+html body .veloura-qp .form-label { margin:0; }
+html body .veloura-qp salla-quantity-input { width:180px!important; max-width:65%; min-width:0; margin:0; direction:ltr; }
+html body .veloura-qp :is(salla-add-product-button,salla-quick-buy,.s-add-product-button-main) { width:100%; min-width:0; max-width:100%; }
+html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; padding-top:16px; }
+@media(max-width:480px) { html body .veloura-qp__dialog { padding:18px; } html body .veloura-qp salla-product-options { padding:16px!important; } html body .veloura-qp .s-product-options-option { grid-template-columns:minmax(0,1fr); gap:10px; } }
 </style>
 <script data-cfasync="false" id="veloura-quick-purchase-runtime">
 (function () {
@@ -6261,7 +6297,7 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       modal = document.createElement('div');
       modal.className = 'veloura-qp';
       modal.hidden = true;
-      modal.innerHTML = '<div class="veloura-qp__overlay" data-qp-close></div><section class="veloura-qp__dialog" role="dialog" aria-modal="true" aria-labelledby="veloura-qp-heading"><header class="veloura-qp__header"><h2 id="veloura-qp-heading">شراء سريع</h2><button type="button" data-qp-close aria-label="إغلاق">×</button></header><p class="veloura-qp__message" role="status" aria-live="polite"></p><div class="veloura-qp__content"></div><a class="veloura-qp__details">عرض تفاصيل المنتج</a></section>';
+      modal.innerHTML = '<div class="veloura-qp__overlay" data-qp-close></div><section class="veloura-qp__dialog veloura-glass" role="dialog" aria-modal="true" aria-labelledby="veloura-qp-heading"><header class="veloura-qp__header"><h2 id="veloura-qp-heading">شراء سريع</h2><button type="button" data-qp-close aria-label="إغلاق">×</button></header><p class="veloura-qp__message" role="status" aria-live="polite"></p><div class="veloura-qp__content"></div><a class="veloura-qp__details">عرض تفاصيل المنتج</a></section>';
       document.body.prepend(modal);
       content = modal.querySelector('.veloura-qp__content');
       message = modal.querySelector('.veloura-qp__message');
@@ -6287,7 +6323,12 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
       form.querySelectorAll('*').forEach(node => [...node.attributes].filter(attribute => /^on/i.test(attribute.name)).forEach(attribute => node.removeAttribute(attribute.name)));
       form.removeAttribute('onsubmit');
       form.querySelectorAll('salla-add-product-button').forEach(button => button.removeAttribute('support-sticky-bar'));
-      form.querySelectorAll('.sticky-product-bar, .veloura-product-purchase-card').forEach(node => node.classList.remove('sticky-product-bar', 'veloura-product-purchase-card', 'veloura-product-sticky-bar'));
+      form.querySelectorAll('.sticky-product-bar, .veloura-product-purchase-card').forEach(node => {
+        node.classList.add('veloura-qp__purchase');
+        node.classList.remove('sticky-product-bar', 'veloura-product-purchase-card', 'veloura-product-sticky-bar');
+      });
+      const priceRow = form.querySelector('.veloura-product-cart-price-row');
+      if (priceRow) form.prepend(priceRow);
       let busy = false;
       form.addEventListener('submit', async event => {
         event.preventDefault();
@@ -6352,7 +6393,7 @@ html[dir="ltr"] .s-product-card-entry .veloura-qp-actions > salla-add-product-bu
         const title = document.createElement('h3');
         title.textContent = page.querySelector('h1')?.textContent?.trim() || item.name;
         const description = document.createElement('p');
-        description.textContent = page.querySelector('meta[name="description"]')?.content || '';
+        description.textContent = page.querySelector('#veloura-quick-purchase-template')?.content?.querySelector('.veloura-qp__description')?.textContent?.trim().slice(0, 180) || '';
         info.append(title, description);
         summary.append(image, info);
         const form = document.importNode(original, true);
