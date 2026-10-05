@@ -3824,9 +3824,10 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       const panelWidth=Math.min(rect.width,viewportWidth-24);
       const panelLeft=(viewportWidth-panelWidth)/2;
       panel.style.setProperty('--vbc-left',panelLeft+'px');panel.style.setProperty('--vbc-width',panelWidth+'px');
-      panel.style.setProperty('left',panelLeft+'px','important');
-      panel.style.setProperty('right','auto','important');
-      panel.style.setProperty('margin','0','important');
+      // Let the browser center after scroll locking changes the viewport width.
+      panel.style.setProperty('left','0','important');
+      panel.style.setProperty('right','0','important');
+      panel.style.setProperty('margin','0 auto','important');
       panel.style.setProperty('width',panelWidth+'px','important');
       panel.style.setProperty('--vbc-clearance',Math.max(72,innerHeight-rect.top+12)+'px');
       const radius=parseFloat(style.borderTopLeftRadius)||0;
