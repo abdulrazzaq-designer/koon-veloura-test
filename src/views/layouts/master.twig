@@ -6233,7 +6233,14 @@ html body .veloura-qp__summary h3, html body .veloura-qp__summary p { white-spac
 html body .veloura-qp__summary p { font-size:14px; line-height:1.7; margin:8px 0 0; }
 html body .veloura-qp__summary p:empty { display:none; }
 html body .veloura-qp :is(.veloura-qp__header h2,.veloura-qp__header button,.veloura-qp__summary h3,.s-product-options-option-label,.s-product-options-option-label b,.s-product-options-option-label small,.sticky-product-bar__quantity .form-label) { color:var(--qp-text)!important; opacity:1!important; }
-html body .veloura-qp__summary .price-wrapper { justify-content:flex-start; margin-top:10px; }
+html body .veloura-qp__summary .price-wrapper { display:flex!important; direction:rtl!important; justify-content:flex-start!important; text-align:right!important; width:100%!important; margin:10px 0 0!important; }
+html body .veloura-qp__summary .price-wrapper > * { flex:0 0 auto!important; margin:0!important; }
+html body .veloura-qp :is(.veloura-qp__dialog,salla-product-options,.veloura-qp__summary img,select,textarea,.s-form-control,.s-button-element,.s-quantity-input-container,.veloura-qp__buy) { border-radius:var(--veloura-global-radius,16px)!important; }
+html body .veloura-qp .sticky-product-bar__quantity { direction:rtl!important; }
+html body .veloura-qp .sticky-product-bar__quantity salla-quantity-input { display:flex!important; flex:0 0 auto!important; justify-content:flex-start!important; width:max-content!important; margin:0!important; padding:0!important; }
+html body .veloura-qp .s-quantity-input-container { margin:0!important; width:180px; max-width:100%; }
+html body .veloura-qp__buy { display:flex; align-items:center; justify-content:center; width:100%; min-height:48px; padding:12px 16px; background:transparent; border:1px solid var(--color-primary); color:var(--color-primary); font:inherit; font-weight:700; cursor:pointer; }
+html body .veloura-qp__form[aria-busy="true"] .veloura-qp__buy { opacity:.6; pointer-events:none; }
 html body .veloura-qp__form { display:grid; grid-template-columns:minmax(0,1fr); gap:20px; width:100%; min-width:0; margin:0; }
 html body .veloura-qp__form > *, html body .veloura-qp salla-conditional-fields { min-width:0; max-width:100%; }
 html body .veloura-qp salla-product-options { display:block; width:100%; padding:20px!important; margin:0!important; border-radius:16px; background:var(--qp-bg)!important; color:var(--qp-text)!important; }
@@ -6331,6 +6338,16 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
       });
       const priceRow = form.querySelector('.veloura-product-cart-price-row');
       if (priceRow) form.prepend(priceRow);
+      const add = form.querySelector('salla-add-product-button');
+      if (add && add.getAttribute('product-status') === 'sale') {
+        add.removeAttribute('quick-buy');
+        const buy = document.createElement('button');
+        buy.type = 'submit';
+        buy.className = 'veloura-qp__buy';
+        buy.dataset.qpCheckout = '';
+        buy.textContent = 'اشتري الآن';
+        add.after(buy);
+      }
       let busy = false;
       form.addEventListener('submit', async event => {
         event.preventDefault();
@@ -6340,6 +6357,26 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
         try {
           const options = form.querySelector('salla-product-options');
           if (options?.reportValidty && !await options.reportValidty()) return;
+          if (event.submitter?.hasAttribute('data-qp-checkout')) {
+            const data = form.getElementSallaData ? form.getElementSallaData() : new FormData(form);
+            const id = form.querySelector('input[name="id"]').value;
+            if (data instanceof FormData) { data.set('id', id); data.set('source', 'buy_now'); }
+            else { data.id = id; data.source = 'buy_now'; }
+            const result = await window.salla.api.request('checkout/mini', data, 'post').catch(error => {
+              if (error?.response?.data?.error?.code !== 'token_not_provided') throw error;
+              return window.salla.api.request('checkout/quick-purchase/' + id, data, 'post');
+            });
+            const redirect = result?.data?.url || result?.data?.redirect;
+            if (redirect) {
+              const destination = new URL(redirect, location.href);
+              if (!['http:', 'https:'].includes(destination.protocol)) throw new Error('Invalid checkout URL');
+              window.location.assign(destination.href);
+            } else if (result?.data?.to === 'login') {
+              window.salla.event.dispatch('login::open');
+              message.textContent = 'سجّل الدخول ثم اضغط اشتري الآن لإكمال الطلب';
+            } else throw new Error('Checkout unavailable');
+            return;
+          }
           await window.salla.form.submit('cart.addItem', event);
           message.textContent = 'تمت إضافة المنتج للسلة';
         } catch (error) {
