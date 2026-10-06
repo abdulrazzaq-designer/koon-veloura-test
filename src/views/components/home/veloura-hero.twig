@@ -1127,14 +1127,14 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     var headerEl = document.querySelector('.veloura-header-tabs-stack') || document.querySelector('.store-header');
 
     var measure = function () {
-      if (!headerEl) return;
+      if (!headerEl || !root.isConnected) return;
       // Include real wrapper gaps and detached tabs, not only their heights.
       // Undo our current negative margin before measuring the original position.
       if (window.scrollY > 8) return;
       var overlap = parseFloat(getComputedStyle(root).getPropertyValue('--hero-header-h')) || 0;
       // Reach the document top, including the store's spacing above the header.
       var h = Math.round(root.getBoundingClientRect().top + window.scrollY + overlap);
-      if (h > 0) root.style.setProperty('--hero-header-h', h + 'px');
+      if (h >= 0 && Math.abs(h - overlap) >= 1) root.style.setProperty('--hero-header-h', h + 'px');
     };
 
     /* إذابة خلفية الهيدر تُكتب inline بـ important على العناصر نفسها.
@@ -1264,10 +1264,28 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     });
 
     var rafPending = false;
+    var measurePending = false;
+    function scheduleMeasure() {
+      if (measurePending || window.scrollY > 8) return;
+      measurePending = true;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { measurePending = false; measure(); });
+      });
+    }
+    // Sticky-header height/class updates may happen after our scroll callback.
+    // Reconcile when those updates finish instead of measuring only on scroll.
+    if (window.ResizeObserver) {
+      var headerSizes = new ResizeObserver(scheduleMeasure);
+      [headerEl, document.querySelector('.veloura-tabs-detached-frame'), document.querySelector('#mainnav')].forEach(function (node) { if (node) headerSizes.observe(node); });
+    }
+    var headerChanges = new MutationObserver(scheduleMeasure);
+    headerChanges.observe(headerEl, {attributes:true,subtree:true,attributeFilter:['class','style']});
+    headerEl.addEventListener('transitionend', scheduleMeasure);
+    window.addEventListener('pageshow', scheduleMeasure);
     addEventListener('scroll', function () {
       if (rafPending) return;
       rafPending = true;
-      requestAnimationFrame(function () { rafPending = false; paint(); if (window.scrollY < 8) measure(); });
+      requestAnimationFrame(function () { rafPending = false; paint(); scheduleMeasure(); });
     }, { passive: true });
 
     var resizeTimer;
