@@ -78,47 +78,6 @@
       "format": "line"
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "static-label2",
-      "value": "<div class='rounded-lg' ><h6 > خيارات أعلى الصفحة</h6></div>",
-      "variant": "h6"
-    },
-    {
-      "id": "veloura_header_sticky_v6_2026",
-      "label": "تثبيت الهيدر والتبويبات عند التمرير",
-      "description": "يثبت الهيدر والتبويبات كقطعة واحدة متصلة مع مسافة علوية ثابتة.",
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "default": true
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "شريط علوي داكن",
-      "description": null,
-      "id": "topnav_is_dark",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": false
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "عرض روابط الصفحات الهامة في الشريط العلوي",
-      "description": "مثل صفحة الهبوط ، المدونة ،الصفحات التعريفية",
-      "id": "important_links",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
-    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
@@ -133,20 +92,6 @@
       "type": "static",
       "id": "static-line3",
       "format": "line"
-    },
-    {
-      "type": "static",
-      "format": "title",
-      "id": "static-label4",
-      "value": "<div class='rounded-lg' ><h6 > خيارات أسفل الصفحة</h6></div>",
-      "variant": "h6"
-    },
-    {
-      "id": "title",
-      "type": "static",
-      "format": "title",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span style=\"flex:1;min-width:0\"><strong style=\"display:block;font-size:15px;font-weight:800;line-height:1.5;text-align:right\">إعدادات عامة للعنصر</strong><span style=\"display:block;font-size:12px;font-weight:500;line-height:1.6;opacity:.72;text-align:right;margin-top:2px\">تحكم بطريقة عرض الصور والسلايدر</span></span></div>",
-      "variant": "h1"
     },
     {
       "type": "boolean",
@@ -171,17 +116,7 @@
       "value": "<div class='rounded-lg' ><h6 > خيارات صفحة المنتج</h6></div>",
       "variant": "h6"
     },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل إشعار الإضافة للسلة المحسن",
-      "description": null,
-      "id": "enable_add_product_toast",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+    
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
@@ -192,58 +127,6 @@
       "required": false,
       "value": true,
       "selected": true
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "اظهار الوسوم",
-      "description": null,
-      "id": "show_tags",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
-    {
-      "id": "slider_background_size",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "طريقة عرض الصور في سليدر صور المنتج",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-list",
-      "selected": [
-        {
-          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
-          "value": "contain",
-          "key": "f4adec13-6e4c-433b-b141-b2807935ced9"
-        }
-      ],
-      "options": [
-        {
-          "label": "تغطية الصورة كامل المساحة مع المحافظة على أبعاد الصورة (Cover)",
-          "value": "cover",
-          "key": "e9c8ea8f-c5c6-438e-9d45-3bce269afde4"
-        },
-        {
-          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
-          "value": "contain",
-          "key": "f4adec13-6e4c-433b-b141-b2807935ced9"
-        }
-      ],
-      "source": "Manual",
-      "required": true
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تكبير الصور في سليدر صور المنتج",
-      "description": "هذه الخاصية تمكنك من تكبير الصورة لتسهل رؤية المزيد من التفاصيل بها",
-      "id": "imageZoom",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false
     },
     {
       "id": "veloura_switch_inside_title_style_2026",
@@ -411,6 +294,31 @@
           "value": null
         }
       ]
+    },
+    {
+      "type": "static",
+      "format": "title",
+      "id": "veloura_general_subtitle_classes_2026",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خيارات المنتج</span></div>",
+      "variant": "h6",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل إشعار الإضافة للسلة المحسن",
+      "description": null,
+      "id": "enable_add_product_toast",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true
     },
     {
       "type": "static",
