@@ -25,34 +25,6 @@
     "filters"
   ],
   "settings": [
-
-    {
-      "type": "boolean",
-      "id": "is_more_button_enabled",
-      "label": "عرض (زر الكل) في الصفحة الرئيسية",
-      "format": "switch"
-    },
-    {
-      "type": "static",
-      "id": "static-line1",
-      "format": "line"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
-      "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
-      "id": "enable_more_menu",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
-    {
-      "type": "static",
-      "id": "static-line5",
-      "format": "line"
-    },
     {
       "id": "veloura_switch_inside_title_style_2026",
       "type": "static",
@@ -77,6 +49,92 @@
       "required": false,
       "value": false,
       "selected": false
+    },
+    {
+      "type": "static",
+      "format": "title",
+      "id": "veloura_general_subtitle_classes_2026",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خيارات عناصر سلة الأساسية</span></div>",
+      "variant": "h6",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل إشعار الإضافة للسلة المحسن",
+      "description": null,
+      "id": "enable_add_product_toast",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "squar_photo_bg_image_size",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "طريقة عرض الصور في قسم قائمة عناصر",
+      "description": null,
+      "labelHTML": null,
+      "icon": "sicon-list",
+      "selected": [
+        {
+          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
+          "value": "contain",
+          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
+        }
+      ],
+      "options": [
+        {
+          "label": "تغطية الصورة كامل المساحة مع المحافظة على أبعاد الصورة (Cover)",
+          "value": "cover",
+          "key": "e9c8ea8f-c5c6-234e-935-3bce269afde4"
+        },
+        {
+          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
+          "value": "contain",
+          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
+        }
+      ],
+      "source": "Manual",
+      "required": true,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "id": "is_more_button_enabled",
+      "label": "عرض (زر الكل) في الصفحة الرئيسية",
+      "format": "switch"
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
+      "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
+      "id": "enable_more_menu",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true
     },
     {
       "type": "static",
@@ -217,38 +275,6 @@
           "id": "veloura_site_bg_image_2026",
           "operation": "!=",
           "value": null
-        }
-      ]
-    },
-    {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_general_subtitle_classes_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خيارات المنتج</span></div>",
-      "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل إشعار الإضافة للسلة المحسن",
-      "description": null,
-      "id": "enable_add_product_toast",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -423,43 +449,6 @@
       "minimum": "0",
       "maximum": "16",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "squar_photo_bg_image_size",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "طريقة عرض الصور في قسم قائمة عناصر",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-list",
-      "selected": [
-        {
-          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
-          "value": "contain",
-          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
-        }
-      ],
-      "options": [
-        {
-          "label": "تغطية الصورة كامل المساحة مع المحافظة على أبعاد الصورة (Cover)",
-          "value": "cover",
-          "key": "e9c8ea8f-c5c6-234e-935-3bce269afde4"
-        },
-        {
-          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
-          "value": "contain",
-          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
-        }
-      ],
-      "source": "Manual",
-      "required": true,
       "conditions": [
         {
           "id": "veloura_general_panel_open_v4_2026",
@@ -1362,7 +1351,7 @@
       "format": "line",
       "conditions": [
         {
-          "id": "veloura_general_panel_open_v4_2026",
+          "id": "veloura_loader_enable_2026",
           "operation": "=",
           "value": true
         }
@@ -1670,6 +1659,18 @@
       ],
       "description": "لون النص الأساسي داخل بطاقة المنتج في الوضع الداكن، ويعمل مع لون خلفية البطاقة حتى تحافظ على تباين واضح."
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_dark_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "description",
@@ -2365,6 +2366,18 @@
     },
     {
       "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
+    {
+      "type": "static",
       "format": "title",
       "id": "veloura_home_tabs_title_2026",
       "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-layout-grid\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.25;text-align:right;white-space:nowrap\">تبويبات الصفحة الرئيسية</strong></div></div>",
@@ -2550,6 +2563,18 @@
         }
       ]
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_home_tabs_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "title",
@@ -3474,6 +3499,18 @@
     },
     {
       "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
+    {
+      "type": "static",
       "format": "title",
       "id": "veloura_newsletter_title_panel_2026",
       "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-mail\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">النشرة البريدية</strong></div></div>",
@@ -3732,6 +3769,18 @@
       ],
       "description": "يشمل البطاقة وحقل الاشتراك والزر والأيقونة."
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_newsletter_panel_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "title",
@@ -4332,6 +4381,18 @@
         }
       ]
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "title",
@@ -5043,6 +5104,18 @@
     },
     {
       "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
+    {
+      "type": "static",
       "format": "title",
       "id": "veloura_cat_banner_settings_title_2026",
       "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-image\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">بنرات التصنيفات</strong></div></div>",
@@ -5138,6 +5211,18 @@
         }
       ]
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_cat_banner_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "description",
@@ -5408,6 +5493,18 @@
         }
       ]
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "description",
@@ -7094,6 +7191,18 @@
         }
       ]
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "title",
@@ -9812,6 +9921,18 @@
     },
     {
       "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
+    {
+      "type": "static",
       "format": "title",
       "id": "veloura_mobile_floating_menu_title_2026",
       "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-airplay-screen\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">قائمة الجوال</strong></div></div>",
@@ -10535,6 +10656,18 @@
         }
       ]
     },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_mobile_floating_menu_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+},
     {
       "type": "static",
       "format": "title",
