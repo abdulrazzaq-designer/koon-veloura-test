@@ -731,6 +731,18 @@
     },
     {
       "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "static",
       "format": "title",
       "id": "veloura_loader_title_2026",
       "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-timer\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">صفحة التحميل</strong></div></div>",
@@ -1339,6 +1351,18 @@
         },
         {
           "id": "veloura_loader_bar_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "static",
+      "id": "static-line1",
+      "format": "line",
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
           "operation": "=",
           "value": true
         }
@@ -10111,7 +10135,7 @@
       "id": "veloura_mobile_floating_menu_text_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون النص والأيقونات1111",
+      "label": "لون النص والأيقونات",
       "description": "اختر لون النص والأيقونات داخل القائمة",
       "icon": "sicon-font",
       "value": "#111827",
@@ -21073,7 +21097,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
