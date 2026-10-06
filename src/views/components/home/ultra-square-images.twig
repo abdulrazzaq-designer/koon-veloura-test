@@ -236,7 +236,9 @@
 
           {% if image_src %}
             <div class="ultra-square-images__item ultra-square-images__item--{{ card_size }}">
-              <a href="{{ banner.url ?: '#' }}" class="ultra-square-images__card">
+              <a {% set popup_on = banner.popup_enabled.value ?? banner.popup_enabled ?? false %}
+              {% set popup_name = banner.popup_name.value ?? banner.popup_name ?? '' %}
+              {% if popup_on in [true, 'true', 1, '1'] and popup_name|trim %}data-vcp-target="{{ popup_name|trim|e('html_attr') }}" aria-haspopup="dialog"{% endif %} href="{{ banner.url ?: '#' }}" class="ultra-square-images__card">
                 <img src="{{ image_src }}" alt="{{ banner.title ?: 'image' }}" loading="lazy">
 
                 {% if component.ultra_text_on_image and (banner.title or banner.description) %}
@@ -308,7 +310,9 @@
             {% if image_src %}
               <div class="swiper-slide">
                 <div class="ultra-square-images__item">
-                  <a href="{{ banner.url ?: '#' }}" class="ultra-square-images__card">
+                  <a {% set popup_on = banner.popup_enabled.value ?? banner.popup_enabled ?? false %}
+              {% set popup_name = banner.popup_name.value ?? banner.popup_name ?? '' %}
+              {% if popup_on in [true, 'true', 1, '1'] and popup_name|trim %}data-vcp-target="{{ popup_name|trim|e('html_attr') }}" aria-haspopup="dialog"{% endif %} href="{{ banner.url ?: '#' }}" class="ultra-square-images__card">
                     <img src="{{ image_src }}" alt="{{ banner.title ?: 'image' }}" loading="lazy">
 
                     {% if component.ultra_text_on_image and (banner.title or banner.description) %}

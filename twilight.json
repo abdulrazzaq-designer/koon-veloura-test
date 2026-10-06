@@ -10996,8 +10996,8 @@
           "id": "popup_key",
           "type": "string",
           "format": "text",
-          "label": "رمز ربط النافذة",
-          "description": "اكتب رمزًا إنجليزيًا فريدًا مثل clothes، ثم ضع #category-popup-clothes كرابط للصورة أو الزر الذي يفتح هذه النافذة.",
+          "label": "اسم النافذة للربط",
+          "description": "مثال: تصنيفات الملابس. اكتب الاسم نفسه في حقل اسم النافذة داخل إعدادات الصورة المربعة. استخدم اسمًا مختلفًا لكل نافذة.",
           "value": "",
           "required": false,
           "maxLength": 40
@@ -13735,6 +13735,33 @@
               "placeholder": "Your text here",
               "minLength": 0,
               "maxLength": 255
+            },
+            {
+              "id": "banners.popup_enabled",
+              "type": "boolean",
+              "format": "switch",
+              "label": "ربط مع نافذة",
+              "description": "يفتح الصورة نافذة التصنيفات بدل الانتقال إلى الرابط.",
+              "value": false,
+              "selected": false,
+              "required": false
+            },
+            {
+              "id": "banners.popup_name",
+              "type": "string",
+              "format": "text",
+              "label": "اسم النافذة",
+              "description": "اكتب اسم النافذة نفسه، مثل: تصنيفات الملابس. يجب إضافة عنصر النافذة في الصفحة نفسها.",
+              "value": "",
+              "required": false,
+              "maxLength": 40,
+              "conditions": [
+                {
+                  "id": "banners.popup_enabled",
+                  "operation": "=",
+                  "value": true
+                }
+              ]
             }
           ]
         },
@@ -14399,6 +14426,33 @@
               "required": false,
               "minLength": 20,
               "maxLength": 255
+            },
+            {
+              "id": "ultra_banners.popup_enabled",
+              "type": "boolean",
+              "format": "switch",
+              "label": "ربط مع نافذة",
+              "description": "يفتح الصورة نافذة التصنيفات بدل الانتقال إلى الرابط.",
+              "value": false,
+              "selected": false,
+              "required": false
+            },
+            {
+              "id": "ultra_banners.popup_name",
+              "type": "string",
+              "format": "text",
+              "label": "اسم النافذة",
+              "description": "اكتب اسم النافذة نفسه، مثل: تصنيفات الملابس. يجب إضافة عنصر النافذة في الصفحة نفسها.",
+              "value": "",
+              "required": false,
+              "maxLength": 40,
+              "conditions": [
+                {
+                  "id": "ultra_banners.popup_enabled",
+                  "operation": "=",
+                  "value": true
+                }
+              ]
             }
           ],
           "value": [],

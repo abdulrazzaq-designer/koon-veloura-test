@@ -95,7 +95,10 @@
         {% endif %}
 
         <a
-          href="{{ banner.url }}"
+          {% set popup_on = banner.popup_enabled.value ?? banner.popup_enabled ?? false %}
+              {% set popup_name = banner.popup_name.value ?? banner.popup_name ?? '' %}
+              {% if popup_on in [true, 'true', 1, '1'] and popup_name|trim %}data-vcp-target="{{ popup_name|trim|e('html_attr') }}" aria-haspopup="dialog"{% endif %}
+              href="{{ banner.url }}"
           aria-label="{{ (banner.title ? banner.title : 'square-banner-' ~ index) | e('html_attr') }}"
           class="pro-square-images__card {{ component.text_on_image and component.title_overlay ? 'has-overlay' : '' }}"
         >
@@ -163,6 +166,9 @@
             {% endif %}
 
             <a
+              {% set popup_on = banner.popup_enabled.value ?? banner.popup_enabled ?? false %}
+              {% set popup_name = banner.popup_name.value ?? banner.popup_name ?? '' %}
+              {% if popup_on in [true, 'true', 1, '1'] and popup_name|trim %}data-vcp-target="{{ popup_name|trim|e('html_attr') }}" aria-haspopup="dialog"{% endif %}
               href="{{ banner.url }}"
               aria-label="{{ (banner.title ? banner.title : 'square-banner-' ~ index) | e('html_attr') }}"
               class="pro-square-images__card {{ component.text_on_image and component.title_overlay ? 'has-overlay' : '' }}"
