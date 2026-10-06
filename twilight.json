@@ -11051,14 +11051,6 @@
           "value": [],
           "fields": [
             {
-              "id": "title",
-              "type": "string",
-              "format": "text",
-              "label": "اسم التصنيف",
-              "value": "",
-              "required": false
-            },
-            {
               "id": "image",
               "type": "string",
               "format": "image",

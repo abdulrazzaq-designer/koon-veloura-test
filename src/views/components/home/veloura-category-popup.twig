@@ -12,7 +12,7 @@
         <a class="vcp__card" data-link="{{ item.url|json_encode|e('html_attr') }}">
           {% if item_image %}<img src="{{ item_image|e('html_attr') }}" alt="" width="160" height="160" loading="lazy" decoding="async">
           {% else %}<i class="{{ item.icon.value ?: item.icon ?: 'sicon-grid' }}" aria-hidden="true"></i>{% endif %}
-          <span>{{ item.title ?: 'تصنيف' }}</span>
+          <span data-category-name>عرض التصنيف</span>
         </a>
       {% else %}<p>أضف التصنيفات من إعدادات هذا العنصر.</p>{% endfor %}
     </div>
@@ -21,7 +21,7 @@
 <style>
 .vcp { margin:0!important; padding:0!important; min-height:0!important; --vcp-text:#1f2937; --vcp-bg:var(--veloura-site-second-bg,#fff); }
 html.dark .vcp, body.dark .vcp { margin:0!important; padding:0!important; min-height:0!important; --vcp-text:var(--veloura-dark-primary-text,#fff); --vcp-bg:var(--veloura-dark-secondary-bg,#161b22); }
-html body .vcp__dialog { position:fixed; inset:0; margin:auto; box-sizing:border-box; width:min(620px,calc(100% - 32px)); max-width:none; max-height:calc(100dvh - 48px); height:fit-content; padding:22px; overflow:auto; overscroll-behavior:contain; border:1px solid color-mix(in srgb,var(--vcp-text) 16%,transparent); border-radius:var(--veloura-global-radius,16px); background:var(--vcp-bg); color:var(--vcp-text); }
+html body .vcp__dialog { position:fixed; inset:0; margin:auto; box-sizing:border-box; width:min(800px,calc(100% - 32px)); max-width:none; max-height:calc(100dvh - 48px); height:fit-content; padding:22px; overflow:auto; overscroll-behavior:contain; border:1px solid color-mix(in srgb,var(--vcp-text) 16%,transparent); border-radius:var(--veloura-global-radius,16px); background:var(--vcp-bg); color:var(--vcp-text); }
 .vcp__dialog::backdrop { background:rgba(0,0,0,.45); }
 body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__dialog { background:var(--veloura-global-glass-bg,var(--veloura-glass-surface,var(--vcp-bg))); backdrop-filter:var(--veloura-global-glass-filter,var(--veloura-glass-filter)); -webkit-backdrop-filter:var(--veloura-global-glass-filter,var(--veloura-glass-filter)); }
 .vcp__header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; margin-bottom:18px; border-bottom:1px solid color-mix(in srgb,var(--vcp-text) 16%,transparent); }
@@ -39,7 +39,7 @@ body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__d
   const root=document.getElementById('{{ popup_id }}');
   if(!root||root.dataset.ready)return;
   root.dataset.ready='true';
-  const scalar=v=>Array.isArray(v)?scalar(v[0]):v&&typeof v==='object'?scalar(v.url||v.href||v.value||v.selected):v;
+  const scalar=v=>Array.isArray(v)?scalar(v[0]):v&&typeof v==='object'?scalar(v.url||v.href||v.value||v.selected||v.id||v.id_):v;
   const parse=text=>{try{return JSON.parse(text)}catch(_){return text}};
   const columns=(v,fallback,max)=>Math.min(max,Math.max(1,Math.round(Number(scalar(parse(v)))||fallback)));
   root.style.setProperty('--vcp-mobile-cols',columns(root.dataset.mobileColumns,2,6));
@@ -73,12 +73,46 @@ body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__d
     try{let raw=scalar(parse(link.dataset.link));if(!raw)throw Error();if(/^\d+$/.test(String(raw)))raw=root.dataset.storeUrl.replace(/\/$/,'')+'/c'+raw;const url=new URL(raw,location.href);if(!['http:','https:'].includes(url.protocol))throw Error();link.href=url.href;}
     catch(_){link.setAttribute('aria-disabled','true');}
   });
+  const cards=Array.from(root.querySelectorAll('[data-link]'));
+  const categoryId=value=>{
+    const raw=String(scalar(value)||'');
+    return /^\d+$/.test(raw)?raw:(raw.match(/\/c(\d+)(?:[/?#]|$)/)||[])[1];
+  };
+  const setName=(card,name)=>{
+    if(typeof name!=='string'||!name.trim())return;
+    card.querySelector('[data-category-name]').textContent=name.trim();
+    card.dataset.named='true';
+  };
+  cards.forEach(card=>{
+    let selected=parse(card.dataset.link);if(Array.isArray(selected))selected=selected[0];
+    if(selected&&typeof selected==='object')setName(card,selected.name||selected.label);
+  });
+  async function loadNames(){
+    if(cards.every(card=>card.dataset.named))return;
+    const api=window.salla?.product?.api;
+    if(!api?.categories)return;
+    try{
+      if(!window.__velouraPopupCategories){
+        window.__velouraPopupCategories=Promise.resolve().then(()=>api.categories()).then(response=>{
+          const index=new Map();
+          const visit=items=>{if(!Array.isArray(items))return;items.forEach(item=>{
+            index.set(String(item.id_||item.id),item.name||item.title);
+            visit(item.sub_categories);visit(item.children);
+          });};
+          visit(response.data);return index;
+        }).catch(error=>{window.__velouraPopupCategories=null;throw error;});
+      }
+      const names=await window.__velouraPopupCategories;
+      cards.forEach(card=>setName(card,names.get(categoryId(parse(card.dataset.link)))));
+    }catch(_){/* Keep links usable and retry names on the next opening. */}
+  }
   const dialog=root.querySelector('dialog');
   let previousOverflow='',removalObserver,opener=null;
   function close(){if(dialog.open)dialog.close();}
   function open(source){
     if(dialog.open)return;
     opener=source||null;
+    loadNames();
     document.querySelectorAll('.vcp__dialog[open]').forEach(other=>other.close());
     previousOverflow=document.body.style.overflow;
     dialog.showModal();document.body.style.overflow='hidden';opener?.setAttribute('aria-expanded','true');
