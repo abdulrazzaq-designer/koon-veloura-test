@@ -23,10 +23,10 @@
                     width="1200"
                     height="300"
                     src="{{ image.url }}"
-                    loading="lazy"
+                    loading="{{ position < 2 ? 'eager' : 'lazy' }}" decoding="async"
                     alt="{{ alt_text }}"
                     style="height:auto;max-width:100%;object-fit: contain;"
-                    fetchpriority="high"
+                    fetchpriority="{{ position == 0 ? 'high' : 'auto' }}"
                 />
             </picture>
         </a>

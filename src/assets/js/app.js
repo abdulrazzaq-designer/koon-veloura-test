@@ -1457,12 +1457,7 @@ class App extends AppHelpers {
     this.initiateCollapse();
     
     // Ensure #more-menu-dropdown exists before running changeMenuDirection
-    const menuDirInterval = setInterval(() => {
-      if (document.querySelector('#more-menu-dropdown')) {
-        this.changeMenuDirection();
-        clearInterval(menuDirInterval);
-      }
-    }, 100);
+    this.isElementLoaded('#more-menu-dropdown').then(() => this.changeMenuDirection());
 
     initTootTip();
     this.loadModalImgOnclick();
@@ -1529,16 +1524,21 @@ class App extends AppHelpers {
   }
 
 isElementLoaded(selector){
-  return new Promise((resolve=>{
-    const interval=setInterval(()=>{
-    if(document.querySelector(selector)){
-      clearInterval(interval)
-      return resolve(document.querySelector(selector))
-    }
-   },160)
-}))
-
-  
+    return new Promise(resolve => {
+      const existing = document.querySelector(selector);
+      if (existing) { resolve(existing); return; }
+      const observer = new MutationObserver(records => {
+        for (const record of records) {
+          const candidates = record.type === 'attributes' ? [record.target] : record.addedNodes;
+          for (const node of candidates) {
+            if (node.nodeType !== 1) continue;
+            const found = node.matches(selector) ? node : node.querySelector(selector);
+            if (found) { observer.disconnect(); resolve(found); return; }
+          }
+        }
+      });
+      observer.observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['id']});
+    });
   };
 
   copyToClipboard(event) {
@@ -1783,11 +1783,13 @@ isElementLoaded(selector){
         const watchBottomNav = () => {
           if (bottomNavTimer) return;
 
-          bottomNavTimer = setInterval(() => {
+          if (!drawerRoot) return;
+          bottomNavTimer = new MutationObserver(() => {
             if (!releaseBottomNavWhenClosed()) return;
-            clearInterval(bottomNavTimer);
+            bottomNavTimer.disconnect();
             bottomNavTimer = null;
-          }, 350);
+          });
+          bottomNavTimer.observe(drawerRoot, {attributes:true,attributeFilter:['class']});
         };
 
         const closeNativeMenu = () => {

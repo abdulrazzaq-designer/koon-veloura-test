@@ -4490,11 +4490,14 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     var watchBottomNav = function () {
       if (navTimer) return;
 
-      navTimer = setInterval(function () {
+      var drawer = document.querySelector('.mm-ocd');
+      if (!drawer) return;
+      navTimer = new MutationObserver(function () {
         if (!restoreBottomNav()) return;
-        clearInterval(navTimer);
+        navTimer.disconnect();
         navTimer = null;
-      }, 350);
+      });
+      navTimer.observe(drawer, {attributes:true,attributeFilter:['class']});
     };
 
     document.addEventListener('veloura:mobile-menu:opening', watchBottomNav);
@@ -5570,7 +5573,7 @@ var nav=document.querySelector('[data-vbn]');if(!nav||window.__velouraNativeOver
 window.__velouraNativeOverlaysV19=true;
 var route=nav.querySelector('[aria-current="page"]')||nav.querySelector('[data-vbn-item].is-active')||nav.querySelector('[data-vbn-key="home"]');
 document.body.appendChild(nav);
-var wasOpen=false,closingUntil=0;
+var wasOpen=false,closingUntil=0,closeTimer;
 function set(el,k,v){if(el.style.getPropertyValue(k)!==v||el.style.getPropertyPriority(k)!=='important')el.style.setProperty(k,v,'important')}
 function opened(selector){return Array.from(document.querySelectorAll(selector)).some(function(m){return m.visible!==false&&getComputedStyle(m).display!=='none'&&(m.visible===true||(!m.classList.contains('s-hidden')&&m.getBoundingClientRect().height>0))})}
 window.addEventListener('click',function(event){
@@ -5591,7 +5594,7 @@ if(route)nav.querySelectorAll('[data-vbn-item]').forEach(function(button){button
 },true);
 function sync(){
 if(innerWidth>767)return;
-var drawer=!!document.querySelector('.mm-ocd--open');if(wasOpen&&!drawer)closingUntil=Date.now()+450;wasOpen=drawer;
+var drawer=!!document.querySelector('.mm-ocd--open');if(wasOpen&&!drawer){closingUntil=Date.now()+450;clearTimeout(closeTimer);closeTimer=setTimeout(schedule,460);}wasOpen=drawer;
 var busy=drawer||Date.now()<closingUntil,login=opened('salla-modal.s-login-modal'),search=opened('salla-modal.s-search-modal');
 document.body.classList.toggle('veloura-bottom-nav-login-open',login);
 set(nav,'z-index',busy?'2147483644':'2147483647');
@@ -5602,7 +5605,20 @@ if(document.body.style.getPropertyValue('--veloura-nav-clearance')!==clearance)d
 var state=drawer?'categories':login?'account':search?'search':null,target=state?nav.querySelector('[data-vbn-key="'+state+'"]'):route;
 if(target)nav.querySelectorAll('[data-vbn-item]').forEach(function(item){var active=item===target;if(item.classList.contains('is-active')!==active)item.classList.toggle('is-active',active)});
 }
-sync();setInterval(sync,100);
+var queued=false,watched=new WeakSet();
+function schedule(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;sync()})}
+var selector='salla-modal.s-login-modal,salla-modal.s-search-modal,.mm-ocd';
+var stateObserver=new MutationObserver(schedule);
+function discover(root){
+if(!root||root.nodeType!==1&&root!==document)return;
+var nodes=Array.from(root.querySelectorAll(selector));if(root.matches?.(selector))nodes.unshift(root);
+nodes.forEach(function(node){if(watched.has(node))return;watched.add(node);stateObserver.observe(node,{attributes:true,attributeFilter:['visible','hidden','class','style']});schedule()});
+}
+new MutationObserver(function(records){records.forEach(function(record){record.addedNodes.forEach(discover);record.removedNodes.forEach(function(node){if(node.matches?.(selector)||node.querySelector?.(selector))schedule()})})}).observe(document.body,{childList:true,subtree:true});
+['afterInit','modalOpened','modalClosed','veloura:mobile-menu:opening','veloura:mobile-menu:closed','click','transitionend'].forEach(function(name){document.addEventListener(name,schedule,true)});
+window.addEventListener('resize',schedule,{passive:true});window.addEventListener('pageshow',schedule);
+if(window.ResizeObserver)new ResizeObserver(schedule).observe(nav);
+discover(document);sync();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
