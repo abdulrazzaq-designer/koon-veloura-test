@@ -25,47 +25,7 @@
     "filters"
   ],
   "settings": [
-    {
-      "id": "squar_photo_bg_image_size",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "طريقة عرض الصور في قسم قائمة عناصر",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-list",
-      "selected": [
-        {
-          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
-          "value": "contain",
-          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
-        }
-      ],
-      "options": [
-        {
-          "label": "تغطية الصورة كامل المساحة مع المحافظة على أبعاد الصورة (Cover)",
-          "value": "cover",
-          "key": "e9c8ea8f-c5c6-234e-935-3bce269afde4"
-        },
-        {
-          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
-          "value": "contain",
-          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
-        }
-      ],
-      "source": "Manual",
-      "required": true
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "وضع عمودي للمنتجات في مربع المنتجات الثابتة في الصفحة الرئيسية",
-      "description": null,
-      "id": "vertical_fixed_products",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false
-    },
+
     {
       "type": "boolean",
       "id": "is_more_button_enabled",
@@ -90,43 +50,8 @@
     },
     {
       "type": "static",
-      "id": "static-line3",
-      "format": "line"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "الوضع الداكن",
-      "description": null,
-      "id": "footer_is_dark",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": false
-    },
-    {
-      "type": "static",
       "id": "static-line5",
       "format": "line"
-    },
-    {
-      "type": "static",
-      "format": "title",
-      "id": "static-label6",
-      "value": "<div class='rounded-lg' ><h6 > خيارات صفحة المنتج</h6></div>",
-      "variant": "h6"
-    },
-    
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تثبيت زر الإضافة والكمية أسفل شاشة الجوال",
-      "description": null,
-      "id": "sticky_add_to_cart",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
     },
     {
       "id": "veloura_switch_inside_title_style_2026",
@@ -498,6 +423,36 @@
           "value": true
         }
       ]
+    },
+    {
+      "id": "squar_photo_bg_image_size",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "طريقة عرض الصور في قسم قائمة عناصر",
+      "description": null,
+      "labelHTML": null,
+      "icon": "sicon-list",
+      "selected": [
+        {
+          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
+          "value": "contain",
+          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
+        }
+      ],
+      "options": [
+        {
+          "label": "تغطية الصورة كامل المساحة مع المحافظة على أبعاد الصورة (Cover)",
+          "value": "cover",
+          "key": "e9c8ea8f-c5c6-234e-935-3bce269afde4"
+        },
+        {
+          "label": "اظهار الصورة كاملةً في المنتصف (Contain)",
+          "value": "contain",
+          "key": "f4adec13-6e4c-654b-b978-b2807935ced9"
+        }
+      ],
+      "source": "Manual",
+      "required": true
     },
     {
       "type": "static",
