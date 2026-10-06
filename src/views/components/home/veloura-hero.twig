@@ -211,6 +211,8 @@ body .veloura-hero > .hero__wrap.container {
 /* Keep sticky-header resizing from moving the browser's scroll anchor.
    Only the background extends upward; the section stays in normal flow. */
 .app-inner:has(.veloura-hero.hero--merged) { overflow-anchor: none; }
+/* Preserve Salla's native alert styling and close behavior above theme paint. */
+html body#app salla-maintenance-alert { position: relative; z-index: 1; isolation: isolate; }
 .veloura-hero.hero--merged {
   border-radius: 0 !important;
   margin-top: 0 !important;
@@ -1136,7 +1138,14 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       // Extend paint behind the header without feeding layout changes back into it.
       if (window.scrollY > 8 || !root.getClientRects().length) return;
       var overlap = parseFloat(getComputedStyle(root).getPropertyValue('--hero-header-h')) || 0;
-      var h = Math.max(0, Math.round(root.getBoundingClientRect().top + window.scrollY));
+      // Salla's maintenance alert belongs above the header, outside the hero.
+      var start = Math.max(0, headerEl.getBoundingClientRect().top + window.scrollY);
+      document.querySelectorAll('salla-maintenance-alert').forEach(function (alert) {
+        if (alert.getClientRects().length && getComputedStyle(alert).display !== 'none') {
+          start = Math.max(start, alert.getBoundingClientRect().bottom + window.scrollY);
+        }
+      });
+      var h = Math.max(0, Math.round(root.getBoundingClientRect().top + window.scrollY - start));
       if (Math.abs(h - overlap) >= 1) root.style.setProperty('--hero-header-h', h + 'px');
     };
 
@@ -1282,6 +1291,26 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       [headerEl, document.querySelector('.veloura-tabs-detached-frame'), document.querySelector('#mainnav')].forEach(function (node) { if (node) headerSizes.observe(node); });
     }
     var headerChanges = new MutationObserver(scheduleMeasure);
+    // Alerts can hydrate late, resize, or close without resizing the header.
+    var watchedAlerts = new WeakSet();
+    function watchAlerts() {
+      document.querySelectorAll('salla-maintenance-alert').forEach(function (alert) {
+        if (watchedAlerts.has(alert)) return;
+        watchedAlerts.add(alert);
+        if (window.ResizeObserver) headerSizes.observe(alert);
+        headerChanges.observe(alert, {attributes:true,attributeFilter:['style','class','hidden']});
+      });
+    }
+    watchAlerts();
+    var alertNodes = new MutationObserver(function (records) {
+      if (!records.some(function (record) {
+        return Array.from(record.addedNodes).concat(Array.from(record.removedNodes)).some(function (node) {
+          return node.nodeType === 1 && (node.matches('salla-maintenance-alert') || node.querySelector('salla-maintenance-alert'));
+        });
+      })) return;
+      watchAlerts(); scheduleMeasure();
+    });
+    alertNodes.observe(document.body, {childList:true,subtree:true});
     headerChanges.observe(headerEl, {attributes:true,subtree:true,attributeFilter:['class','style']});
     headerEl.addEventListener('transitionend', scheduleMeasure);
     window.addEventListener('pageshow', scheduleMeasure);
