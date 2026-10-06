@@ -10972,6 +10972,164 @@
   ],
   "components": [
     {
+      "key": "1e2e2b1b-1952-490b-9579-a0dc12359d5d",
+      "title": {
+        "ar": "نافذة تصنيفات بصورة أو أيقونة (فيلورا)",
+        "en": "Category popup — Veloura"
+      },
+      "icon": "sicon-grid",
+      "path": "home.veloura-category-popup",
+      "fields": [
+        {
+          "id": "veloura_home_tab_name_2026",
+          "type": "string",
+          "format": "text",
+          "label": "اسم التبويب الذي يظهر فيه العنصر",
+          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
+          "placeholder": "مثال: العطور",
+          "icon": "sicon-layout-grid",
+          "value": "",
+          "required": false,
+          "maxLength": 40
+        },
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان النافذة",
+          "value": "التصنيفات",
+          "required": false
+        },
+        {
+          "id": "trigger_label",
+          "type": "string",
+          "format": "text",
+          "label": "اسم الصورة أو الأيقونة",
+          "value": "تصفح التصنيفات",
+          "required": false
+        },
+        {
+          "id": "trigger_image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة فتح النافذة",
+          "value": null,
+          "required": false
+        },
+        {
+          "id": "trigger_icon",
+          "type": "string",
+          "format": "icon",
+          "label": "أيقونة بديلة للصورة",
+          "value": "sicon-grid",
+          "required": false
+        },
+        {
+          "id": "trigger_shape",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "شكل صورة الفتح",
+          "source": "Manual",
+          "required": true,
+          "selected": [
+            {
+              "label": "بحواف المتجر",
+              "value": "rounded",
+              "key": "category-rounded"
+            }
+          ],
+          "options": [
+            {
+              "label": "مربعة",
+              "value": "square",
+              "key": "category-square"
+            },
+            {
+              "label": "بحواف المتجر",
+              "value": "rounded",
+              "key": "category-rounded"
+            },
+            {
+              "label": "دائرية",
+              "value": "circle",
+              "key": "category-circle"
+            }
+          ]
+        },
+        {
+          "id": "trigger_size",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "حجم صورة أو أيقونة الفتح",
+          "value": 120,
+          "minimum": "56",
+          "maximum": "240",
+          "step": "8",
+          "required": false
+        },
+        {
+          "id": "items",
+          "type": "collection",
+          "format": "collection",
+          "label": "التصنيفات داخل النافذة",
+          "description": "أضف التصنيفات الفرعية بالترتيب المطلوب، واختر لكل منها صورة أو أيقونة ورابط التصنيف.",
+          "minLength": 1,
+          "maxLength": 30,
+          "value": [],
+          "fields": [
+            {
+              "id": "title",
+              "type": "string",
+              "format": "text",
+              "label": "اسم التصنيف",
+              "value": "",
+              "required": false
+            },
+            {
+              "id": "image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة التصنيف",
+              "value": null,
+              "required": false
+            },
+            {
+              "id": "icon",
+              "type": "string",
+              "format": "icon",
+              "label": "أيقونة بديلة للصورة",
+              "value": "sicon-grid",
+              "required": false
+            },
+            {
+              "id": "url",
+              "type": "items",
+              "icon": "sicon-link",
+              "label": "التصنيف الفرعي أو الرابط",
+              "value": [],
+              "required": true,
+              "format": "variable-list",
+              "searchable": true,
+              "source": "custom",
+              "sources": [
+                {
+                  "label": "تصنيف",
+                  "key": "categories",
+                  "value": "categories"
+                },
+                {
+                  "label": "رابط خارجي",
+                  "key": "custom",
+                  "value": "custom"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "4d33b658-57aa-4911-b971-7da8e37cba04",
       "title": {
         "ar": "أزرار المقاسات والولاء (فيلورا)",

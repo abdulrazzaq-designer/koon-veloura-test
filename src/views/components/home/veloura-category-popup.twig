@@ -1,0 +1,82 @@
+{% set popup_id = 'veloura-category-popup-' ~ position %}
+{% set popup_image = component.trigger_image.url ?: component.trigger_image %}
+{% set popup_size = component.trigger_size.value ?? component.trigger_size ?? 120 %}
+{% set popup_tab = component.veloura_home_tab_name_2026.value ?? component.veloura_home_tab_name_2026 ?? 'always' %}
+<section id="{{ popup_id }}" class="s-block vcp" data-veloura-home-tab="{{ popup_tab ?: 'always' }}"
+  data-shape="{{ component.trigger_shape|json_encode|e('html_attr') }}">
+  <div class="container vcp__trigger-wrap">
+    <button type="button" class="vcp__trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="{{ popup_id }}-dialog">
+      <span class="vcp__image" style="--vcp-size:{{ popup_size }}px">
+        {% if popup_image %}<img src="{{ popup_image|e('html_attr') }}" alt="" loading="lazy" width="240" height="240" decoding="async">
+        {% else %}<i class="{{ component.trigger_icon.value ?: component.trigger_icon ?: 'sicon-grid' }}" aria-hidden="true"></i>{% endif %}
+      </span>
+      <span>{{ component.trigger_label ?: component.title ?: 'تصفح التصنيفات' }}</span>
+    </button>
+  </div>
+  <dialog class="vcp__dialog" id="{{ popup_id }}-dialog" aria-labelledby="{{ popup_id }}-title">
+    <header class="vcp__header"><h2 id="{{ popup_id }}-title">{{ component.title ?: 'التصنيفات' }}</h2><button type="button" data-vcp-close aria-label="إغلاق">×</button></header>
+    <div class="vcp__grid">
+      {% for item in component.items %}
+        {% set item_image = item.image.url ?: item.image %}
+        <a class="vcp__card" data-link="{{ item.url|json_encode|e('html_attr') }}">
+          {% if item_image %}<img src="{{ item_image|e('html_attr') }}" alt="" width="160" height="160" loading="lazy" decoding="async">
+          {% else %}<i class="{{ item.icon.value ?: item.icon ?: 'sicon-grid' }}" aria-hidden="true"></i>{% endif %}
+          <span>{{ item.title ?: 'تصنيف' }}</span>
+        </a>
+      {% else %}<p>أضف التصنيفات من إعدادات هذا العنصر.</p>{% endfor %}
+    </div>
+  </dialog>
+</section>
+<style>
+.vcp { --vcp-text:#1f2937; --vcp-bg:var(--veloura-site-second-bg,#fff); }
+html.dark .vcp, body.dark .vcp { --vcp-text:var(--veloura-dark-primary-text,#fff); --vcp-bg:var(--veloura-dark-secondary-bg,#161b22); }
+.vcp__trigger-wrap { display:flex; justify-content:center; }
+.vcp__trigger { display:grid; justify-items:center; gap:10px; border:0; background:transparent; color:var(--vcp-text); cursor:pointer; font:inherit; }
+.vcp__image { display:grid; place-items:center; width:var(--vcp-size,120px); max-width:80vw; aspect-ratio:1; background:var(--vcp-bg); border-radius:var(--veloura-global-radius,16px); overflow:hidden; }
+.vcp__image img { width:100%; height:100%; object-fit:cover; }
+.vcp__image i { font-size:42px; color:var(--color-primary); }
+.vcp[data-vcp-shape="square"] .vcp__image { border-radius:0; }
+.vcp[data-vcp-shape="circle"] .vcp__image { border-radius:50%; }
+html body .vcp__dialog { position:fixed; inset:0; margin:auto; box-sizing:border-box; width:min(620px,calc(100% - 32px)); max-width:none; max-height:calc(100dvh - 48px); height:fit-content; padding:22px; overflow:auto; overscroll-behavior:contain; border:1px solid color-mix(in srgb,var(--vcp-text) 16%,transparent); border-radius:var(--veloura-global-radius,16px); background:var(--vcp-bg); color:var(--vcp-text); }
+.vcp__dialog::backdrop { background:rgba(0,0,0,.45); }
+body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__dialog { background:var(--veloura-global-glass-bg,var(--veloura-glass-surface,var(--vcp-bg))); backdrop-filter:var(--veloura-global-glass-filter,var(--veloura-glass-filter)); -webkit-backdrop-filter:var(--veloura-global-glass-filter,var(--veloura-glass-filter)); }
+.vcp__header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; margin-bottom:18px; border-bottom:1px solid color-mix(in srgb,var(--vcp-text) 16%,transparent); }
+.vcp__header h2 { margin:0; font-size:22px; color:inherit; }
+.vcp__header button { width:40px; height:40px; flex-shrink:0; border:1px solid color-mix(in srgb,var(--vcp-text) 20%,transparent); border-radius:var(--veloura-global-radius,16px); background:transparent; color:inherit; font-size:28px; cursor:pointer; }
+.vcp__grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.vcp__card { display:flex; flex-direction:column; align-items:center; gap:10px; min-width:0; padding:12px; color:var(--vcp-text); text-decoration:none; text-align:center; overflow-wrap:anywhere; border:1px solid color-mix(in srgb,var(--vcp-text) 16%,transparent); border-radius:var(--veloura-global-radius,16px); }
+.vcp__card img { width:100%; height:auto; aspect-ratio:1; object-fit:contain; border-radius:var(--veloura-global-radius,16px); }
+.vcp__card i { display:grid; place-items:center; min-height:72px; font-size:36px; color:var(--color-primary); }
+.vcp :focus-visible { outline:2px solid var(--color-primary); outline-offset:3px; }
+@media(max-width:480px){.vcp__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.vcp__dialog{padding:18px}}
+</style>
+<script>
+(() => {
+  const root=document.getElementById('{{ popup_id }}');
+  if(!root||root.dataset.ready)return;
+  root.dataset.ready='true';
+  const scalar=v=>Array.isArray(v)?scalar(v[0]):v&&typeof v==='object'?scalar(v.url||v.href||v.value||v.selected):v;
+  const parse=text=>{try{return JSON.parse(text)}catch(_){return text}};
+  root.dataset.vcpShape=scalar(parse(root.dataset.shape))||'rounded';
+  root.querySelectorAll('[data-link]').forEach(link=>{
+    try{const raw=scalar(parse(link.dataset.link));if(!raw)throw Error();const url=new URL(raw,location.href);if(!['http:','https:'].includes(url.protocol))throw Error();link.href=url.href;}
+    catch(_){link.setAttribute('aria-disabled','true');}
+  });
+  const trigger=root.querySelector('.vcp__trigger'),dialog=root.querySelector('dialog');
+  let previousOverflow='',removalObserver;
+  function close(){if(dialog.open)dialog.close();}
+  trigger.addEventListener('click',()=>{
+    if(dialog.open){close();return;}
+    document.querySelectorAll('.vcp__dialog[open]').forEach(other=>other.close());
+    previousOverflow=document.body.style.overflow;
+    dialog.showModal();document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');
+    window.velouraThemeMotion?.enter([dialog],false);
+    window.velouraThemeMotion?.enter(dialog.querySelectorAll('.vcp__card'),true);
+    removalObserver=new MutationObserver(()=>{if(!root.isConnected){close();document.body.style.overflow=previousOverflow;removalObserver.disconnect();}});
+    removalObserver.observe(document.body,{childList:true,subtree:true});
+  });
+  dialog.querySelector('[data-vcp-close]').addEventListener('click',close);
+  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();});
+  dialog.addEventListener('close',()=>{removalObserver?.disconnect();document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');if(trigger.isConnected)trigger.focus({preventScroll:true});});
+})();
+</script>
