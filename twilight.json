@@ -10993,6 +10993,26 @@
           "maxLength": 40
         },
         {
+          "id": "popup_key",
+          "type": "string",
+          "format": "text",
+          "label": "رمز ربط النافذة",
+          "description": "اكتب رمزًا إنجليزيًا فريدًا مثل clothes، ثم ضع #category-popup-clothes كرابط للصورة أو الزر الذي يفتح هذه النافذة.",
+          "value": "",
+          "required": false,
+          "maxLength": 40
+        },
+        {
+          "id": "hide_trigger",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إخفاء صورة الفتح الخاصة بالعنصر",
+          "description": "فعّل الخيار إذا كنت ستفتح النافذة من صورة أو زر في عنصر آخر.",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
           "id": "title",
           "type": "string",
           "format": "text",
@@ -11058,15 +11078,50 @@
         },
         {
           "id": "trigger_size",
-          "type": "number",
-          "format": "slider",
-          "inputType": "range",
+          "type": "items",
+          "format": "dropdown-list",
           "label": "حجم صورة أو أيقونة الفتح",
-          "value": 120,
-          "minimum": "56",
-          "maximum": "240",
-          "step": "8",
-          "required": false
+          "source": "Manual",
+          "required": true,
+          "selected": [
+            {
+              "label": "120 بكسل",
+              "value": "120",
+              "key": "vcp-size-120"
+            }
+          ],
+          "options": [
+            {
+              "label": "56 بكسل",
+              "value": "56",
+              "key": "vcp-size-56"
+            },
+            {
+              "label": "80 بكسل",
+              "value": "80",
+              "key": "vcp-size-80"
+            },
+            {
+              "label": "120 بكسل",
+              "value": "120",
+              "key": "vcp-size-120"
+            },
+            {
+              "label": "160 بكسل",
+              "value": "160",
+              "key": "vcp-size-160"
+            },
+            {
+              "label": "200 بكسل",
+              "value": "200",
+              "key": "vcp-size-200"
+            },
+            {
+              "label": "240 بكسل",
+              "value": "240",
+              "key": "vcp-size-240"
+            }
+          ]
         },
         {
           "id": "items",

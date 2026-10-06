@@ -1,8 +1,13 @@
 {% set popup_id = 'veloura-category-popup-' ~ position %}
 {% set popup_image = component.trigger_image.url ?: component.trigger_image %}
-{% set popup_size = component.trigger_size.value ?? component.trigger_size ?? 120 %}
+{% set popup_size = component.trigger_size.value ?? component.trigger_size.selected ?? component.trigger_size ?? 120 %}
+{% if popup_size is iterable %}{% set popup_size = popup_size|first %}{% endif %}
+{% if popup_size.value is defined %}{% set popup_size = popup_size.value %}{% endif %}
+{% if popup_size not in [56,80,120,160,200,240,'56','80','120','160','200','240'] %}{% set popup_size = 120 %}{% endif %}
 {% set popup_tab = component.veloura_home_tab_name_2026.value ?? component.veloura_home_tab_name_2026 ?? 'always' %}
 <section id="{{ popup_id }}" class="s-block vcp" data-veloura-home-tab="{{ popup_tab ?: 'always' }}"
+  data-popup-key="{{ component.popup_key.value ?? component.popup_key ?? position }}"
+  data-hide-trigger="{{ component.hide_trigger|json_encode|e('html_attr') }}"
   data-shape="{{ component.trigger_shape|json_encode|e('html_attr') }}">
   <div class="container vcp__trigger-wrap">
     <button type="button" class="vcp__trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="{{ popup_id }}-dialog">
@@ -31,6 +36,8 @@
 .vcp { --vcp-text:#1f2937; --vcp-bg:var(--veloura-site-second-bg,#fff); }
 html.dark .vcp, body.dark .vcp { --vcp-text:var(--veloura-dark-primary-text,#fff); --vcp-bg:var(--veloura-dark-secondary-bg,#161b22); }
 .vcp__trigger-wrap { display:flex; justify-content:center; }
+.vcp[data-vcp-external="true"] { margin:0!important; padding:0!important; min-height:0!important; }
+.vcp[data-vcp-external="true"] .vcp__trigger-wrap { display:none; }
 .vcp__trigger { display:grid; justify-items:center; gap:10px; border:0; background:transparent; color:var(--vcp-text); cursor:pointer; font:inherit; }
 .vcp__image { display:grid; place-items:center; width:var(--vcp-size,120px); max-width:80vw; aspect-ratio:1; background:var(--vcp-bg); border-radius:var(--veloura-global-radius,16px); overflow:hidden; }
 .vcp__image img { width:100%; height:100%; object-fit:cover; }
@@ -58,15 +65,32 @@ body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__d
   const scalar=v=>Array.isArray(v)?scalar(v[0]):v&&typeof v==='object'?scalar(v.url||v.href||v.value||v.selected):v;
   const parse=text=>{try{return JSON.parse(text)}catch(_){return text}};
   root.dataset.vcpShape=scalar(parse(root.dataset.shape))||'rounded';
+  root.dataset.vcpLink='#category-popup-'+(root.dataset.popupKey||root.id).trim().replace(/[^a-zA-Z0-9_-]/g,'');
+  root.dataset.vcpExternal=String([true,'true',1,'1'].includes(scalar(parse(root.dataset.hideTrigger))));
+  if(!window.__velouraCategoryPopupLinks){
+    window.__velouraCategoryPopupLinks=true;
+    window.addEventListener('click',event=>{
+      if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      const link=event.composedPath().find(node=>node.matches?.('a[href],salla-button[href]'));
+      if(!link)return;
+      let url;try{url=new URL(link.getAttribute('href'),location.href)}catch(_){return;}
+      if(url.origin!==location.origin||url.pathname!==location.pathname||url.search!==location.search)return;
+      const target=Array.from(document.querySelectorAll('.vcp[data-vcp-link]')).find(node=>node.dataset.vcpLink===url.hash);
+      if(!target)return;
+      event.preventDefault();event.stopImmediatePropagation();
+      target.dispatchEvent(new CustomEvent('vcp:open',{detail:{opener:link}}));
+    },true);
+  }
   root.querySelectorAll('[data-link]').forEach(link=>{
     try{const raw=scalar(parse(link.dataset.link));if(!raw)throw Error();const url=new URL(raw,location.href);if(!['http:','https:'].includes(url.protocol))throw Error();link.href=url.href;}
     catch(_){link.setAttribute('aria-disabled','true');}
   });
   const trigger=root.querySelector('.vcp__trigger'),dialog=root.querySelector('dialog');
-  let previousOverflow='',removalObserver;
+  let previousOverflow='',removalObserver,opener=trigger;
   function close(){if(dialog.open)dialog.close();}
-  trigger.addEventListener('click',()=>{
-    if(dialog.open){close();return;}
+  function open(source){
+    if(dialog.open)return;
+    opener=source||trigger;
     document.querySelectorAll('.vcp__dialog[open]').forEach(other=>other.close());
     previousOverflow=document.body.style.overflow;
     dialog.showModal();document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');
@@ -74,9 +98,11 @@ body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__d
     window.velouraThemeMotion?.enter(dialog.querySelectorAll('.vcp__card'),true);
     removalObserver=new MutationObserver(()=>{if(!root.isConnected){close();document.body.style.overflow=previousOverflow;removalObserver.disconnect();}});
     removalObserver.observe(document.body,{childList:true,subtree:true});
-  });
+  }
+  trigger.addEventListener('click',()=>{if(dialog.open)close();else open(trigger);});
+  root.addEventListener('vcp:open',event=>open(event.detail?.opener));
   dialog.querySelector('[data-vcp-close]').addEventListener('click',close);
   dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();});
-  dialog.addEventListener('close',()=>{removalObserver?.disconnect();document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');if(trigger.isConnected)trigger.focus({preventScroll:true});});
+  dialog.addEventListener('close',()=>{removalObserver?.disconnect();document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');if(opener?.isConnected)opener.focus({preventScroll:true});});
 })();
 </script>
