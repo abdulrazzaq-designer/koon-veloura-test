@@ -1085,6 +1085,20 @@
 
 
     <script data-cfasync="false">
+      window.velouraThemeMotion = {
+        setting: {{ theme.settings.get('veloura_theme_motion_2026', 'rise')|json_encode|raw }},
+        enter: function (nodes, stagger) {
+          function scalar(v) { if (Array.isArray(v)) return scalar(v[0]); if (v && typeof v === 'object') return scalar(v.value !== undefined ? v.value : v.selected); return v; }
+          var mode = scalar(this.setting);
+          var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          Array.from(nodes).forEach(function (node, index) {
+            if (node.__velouraMotion) node.__velouraMotion.cancel();
+            if (reduced || mode === 'none' || !['fade', 'rise'].includes(mode) || !node.animate) return;
+            var frames = mode === 'rise' ? [{opacity:0,transform:'translateY(22px)'},{opacity:1,transform:'translateY(0)'}] : [{opacity:0},{opacity:1}];
+            node.__velouraMotion = node.animate(frames, {duration:360,delay:stagger ? Math.min(index, 8)*55 : 0,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'});
+          });
+        }
+      };
       window.velouraQuickPurchase = {
         enabled: {{ theme.settings.get('veloura_quick_purchase_enabled_2026', true)|json_encode|raw }},
         position: {{ theme.settings.get('veloura_quick_purchase_position_2026', 'below')|json_encode|raw }}
@@ -3718,7 +3732,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
   </dialog>
   <style id="veloura-bottom-categories-style">
     #veloura-bottom-categories{--vbc-bg:var(--veloura-site-second-bg,#fff);--vbc-text:var(--veloura-primary-text,#243341);position:fixed;inset:auto auto 0 var(--vbc-left,12px);margin:0;padding:0 0 var(--vbc-clearance,96px);box-sizing:border-box;width:var(--vbc-width,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 24px);z-index:2147483497;color:var(--vbc-text);background:var(--vbc-surface,var(--vbc-bg));border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:var(--vbc-radius,20px) var(--vbc-radius,20px) 0 0;backdrop-filter:var(--vbc-filter,none);-webkit-backdrop-filter:var(--vbc-filter,none);box-shadow:0 -8px 36px #0003;overflow:hidden;direction:rtl}
-    #veloura-bottom-categories[open]{display:flex;flex-direction:column;animation:vbc-enter .2s ease-out}
+    #veloura-bottom-categories[open]{display:flex;flex-direction:column;animation:none}
     html.dark #veloura-bottom-categories,body.dark #veloura-bottom-categories{--vbc-bg:var(--veloura-dark-secondary-bg,#18212c);--vbc-text:var(--veloura-dark-primary-text,#f5f7fa)}
     html:not(.dark) body:not(.dark) #veloura-bottom-categories{--vbc-text:color-mix(in srgb,var(--veloura-primary-text,#6b7280) 65%,#111827)}
     #veloura-categories-shade{position:fixed;inset:0;background:rgba(0,0,0,.22);z-index:2147483496;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
@@ -3776,26 +3790,14 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       if(children.length){const arrow=document.createElementNS('http://www.w3.org/2000/svg','svg');arrow.setAttribute('class','vbc-chevron');arrow.setAttribute('viewBox','0 0 24 24');arrow.setAttribute('aria-hidden','true');const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M15 5l-7 7 7 7');arrow.append(path);card.append(arrow);}
       });
       if(!grid.children.length)message('لا توجد عناصر في قائمة المتجر حاليًا');
+      window.velouraThemeMotion?.enter(grid.querySelectorAll('.vbc-card'),true);
     };
     let transitioning=false;
     async function navigate(update,direction=1){
-      if(transitioning)return;
+      if(transitioning||!panel.open)return;
       transitioning=true;
-      const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      try{
-        const before=panel.getBoundingClientRect().height;
-        if(!reduced)await grid.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX('+(-10*direction)+'px)'}],{duration:100,easing:'ease-in'}).finished;
-        if(!panel.open)return;
-        update();
-        const after=panel.getBoundingClientRect().height;
-        grid.querySelector('button,a[href]')?.focus({preventScroll:true});
-        if(!reduced){
-          await Promise.all([
-            panel.animate([{height:before+'px'},{height:after+'px'}],{duration:220,easing:'ease-out'}).finished,
-            grid.animate([{opacity:0,transform:'translateX('+(10*direction)+'px)'},{opacity:1,transform:'translateX(0)'}],{duration:220,easing:'ease-out'}).finished
-          ]);
-        }
-      }finally{transitioning=false;}
+      try{update();grid.querySelector('button,a[href]')?.focus({preventScroll:true});}
+      finally{transitioning=false;}
     }
     async function load(){
       if(loading)return;
@@ -3831,7 +3833,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       panel.style.setProperty('width',panelWidth+'px','important');
       panel.style.setProperty('--vbc-clearance',Math.max(72,innerHeight-rect.top+12)+'px');
       const radius=parseFloat(style.borderTopLeftRadius)||0;
-      panel.style.setProperty('--vbc-radius',Math.min(40,Math.max(0,radius))+'px');
+      panel.style.setProperty('--vbc-radius','var(--veloura-global-radius,16px)');
       panel.style.setProperty('--vbc-surface',style.backgroundColor);
       panel.style.setProperty('--vbc-filter',glass?(style.backdropFilter||style.webkitBackdropFilter||'blur(20px)'):'none');
       panel.classList.toggle('vbc-glass',glass);
@@ -3840,7 +3842,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     const finish=(restore=true)=>{if(!opened)return;opened=false;shade.hidden=true;document.body.classList.remove('vbc-open');document.body.style.overflow=previousOverflow;trigger.setAttribute('aria-expanded','false');if(restore){nav.querySelectorAll('[data-vbn-item]').forEach(item=>item.classList.toggle('is-active',previousActive.includes(item)));trigger.focus({preventScroll:true});}};
     const close=(restore=true)=>{finish(restore);if(panel.open)panel.close();};
     document.addEventListener('click',event=>{if(!opened&&trigger.contains(event.target))previousActive=[...nav.querySelectorAll('[data-vbn-item].is-active')];},true);
-    trigger.addEventListener('click',()=>{if(panel.open){close();return;}position();previousOverflow=document.body.style.overflow;opened=true;panel.show();shade.hidden=false;document.body.classList.add('vbc-open');document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');active();panel.querySelector('[data-vbc-close]').focus({preventScroll:true});load();});
+    trigger.addEventListener('click',()=>{if(panel.open){close();return;}position();previousOverflow=document.body.style.overflow;opened=true;panel.show();window.velouraThemeMotion?.enter([panel],false);shade.hidden=false;document.body.classList.add('vbc-open');document.body.style.overflow='hidden';trigger.setAttribute('aria-expanded','true');active();panel.querySelector('[data-vbc-close]').focus({preventScroll:true});load();});
     nav.addEventListener('click',event=>{const item=event.target.closest('[data-vbn-item]');if(opened&&item&&item!==trigger)close(false);},true);
     panel.querySelector('[data-vbc-close]').addEventListener('click',()=>close());
     shade.addEventListener('click',()=>close());
@@ -6431,6 +6433,7 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
       content.replaceChildren();
       message.textContent = 'جاري تحميل خيارات المنتج…';
       modal.hidden = false;
+      window.velouraThemeMotion?.enter([modal.querySelector('.veloura-qp__dialog')],false);
       document.documentElement.classList.add('veloura-qp-lock');
       modal.querySelector('[data-qp-close][aria-label]').focus();
       try {
@@ -6466,6 +6469,7 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
           priceRow.remove();
         }
         content.append(summary, form);
+        window.velouraThemeMotion?.enter([summary, ...form.children],true);
         message.textContent = '';
       } catch (error) {
         if (current === sequence) message.textContent = 'تعذّر تحميل خيارات المنتج. افتح تفاصيل المنتج أو حاول مجددًا.';

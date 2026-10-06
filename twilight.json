@@ -449,6 +449,47 @@
       ]
     },
     {
+      "id": "veloura_theme_motion_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "حركة نوافذ الثيم وعناصرها",
+      "description": "تُطبّق على نافذة التصنيفات والشراء السريع، وتظهر العناصر بالتتابع. تُوقف تلقائيًا عند تفعيل تقليل الحركة في جهاز الزائر.",
+      "icon": "sicon-magic-wand",
+      "selected": [
+        {
+          "label": "صعود من الأسفل للأعلى",
+          "value": "rise",
+          "key": "vm-rise-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "بدون حركة",
+          "value": "none",
+          "key": "vm-none-2026"
+        },
+        {
+          "label": "تلاشي تدريجي",
+          "value": "fade",
+          "key": "vm-fade-2026"
+        },
+        {
+          "label": "صعود من الأسفل للأعلى",
+          "value": "rise",
+          "key": "vm-rise-2026"
+        }
+      ],
+      "source": "Manual",
+      "required": true,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_dots_style_2026",
       "type": "items",
       "format": "dropdown-list",
