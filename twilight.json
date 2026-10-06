@@ -10974,7 +10974,7 @@
     {
       "key": "1e2e2b1b-1952-490b-9579-a0dc12359d5d",
       "title": {
-        "ar": "نافذة تصنيفات بصورة أو أيقونة (فيلورا)",
+        "ar": "نافذة التصنيفات (فيلورا)",
         "en": "Category popup — Veloura"
       },
       "icon": "sicon-grid",
@@ -11003,16 +11003,6 @@
           "maxLength": 40
         },
         {
-          "id": "hide_trigger",
-          "type": "boolean",
-          "format": "switch",
-          "label": "إخفاء صورة الفتح الخاصة بالعنصر",
-          "description": "فعّل الخيار إذا كنت ستفتح النافذة من صورة أو زر في عنصر آخر.",
-          "value": false,
-          "selected": false,
-          "required": false
-        },
-        {
           "id": "title",
           "type": "string",
           "format": "text",
@@ -11021,107 +11011,34 @@
           "required": false
         },
         {
-          "id": "trigger_label",
-          "type": "string",
-          "format": "text",
-          "label": "اسم الصورة أو الأيقونة",
-          "value": "تصفح التصنيفات",
-          "required": false
+          "id": "mobile_columns",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "عدد الصور في صف الجوال",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-pin",
+          "value": "2",
+          "required": false,
+          "step": "1",
+          "minimum": "1",
+          "maximum": "6"
         },
         {
-          "id": "trigger_image",
-          "type": "string",
-          "format": "image",
-          "label": "صورة فتح النافذة",
-          "value": null,
-          "required": false
-        },
-        {
-          "id": "trigger_icon",
-          "type": "string",
-          "format": "icon",
-          "label": "أيقونة بديلة للصورة",
-          "value": "sicon-grid",
-          "required": false
-        },
-        {
-          "id": "trigger_shape",
-          "type": "items",
-          "format": "dropdown-list",
-          "label": "شكل صورة الفتح",
-          "source": "Manual",
-          "required": true,
-          "selected": [
-            {
-              "label": "بحواف المتجر",
-              "value": "rounded",
-              "key": "category-rounded"
-            }
-          ],
-          "options": [
-            {
-              "label": "مربعة",
-              "value": "square",
-              "key": "category-square"
-            },
-            {
-              "label": "بحواف المتجر",
-              "value": "rounded",
-              "key": "category-rounded"
-            },
-            {
-              "label": "دائرية",
-              "value": "circle",
-              "key": "category-circle"
-            }
-          ]
-        },
-        {
-          "id": "trigger_size",
-          "type": "items",
-          "format": "dropdown-list",
-          "label": "حجم صورة أو أيقونة الفتح",
-          "source": "Manual",
-          "required": true,
-          "selected": [
-            {
-              "label": "120 بكسل",
-              "value": "120",
-              "key": "vcp-size-120"
-            }
-          ],
-          "options": [
-            {
-              "label": "56 بكسل",
-              "value": "56",
-              "key": "vcp-size-56"
-            },
-            {
-              "label": "80 بكسل",
-              "value": "80",
-              "key": "vcp-size-80"
-            },
-            {
-              "label": "120 بكسل",
-              "value": "120",
-              "key": "vcp-size-120"
-            },
-            {
-              "label": "160 بكسل",
-              "value": "160",
-              "key": "vcp-size-160"
-            },
-            {
-              "label": "200 بكسل",
-              "value": "200",
-              "key": "vcp-size-200"
-            },
-            {
-              "label": "240 بكسل",
-              "value": "240",
-              "key": "vcp-size-240"
-            }
-          ]
+          "id": "desktop_columns",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "عدد الصور في صف اللابتوب",
+          "description": null,
+          "labelHTML": null,
+          "icon": "sicon-pin",
+          "value": "4",
+          "required": false,
+          "step": "1",
+          "minimum": "1",
+          "maximum": "8"
         },
         {
           "id": "items",
@@ -11160,25 +11077,17 @@
             {
               "id": "url",
               "type": "items",
-              "icon": "sicon-link",
-              "label": "التصنيف الفرعي أو الرابط",
-              "value": [],
-              "required": true,
-              "format": "variable-list",
+              "format": "dropdown-list",
+              "source": "categories",
+              "label": "التصنيف الفرعي",
+              "icon": "sicon-folder",
               "searchable": true,
-              "source": "custom",
-              "sources": [
-                {
-                  "label": "تصنيف",
-                  "key": "categories",
-                  "value": "categories"
-                },
-                {
-                  "label": "رابط خارجي",
-                  "key": "custom",
-                  "value": "custom"
-                }
-              ]
+              "multichoice": false,
+              "multiselect": false,
+              "multiple": false,
+              "value": [],
+              "selected": [],
+              "required": true
             }
           ]
         }
