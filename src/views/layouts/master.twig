@@ -2041,20 +2041,36 @@
   else run();
 
   if (window.MutationObserver) {
+    var dirtyCards = new Set();
+    var cardsPending = false;
+    function queueCard(node) {
+      if (!node || node.nodeType !== 1) return;
+      var card = node.closest('.s-product-card-entry');
+      if (card) dirtyCards.add(card);
+      node.querySelectorAll('.s-product-card-entry').forEach(function (item) { dirtyCards.add(item); });
+    }
     var bodyObserver = new MutationObserver(function (mutations) {
-      var scope = document;
-      for (var i = 0; i < mutations.length; i++) {
-        var target = mutations[i].target;
-        if (target && target.closest) {
-          scope = target.closest('.s-product-card-entry') || document;
-          if (scope !== document) break;
+      mutations.forEach(function (mutation) {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach(queueCard);
+        } else {
+          // Ignore our own marker and unrelated animation/header class changes.
+          var strip = function (value) { return (value || '').split(/\s+/).filter(function (name) { return name !== MARKER; }).sort().join(' '); };
+          if (mutation.attributeName === 'class' && strip(mutation.oldValue) === strip(mutation.target.getAttribute('class'))) return;
+          if (mutation.target.closest('.s-product-card-entry')) queueCard(mutation.target);
         }
-      }
-      schedule(scope);
+      });
+      if (cardsPending || !dirtyCards.size) return;
+      cardsPending = true;
+      requestAnimationFrame(function () {
+        cardsPending = false;
+        dirtyCards.forEach(function (card) { if (card.isConnected) sync(card); });
+        dirtyCards.clear();
+      });
     });
 
     function startBodyObserver() {
-      if (document.body) bodyObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'data-veloura-qv-under-cart'] });
+      if (document.body) bodyObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'data-veloura-qv-under-cart'] });
     }
 
     if (document.body) startBodyObserver();
@@ -5112,7 +5128,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
             node,
             {
               attributes: true,
-              attributeFilter: ['class', 'style']
+              attributeFilter: ['class']
             }
           );
         });
@@ -6591,6 +6607,52 @@ html body .s-add-product-toast :is(.s-add-product-toast__image,.s-add-product-to
 html body .s-add-product-toast__image {background:transparent!important;border-color:color-mix(in srgb,var(--vt-text) 14%,transparent)!important;}
 html body .s-add-product-toast__divider {background:color-mix(in srgb,var(--vt-text) 14%,transparent)!important;}
 </style>
+
+<style id="veloura-tabs-layout-fix">
+/* Clip the viewport horizontally without creating another vertical scroll container. */
+@supports (overflow: clip) {
+  html, html body#app { overflow-x: clip !important; }
+}
+html body#app .app-inner, html body#app #main-content { min-width:0; max-width:100%; }
+html body#app [data-veloura-home-tab][hidden],
+html body#app [data-veloura-home-tab].veloura-home-tab-is-hidden {
+  display:none!important;
+}
+</style>
+<script id="veloura-tabs-assignment-fix">
+(()=>{
+  if(window.__velouraTabAssignmentFix)return;
+  window.__velouraTabAssignmentFix=true;
+  let pending=false;
+  const normalize=value=>String(value||'').normalize('NFKC').replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069]/g,'').replace(/\s+/g,' ').trim().toLocaleLowerCase('ar');
+  function sync(){
+    pending=false;
+    const bar=document.querySelector('[data-veloura-home-tabs]');
+    const active=bar?.querySelector('[data-veloura-tab-target][aria-selected="true"]')||bar?.querySelector('[data-veloura-tab-target]');
+    const key=normalize(active?.dataset.velouraTabTarget);
+    document.querySelectorAll('[data-veloura-home-tab]').forEach(component=>{
+      const assigned=normalize(component.dataset.velouraHomeTab);
+      const show=!active||!assigned||assigned==='always'||assigned===key;
+      if(component.hidden!==!show)component.hidden=!show;
+      if(component.classList.contains('veloura-home-tab-is-hidden')===show)component.classList.toggle('veloura-home-tab-is-hidden',!show);
+      if(component.getAttribute('aria-hidden')!==String(!show))component.setAttribute('aria-hidden',String(!show));
+    });
+  }
+  function schedule(){if(pending)return;pending=true;requestAnimationFrame(sync);}
+  const relevant='[data-veloura-home-tab],[data-veloura-home-tabs]';
+  const observer=new MutationObserver(records=>{
+    if(records.some(record=>record.type==='attributes'
+      ?record.target.matches('[data-veloura-tab-target],[data-veloura-home-tab]')
+      :Array.from(record.addedNodes).concat(Array.from(record.removedNodes)).some(node=>node.nodeType===1&&(node.matches(relevant)||node.querySelector(relevant)))))schedule();
+  });
+  observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-selected','data-veloura-home-tab','data-veloura-tab-target']});
+  document.addEventListener('veloura:home-tabs:change',schedule);
+  document.addEventListener('theme::ready',schedule);
+  document.addEventListener('DOMContentLoaded',schedule,{once:true});
+  schedule();
+})();
+</script>
+
 </body>
 </html>
 <style id="veloura-detached-tabs-visible-v67">
@@ -6810,3 +6872,4 @@ html body#app.veloura-product-sticky-active .store-footer .veloura-footer-bottom
 const sync=()=>{const c=getComputedStyle(bar),r=bar.getBoundingClientRect();const active=innerWidth<1024&&document.body.classList.contains('veloura-product-sticky-active')&&c.position==='fixed'&&c.display!=='none'&&c.visibility!=='hidden'&&r.height>0;footer.style.setProperty('--veloura-purchase-clearance',(active?Math.max(0,innerHeight-r.top):0)+'px');};
 new ResizeObserver(sync).observe(bar);new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']});window.addEventListener('resize',sync,{passive:true});sync();})();
 </script>
+

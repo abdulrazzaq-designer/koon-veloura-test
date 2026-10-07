@@ -5241,7 +5241,7 @@
       "type": "static",
       "format": "description",
       "id": "veloura_cart_banners_settings_title_2026",
-      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-trash-2\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">صفحة وبنرات السلة</strong></div></div>",
+      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-shopping-bag2\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">صفحة وبنرات السلة</strong></div></div>",
       "label": " ",
       "icon": "sicon-image"
     },
