@@ -6680,6 +6680,28 @@ html body#app .s-product-card-entry salla-add-product-button :is(button,.s-butto
 html body#app .s-product-card-entry salla-add-product-button :is(button,.s-button-element) {overflow:hidden!important;}
 </style>
 
+
+<script id="veloura-cart-label-setting">
+(()=>{
+ const unwrap=v=>Array.isArray(v)?unwrap(v[0]):v&&typeof v==='object'?unwrap(v.value??v.selected??''):v;
+ const raw=unwrap({{ theme.settings.get('veloura_product_card_cart_text_2026', '')|json_encode|raw }});
+ const text=typeof raw==='string'?raw.trim():'';if(!text)return;
+ const selector='.s-product-card-entry salla-add-product-button';
+ function apply(host){
+  if(host.getAttribute('product-status')!=='sale'||['booking','donating'].includes(host.getAttribute('product-type'))||host.hasAttribute('has-pre-order'))return;
+  const label=host.querySelector('.s-button-text');if(!label)return;
+  const walker=document.createTreeWalker(label,NodeFilter.SHOW_TEXT);let node;const nodes=[];
+  while(node=walker.nextNode())if(node.textContent.trim()&&!node.parentElement.closest('i,svg,.s-button-loader,[aria-hidden="true"]'))nodes.push(node);
+  if(nodes.length&&nodes[0].textContent!==text){nodes[0].textContent=text;nodes.slice(1).forEach(n=>n.textContent='');}
+ }
+ const pending=new Set();let frame=0;
+ function queue(host){if(!host)return;pending.add(host);if(!frame)frame=requestAnimationFrame(()=>{frame=0;pending.forEach(h=>{if(h.isConnected)apply(h)});pending.clear();});}
+ function discover(node){if(node.nodeType!==1)return;if(node.matches(selector))queue(node);node.querySelectorAll(selector).forEach(queue);queue(node.closest(selector));}
+ new MutationObserver(records=>records.forEach(r=>{const target=r.target.nodeType===1?r.target:r.target.parentElement;queue(target?.closest(selector));r.addedNodes.forEach(discover);})).observe(document.body,{childList:true,subtree:true,characterData:true});
+ document.querySelectorAll(selector).forEach(queue);
+})();
+</script>
+
 </body>
 </html>
 <style id="veloura-detached-tabs-visible-v67">

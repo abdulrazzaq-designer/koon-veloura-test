@@ -116,7 +116,9 @@
 {% set footer_contact_display = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_contact_display_2026', 'icon_text'), 'icon_text')|trim %}
 {% set footer_title_size_key = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_title_size_2026', 'large'), 'large')|trim %}
 {% set footer_text_size_key = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_text_size_2026', 'medium'), 'medium')|trim %}
-{% set footer_logo_scale_raw = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_logo_adjust_2026', '20'), '20')|trim %}
+{% set footer_logo_scale_raw = theme.settings.get('veloura_footer_logo_adjust_2026', 20) %}
+{% if footer_logo_scale_raw.value is defined %}{% set footer_logo_scale_raw = footer_logo_scale_raw.value %}{% elseif footer_logo_scale_raw.selected is defined %}{% set footer_logo_scale_raw = footer_logo_scale_raw.selected %}{% endif %}
+{% if footer_logo_scale_raw is iterable %}{% set footer_logo_scale_raw = footer_logo_scale_raw[0].value ?? footer_logo_scale_raw.value ?? 20 %}{% endif %}
 
 {% if footer_contact_display not in ['icons_only', 'icon_text'] %}
   {% set footer_contact_display = 'icon_text' %}
@@ -129,7 +131,7 @@
 {% set footer_logo_scale = footer_logo_scale_raw + 0 %}
 {% if footer_logo_scale < 0 %}{% set footer_logo_scale = 0 %}{% endif %}
 {% if footer_logo_scale > 60 %}{% set footer_logo_scale = 60 %}{% endif %}
-{% set footer_logo_size_value = 80 + footer_logo_scale %}
+{% set footer_logo_size_value = 80 + footer_logo_scale * 3 %}
 {% set footer_logo_size = footer_logo_size_value ~ 'px' %}
 
 {% set footer_center_all_raw = theme.settings.get('veloura_footer_center_all_2026', false) %}
@@ -237,7 +239,7 @@
 {% set vn_phone = vn_channel == 'whatsapp' %}
 {% if vn_phone and vn_description == 'جديد المنتجات والعروض المختارة، في بريدك.' %}{% set vn_description = 'جديد المنتجات والعروض المختارة، على واتساب.' %}{% endif %}
 {% set vn_markup %}
-<section id="veloura-newsletter" aria-labelledby="veloura-newsletter-heading" dir="rtl" data-placement="{{ vn_placement }}" data-icon="{{ vn_icon ? 'true' : 'false' }}" data-glass="{{ vn_glass ? 'true' : 'false' }}" style="--vn-width:{{ vn_width }}px;--vn-radius:{{ vn_radius }}px;--vn-bg:{{ vn_bg }};--vn-dark-bg:{{ vn_dark_bg }};--vn-text:{{ vn_text }};--vn-dark-text:{{ vn_dark_text }};--vn-button-bg:{{ vn_button_bg }};--vn-button-text:{{ vn_button_text }};--vn-field-bg:{{ vn_field_bg }};--vn-field-text:{{ vn_field_text }};--vn-opacity:{{ vn_opacity }}%;">
+<section id="veloura-newsletter" aria-labelledby="veloura-newsletter-heading" dir="rtl" data-placement="{{ vn_placement }}" data-icon="{{ vn_icon ? 'true' : 'false' }}" data-glass="{{ vn_glass ? 'true' : 'false' }}" style="--vn-width:{{ vn_width }}px;--vn-radius:{{ vn_radius }}px;--vn-bg:{{ vn_bg }};--vn-dark-bg:var(--veloura-dark-secondary-bg,#162238);--vn-text:{{ vn_text }};--vn-dark-text:var(--veloura-dark-primary-text,#f1f5fc);--vn-button-bg:{{ vn_button_bg }};--vn-button-text:{{ vn_button_text }};--vn-field-bg:{{ vn_field_bg }};--vn-field-text:{{ vn_field_text }};--vn-opacity:{{ vn_opacity }}%;">
   <div class="vn-card">
     {% if vn_image %}<div class="vn-image" style="background-image:url('{{ vn_image|e('html_attr') }}')" aria-hidden="true"></div>{% endif %}
     <div class="vn-content">
@@ -309,7 +311,7 @@
                 <a href="{{ link('/') }}" class="veloura-footer-logo" style="width: {{ footer_logo_size }} !important; max-width: 100% !important; min-width: 0 !important; height: auto !important; flex-shrink: 1 !important;" aria-label="{{ store.name }}">
                   {% if footer_logo_is_video %}
                     <video
-                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       autoplay
                       muted
@@ -318,7 +320,7 @@
                     ></video>
                   {% else %}
                     <img
-                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       loading="eager"
                       decoding="async"
@@ -359,7 +361,7 @@
                 <a href="{{ link('/') }}" class="veloura-footer-logo" style="width: {{ footer_logo_size }} !important; max-width: 100% !important; min-width: 0 !important; height: auto !important; flex-shrink: 1 !important;" aria-label="{{ store.name }}">
                   {% if footer_logo_is_video %}
                     <video
-                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       autoplay
                       muted
@@ -368,7 +370,7 @@
                     ></video>
                   {% else %}
                     <img
-                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
+                      class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: auto !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
                       src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       loading="eager"
                       decoding="async"
@@ -590,14 +592,28 @@ html body#app #veloura-newsletter input {width:0;padding:10px 6px;font-size:13px
 </style>
 <script id="veloura-newsletter-runtime-v88">
 (()=>{const section=document.getElementById('veloura-newsletter');if(!section)return;const card=section.querySelector('.vn-card'),footer=document.getElementById('veloura-footer');
-const sync=()=>{const half=card.getBoundingClientRect().height/2;section.style.setProperty('--vn-half',half+'px');footer?.style.setProperty('--vn-half',half+'px');};new ResizeObserver(sync).observe(card);sync();
+const shell=footer?.querySelector('.veloura-footer-shell');
+const sync=()=>{
+ const half=card.getBoundingClientRect().height/2;
+ for(const el of [section,footer])if(el&&el.style.getPropertyValue('--vn-half')!==half+'px')el.style.setProperty('--vn-half',half+'px');
+ if(shell){const width=Math.max(0,shell.getBoundingClientRect().width-30)+'px';if(section.style.getPropertyValue('--vn-mobile-width')!==width)section.style.setProperty('--vn-mobile-width',width);}
+};const observer=new ResizeObserver(sync);observer.observe(card);if(shell)observer.observe(shell);sync();
 section.querySelector('form').addEventListener('submit',e=>{e.preventDefault();section.querySelector('.vn-note').textContent='الاشتراك غير متاح حاليًا. لم يتم إرسال بياناتك.';});
 })();
 </script>
 
 <style id="veloura-newsletter-mobile-inset">
 @media(max-width:767px){
-html body#app #veloura-newsletter {width:calc(100% - 30px)!important;max-width:calc(100% - 30px)!important;margin-inline:auto!important;box-sizing:border-box;}
+html body#app #veloura-newsletter {width:var(--vn-mobile-width,calc(100% - 30px))!important;max-width:calc(100% - 30px)!important;margin-inline:auto!important;box-sizing:border-box;}
 html body#app #veloura-newsletter .vn-card {width:100%;box-sizing:border-box;}
 }
+</style>
+
+<style id="veloura-newsletter-dark-and-logo">
+html.dark body#app #veloura-newsletter,html body#app.dark #veloura-newsletter {
+ --vn-fill:var(--veloura-dark-secondary-bg,#162238);--vn-ink:var(--veloura-dark-primary-text,#f1f5fc);
+ --vn-field-bg:var(--veloura-dark-bg,#0b1220)!important;--vn-field-text:var(--veloura-dark-primary-text,#f1f5fc)!important;
+}
+html.dark body#app #veloura-newsletter .vn-card,html body#app.dark #veloura-newsletter .vn-card {background:var(--vn-fill)!important;color:var(--vn-ink)!important;}
+html.dark body#app #veloura-newsletter :is(h2,p),html body#app.dark #veloura-newsletter :is(h2,p) {color:var(--vn-ink)!important;}
 </style>
