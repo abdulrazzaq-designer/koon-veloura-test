@@ -5490,8 +5490,7 @@ html.dark .veloura-title__line {
   window.__velouraDarkSurfaces = true;
 
   var SELECTOR = [
-    '.veloura-store-features__item',
-    '.veloura-store-features__icon'
+    '.veloura-store-features__item'
   ].join(',');
 
   function luminance(color) {
@@ -6699,6 +6698,46 @@ html body#app .s-product-card-entry salla-add-product-button :is(button,.s-butto
  function discover(node){if(node.nodeType!==1)return;if(node.matches(selector))queue(node);node.querySelectorAll(selector).forEach(queue);queue(node.closest(selector));}
  new MutationObserver(records=>records.forEach(r=>{const target=r.target.nodeType===1?r.target:r.target.parentElement;queue(target?.closest(selector));r.addedNodes.forEach(discover);})).observe(document.body,{childList:true,subtree:true,characterData:true});
  document.querySelectorAll(selector).forEach(queue);
+})();
+</script>
+
+
+<style id="veloura-mobile-native-panels">
+@media(max-width:767px){
+html body#app :is(salla-modal.s-login-modal,salla-modal:has(.s-localization-modal-inner),salla-modal:has(.s-localization-modal-skeleton)) {z-index:2147483645!important;}
+html body#app :is(salla-modal.s-login-modal,salla-modal:has(.s-localization-modal-inner),salla-modal:has(.s-localization-modal-skeleton)) .s-modal-wrapper {padding:0!important;}
+html body#app :is(salla-modal.s-login-modal,salla-modal:has(.s-localization-modal-inner),salla-modal:has(.s-localization-modal-skeleton)) .s-modal-body {
+ position:fixed!important;inset:auto 0 var(--veloura-panel-bottom,12px)!important;margin:0 auto!important;transform:none!important;
+ width:var(--veloura-panel-width,calc(100% - 30px))!important;max-width:calc(100% - 30px)!important;min-width:0!important;
+ max-height:calc(100dvh - var(--veloura-panel-bottom,12px) - 16px)!important;overflow-y:auto!important;box-sizing:border-box!important;
+ padding-bottom:20px!important;border-radius:min(var(--veloura-global-radius,24px),50px) min(var(--veloura-global-radius,24px),50px) 0 0!important;
+}
+}
+</style>
+<script id="veloura-mobile-native-panels-runtime">
+(()=>{
+ let pending=0;const watched=new WeakSet();
+ const resize=new ResizeObserver(schedule);
+ const state=new MutationObserver(schedule);
+ function watch(node){if(!node||watched.has(node))return;watched.add(node);resize.observe(node);state.observe(node,{attributes:true,attributeFilter:['class','style','hidden']});}
+ function set(name,value){if(document.documentElement.style.getPropertyValue(name)!==value)document.documentElement.style.setProperty(name,value);}
+ function sync(){
+  pending=0;if(innerWidth>767)return;
+  const nav=document.querySelector('[data-vbn]');const header=document.querySelector('.veloura-header-tabs-stack__surface');watch(nav);watch(header);
+  const navStyle=nav?getComputedStyle(nav):null;const rect=nav?.getBoundingClientRect();
+  const visible=rect&&rect.height>0&&rect.top<innerHeight&&navStyle.display!=='none'&&navStyle.visibility!=='hidden'&&Number(navStyle.opacity)>0;
+  const bottom=visible?Math.max(12,innerHeight-rect.top+12):12;
+  const gap=Math.max(15,parseFloat(getComputedStyle(document.body).getPropertyValue('--veloura-global-spacing'))||0);
+  const headerWidth=header?.getBoundingClientRect().width||innerWidth-2*gap;
+  set('--veloura-panel-width',Math.max(0,Math.min(headerWidth,innerWidth-2*gap))+'px');
+  set('--veloura-panel-bottom',bottom+'px');
+ }
+ function schedule(){if(!pending)pending=requestAnimationFrame(sync);}
+ document.addEventListener('DOMContentLoaded',schedule,{once:true});
+ document.addEventListener('click',schedule,true);window.addEventListener('resize',schedule,{passive:true});
+ window.visualViewport?.addEventListener('resize',schedule,{passive:true});
+ document.addEventListener('theme::ready',schedule);document.addEventListener('veloura:header:position',schedule);
+ state.observe(document.body,{attributes:true,attributeFilter:['class']});schedule();
 })();
 </script>
 

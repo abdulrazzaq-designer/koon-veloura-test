@@ -148,7 +148,8 @@
           <div
             class="veloura-store-features__icon"
             style="
-              background: {{ item.veloura_feature_icon_background_transparent ? 'transparent' : item.veloura_feature_icon_background|default('#2b2b2b') }};
+              --veloura-feature-icon-fill: {{ item.veloura_feature_icon_background_transparent ? 'transparent' : item.veloura_feature_icon_background|default('#2b2b2b') }};
+              background: var(--veloura-feature-icon-fill) !important;
               color: {{ item.veloura_feature_icon_color|default('#ffffff') }};
             "
           >
