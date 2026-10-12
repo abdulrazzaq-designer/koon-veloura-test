@@ -5,7 +5,7 @@
   {% set vb_position = theme.settings.get('veloura_cart_banners_position_2026')|default('after_products') %}
   {% set vb_radius = theme.settings.get('veloura_cart_banners_radius_2026')|default('medium') %}
 {# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
-{% set vb_radius_px_map = {'sharp':'0px','soft':'8px','medium':'14px','large':'22px','round':'999px','pill':'999px','xl':'30px','40':'999px'} %}
+{% set vb_radius_px_map = {'sharp':'0px','soft':'8px','medium':'14px','large':'22px','round':'50px','pill':'50px','xl':'30px','40':'40px'} %}
 {% set vb_radius_px = vb_radius_px_map[vb_radius]|default((vb_radius ~ '' == '' ? '16' : vb_radius) ~ 'px') %}
 
   {% set vb_gap = theme.settings.get('veloura_cart_banners_gap_2026')|default(14) %}

@@ -24,7 +24,7 @@
 
   {% set vpk_radius = component.vpk_radius|default(22) %}
   {% if vpk_radius.value is defined %}{% set vpk_radius = vpk_radius.value %}{% endif %}
-  {% set vpk_radius_px = (vpk_radius ~ '') == '40' ? '999px' : ((vpk_radius ~ '' == '' ? '22' : vpk_radius) ~ 'px') %}
+  {% set vpk_radius_px = (vpk_radius ~ '') == '40' ? '40px' : ((vpk_radius ~ '' == '' ? '22' : vpk_radius) ~ 'px') %}
 
   {% set vpk_cols = component.vpk_desktop_cols|default(3) %}
   {% if vpk_cols.value is defined %}{% set vpk_cols = vpk_cols.value %}{% endif %}

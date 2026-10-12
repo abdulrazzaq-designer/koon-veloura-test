@@ -9,8 +9,8 @@
   'soft': '8px',
   'medium': '14px',
   'large': '22px',
-  'round': '999px',
-  '40': '999px'
+  'round': '50px',
+  '40': '40px'
 } %}
 
 {% if not component.veloura_faq_hide_section %}
@@ -161,13 +161,13 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
 
 /* ---------- الجواب: مسافة متناسقة من كل الجهات ---------- */
 .veloura-faq .veloura-faq__answer-inner {
-  padding: 18px 24px 20px !important;
+  padding: 12px 18px 14px !important;
 }
 
 @media (max-width: 767px) {
   .veloura-faq .veloura-faq__question { padding: 16px 18px !important; padding-inline-end: 16px !important; gap: 12px; min-height: calc(30px + 32px); }
   .veloura-faq .veloura-faq__toggle { --faq-toggle-size: 30px; }
-  .veloura-faq .veloura-faq__answer-inner { padding: 16px 18px 18px !important; }
+  .veloura-faq .veloura-faq__answer-inner { padding: 10px 16px 12px !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -313,3 +313,13 @@ html.dark .veloura-faq .veloura-faq__heading p { color: var(--veloura-dark-secon
   }
 })();
 </script>
+<style id="veloura-faq-solid-action">
+html body#app .veloura-faq .veloura-faq__answer-inner {opacity:1;line-height:1.7;}
+html body#app .veloura-faq .veloura-faq__answer-inner p {margin-block:0 8px;}
+html body#app .veloura-faq a.veloura-faq__button,
+html body#app .veloura-faq a.veloura-faq__button:hover {
+ display:inline-flex;align-items:center;justify-content:center;margin-top:6px;padding:6px 12px!important;min-height:32px;height:auto;line-height:1.4;
+ background:var(--faq-toggle-bg,var(--color-primary))!important;color:var(--faq-toggle-fg,var(--color-primary-reverse,#fff))!important;
+ border:0!important;border-radius:min(var(--faq-radius,16px),50px)!important;opacity:1!important;font-size:13px;
+}
+</style>

@@ -12,7 +12,7 @@
     'medium': '16px',
     'large': '28px',
     'round': '40px',
-    '40': '999px'
+    '40': '40px'
   } %}
 
   {% set map_radius = radius_map[component.veloura_branches_radius|default('medium')]|default((component.veloura_branches_radius|default('medium') ~ '' == '' ? '16' : component.veloura_branches_radius|default('medium')) ~ 'px') %}

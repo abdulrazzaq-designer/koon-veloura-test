@@ -610,7 +610,7 @@
       'soft': '8px',
       'medium': '14px',
       'large': '22px',
-      'pill': '999px',
+      'pill': '50px',
       '40': '40px'
     } %}
     
@@ -1034,7 +1034,7 @@
   'soft': '14px',
   'medium': '20px',
   'large': '28px',
-  'pill': '999px',
+  'pill': '50px',
   '40': '40px'
 } %}
 
@@ -3067,15 +3067,15 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
      بالاتجاه. أوضح مؤشر موضع بأقل ضجيج. */
   html body .swiper-pagination-bullet,
   html body .veloura-dots__dot {
-    width: calc(var(--veloura-dot-size) * 2.4) !important;
-    min-width: calc(var(--veloura-dot-size) * 2.4) !important;
-    height: calc(var(--veloura-dot-size) * .72) !important;
+    width: calc(var(--veloura-dot-size) * 1.35) !important;
+    min-width: calc(var(--veloura-dot-size) * 1.35) !important;
+    height: calc(var(--veloura-dot-size) * .4) !important;
   }
 
   html body .swiper-pagination-bullet-active,
   html body .veloura-dots__dot.is-on {
-    width: calc(var(--veloura-dot-size) * 5.2) !important;
-    min-width: calc(var(--veloura-dot-size) * 5.2) !important;
+    width: calc(var(--veloura-dot-size) * 2.6) !important;
+    min-width: calc(var(--veloura-dot-size) * 2.6) !important;
     background: linear-gradient(to left,
       var(--veloura-dot-on),
       color-mix(in srgb, var(--veloura-dot-on) 62%, transparent)) !important;
@@ -6669,6 +6669,16 @@ html body#app [data-veloura-home-tab].veloura-home-tab-is-hidden {
   document.addEventListener('theme::ready',sync);sync();
 })();
 </script>
+
+
+<style id="veloura-cart-button-corners">
+html body#app .s-product-card-entry salla-add-product-button,
+html body#app .s-product-card-entry salla-add-product-button salla-button,
+html body#app .s-product-card-entry salla-add-product-button :is(button,.s-button-element) {
+ border-radius:clamp(0px,var(--veloura-product-button-radius,var(--veloura-global-radius,16px)),50px)!important;
+}
+html body#app .s-product-card-entry salla-add-product-button :is(button,.s-button-element) {overflow:hidden!important;}
+</style>
 
 </body>
 </html>

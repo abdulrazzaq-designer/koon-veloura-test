@@ -96,7 +96,7 @@
 
   {% set vsc_radius = component.vsc_radius|default(24) %}
   {% if vsc_radius.value is defined %}{% set vsc_radius = vsc_radius.value %}{% endif %}
-  {% set vsc_radius_px = (vsc_radius ~ '') == '40' ? '999px' : ((vsc_radius ~ '' == '' ? '24' : vsc_radius) ~ 'px') %}
+  {% set vsc_radius_px = (vsc_radius ~ '') == '40' ? '40px' : ((vsc_radius ~ '' == '' ? '24' : vsc_radius) ~ 'px') %}
 
   {% set vsc_bg = component.vsc_bg_style|default('soft') %}
   {% if vsc_bg.selected is defined %}{% set vsc_bg = vsc_bg.selected %}{% endif %}

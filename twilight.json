@@ -1946,7 +1946,7 @@
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -3156,12 +3156,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف القسم السفلي",
-      "description": "في الوضع العادي تؤثر الحواف على الزاويتين العلويتين فقط، وعند تفعيل تصغير القسم السفلي تؤثر على الزوايا الأربع — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "في الوضع العادي تؤثر الحواف على الزاويتين العلويتين فقط، وعند تفعيل تصغير القسم السفلي تؤثر على الزوايا الأربع — بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 20,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -3772,7 +3772,7 @@
       "required": false,
       "inputType": "range",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "step": "1",
       "conditions": [
         {
@@ -3943,7 +3943,7 @@
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -4082,12 +4082,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف الصور في القائمة الجانبية",
-      "description": "اختر شكل حواف صور التصنيفات — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "اختر شكل حواف صور التصنيفات — بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -5031,12 +5031,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف الصور في صفحات التصنيفات",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 40,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -5210,12 +5210,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف بنر التصنيف",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -5335,12 +5335,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف البنرات",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -5587,12 +5587,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف بطاقة المنتج",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -5720,12 +5720,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف صورة المنتج",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -6012,12 +6012,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف العنوان الترويجي",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 14,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -6458,12 +6458,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف زر العرض السريع",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 40,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -6678,12 +6678,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف نافذة العرض السريع",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 28,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -7023,12 +7023,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف زر أضف للسلة",
-      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 16,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -10306,12 +10306,12 @@
       "format": "slider",
       "inputType": "range",
       "label": "حواف القائمة",
-      "description": "اختر شكل حواف القائمة العامة — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+      "description": "اختر شكل حواف القائمة العامة — بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
       "icon": "sicon-border-radius",
       "value": 40,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "50",
       "required": false,
       "conditions": [
         {
@@ -11568,9 +11568,9 @@
           "value": 28,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false,
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل."
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى."
         },
         {
           "id": "hero_inner_radius",
@@ -11582,9 +11582,9 @@
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false,
-          "description": "البحث والأزرار والشارات والعدّاد والصورة الجانبية — بالبيكسل، و٤٠ يعني دائري بالكامل."
+          "description": "البحث والأزرار والشارات والعدّاد والصورة الجانبية — بالبيكسل، و50 بكسل هو الحد الأقصى."
         },
         {
           "id": "hero_h_bg",
@@ -13387,12 +13387,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الصور",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 18,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -14043,12 +14043,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الصور",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -14693,12 +14693,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الصور",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -15610,12 +15610,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف المميزات",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 18,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -15874,12 +15874,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الأسئلة",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 22,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -17697,7 +17697,7 @@
           "value": "24",
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -18272,7 +18272,7 @@
           "value": "22",
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -18422,12 +18422,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الروابط",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -18841,12 +18841,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف المقالات",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -19125,12 +19125,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الخريطة",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -19429,12 +19429,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الماركات",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -19567,12 +19567,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف الصور",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -19794,12 +19794,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "حواف التقييمات",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 16,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -20176,12 +20176,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "استدارة الصورة والبطاقات",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 28,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -20745,12 +20745,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "استدارة الحواف",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 28,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -21015,12 +21015,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "استدارة الحواف",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 20,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -21705,12 +21705,12 @@
           "format": "slider",
           "inputType": "range",
           "label": "استدارة الحواف",
-          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
+          "description": "بالبيكسل — صفر يعني حواف حادة تمامًا، و50 بكسل هو الحد الأقصى.",
           "icon": "sicon-border-radius",
           "value": 22,
           "step": "1",
           "minimum": "0",
-          "maximum": "40",
+          "maximum": "50",
           "required": false
         },
         {
@@ -21897,7 +21897,7 @@
           "required": false,
           "description": "لا تظهر في وضع «عرض الشاشة كاملًا».",
           "minimum": "0",
-          "maximum": "40"
+          "maximum": "50"
         },
         {
           "id": "veloura_tkr_border",

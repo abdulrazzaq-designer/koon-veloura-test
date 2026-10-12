@@ -52,7 +52,7 @@
   {# الحواف: رقم بالبيكسل، والمفاتيح القديمة تبقى مفهومة، و«40» = دائري. #}
   {% set hero_radius_key %}{{ _self.pick(component.hero_radius, 28) }}{% endset %}
   {% set hero_radius_key = hero_radius_key|trim %}
-  {% set hero_radius_map = {'sharp':'0px','soft':'10px','medium':'18px','large':'28px','round':'999px','40':'999px'} %}
+  {% set hero_radius_map = {'sharp':'0px','soft':'10px','medium':'18px','large':'28px','round':'50px','40':'40px'} %}
   {% set hero_radius = hero_radius_map[hero_radius_key]|default((hero_radius_key == '' ? '28' : hero_radius_key) ~ 'px') %}
 
   {% set hero_align_m %}{{ _self.pick(component.hero_text_align_mobile, 'inherit') }}{% endset %}

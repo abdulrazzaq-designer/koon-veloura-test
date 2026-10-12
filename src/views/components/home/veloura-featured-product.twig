@@ -567,7 +567,7 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
   {% if fp_radius_key.value is defined %}{% set fp_radius_key = fp_radius_key.value %}{% endif %}
   {% set fp_radius_key = fp_radius_key|default('medium') %}
   {% if fp_radius_key is iterable or fp_radius_key == '' %}{% set fp_radius_key = 'medium' %}{% endif %}
-  {% set fp_radius_map = {'sharp':'0px','soft':'12px','medium':'22px','large':'34px','40':'999px'} %}
+  {% set fp_radius_map = {'sharp':'0px','soft':'12px','medium':'22px','large':'34px','40':'40px'} %}
 
   {# |first, never a {% for %}: Twig scopes a loop body, so a {% set %} inside
      one is gone at {% endfor %} — the chosen product's id came out empty and

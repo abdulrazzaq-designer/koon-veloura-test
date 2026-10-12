@@ -29,7 +29,7 @@
   {% if stp_radius_key is iterable and stp_radius_key.value is not defined %}{% set stp_radius_key = stp_radius_key|first %}{% endif %}
   {% if stp_radius_key.value is defined %}{% set stp_radius_key = stp_radius_key.value %}{% endif %}
   {% if stp_radius_key is iterable or stp_radius_key == '' %}{% set stp_radius_key = 'medium' %}{% endif %}
-  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'999px','40':'999px'} %}
+  {% set stp_radius_map = {'sharp':'0px','soft':'10px','medium':'20px','large':'30px','round':'50px','40':'40px'} %}
 
   {% set stp_items = component.veloura_steps_collection|default([]) %}
   {% set stp_cols = component.veloura_steps_desktop_columns|default(4) %}

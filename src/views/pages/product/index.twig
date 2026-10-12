@@ -119,7 +119,7 @@
     {% set vcat_image_fit = _self.veloura_select(theme.settings.get('veloura_category_image_fit_2026', 'cover'), 'cover')|trim %}
     {% set vcat_banner_radius = (_self.veloura_select(theme.settings.get('veloura_cat_banner_radius_2026', 'medium'), 'medium') ~ '')|trim %}
 {# الحواف صارت رقماً بالبيكسل؛ المفاتيح القديمة تبقى مفهومة و«40» = دائري. #}
-{% set vcat_banner_radius_px_map = {'sharp':'0px','soft':'10px','medium':'16px','large':'24px','round':'999px','pill':'999px','xl':'30px','40':'999px'} %}
+{% set vcat_banner_radius_px_map = {'sharp':'0px','soft':'10px','medium':'16px','large':'24px','round':'50px','pill':'50px','xl':'30px','40':'40px'} %}
 {% set vcat_banner_radius_px = vcat_banner_radius_px_map[vcat_banner_radius]|default((vcat_banner_radius ~ '' == '' ? '16' : vcat_banner_radius) ~ 'px') %}
 
 
@@ -145,8 +145,8 @@
         'soft': '10px',
         'medium': '16px',
         'large': '24px',
-        'round': '999px',
-        '40': '999px'
+        'round': '50px',
+        '40': '40px'
     } %}
     {% set vcat_image_radius_px = vcat_image_radius_map[vcat_image_radius]|default((vcat_image_radius ~ '' == '' ? '40' : vcat_image_radius) ~ 'px') %}
 
