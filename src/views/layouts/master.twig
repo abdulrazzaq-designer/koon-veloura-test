@@ -118,17 +118,18 @@
 {% set vglobal_radius_key = (vglobal_radius_key ~ '')|trim %}
 
 {# القيمة صارت رقماً بالبيكسل من شريط تمرير. المفاتيح القديمة تبقى مفهومة حتى
-   لا ينكسر أي متجر محفوظ عليه إعداد قديم، و«40» تعني دائري بالكامل. #}
+   لا ينكسر أي متجر محفوظ عليه إعداد قديم، والقيمة الرقمية تعني بكسلات بحد أقصى 50. #}
 {% set vglobal_radius_map = {
   'sharp': '0px',
   'soft': '10px',
   'medium': '16px',
   'large': '28px',
   'xl': '36px',
-  '40': '999px'
+  '40': '40px'
 } %}
 
 {% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default((vglobal_radius_key ~ '' == '' ? '28' : vglobal_radius_key) ~ 'px') %}
+{% set vglobal_radius = 'clamp(0px, ' ~ vglobal_radius ~ ', 50px)' %}
 
 {# ==========================================================================
    نقاط الشرائح — شكل واحد لكل المتجر
@@ -420,8 +421,8 @@
       'soft': '8px',
       'medium': '16px',
       'large': '28px',
-      'round': '999px',
-      '40': '999px'
+      'round': '50px',
+      '40': '40px'
     } %}
 
     {# لون وخلفية البطاقة #}
@@ -610,7 +611,7 @@
       'medium': '14px',
       'large': '22px',
       'pill': '999px',
-      '40': '999px'
+      '40': '40px'
     } %}
     
     {% set vpc_overlay_offset = theme.settings.get('veloura_pc_overlay_offset_2026', '14') %}
@@ -1034,7 +1035,7 @@
   'medium': '20px',
   'large': '28px',
   'pill': '999px',
-  '40': '999px'
+  '40': '40px'
 } %}
 
 {% set vbn_show_labels_raw = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_show_labels_2026', true), true)|trim %}
@@ -4380,19 +4381,10 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
 
     .veloura-fab--top.is-shown .veloura-fab__btn { opacity: 1; visibility: visible; transform: none; }
 
-    .veloura-fab--top .veloura-fab__btn::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: conic-gradient(
-        var(--vbn-active, #004956) calc(var(--vfab-p, 0) * 360deg),
-        color-mix(in srgb, var(--vbn-active, #004956) 14%, transparent) 0
-      );
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3.5px), #000 calc(100% - 3.5px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 3.5px), #000 calc(100% - 3.5px));
-      pointer-events: none;
-    }
+    .veloura-fab--top .veloura-fab__btn::before { content:none; }
+    .veloura-fab__ring {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;fill:none;stroke:var(--color-primary,#3155E7);stroke-width:2.5;}
+    .veloura-fab__ring-track {opacity:.16;}
+    .veloura-fab__ring-value {transform:rotate(-90deg);transform-origin:50% 50%;stroke-linecap:round;}
 
     {% if not vfab_desktop %}
       @media (min-width: 768px) { .veloura-fab-bar { display: none !important; } }
@@ -4463,6 +4455,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       {% if vfab_show_top %}
         <div class="veloura-fab veloura-fab--top{{ vfab_glass ? ' veloura-fab--glass' : '' }}" data-veloura-fab-top data-vfab-after="{{ vfab_top_after }}">
           <button type="button" class="veloura-fab__btn" aria-label="العودة لأعلى الصفحة">
+            <svg class="veloura-fab__ring" viewBox="0 0 48 48" aria-hidden="true"><circle class="veloura-fab__ring-track" cx="24" cy="24" r="21.5"/><circle class="veloura-fab__ring-value" cx="24" cy="24" r="21.5" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
             <i class="sicon-keyboard_arrow_up" aria-hidden="true"></i>
           </button>
         </div>
@@ -4588,6 +4581,8 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
       if (progress > 1) progress = 1;
 
       button.style.setProperty('--vfab-p', progress.toFixed(4));
+      var ring = button.querySelector('.veloura-fab__ring-value');
+      if (ring) ring.setAttribute('stroke-dashoffset', (100 - progress * 100).toFixed(3));
       top.classList.toggle('is-shown', y > after);
       ticking = false;
     };
@@ -6650,6 +6645,28 @@ html body#app [data-veloura-home-tab].veloura-home-tab-is-hidden {
   document.addEventListener('theme::ready',schedule);
   document.addEventListener('DOMContentLoaded',schedule,{once:true});
   schedule();
+})();
+</script>
+
+
+<script id="veloura-logo-priority">
+(()=>{
+  function sync(){
+    const dark=document.documentElement.classList.contains('dark')||document.body.classList.contains('dark');
+    document.querySelectorAll('.store-header [data-light-logo],.veloura-footer-logo [data-light-logo]').forEach(logo=>{
+      const hero=document.body.classList.contains('veloura-hero-merged')?logo.dataset.heroLogo:'';
+      const src=hero||(dark&&logo.dataset.darkLogo)||logo.dataset.lightLogo;
+      if(!src||logo.getAttribute('src')===src)return;
+      logo.setAttribute('src',src);
+      if(logo.tagName==='VIDEO'){logo.load();logo.play()?.catch(()=>{});}
+    });
+  }
+  window.velouraSyncLogos=sync;
+  const observer=new MutationObserver(sync);
+  observer.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+  document.addEventListener('DOMContentLoaded',sync,{once:true});
+  document.addEventListener('theme::ready',sync);sync();
 })();
 </script>
 

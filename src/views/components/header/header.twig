@@ -1,3 +1,6 @@
+{% set logo_dark = theme.settings.get('veloura_dark_logo_2026', '') %}
+{% if logo_dark.value is defined %}{% set logo_dark = logo_dark.value %}{% endif %}
+{% if logo_dark.url is defined %}{% set logo_dark = logo_dark.url %}{% endif %}
 {% set top_enabled = true %}
 
 {# Veloura V4: robust boolean reading. Do not overwrite a scalar value with a selected array. #}
@@ -74,11 +77,19 @@
 
 {# Logo #}
 {% set light_logo_url = theme.settings.get('veloura_light_logo_url_2026') %}
+{% if light_logo_url.value is defined %}{% set light_logo_url = light_logo_url.value %}{% endif %}
+{% if light_logo_url.url is defined %}{% set light_logo_url = light_logo_url.url %}{% endif %}
 {% set light_logo_image = theme.settings.get('veloura_light_logo_2026') %}
+{% if light_logo_image.value is defined %}{% set light_logo_image = light_logo_image.value %}{% endif %}
+{% if light_logo_image.url is defined %}{% set light_logo_image = light_logo_image.url %}{% endif %}
 {% set veloura_light_logo = light_logo_url ?: light_logo_image %}
 
 {% set top_logo_url = theme.settings.get('veloura_top_logo_url_2026') %}
+{% if top_logo_url.value is defined %}{% set top_logo_url = top_logo_url.value %}{% endif %}
+{% if top_logo_url.url is defined %}{% set top_logo_url = top_logo_url.url %}{% endif %}
 {% set top_logo_image = theme.settings.get('veloura_top_logo_image_2026') %}
+{% if top_logo_image.value is defined %}{% set top_logo_image = top_logo_image.value %}{% endif %}
+{% if top_logo_image.url is defined %}{% set top_logo_image = top_logo_image.url %}{% endif %}
 {% set top_logo = top_logo_url ?: top_logo_image ?: veloura_light_logo ?: store.logo|cdn(175) %}
 
 {% set top_logo_lower = top_logo|lower %}
@@ -753,9 +764,9 @@
 
           <a class="navbar-brand veloura-header-logo" href="{{ store.url }}">
             {% if top_logo_is_video %}
-              <video class="veloura-store-logo veloura-store-logo-video" src="{{ top_logo }}" autoplay muted loop playsinline data-light-logo="{{ top_logo }}" data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}" aria-label="{{ store.name }} logo"></video>
+              <video class="veloura-store-logo veloura-store-logo-video" src="{{ top_logo }}" autoplay muted loop playsinline data-light-logo="{{ top_logo }}" data-dark-logo="{{ logo_dark|e('html_attr') }}" aria-label="{{ store.name }} logo"></video>
             {% else %}
-              <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ top_logo }}" data-light-logo="{{ top_logo }}" data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}" class="veloura-store-logo" alt="{{ store.name }} logo">
+              <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ top_logo }}" data-light-logo="{{ top_logo }}" data-dark-logo="{{ logo_dark|e('html_attr') }}" class="veloura-store-logo" alt="{{ store.name }} logo">
             {% endif %}
 
             {% if is_page('index') %}
@@ -825,7 +836,7 @@
                   <a href="{{ store.url }}" aria-label="{{ store.name }}">
                     <img src="{{ top_logo }}"
                          data-light-logo="{{ top_logo }}"
-                         data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}"
+                         data-dark-logo="{{ logo_dark|e('html_attr') }}"
                          class="veloura-store-logo"
                          loading="lazy"
                          alt="{{ store.name }} logo">

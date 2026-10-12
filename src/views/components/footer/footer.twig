@@ -1,3 +1,6 @@
+{% set logo_dark = theme.settings.get('veloura_dark_logo_2026', '') %}
+{% if logo_dark.value is defined %}{% set logo_dark = logo_dark.value %}{% endif %}
+{% if logo_dark.url is defined %}{% set logo_dark = logo_dark.url %}{% endif %}
 {% set fc_merge = theme.settings.get('veloura_footer_credentials_merge', false) %}
 {% if fc_merge.value is defined %}{% set fc_merge = fc_merge.value %}{% elseif fc_merge.selected is defined %}{% set fc_merge = fc_merge.selected %}{% endif %}
 {% set fc_merge = fc_merge in [true, 1, '1', 'true', 'on'] %}
@@ -307,7 +310,7 @@
                   {% if footer_logo_is_video %}
                     <video
                       class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
-                      src="{{ footer_logo }}"
+                      src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       autoplay
                       muted
                       loop
@@ -316,7 +319,7 @@
                   {% else %}
                     <img
                       class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
-                      src="{{ footer_logo }}"
+                      src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       loading="eager"
                       decoding="async"
                       alt="{{ store.name }}"
@@ -357,7 +360,7 @@
                   {% if footer_logo_is_video %}
                     <video
                       class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
-                      src="{{ footer_logo }}"
+                      src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       autoplay
                       muted
                       loop
@@ -366,7 +369,7 @@
                   {% else %}
                     <img
                       class="veloura-footer-logo__media" style="width: {{ footer_logo_size }} !important; height: {{ footer_logo_size }} !important; min-width: 0 !important; min-height: 0 !important; max-width: 100% !important; max-height: none !important; object-fit: contain !important;"
-                      src="{{ footer_logo }}"
+                      src="{{ footer_logo }}" data-light-logo="{{ footer_logo|e('html_attr') }}" data-dark-logo="{{ logo_dark|e('html_attr') }}"
                       loading="eager"
                       decoding="async"
                       alt="{{ store.name }}"
@@ -591,3 +594,10 @@ const sync=()=>{const half=card.getBoundingClientRect().height/2;section.style.s
 section.querySelector('form').addEventListener('submit',e=>{e.preventDefault();section.querySelector('.vn-note').textContent='الاشتراك غير متاح حاليًا. لم يتم إرسال بياناتك.';});
 })();
 </script>
+
+<style id="veloura-newsletter-mobile-inset">
+@media(max-width:767px){
+html body#app #veloura-newsletter {width:calc(100% - 30px)!important;max-width:calc(100% - 30px)!important;margin-inline:auto!important;box-sizing:border-box;}
+html body#app #veloura-newsletter .vn-card {width:100%;box-sizing:border-box;}
+}
+</style>

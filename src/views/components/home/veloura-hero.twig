@@ -1240,12 +1240,13 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
       }
 
       if (MERGE_LOGO) {
-        var logos = document.querySelectorAll('.veloura-store-logo');
+        var logos = document.querySelectorAll('.store-header .veloura-header-grid .veloura-store-logo');
         for (var g = 0; g < logos.length; g++) {
           var lg = logos[g];
           if (outside(lg)) continue;
           if (on) {
             if (!lg.hasAttribute('data-veloura-logo-was')) lg.setAttribute('data-veloura-logo-was', lg.getAttribute('src') || '');
+            lg.dataset.heroLogo = MERGE_LOGO;
             if (lg.getAttribute('src') !== MERGE_LOGO) lg.setAttribute('src', MERGE_LOGO);
           } else if (lg.hasAttribute('data-veloura-logo-was')) {
             /* الرجوع لما كان: ولو كان الوضع الداكن قد بدّله بينهما نأخذ
@@ -1254,6 +1255,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
             var back = (dark ? lg.getAttribute('data-dark-logo') : lg.getAttribute('data-light-logo')) || lg.getAttribute('data-veloura-logo-was');
             if (back) lg.setAttribute('src', back);
             lg.removeAttribute('data-veloura-logo-was');
+            delete lg.dataset.heroLogo;
           }
         }
       }
@@ -1261,7 +1263,7 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 
     var atTop = null;
     var paint = function () {
-      var top = (window.pageYOffset || document.documentElement.scrollTop) < 8;
+      var top = root.getClientRects().length > 0 && getComputedStyle(root).display !== 'none' && (window.pageYOffset || document.documentElement.scrollTop) < 8;
       if (top === atTop) return;
       atTop = top;
       document.body.classList.toggle('veloura-hero-merged', top);
@@ -1270,6 +1272,10 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
 
     measure();
     paint();
+    function syncVisibility(){paint();if(atTop)measure();window.velouraSyncLogos?.();}
+    new MutationObserver(syncVisibility).observe(root,{attributes:true,attributeFilter:['hidden','class']});
+    document.addEventListener('veloura:home-tabs:change',function(){requestAnimationFrame(syncVisibility);});
+
     /* العناصر المتأخرة (الهيدر المثبّت، لوحات تُحقن بعد التحميل) تُلتقط هنا. */
     [200, 900, 2500].forEach(function (t) {
       setTimeout(function () { measure(); if (atTop) dissolve(true); }, t);

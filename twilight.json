@@ -308,26 +308,26 @@
       ]
     },
     {
-      "id": "veloura_global_radius_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "تدوير العناصر العامة",
-      "description": "يتحكم بتدوير كروت تفاصيل المنتج، الوصف، الخيارات، الأزرار والأجزاء العامة التي تدعم متغير Veloura — بالبيكسل — صفر يعني حواف حادة تمامًا، و٤٠ يعني دائري بالكامل.",
-      "icon": "sicon-border-radius",
-      "value": 28,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "40",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
+  "id": "veloura_global_radius_2026",
+  "type": "number",
+  "format": "slider",
+  "inputType": "range",
+  "label": "تدوير العناصر العامة",
+  "description": "تدوير حواف العناصر العامة بالبكسل من 0 إلى 50. صفر لحواف حادة، و50 لاستدارة كبيرة دون تحويل النوافذ إلى شكل دائري.",
+  "icon": "sicon-border-radius",
+  "value": 28,
+  "step": "1",
+  "minimum": "0",
+  "maximum": "50",
+  "required": false,
+  "conditions": [
+    {
+      "id": "veloura_general_panel_open_v4_2026",
+      "operation": "=",
+      "value": true
+    }
+  ]
+},
     {
       "id": "veloura_theme_motion_2026",
       "type": "items",
