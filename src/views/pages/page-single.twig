@@ -9,6 +9,23 @@
 #}
 {% extends "layouts.master" %}
 {% block content %}
+    <style id="veloura-info-page-colors">
+        .veloura-info-page {
+            --info-page-bg: var(--veloura-site-second-bg, #ffffff);
+            --info-page-text: var(--veloura-primary-text, #243341);
+            background: var(--info-page-bg) !important;
+            color: var(--info-page-text) !important;
+        }
+        html.dark .veloura-info-page,
+        body.dark .veloura-info-page {
+            --info-page-bg: var(--veloura-dark-secondary-bg, #010612);
+            --info-page-text: var(--veloura-dark-primary-text, #ffffff);
+        }
+        html body#app .veloura-info-page :is(h1, .content-entry, .content-entry *) {
+            color: var(--info-page-text) !important;
+            -webkit-text-fill-color: var(--info-page-text) !important;
+        }
+    </style>
     <div class="container">
 
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
@@ -17,7 +34,7 @@
         </nav>
 
         <div class="flex justify-center">
-            <div class="content content--single-page w-full lg:w-10/12 bg-white rounded p-6 lg:p-8 mt-4 lg:mt-12">
+            <div class="content content--single-page w-full lg:w-10/12 veloura-info-page rounded p-6 lg:p-8 mt-4 lg:mt-12">
                 <h1 class="font-bold text-2xl mb-6">{{ page.title }}</h1>
                 <div class="content-entry">
                     {{ page.content|raw }}
