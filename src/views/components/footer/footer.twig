@@ -596,16 +596,21 @@ const shell=footer?.querySelector('.veloura-footer-shell');
 const sync=()=>{
  const half=card.getBoundingClientRect().height/2;
  for(const el of [section,footer])if(el&&el.style.getPropertyValue('--vn-half')!==half+'px')el.style.setProperty('--vn-half',half+'px');
- if(shell){const width=Math.max(0,shell.getBoundingClientRect().width-30)+'px';if(section.style.getPropertyValue('--vn-mobile-width')!==width)section.style.setProperty('--vn-mobile-width',width);}
+ if(shell){const width=shell.getBoundingClientRect().width+'px';if(section.style.getPropertyValue('--vn-footer-width')!==width)section.style.setProperty('--vn-footer-width',width);}
 };const observer=new ResizeObserver(sync);observer.observe(card);if(shell)observer.observe(shell);sync();
 section.querySelector('form').addEventListener('submit',e=>{e.preventDefault();section.querySelector('.vn-note').textContent='الاشتراك غير متاح حاليًا. لم يتم إرسال بياناتك.';});
 })();
 </script>
 
-<style id="veloura-newsletter-mobile-inset">
-@media(max-width:767px){
-html body#app #veloura-newsletter {width:var(--vn-mobile-width,calc(100% - 30px))!important;max-width:calc(100% - 30px)!important;margin-inline:auto!important;box-sizing:border-box;}
+<style id="veloura-newsletter-footer-inset">
+html body#app #veloura-newsletter {
+  --vn-side-inset:50px;
+  width:max(0px,calc(var(--vn-footer-width,100%) - var(--vn-side-inset) * 2))!important;
+  max-width:100%!important;margin-inline:auto!important;box-sizing:border-box;
+}
 html body#app #veloura-newsletter .vn-card {width:100%;box-sizing:border-box;}
+@media(max-width:767px){
+  html body#app #veloura-newsletter {--vn-side-inset:15px;}
 }
 </style>
 
