@@ -1145,6 +1145,8 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
           start = Math.max(start, alert.getBoundingClientRect().bottom + window.scrollY);
         }
       });
+      var documentTop = Math.max(0, Math.round(root.getBoundingClientRect().top + window.scrollY));
+      if(root.style.getPropertyValue('--hero-start-y') !== documentTop + 'px') root.style.setProperty('--hero-start-y', documentTop + 'px');
       var h = Math.max(0, Math.round(root.getBoundingClientRect().top + window.scrollY - start));
       if (Math.abs(h - overlap) >= 1) root.style.setProperty('--hero-header-h', h + 'px');
     };
@@ -1350,5 +1352,37 @@ html body#app #veloura-home-tabs [data-veloura-tab-target][aria-selected="true"]
 html body#app #veloura-home-tabs :is([data-veloura-tab-target].is-active,[data-veloura-tab-target][aria-selected="true"]),
 html body#app #veloura-home-tabs :is([data-veloura-tab-target].is-active,[data-veloura-tab-target][aria-selected="true"]) :is(span,i) {
 color:var(--veloura-tabs-active-color,#003848)!important;-webkit-text-fill-color:var(--veloura-tabs-active-color,#003848)!important;
+}
+</style>
+
+<style id="veloura-hero-desktop-balance">
+@media(min-width:1024px){
+html body .veloura-hero {
+ --hero-gap:clamp(14px,1.5vw,22px);box-sizing:border-box;padding-block:24px!important;align-items:flex-start;
+}
+html body .veloura-hero:is(.hero--h-full,.hero--h-tall) {min-height:max(0px,calc(100svh - var(--hero-start-y,180px)));}
+html body .veloura-hero .hero__title {font-size:clamp(32px,3.4vw,46px);line-height:1.2;}
+html body .veloura-hero .hero__sub {font-size:16px;line-height:1.7;}
+html body .veloura-hero .hero__grid {gap:clamp(20px,3vw,40px);}
+html body .veloura-hero .hero__body,html body .veloura-hero .hero__media {flex:1 1 50%;}
+html body .veloura-hero .hero-orbits {max-width:620px;width:min(100%,max(300px,calc(100svh - var(--hero-start-y,180px) - 64px)));margin-bottom:24px;--orbit-size:clamp(44px,4.5vw,64px);}
+html body .veloura-hero .hero-orbits__search:not(.hero-orbits__search--bar) {width:clamp(100px,9vw,130px);height:clamp(100px,9vw,130px);}
+html body .veloura-hero .hero-orbits__search:not(.hero-orbits__search--bar) svg {width:42px;height:42px;}
+}
+</style>
+
+<script>
+(()=>{const root=document.getElementById('veloura-hero-{{ position }}');if(!root||root.classList.contains('hero--merged'))return;
+let pending=0;const sync=()=>{pending=0;if(!root.getClientRects().length)return;const value=Math.max(0,Math.round(root.getBoundingClientRect().top+scrollY))+'px';if(root.style.getPropertyValue('--hero-start-y')!==value)root.style.setProperty('--hero-start-y',value);};
+const schedule=()=>{if(!pending)pending=requestAnimationFrame(sync)};
+const header=document.querySelector('.veloura-header-tabs-stack');if(header)new ResizeObserver(schedule).observe(header);
+window.addEventListener('resize',schedule,{passive:true});document.addEventListener('veloura:home-tabs:change',schedule);schedule();})();
+</script>
+
+<style>
+@media(min-width:1024px) and (max-height:850px){
+html body .veloura-hero {--hero-gap:12px;padding-block:16px!important;}
+html body .veloura-hero .hero__title {font-size:clamp(30px,3vw,40px);}
+html body .veloura-hero .hero__stat strong {font-size:28px;}
 }
 </style>

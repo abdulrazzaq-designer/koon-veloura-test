@@ -1028,3 +1028,18 @@ html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mai
 html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-lang-desktop :is(span,i) {color:{{ v86_locale_text }}!important;-webkit-text-fill-color:{{ v86_locale_text }}!important;}
 }
 </style>
+
+<style id="veloura-desktop-controls-balance">
+@media(min-width:1024px){
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-lang-desktop {
+ order:5!important;margin:0!important;margin-left:auto!important;flex:0 0 auto!important;
+}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-header-inline-search {
+ order:6!important;margin:0!important;
+}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header].veloura-desktop-search-icon_right #mainnav .veloura-search-toggle {
+ order:6!important;margin:0!important;
+}
+html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-dark-toggle {order:7!important;margin:0!important;}
+}
+</style>
