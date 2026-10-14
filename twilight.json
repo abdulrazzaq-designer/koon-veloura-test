@@ -7849,6 +7849,24 @@
       ]
     },
     {
+      "id": "veloura_product_option_buttons_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "label": "عرض خيارات المنتج كأزرار متجاورة",
+      "description": "يحوّل قوائم الاختيار المفرد مثل المقاس إلى أزرار؛ يمكن اختيار زر واحد فقط لكل خيار.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_product_details_order_enabled_2026",
       "type": "boolean",
       "format": "switch",

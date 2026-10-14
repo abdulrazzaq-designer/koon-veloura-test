@@ -28,17 +28,37 @@
 | product.options[].details[].is_selected         | bool                       | Does current option selected? (useful in cart page)                                                         |
 | product.options[].details[].is_out              | bool                       | Does current option out of stock?                                                                           |
 #}
+{% set veloura_option_buttons = theme.settings.get('veloura_product_option_buttons_2026', false) %}
+{% if veloura_option_buttons.value is defined %}{% set veloura_option_buttons = veloura_option_buttons.value %}{% endif %}
+{% set veloura_option_buttons = veloura_option_buttons == true and veloura_option_buttons != 'false' %}
+{% if veloura_option_buttons %}
+<style>
+salla-product-options.veloura-option-buttons .s-product-options-grid-mode {
+  display:flex;flex-wrap:wrap;gap:10px;
+}
+salla-product-options.veloura-option-buttons .s-product-options-grid-mode > label {
+  flex:0 1 auto;min-width:64px;max-width:100%;margin:0;
+}
+salla-product-options.veloura-option-buttons .s-product-options-grid-mode-span {
+  padding:10px 16px;overflow-wrap:anywhere;
+}
+salla-product-options.veloura-option-buttons .s-product-options-grid-mode input:focus-visible + div {
+  outline:2px solid var(--color-primary);outline-offset:3px;
+}
+</style>
+{% endif %}
 {% if product.options|length %}
     {% if veloura_cart_context|default(false) %}
         <div class="veloura-cart-product-options-shell">
             <salla-product-options
-                class="veloura-cart-product-options-host"
+                class="veloura-cart-product-options-host {{ veloura_option_buttons ? 'veloura-option-buttons' : '' }}"
+                {% if veloura_option_buttons %}config='{"single-option":{"type":"button"}}'{% endif %}
                 options="{{ product.options }}"
                 product-id="{{ product.id }}"
             ></salla-product-options>
         </div>
     {% else %}
-        <salla-product-options options="{{ product.options }}" product-id="{{ product.id }}"></salla-product-options>
+        <salla-product-options {% if veloura_option_buttons %}class="veloura-option-buttons" config='{"single-option":{"type":"button"}}'{% endif %} options="{{ product.options }}" product-id="{{ product.id }}"></salla-product-options>
     {% endif %}
 {% endif %}
 
