@@ -344,21 +344,34 @@
 
 /* نقاط سريعة تحت الوصف: ما يجعل العنصر «شرحاً» لا مجرد بنر. */
 .vsc .vsc__points {
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
   margin: 2px 0 0;
   padding: 0;
   list-style: none;
   width: 100%;
 }
 .vsc .vsc__point {
-  display: flex;
+  display: inline-flex;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 0;
   align-items: center;
   gap: 8px;
   font-size: 13.5px;
   font-weight: 700;
 }
+.vsc .vsc__point span { overflow-wrap: anywhere; }
 .vsc .vsc__point i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: color-mix(in srgb, currentColor 12%, transparent);
   font-size: 16px;
   color: var(--vsc-from);
   flex: 0 0 auto;
@@ -395,6 +408,8 @@
   gap: 14px;
   margin-bottom: 12px;
 }
+.vsc .vsc__products-head { direction: rtl; }
+.vsc .vsc__products-head .vsc__button { margin: 0; margin-inline-start: auto; flex-shrink: 0; padding: 10px 16px; }
 .vsc .vsc__products-head h3 { margin: 0; font-size: 17px; font-weight: 800; color: inherit; }
 
 .vsc .vsc__products :is(salla-products-slider, salla-slider) { display: block; }
@@ -548,18 +563,19 @@ html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
               </ul>
             {% endif %}
 
+
+          </div>
+
+          <div class="vsc__products">
+          {% if component.vsc_products_title or (component.vsc_show_button and component.vsc_button_text) %}
+            <div class="vsc__products-head">
+              {% if component.vsc_products_title %}<h3>{{ component.vsc_products_title }}</h3>{% endif %}
             {% if component.vsc_show_button and component.vsc_button_text %}
               <a class="vsc__button" href="{{ component.vsc_button_link ?: '#' }}">
                 {{ component.vsc_button_text }}
                 <i class="sicon-arrow-left" aria-hidden="true"></i>
               </a>
             {% endif %}
-          </div>
-
-          <div class="vsc__products">
-          {% if component.vsc_products_title %}
-            <div class="vsc__products-head">
-              <h3>{{ component.vsc_products_title }}</h3>
             </div>
           {% endif %}
 
