@@ -219,3 +219,30 @@ salla-product-options.veloura-option-buttons .s-product-options-grid-mode input:
 })();
 </script>
 {% endif %}
+
+{% if veloura_option_buttons %}
+<style id="veloura-option-button-colors">
+html body#app salla-product-options.veloura-option-buttons {
+  --vob-bg:var(--veloura-site-second-bg,#f3f4f6);
+  --vob-text:var(--veloura-primary-text,#243341);
+}
+html.dark body#app salla-product-options.veloura-option-buttons,
+html body#app.dark salla-product-options.veloura-option-buttons {
+  --vob-bg:var(--veloura-dark-secondary-bg,#162238);
+  --vob-text:var(--veloura-dark-primary-text,#f1f5fc);
+}
+html body#app salla-product-options.veloura-option-buttons :is(.s-product-options-grid-mode-span,.vob-choice > span) {
+  background:var(--vob-bg)!important;
+  color:var(--vob-text)!important;
+  -webkit-text-fill-color:var(--vob-text)!important;
+  border:1px solid color-mix(in srgb,var(--vob-text) 25%,transparent)!important;
+  border-radius:var(--veloura-global-radius,12px);
+}
+html body#app salla-product-options.veloura-option-buttons :is(.s-product-options-grid-mode input:checked + div,.vob-choice input:checked + span) {
+  background:var(--color-primary)!important;
+  border-color:var(--color-primary)!important;
+  color:var(--color-primary-reverse,#fff)!important;
+  -webkit-text-fill-color:var(--color-primary-reverse,#fff)!important;
+}
+</style>
+{% endif %}
