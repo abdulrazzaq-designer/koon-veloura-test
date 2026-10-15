@@ -133,6 +133,26 @@
       ]
     },
     {
+      "id": "veloura_menu_visible_limit",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد التصنيفات قبل زر المزيد — الكمبيوتر",
+      "value": "5",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "12",
+      "conditions": [
+        {
+          "id": "enable_more_menu",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "description": "حد أقصى للتصنيفات الظاهرة؛ إذا ضاقت المساحة تظهر تصنيفات أقل تلقائيًا."
+    },
+    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
@@ -13880,6 +13900,28 @@
           "required": false,
           "minLength": 6,
           "maxLength": 30
+        },
+        {
+          "id": "ultra_load_more",
+          "type": "boolean",
+          "format": "switch",
+          "label": "تفعيل عرض المزيد للصور",
+          "description": "في العرض الشبكي: إظهار الصور على دفعات حسب عدد الصفوف. لا يغيّر وضع السلايدر.",
+          "value": false,
+          "selected": false,
+          "required": false
+        },
+        {
+          "id": "ultra_load_more_rows",
+          "type": "number",
+          "format": "slider",
+          "inputType": "range",
+          "label": "عدد الصفوف في كل دفعة",
+          "value": "3",
+          "required": false,
+          "step": "1",
+          "minimum": "1",
+          "maximum": "10"
         },
         {
           "id": "ultra_mobile_columns",

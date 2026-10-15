@@ -1028,3 +1028,43 @@ html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mai
 html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mainnav .veloura-lang-desktop :is(span,i) {color:{{ v86_locale_text }}!important;-webkit-text-fill-color:{{ v86_locale_text }}!important;}
 }
 </style>
+
+{% set menu_limit = theme.settings.get('veloura_menu_visible_limit', 5) %}
+{% if menu_limit.value is defined %}{% set menu_limit = menu_limit.value %}{% endif %}
+<style>
+@media(min-width:1024px){
+html body#app .store-header #more-menu-dropdown > a {
+  background:var(--color-primary)!important;color:var(--color-primary-reverse,#fff)!important;
+  border-radius:12px;padding:7px 14px!important;gap:7px;
+}
+html body#app .store-header #more-menu-dropdown > a :is(span,i) {color:inherit!important;-webkit-text-fill-color:currentColor!important;}
+}
+</style>
+<script>
+(function(){
+const limit=Math.max(1,Math.min(12,Number({{ menu_limit|json_encode|raw }})||5));
+customElements.whenDefined('custom-main-menu').then(function(){
+ const proto=customElements.get('custom-main-menu').prototype;
+ proto.velouraVisibleLimit=limit;
+ if(!proto.velouraLimitPatched){
+  const original=proto.checkMenuOverflow;if(typeof original!=='function')return;
+  proto.velouraLimitPatched=true;
+  proto.checkMenuOverflow=function(){
+   original.call(this);
+   if(!this._velouraMoreMenuEnabled||innerWidth<1024)return;
+   const menu=this.querySelector('.veloura-main-menu-desktop');if(!menu)return;
+   const items=Array.from(menu.querySelectorAll(':scope > .root-level[data-menu-item]'));
+   if(!items.length)return;
+   this.visibleMenus=[];this.overflowMenus=[];
+   items.forEach((item,i)=>{
+    if(i>=this.velouraVisibleLimit)item.style.setProperty('display','none','important');
+    if(this.menus[i]) (item.style.display==='none'?this.overflowMenus:this.visibleMenus).push(this.menus[i]);
+   });
+   menu.querySelector('#more-menu-dropdown')?.remove();
+   if(this.overflowMenus.length)menu.insertAdjacentHTML('beforeend',this.createMoreDropdown());
+  };
+ }
+ document.querySelectorAll('custom-main-menu').forEach(menu=>menu.checkMenuOverflow());
+});
+})();
+</script>
