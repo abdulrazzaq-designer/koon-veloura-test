@@ -1029,27 +1029,38 @@ html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mai
 }
 </style>
 
+{% set menu_more_enabled = theme.settings.get('enable_more_menu', true) %}
+{% if menu_more_enabled.value is defined %}{% set menu_more_enabled = menu_more_enabled.value %}{% endif %}
+{% set menu_more_enabled = (menu_more_enabled ~ '')|trim|lower in ['true','1','on','yes'] %}
 {% set menu_limit = theme.settings.get('veloura_menu_visible_limit', 5) %}
 {% if menu_limit.value is defined %}{% set menu_limit = menu_limit.value %}{% endif %}
 <style>
 @media(min-width:1024px){
 html body#app .store-header #more-menu-dropdown > a {
-  background:var(--color-primary)!important;color:var(--color-primary-reverse,#fff)!important;
-  border-radius:12px;padding:7px 14px!important;gap:7px;
+  background:transparent!important;color:var(--color-primary)!important;
+  border:0!important;border-bottom:1px solid currentColor!important;box-shadow:none!important;
+  border-radius:0!important;padding:3px 2px!important;min-height:0!important;height:auto!important;line-height:1.5!important;font-size:13px!important;gap:5px;
 }
 html body#app .store-header #more-menu-dropdown > a :is(span,i) {color:inherit!important;-webkit-text-fill-color:currentColor!important;}
 }
 </style>
 <script>
 (function(){
+const enabled={{ menu_more_enabled ? 'true' : 'false' }};
+window.enable_more_menu=enabled;
 const limit=Math.max(1,Math.min(12,Number({{ menu_limit|json_encode|raw }})||5));
 customElements.whenDefined('custom-main-menu').then(function(){
  const proto=customElements.get('custom-main-menu').prototype;
  proto.velouraVisibleLimit=limit;
+ proto.velouraMoreEnabled=enabled;
  if(!proto.velouraLimitPatched){
   const original=proto.checkMenuOverflow;if(typeof original!=='function')return;
   proto.velouraLimitPatched=true;
   proto.checkMenuOverflow=function(){
+   this._velouraMoreMenuEnabled=this.velouraMoreEnabled;
+   const host=this.closest('.veloura-menu-links-wrap');
+   host?.classList.toggle('veloura-menu-more-enabled',this._velouraMoreMenuEnabled);
+   host?.classList.toggle('veloura-menu-more-disabled',!this._velouraMoreMenuEnabled);
    original.call(this);
    if(!this._velouraMoreMenuEnabled||innerWidth<1024)return;
    const menu=this.querySelector('.veloura-main-menu-desktop');if(!menu)return;
