@@ -6986,29 +6986,54 @@ html body#app .veloura-qv-full :is(.veloura-qv-full__add,.veloura-qv-full__circl
 </style>
 
 <style id="veloura-loyalty-store-theme">
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) {
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) {
  --vl-surface:var(--veloura-site-second-bg,#f4f5f7);
  --vl-text:var(--veloura-primary-text,#243341);
  --vl-muted:var(--veloura-secondary-text,#64748b);
  --vl-radius:clamp(0px,var(--veloura-global-radius,16px),50px);
  --loyalty-radius:var(--vl-radius);
 }
-html.dark body#app :is(salla-loyalty-program,.veloura-loyalty-theme),
-html body#app.dark :is(salla-loyalty-program,.veloura-loyalty-theme) {
+html.dark body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal),
+html body#app.dark :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) {
  --vl-surface:var(--veloura-dark-secondary-bg,#162238);
  --vl-text:var(--veloura-dark-primary-text,#f1f5fc);
  --vl-muted:var(--veloura-dark-secondary-text,#b8c0ce);
 }
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) :is(.s-loyalty-program-container,.s-loyalty-program-outline-section,.s-loyalty-program-points-wrapper,.s-loyalty-program-rewards-container,.s-loyalty-program-reward-container,.s-loyalty-program-profile-container,.s-loyalty-program-point-wrapper,.loyalty__banner,.way-item,.product-entry){background:var(--vl-surface)!important;color:var(--vl-text)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) :is(.s-loyalty-program-main-title,.s-loyalty-program-title,.s-loyalty-program-points-title,.s-loyalty-program-rewards-heading-mobile,.s-loyalty-program-rewards-heading-desktop,.s-loyalty-program-reward-name,.s-loyalty-program-profile-label,.s-loyalty-program-profile-points,.s-loyalty-program-point-details-branches h2,.product-entry__title,.info h1,.way-item__content h3){color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) :is(.s-loyalty-program-subtitle,.s-loyalty-program-description,.s-loyalty-program-points-description,.s-loyalty-program-point-description,.s-loyalty-program-reward-title,.s-loyalty-program-reward-points,.s-loyalty-program-point-details-branches p,.info p,.way-item__content p,.product-entry p){color:var(--vl-muted)!important;-webkit-text-fill-color:var(--vl-muted)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-icon {color:var(--color-primary)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-text-gradient {background:none!important;color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;opacity:.12;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) :is(.s-loyalty-program-container,.s-loyalty-program-hero-background,.s-loyalty-program-reward-container,.s-loyalty-program-profile-container,.s-loyalty-program-point-wrapper,.loyalty__banner,.way-item,.product-entry) {border-radius:var(--vl-radius)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-container {overflow:clip;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-hero-background {background-color:var(--vl-surface)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-hero-gray :is(h1,p) {color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-hero-white :is(h1,p) {color:#fff!important;-webkit-text-fill-color:#fff!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) :is(.s-loyalty-program-login-action,.s-loyalty-program-points-more-button) {background:var(--color-primary)!important;color:var(--color-primary-reverse,#fff)!important;-webkit-text-fill-color:var(--color-primary-reverse,#fff)!important;border-radius:var(--vl-radius)!important;}
-html body#app :is(salla-loyalty-program,.veloura-loyalty-theme) :is(.s-tabs-header-item,.s-tabs-bg-normal) {color:var(--vl-text)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-container,.s-loyalty-program-points-section,.s-loyalty-program-outline-section,.s-loyalty-program-points-wrapper,.s-loyalty-program-rewards-container,.s-loyalty-program-reward-container,.s-loyalty-program-profile-container,.s-loyalty-program-point-wrapper,.loyalty__banner,.way-item,.product-entry){background:var(--vl-surface)!important;color:var(--vl-text)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-main-title,.s-loyalty-program-title,.s-loyalty-program-points-title,.s-loyalty-program-rewards-heading-mobile,.s-loyalty-program-rewards-heading-desktop,.s-loyalty-program-reward-name,.s-loyalty-program-profile-label,.s-loyalty-program-profile-points,.s-loyalty-program-point-details-branches h2,.product-entry__title,.info h1,.way-item__content h3){color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-subtitle,.s-loyalty-program-description,.s-loyalty-program-points-description,.s-loyalty-program-point-description,.s-loyalty-program-reward-title,.s-loyalty-program-reward-points,.s-loyalty-program-point-details-branches p,.info p,.way-item__content p,.product-entry p){color:var(--vl-muted)!important;-webkit-text-fill-color:var(--vl-muted)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) .s-loyalty-program-icon {color:var(--color-primary)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) .s-loyalty-program-text-gradient {background:none!important;color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;opacity:.12;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-container,.s-loyalty-program-points-section,.s-loyalty-program-hero-background,.s-loyalty-program-reward-container,.s-loyalty-program-profile-container,.s-loyalty-program-point-wrapper,.loyalty__banner,.way-item,.product-entry) {border-radius:var(--vl-radius)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) .s-loyalty-program-container {overflow:clip;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) .s-loyalty-program-hero-background {background-color:var(--vl-surface)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) .s-loyalty-program-hero-gray :is(h1,p) {color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) .s-loyalty-program-hero-white :is(h1,p) {color:#fff!important;-webkit-text-fill-color:#fff!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-login-action,.s-loyalty-program-points-more-button) {background:var(--color-primary)!important;color:var(--color-primary-reverse,#fff)!important;-webkit-text-fill-color:var(--color-primary-reverse,#fff)!important;border-radius:var(--vl-radius)!important;}
+html body#app :is(salla-loyalty-program,.veloura-loyalty-theme,salla-modal.s-loyalty-program-modal) :is(.s-tabs-header-item,.s-tabs-bg-normal) {color:var(--vl-text)!important;}
+
+/* Verified against the live loyalty DOM, including body-mounted dialogs. */
+html body#app salla-modal.s-loyalty-program-modal .s-modal-body {
+ background:var(--vl-surface)!important;color:var(--vl-text)!important;
+ border-radius:var(--vl-radius)!important;
+}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-points-badge-points,.s-loyalty-program-rewards-points,.s-loyalty-program-points-badge-desktop,.s-loyalty-program-points-badge-mobile,.s-loyalty-program-points-modal-info,.s-loyalty-program-terms-and-conditions-heading,.s-loyalty-program-reward-info-message-heading,.s-loyalty-program-reward-details-categories-heading,.s-loyalty-program-rewards-name){color:var(--vl-text)!important;-webkit-text-fill-color:var(--vl-text)!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-terms-and-conditions-content,.s-loyalty-program-reward-info-message-content,.s-loyalty-program-reward-details-categories-item,.s-loyalty-program-reward-details-categories-item-content,.s-loyalty-program-points-chain-description,.s-loyalty-program-points-completed-note){color:var(--vl-muted)!important;-webkit-text-fill-color:var(--vl-muted)!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-circle-base,.s-badge-light,.s-modal-close) {
+ background:color-mix(in srgb,var(--vl-text) 8%,var(--vl-surface))!important;
+ color:var(--vl-text)!important;border-color:color-mix(in srgb,var(--vl-text) 20%,transparent)!important;
+}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-hero-background,.s-loyalty-program-reward-container) {overflow:hidden;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-points-action,.s-loyalty-program-rewards-action-base,.s-tabs-header-item) {border-radius:var(--vl-radius)!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-points-action-incomplete,.s-loyalty-program-rewards-action-on,.s-loyalty-program-rewards-action-confirm,.s-tabs-header-item.s-tabs-active) {
+ background:var(--color-primary)!important;color:var(--color-primary-reverse,#fff)!important;-webkit-text-fill-color:var(--color-primary-reverse,#fff)!important;
+}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) .s-loyalty-program-rewards-action-off {
+ background:color-mix(in srgb,var(--vl-text) 8%,var(--vl-surface))!important;color:var(--vl-muted)!important;-webkit-text-fill-color:var(--vl-muted)!important;
+}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-rewards-tab-icon,.s-loyalty-program-reward-details-tab-icon) {color:inherit!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-points-modal-header,.s-loyalty-program-rewards-modal-action,.s-loyalty-program-points-chains-wrapper,.s-loyalty-program-reward-details-categories-item) {border-color:color-mix(in srgb,var(--vl-text) 16%,transparent)!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) .s-loyalty-program-points-chains-wrapper {border-radius:var(--vl-radius)!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) .s-loyalty-program-points-modal-header {border-radius:var(--vl-radius) var(--vl-radius) 0 0!important;}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-hero-title,.s-loyalty-program-hero-description,.s-loyalty-program-rewards-name) {overflow-wrap:anywhere;}
 </style>
