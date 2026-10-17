@@ -7083,3 +7083,44 @@ html body#app .veloura-qv-full .veloura-qv-full__desc:not([hidden]):not(.veloura
 html body#app .veloura-qv-full .veloura-qv-full__desc[hidden] {display:none!important;}
 html body#app .veloura-qv-full .veloura-qv-full__desc::-webkit-scrollbar {display:none!important;width:0!important;height:0!important;}
 </style>
+
+<style id="veloura-card-spacing-category-material">
+/* One spacing owner, including native Salla product cards. */
+html body#app .s-product-card-entry .s-product-card-content {padding-inline:0!important;}
+html body#app .s-product-card-entry .s-product-card-content > :not(.s-product-card-content-footer):not(.veloura-qp-actions):not(salla-add-product-button) {padding-inline:10px;box-sizing:border-box;}
+html body#app .s-product-card-entry .s-product-card-content-footer {
+ padding-inline:0!important;box-sizing:border-box!important;
+ width:calc(100% - var(--veloura-product-button-margin-x,0px) * 2)!important;
+ max-width:calc(100% - var(--veloura-product-button-margin-x,0px) * 2)!important;
+ margin-inline:auto!important;
+}
+html body#app .s-product-card-entry salla-add-product-button :is(.s-add-product-button-main,salla-button) {min-width:0!important;max-width:100%!important;padding-inline:0!important;box-sizing:border-box!important;}
+html body#app .s-product-card-entry salla-add-product-button :is(button,.s-button-element) {
+ padding-inline:6px!important;gap:5px!important;min-width:0!important;box-sizing:border-box!important;
+}
+html body#app .s-product-card-entry salla-add-product-button .s-button-text {min-width:0!important;max-width:100%!important;white-space:normal!important;line-height:1.25!important;overflow:visible!important;}
+html body#app .s-product-card-entry salla-add-product-button :is(i,svg) {flex-shrink:0!important;}
+html body#app .s-product-card-entry .veloura-qp-actions > .veloura-qp-trigger {padding-inline:6px!important;margin-inline:0!important;box-sizing:border-box!important;}
+/* Identical material on the two image controls; inner buttons do not add a second coat. */
+html body#app .s-product-card-entry :is(.s-product-card-wishlist-btn,.veloura-quick-view-btn) {
+ background:var(--veloura-global-glass-control,rgba(230,234,241,.65))!important;
+ backdrop-filter:blur(12px) saturate(140%)!important;-webkit-backdrop-filter:blur(12px) saturate(140%)!important;
+ border:1px solid rgba(255,255,255,.3)!important;opacity:1!important;
+}
+html body#app .s-product-card-entry :is(.s-product-card-wishlist-btn,.veloura-quick-view-btn) :is(button,.s-button-element) {
+ background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border:0!important;opacity:1!important;
+}
+html body#app.veloura-glass-effect .veloura-category-children {
+ background:color-mix(in srgb,var(--vcat-secondary-bg,var(--veloura-site-second-bg,#f4f5f7)) 72%,transparent)!important;
+ backdrop-filter:blur(22px) saturate(160%)!important;-webkit-backdrop-filter:blur(22px) saturate(160%)!important;
+}
+html body#app.veloura-glass-effect .veloura-category-children::before {background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+/* Text categories, including “all”, share a single horizontal baseline. */
+html body#app .veloura-category-children:not(:has(.veloura-category-child__media img)) .veloura-category-child {
+ flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:52px!important;height:100%!important;padding:8px!important;box-sizing:border-box!important;
+}
+html body#app .veloura-category-children:not(:has(.veloura-category-child__media img)) .veloura-category-child__media {
+ width:28px!important;height:28px!important;flex:0 0 28px!important;aspect-ratio:1!important;background:transparent!important;
+}
+html body#app .veloura-category-children:not(:has(.veloura-category-child__media img)) .veloura-category-child__title {margin:0!important;line-height:1.4!important;font-size:clamp(13px,1.4vw,18px)!important;overflow-wrap:anywhere;}
+</style>
