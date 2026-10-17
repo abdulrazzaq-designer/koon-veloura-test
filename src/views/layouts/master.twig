@@ -7037,3 +7037,30 @@ html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) .s-
 html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) .s-loyalty-program-points-modal-header {border-radius:var(--vl-radius) var(--vl-radius) 0 0!important;}
 html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-hero-title,.s-loyalty-program-hero-description,.s-loyalty-program-rewards-name) {overflow-wrap:anywhere;}
 </style>
+
+<style id="veloura-loyalty-spacing-description">
+html body#app salla-loyalty-program {display:block;margin-top:24px;}
+html body#app salla-loyalty-program .s-loyalty-program-rewards-container {
+ box-sizing:border-box;width:100%;padding-inline:24px!important;padding-bottom:24px;
+}
+@media(max-width:767px){
+ html body#app salla-loyalty-program .s-loyalty-program-rewards-container {padding-inline:16px!important;}
+}
+html:not(.dark) body#app:not(.dark) salla-loyalty-program.salla-loyalty-program,
+html:not(.dark) body#app:not(.dark) salla-loyalty-program {
+ --vl-muted:var(--veloura-secondary-text,#64748b);
+}
+html:not(.dark) body#app:not(.dark) salla-loyalty-program .s-loyalty-program-points-section :is(.s-loyalty-program-points-description,.s-loyalty-program-point-description),
+html:not(.dark) body#app:not(.dark) salla-loyalty-program .s-loyalty-program-subtitle {
+ color:var(--veloura-secondary-text,#64748b)!important;
+ -webkit-text-fill-color:var(--veloura-secondary-text,#64748b)!important;
+ opacity:1!important;
+}
+html.dark body#app salla-loyalty-program .s-loyalty-program-points-section :is(.s-loyalty-program-points-description,.s-loyalty-program-point-description),
+html body#app.dark salla-loyalty-program .s-loyalty-program-points-section :is(.s-loyalty-program-points-description,.s-loyalty-program-point-description) {
+ color:var(--veloura-dark-secondary-text,#b8c0ce)!important;
+ -webkit-text-fill-color:var(--veloura-dark-secondary-text,#b8c0ce)!important;
+ opacity:1!important;
+}
+html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-rewards-points,.s-loyalty-program-points-badge-points,.s-loyalty-program-points-badge-desktop,.s-loyalty-program-points-badge-mobile) svg {color:var(--vl-text)!important;}
+</style>
