@@ -7064,3 +7064,22 @@ html body#app.dark salla-loyalty-program .s-loyalty-program-points-section :is(.
 }
 html body#app :is(salla-loyalty-program,salla-modal.s-loyalty-program-modal) :is(.s-loyalty-program-rewards-points,.s-loyalty-program-points-badge-points,.s-loyalty-program-points-badge-desktop,.s-loyalty-program-points-badge-mobile) svg {color:var(--vl-text)!important;}
 </style>
+
+<style id="veloura-quickview-description-two-lines">
+html body#app .veloura-qv-full .veloura-qv-full__desc:not([hidden]):not(.veloura-qv-full__hidden) {
+ display:-webkit-box!important;
+ -webkit-box-orient:vertical!important;
+ -webkit-line-clamp:2!important;
+ line-clamp:2;
+ line-height:1.75!important;
+ max-height:3.5em!important;
+ min-height:0!important;
+ overflow:hidden!important;
+ text-overflow:ellipsis!important;
+ white-space:normal!important;
+ overflow-wrap:anywhere!important;
+ scrollbar-width:none!important;
+}
+html body#app .veloura-qv-full .veloura-qv-full__desc[hidden] {display:none!important;}
+html body#app .veloura-qv-full .veloura-qv-full__desc::-webkit-scrollbar {display:none!important;width:0!important;height:0!important;}
+</style>
