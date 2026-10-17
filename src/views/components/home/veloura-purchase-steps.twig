@@ -639,3 +639,13 @@ html body .veloura-stp .stp__text p {
   })();
   </script>
 {% endif %}
+<style id="veloura-steps-dark-text">
+html.dark body .veloura-stp,html body.dark .veloura-stp {
+ --stp-title:var(--veloura-dark-primary-text,#f1f5fc)!important;
+ --stp-text:var(--veloura-dark-secondary-text,#b8c0ce)!important;
+}
+html.dark body .veloura-stp :is(.stp__heading h2,.stp__text h3),
+html body.dark .veloura-stp :is(.stp__heading h2,.stp__text h3) {color:var(--stp-title)!important;-webkit-text-fill-color:var(--stp-title)!important;}
+html.dark body .veloura-stp :is(.stp__heading p,.stp__text p),
+html body.dark .veloura-stp :is(.stp__heading p,.stp__text p) {color:var(--stp-text)!important;-webkit-text-fill-color:var(--stp-text)!important;}
+</style>

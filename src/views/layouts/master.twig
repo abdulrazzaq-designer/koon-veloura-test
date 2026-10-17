@@ -6961,3 +6961,26 @@ const sync=()=>{const c=getComputedStyle(bar),r=bar.getBoundingClientRect();cons
 new ResizeObserver(sync).observe(bar);new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']});window.addEventListener('resize',sync,{passive:true});sync();})();
 </script>
 
+
+<style id="veloura-quickview-store-colors">
+html body#app .veloura-qv-full {
+ --vqc-surface:var(--veloura-site-second-bg,#f4f6f8);
+ --vqc-text:var(--veloura-primary-text,#243341);
+}
+html.dark body#app .veloura-qv-full,html body#app.dark .veloura-qv-full {
+ --vqc-surface:var(--veloura-dark-secondary-bg,#162238);
+ --vqc-text:var(--veloura-dark-primary-text,#f1f5fc);
+}
+html body#app .veloura-qv-full .veloura-qv-full__dialog {
+ background:var(--vqc-surface)!important;color:var(--vqc-text)!important;
+}
+html body#app .veloura-qv-full :is(.veloura-qv-full__grid,.veloura-qv-full__content) {background:transparent!important;color:var(--vqc-text)!important;}
+html body#app .veloura-qv-full :is(.veloura-qv-full__title,.veloura-qv-full__desc,.veloura-qv-full__label,.veloura-qv-full__read-more) {color:var(--vqc-text)!important;-webkit-text-fill-color:var(--vqc-text)!important;}
+html body#app .veloura-qv-full :is(.veloura-qv-full__price,.veloura-qv-full__mini-current) {color:var(--color-primary)!important;-webkit-text-fill-color:var(--color-primary)!important;}
+html body#app .veloura-qv-full :is(.veloura-qv-full__add,.veloura-qv-full__circle) {
+ background:var(--veloura-product-button-bg,var(--color-primary))!important;
+ color:var(--veloura-product-button-text,#fff)!important;
+ -webkit-text-fill-color:var(--veloura-product-button-text,#fff)!important;
+}
+html body#app .veloura-qv-full :is(.veloura-qv-full__add,.veloura-qv-full__circle) :is(i,span) {color:inherit!important;-webkit-text-fill-color:inherit!important;}
+</style>

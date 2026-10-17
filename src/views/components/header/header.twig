@@ -1079,3 +1079,13 @@ customElements.whenDefined('custom-main-menu').then(function(){
 });
 })();
 </script>
+
+<style id="veloura-header-small-pills">
+@media(min-width:1024px){
+html body#app #mainnav#mainnav :is(.veloura-login-btn,.veloura-lang-desktop) {
+ height:34px!important;min-height:34px!important;max-height:34px!important;padding:0 12px!important;line-height:1!important;gap:6px!important;
+}
+html body#app #mainnav#mainnav .veloura-login-btn__label {font-size:14px!important;line-height:1.2!important;}
+html body#app #mainnav#mainnav .veloura-login-btn > i {font-size:21px!important;}
+}
+</style>
