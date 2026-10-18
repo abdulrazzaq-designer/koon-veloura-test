@@ -5281,7 +5281,12 @@ function markCard(card) {
     );
 
     promos.forEach(function (promo) {
-      promo.classList.add('veloura-pc-native-promo');
+      if (!promo.classList.contains('s-product-card-out-badge')) promo.classList.add('veloura-pc-native-promo');
+    });
+    var title = card.querySelector('.s-product-card-content-title');
+    card.querySelectorAll('.s-product-card-out-badge').forEach(function (badge) {
+      badge.classList.remove('veloura-pc-native-promo');
+      if (title && title.nextElementSibling !== badge) title.after(badge);
     });
 
     imageBox.classList.add('veloura-pc-image-actions-host');
@@ -7228,4 +7233,18 @@ html body#app .veloura-header-tabs-stack .sub-menu .veloura-menu-icon,
 html body#app .store-header .sub-menu .veloura-menu-icon {
   border-radius:var(--veloura-side-cats-img-radius,16px)!important;
 }
+</style>
+
+<style id="veloura-product-stock-status">
+html body#app .s-product-card-entry .s-product-card-out-badge {
+  position:static!important;inset:auto!important;transform:none!important;
+  display:block!important;width:auto!important;max-width:100%!important;
+  margin:6px 0!important;padding:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+  color:var(--veloura-primary-text,var(--color-text,#111827))!important;
+  font-size:13px!important;line-height:1.5!important;
+}
+html.dark body#app .s-product-card-entry .s-product-card-out-badge,
+html body#app.dark .s-product-card-entry .s-product-card-out-badge {color:var(--veloura-dark-primary-text,#fff)!important;}
+html body#app .veloura-qv-full__add:disabled {opacity:.65!important;cursor:not-allowed!important;}
 </style>

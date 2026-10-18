@@ -638,7 +638,7 @@ function markVelouraCardNativeParts(card) {
 
   card
     .querySelectorAll('.s-product-card-promotion-title,[class*="promotion"],[class*="promo"],[class*="badge"],[class*="ribbon"]')
-    .forEach((promo) => promo.classList.add('veloura-pc-native-promo'));
+    .forEach((promo) => { if (!promo.classList.contains('s-product-card-out-badge')) promo.classList.add('veloura-pc-native-promo'); });
 }
 
 // Recover hydrated hosts whose native button was lost during slider/card mounting.
@@ -973,9 +973,7 @@ class ProductCard extends HTMLElement {
       return `<div
         class="s-product-card-quantity veloura-pc-native-promo">${this.remained} ${salla.helpers.number(this.product?.quantity)}</div>`
     }
-    if (this.showQuantity && this.product?.is_out_of_stock) {
-      return `<div class="s-product-card-out-badge veloura-pc-native-promo">${this.outOfStock}</div>`
-    }
+
     return '';
   }
 
@@ -1141,6 +1139,7 @@ class ProductCard extends HTMLElement {
             : ``}
 
           <div class="s-product-card-content-main ${this.isSpecial ? 's-product-card-content-extra-padding' : ''}">
+            ${this.product?.is_out_of_stock && !this.product?.has_preorder_campaign ? `<div class="s-product-card-out-badge">${this.outOfStock}</div>` : ''}
             <h3 class="s-product-card-content-title">
               <a href="${this.product?.url}">${this.product?.name}</a>
             </h3>

@@ -3081,6 +3081,7 @@ document.addEventListener('DOMContentLoaded', () => {
    نافذة عرض سريع كاملة: سعر، خصم، كمية، سلة، مفضلة، مشاركة، وصف منسق
 ================================ */
 (function () {
+  var requestSequence = 0;
   var state = {
     product: null,
     sourceCard: null,
@@ -3360,6 +3361,25 @@ document.addEventListener('DOMContentLoaded', () => {
     return response;
   }
 
+  function stockState(product) {
+    if (!product) return null;
+    if (product.has_preorder_campaign === true || product.has_preorder_campaign === 'true') return false;
+    if (product.is_out_of_stock === true || product.is_out_of_stock === 'true' || product.is_out_of_stock === 1) return true;
+    if (product.status === 'out' || product.status === 'out_of_stock' || product.status === 'sold_out') return true;
+    if (product.is_out_of_stock === false || product.is_out_of_stock === 'false' || product.is_out_of_stock === 0 || product.status === 'sale') return false;
+    return null;
+  }
+
+  function cardStock(card) {
+    if (!card) return null;
+    var host = card.querySelector('salla-add-product-button');
+    var fromHost = stockState({status: host?.getAttribute('product-status')});
+    if (fromHost !== null) return fromHost;
+    var fromData = stockState(card.product);
+    if (fromData !== null) return fromData;
+    return card.classList.contains('s-product-card-out-of-stock') || !!card.querySelector('.s-product-card-out-badge') ? true : null;
+  }
+
   function normalizeProductResponse(response) {
     var product = readProductObject(response);
     if (!product || typeof product !== 'object') return null;
@@ -3402,6 +3422,7 @@ document.addEventListener('DOMContentLoaded', () => {
       regularPrice: formatMoney(regularPrice),
       sku: firstValue(product.sku, product.code, ''),
       description: cleanText(firstValue(product.description, product.short_description, product.subtitle, '')),
+      outOfStock: stockState(product),
       raw: product
     };
   }
@@ -3498,6 +3519,7 @@ document.addEventListener('DOMContentLoaded', () => {
         image: image || '',
         price: formatMoney(price),
         regularPrice: cleanPriceString(regularPrice),
+        outOfStock: stockState({status: pageAddBtn?.getAttribute("product-status")}) ?? (/OutOfStock|SoldOut/.test(offers?.availability || "") ? true : /InStock|PreOrder/.test(offers?.availability || "") ? false : null),
         description: cleanText(description)
       };
     } catch (error) {
@@ -3517,6 +3539,7 @@ document.addEventListener('DOMContentLoaded', () => {
       price: cardPrice.price,
       regularPrice: cardPrice.regularPrice,
       description: getCardDescription(card),
+      outOfStock: cardStock(card),
       sourceCard: card
     };
   }
@@ -4361,7 +4384,11 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle(actions.querySelector('[data-veloura-qv-share]'), setting('showShare', true));
     toggle(actions, setting('showWishlist', true) || setting('showShare', true));
     toggle(bottom, setting('showAddToCart', true) || setting('showPrice', true));
-    toggle(qtyWrap, setting('showAddToCart', true) && setting('showQuantity', true));
+    toggle(qtyWrap, !data.outOfStock && setting('showAddToCart', true) && setting('showQuantity', true));
+    add.disabled = !!loading || data.outOfStock === true;
+    add.setAttribute('aria-disabled', String(add.disabled));
+    add.querySelector('span').textContent = data.outOfStock ? 'نفدت الكمية' : 'إضافة للسلة';
+    add.querySelector('i').hidden = !!data.outOfStock;
     toggle(miniPrice, setting('showPrice', true) && !!(data.price || data.regularPrice));
     toggle(add, setting('showAddToCart', true));
   }
@@ -4374,6 +4401,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function closeModal() {
+    requestSequence++;
     var modal = document.querySelector('.veloura-qv-full');
     if (!modal) return;
     modal.classList.remove('is-open', 'is-loading');
@@ -4390,7 +4418,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function addCurrentToCart() {
-    if (state.busy || !state.product) return;
+    if (state.busy || !state.product || state.product.outOfStock || ensureModal().classList.contains("is-loading")) return;
 
     var product = state.product;
     var modal = ensureModal();
@@ -4487,6 +4515,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function openQuickView(button) {
+    var requestId = ++requestSequence;
     var cardData = getCardData(button);
     state.sourceCard = cardData.sourceCard;
     state.qty = 1;
@@ -4504,6 +4533,7 @@ document.addEventListener('DOMContentLoaded', () => {
       details = await fetchProductFromPage(cardData.url);
     }
 
+    if (requestId !== requestSequence) return;
     if (details) {
       render({
         id: firstValue(details.id, cardData.id),
@@ -4514,6 +4544,7 @@ document.addEventListener('DOMContentLoaded', () => {
         regularPrice: firstValue(details.regularPrice, cardData.regularPrice),
         sku: firstValue(details.sku, ''),
         description: firstValue(details.description, cardData.description),
+        outOfStock: details.outOfStock ?? cardData.outOfStock,
         sourceCard: cardData.sourceCard
       }, false);
     } else {
