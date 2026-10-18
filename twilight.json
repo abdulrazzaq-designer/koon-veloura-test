@@ -4707,6 +4707,8 @@
       "label": "صور التصنيفات المرتبطة",
       "description": "ارفع صورة واختر تصنيف أو أكثر لتظهر هذه الصورة عليهم",
       "id": "veloura_category_images_map_v7_2026",
+      "minLength": 0,
+      "maxLength": 50,
       "value": [],
       "required": false,
       "conditions": [
