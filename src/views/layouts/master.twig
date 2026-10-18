@@ -5234,6 +5234,8 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
 
 function markCard(card) {
     if (!card) return;
+    window.VelouraProductCardContract?.applyCard(card);
+    window.__velouraQuickPurchaseRuntime?.refresh(card);
 
     var addButtons = card.querySelectorAll('salla-add-product-button');
     addButtons.forEach(syncVelouraCardAddButton);
@@ -5317,19 +5319,27 @@ function markCard(card) {
         window.requestAnimationFrame(function () {
           scheduled = false;
 
-          pendingCards.forEach(function (card) {
+          // Ignore our own synchronous DOM repairs, then resume watching Salla.
+          window.__velouraProductCardLiveObserver.disconnect();
+          try { pendingCards.forEach(function (card) {
             if (card && card.isConnected) {
               markCard(card);
             }
-          });
-
-          pendingCards.clear();
+          }); } finally {
+            pendingCards.clear();
+            window.__velouraProductCardLiveObserver.observe(document.body, {
+              childList:true, subtree:true, attributes:true,
+              attributeFilter:['product-id','href']
+            });
+          }
         });
       }
 
       window.__velouraProductCardLiveObserver =
         new MutationObserver(function (mutations) {
           mutations.forEach(function (mutation) {
+            var owner = mutation.target.closest?.('.s-product-card-entry');
+            if (owner) pendingCards.add(owner);
             mutation.addedNodes.forEach(function (node) {
               if (!(node instanceof Element)) return;
 
@@ -5363,7 +5373,9 @@ function markCard(card) {
         document.body,
         {
           childList: true,
-          subtree: true
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['product-id','href']
         }
       );
     }
@@ -6518,7 +6530,8 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
       button.dataset.productUrl = link.href;
       button.setAttribute('aria-label', 'شراء سريع');
       button.setAttribute('aria-haspopup', 'dialog');
-      button.innerHTML = '<i class="sicon-shopping-bag" aria-hidden="true"></i>' + (position === 'below' ? '<span>شراء سريع</span>' : '');
+      const buttonContent = '<i class="sicon-shopping-bag" aria-hidden="true"></i>' + (position === 'below' ? '<span>شراء سريع</span>' : '');
+      if (button.innerHTML !== buttonContent) button.innerHTML = buttonContent;
       footer.classList.remove('veloura-qp-actions--below', 'veloura-qp-actions--left', 'veloura-qp-actions--right');
       footer.classList.add('veloura-qp-actions', 'veloura-qp-actions--' + position);
       if (button.parentNode !== footer) footer.appendChild(button);
@@ -6542,7 +6555,7 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
       if (root.matches?.('.s-product-card-entry')) inject(root);
       root.querySelectorAll?.('.s-product-card-entry').forEach(inject);
     }
-    window.__velouraQuickPurchaseRuntime = { version: 2, refresh: () => scan() };
+    window.__velouraQuickPurchaseRuntime = { version: 2, refresh: (root = document) => scan(root) };
     window.addEventListener('click', event => {
       const button = event.composedPath?.().find(node => node?.matches?.('[data-veloura-purchase]')) || event.target.closest?.('[data-veloura-purchase]');
       if (!button) return;
