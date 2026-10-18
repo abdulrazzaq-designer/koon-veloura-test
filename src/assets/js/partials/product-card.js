@@ -1092,7 +1092,7 @@ class ProductCard extends HTMLElement {
     this.minimal? this.classList.add('s-product-card-minimal') : '';
     this.product?.donation?  this.classList.add('s-product-card-donation') : '';
     this.shadowOnHover?  this.classList.add('s-product-card-shadow') : '';
-    this.product?.is_out_of_stock?  this.classList.add('s-product-card-out-of-stock') : '';
+    this.classList.toggle('s-product-card-out-of-stock', !!this.product?.is_out_of_stock && !this.product?.has_preorder_campaign);
     this.isInWishlist = !salla.config.isGuest() && salla.storage.get('salla::wishlist', []).includes(Number(this.product.id));
       this.innerHTML = `
         <div class="${!this.fullImage ? 's-product-card-image veloura-pc-image-actions-host' : 's-product-card-image-full'}">

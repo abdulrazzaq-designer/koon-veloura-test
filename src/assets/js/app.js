@@ -3363,21 +3363,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function stockState(product) {
     if (!product) return null;
-    if (product.has_preorder_campaign === true || product.has_preorder_campaign === 'true') return false;
-    if (product.is_out_of_stock === true || product.is_out_of_stock === 'true' || product.is_out_of_stock === 1) return true;
-    if (product.status === 'out' || product.status === 'out_of_stock' || product.status === 'sold_out') return true;
-    if (product.is_out_of_stock === false || product.is_out_of_stock === 'false' || product.is_out_of_stock === 0 || product.status === 'sale') return false;
+    var truth = value => value === true || value === 'true' || value === 1 || value === '1';
+    if (truth(product.has_preorder_campaign)) return false;
+    if (truth(product.is_out_of_stock)) return true;
+    var status = String(product.status || '').toLowerCase();
+    if (['out', 'out_of_stock', 'sold_out', 'outofstock'].includes(status)) return true;
+    if (!truth(product.is_infinite) && !truth(product.unlimited_quantity) &&
+        (product.quantity === 0 || product.quantity === '0')) return true;
+    if (product.is_available === false || product.is_available === 'false') return true;
+    if (product.is_out_of_stock === false || product.is_out_of_stock === 'false' || product.is_out_of_stock === 0 || status === 'sale') return false;
     return null;
   }
 
   function cardStock(card) {
     if (!card) return null;
+    var data = card.product || card.closest('product-card')?.product;
+    if (data?.has_preorder_campaign === true || data?.has_preorder_campaign === 'true') return false;
     var host = card.querySelector('salla-add-product-button');
     var fromHost = stockState({status: host?.getAttribute('product-status')});
-    if (fromHost !== null) return fromHost;
-    var fromData = stockState(card.product);
-    if (fromData !== null) return fromData;
-    return card.classList.contains('s-product-card-out-of-stock') || !!card.querySelector('.s-product-card-out-badge') ? true : null;
+    var fromData = stockState(data);
+    // A generic "sale" status must not override an explicit sold-out signal.
+    if (fromData === true || fromHost === true || card.classList.contains('s-product-card-out-of-stock') ||
+        !!card.querySelector('.s-product-card-out-badge') || /نف[دذ]ت\s*الكمية/.test(host?.textContent || '')) return true;
+    return fromData ?? fromHost;
   }
 
   function normalizeProductResponse(response) {
@@ -4345,6 +4353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.product = data;
 
     modal.classList.toggle('is-loading', !!loading);
+    modal.classList.toggle('is-out-of-stock', data.outOfStock === true);
 
     var image = modal.querySelector('.veloura-qv-full__image');
     var title = modal.querySelector('.veloura-qv-full__title');
@@ -4544,7 +4553,7 @@ document.addEventListener('DOMContentLoaded', () => {
         regularPrice: firstValue(details.regularPrice, cardData.regularPrice),
         sku: firstValue(details.sku, ''),
         description: firstValue(details.description, cardData.description),
-        outOfStock: details.outOfStock ?? cardData.outOfStock,
+        outOfStock: details.outOfStock === true || cardStock(cardData.sourceCard) === true || cardData.outOfStock === true ? true : (details.outOfStock ?? cardData.outOfStock),
         sourceCard: cardData.sourceCard
       }, false);
     } else {

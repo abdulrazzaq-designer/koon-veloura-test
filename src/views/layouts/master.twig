@@ -5234,6 +5234,12 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
 
 function markCard(card) {
     if (!card) return;
+    var stockHost = card.querySelector('salla-add-product-button');
+    var stockData = card.product || card.closest('product-card')?.product;
+    var soldOut = stockData?.is_out_of_stock === true || stockData?.is_out_of_stock === 'true' ||
+      ['out','out_of_stock','sold_out'].includes(stockHost?.getAttribute('product-status')) ||
+      !!card.querySelector('.s-product-card-out-badge') || /نف[دذ]ت\s*الكمية/.test(stockHost?.textContent || '');
+    card.classList.toggle('veloura-card-sold-out', soldOut && !stockData?.has_preorder_campaign);
     window.VelouraProductCardContract?.applyCard(card);
     window.__velouraQuickPurchaseRuntime?.refresh(card);
 
@@ -7247,4 +7253,14 @@ html body#app .s-product-card-entry .s-product-card-out-badge {
 html.dark body#app .s-product-card-entry .s-product-card-out-badge,
 html body#app.dark .s-product-card-entry .s-product-card-out-badge {color:var(--veloura-dark-primary-text,#fff)!important;}
 html body#app .veloura-qv-full__add:disabled {opacity:.65!important;cursor:not-allowed!important;}
+</style>
+
+<style id="veloura-sold-out-grey">
+html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) {filter:grayscale(1)!important;}
+html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) :is(salla-add-product-button button,salla-add-product-button .s-button-element,.veloura-qp-trigger),
+html body#app .veloura-qv-full.is-out-of-stock .veloura-qv-full__add {
+  background:#6b7280!important;border-color:#6b7280!important;color:#fff!important;
+  opacity:1!important;box-shadow:none!important;
+}
+html body#app .veloura-qv-full.is-out-of-stock .veloura-qv-full__image {filter:grayscale(1)!important;}
 </style>
