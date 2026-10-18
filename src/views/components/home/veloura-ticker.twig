@@ -104,12 +104,12 @@ body .veloura-tkr > .container {
 .veloura-tkr .tkr__band {
   display: flex;
   align-items: center;
-  width: 130%;
-  margin-inline-start: -15%;
+  width: calc(100% - var(--tkr-height) * .12);
+  margin-inline: auto;
+  box-sizing: border-box;
   min-height: var(--tkr-height);
   overflow: hidden;
-  /* The rounding is the BAND's, which is the thing the merchant sees; putting
-     it on the wrap rounded the whole element around the ribbon. */
+  /* Keep the band ends inside the clipping area so their radius stays visible. */
   border-radius: var(--tkr-radius, 16px);
   background: linear-gradient(90deg, var(--band-from), var(--band-to));
   color: var(--band-text);
@@ -120,7 +120,7 @@ body .veloura-tkr > .container {
 }
 
 .veloura-tkr.tkr--straight .tkr__band { width: 100%; margin-inline-start: 0; }
-.veloura-tkr.tkr--bleed .tkr__band { border-radius: 0; }
+/* Full width controls gutters only; the configured corner radius still applies. */
 
 /* The track carries N copies of the list and slides exactly ONE copy's width,
    so the moment it resets, copy 2 is standing where copy 1 began and the seam
@@ -290,12 +290,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   .veloura-tkr.tkr--cross .tkr__wrap { height: max(calc(var(--tkr-height) * 2.6), calc(var(--tkr-height) + 9vw)); }
 }
 
-/* الشريطان المتقاطعان على الجوال: بدل تقاطع X في المنتصف، يلتقيان عند
-   الطرف الأيسر فقط وينطلقان منه — العلوي يصعد والسفلي ينزل باتجاه اليمين —
-   فيظهر جزء أكبر من الشريط الخلفي.
-   محور الدوران هو الحافة اليسرى للإطار: الشريط أعرض من الإطار بـ 15% من كل
-   جهة (عرضه 130%)، فالحافة تقع عند 15/130 = 11.54% من عرضه. الارتفاع يتسع
-   لافتراق الطرفين عند اليمين: 2 × العرض × tan(3°) ≈ 10.5% من العرض. */
+/* On mobile both bands meet at their visible left edge. */
 @media (max-width: 767px) {
   .veloura-tkr.tkr--cross .tkr__wrap {
     height: calc(var(--tkr-height) + 11vw + 10px) !important;
@@ -303,7 +298,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
 
   .veloura-tkr.tkr--cross .tkr__band--a,
   .veloura-tkr.tkr--cross .tkr__band--b {
-    transform-origin: 11.54% 50%;
+    transform-origin: 0% 50%;
   }
 
   .veloura-tkr.tkr--cross .tkr__band--a { transform: translateY(-50%) rotate(calc(var(--tkr-angle) * -1)); }
@@ -389,6 +384,8 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
   {# The gutter is written only when something asks for one: a custom number
      from the merchant, or zero while the ribbon is flush with the edges (the
      default). Left unwritten, the container keeps the theme's own gutter. #}
+  {% set tkr_radius = component.veloura_tkr_radius is defined ? component.veloura_tkr_radius : 16 %}
+  {% if tkr_radius.value is defined %}{% set tkr_radius = tkr_radius.value %}{% endif %}
   {% set tkr_gutter = '' %}
   {% if component.veloura_tkr_full_width %}{% set tkr_gutter = 0 %}{% endif %}
   {% if component.veloura_tkr_custom_space %}{% set tkr_gutter = component.veloura_tkr_side_space|default(0) %}{% endif %}
@@ -409,7 +406,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
       --tkr-size: {{ component.veloura_tkr_font_size|default(14) }}px;
       --tkr-gap: {{ component.veloura_tkr_gap|default(26) }}px;
       --tkr-speed: {{ component.veloura_tkr_speed|default(26) }}s;
-      --tkr-radius: {{ component.veloura_tkr_radius|default(16) }}px;
+      --tkr-radius: {{ tkr_radius }}px;
       --tkr-edge: {{ component.veloura_tkr_border ? (component.veloura_tkr_border_width|default(1)) : 0 }}px;
       --tkr-edge-color: {{ component.veloura_tkr_border_color|default('rgba(255,255,255,.35)') }};
       --tkr-shine: {{ component.veloura_tkr_shine_color|default('#ffe9a8') }};
