@@ -5891,6 +5891,20 @@ html body#app .mm-ocd.veloura-side-menu-drawer .mm-ocd__content :is(a,span,li,i,
 
   function applyCategoryBadges(menu, settings) {
     if (!menu) return;
+    // Mmenu otherwise derives the panel title from the label plus its badge.
+    menu.querySelectorAll('li > ul').forEach(function (panel) {
+      var label = Array.from(panel.parentElement.children).find(function (el) {
+        return el.matches('a, span');
+      });
+      if (!label) return;
+      var clean = label.cloneNode(true);
+      clean.querySelectorAll('.veloura-side-category-badge').forEach(function (badge) { badge.remove(); });
+      var title = normalizeText(clean.textContent);
+      if (title && panel.dataset.mmSpnTitle !== title) panel.dataset.mmSpnTitle = title;
+      if (title && panel.classList.contains('mm-spn--open') && !panel.classList.contains('mm-spn--parent') && menu.dataset.mmSpnTitle !== title) {
+        menu.dataset.mmSpnTitle = title;
+      }
+    });
     var rules = normalizeCollection(settings.categoryBadges);
     menu.querySelectorAll('li > a, li > span').forEach(function (link) {
       var existing = link.querySelector('.veloura-side-category-badge');
@@ -7204,5 +7218,14 @@ html body#app .veloura-category-children [data-category-root="true"] :is(.velour
 html body#app .veloura-category-children [data-category-root="true"] i,
 html body#app .veloura-category-children [data-category-root="true"] i::before {
  display:block!important;font-size:19px!important;line-height:22px!important;margin:0!important;padding:0!important;position:static!important;transform:none!important;
+}
+</style>
+
+<style id="veloura-desktop-category-image-radius">
+/* Both menu presentations use the merchant's side-menu image corner setting. */
+html body#app .veloura-menu-icon,
+html body#app .veloura-header-tabs-stack .sub-menu .veloura-menu-icon,
+html body#app .store-header .sub-menu .veloura-menu-icon {
+  border-radius:var(--veloura-side-cats-img-radius,16px)!important;
 }
 </style>
