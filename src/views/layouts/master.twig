@@ -7248,6 +7248,17 @@ html body#app .veloura-qv-full__add:disabled {cursor:not-allowed!important;}
 </style>
 
 <style id="veloura-sold-out-grey">
+/* Native Salla hosts paint from copied theme tokens, including inline styles.
+   Override the token on every action host so no primary-colored edge survives. */
+html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) salla-add-product-button,
+html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) salla-add-product-button * {
+  --veloura-product-button-bg:#6b7280!important;
+  --veloura-product-button-text:#fff!important;
+  --color-primary:#6b7280!important;
+  --button-background-color:#6b7280!important;
+  --button-border-color:#6b7280!important;
+}
+
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) {filter:none!important;}
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) :is(salla-add-product-button button,salla-add-product-button .s-button-element,.veloura-qp-trigger),
 html body#app .veloura-qv-full.is-out-of-stock .veloura-qv-full__add {
@@ -7256,7 +7267,7 @@ html body#app .veloura-qv-full.is-out-of-stock .veloura-qv-full__add {
 }
 /* Mute the picture without desaturating the card, text or action icons. */
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) :is(.s-product-card-image img,img.s-product-card-image,img.loaded),
-html body#app .veloura-qv-full.is-out-of-stock .veloura-qv-full__image {filter:saturate(.55) brightness(.88)!important;}
+html body#app .veloura-qv-full.is-out-of-stock .veloura-qv-full__image {filter:saturate(.50) brightness(.88)!important;}
 /* Paint one button surface, not nested grey pills. */
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) salla-add-product-button,
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) salla-add-product-button :is(salla-button,.s-add-product-button-main) {background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
