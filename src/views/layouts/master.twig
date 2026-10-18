@@ -7165,10 +7165,10 @@ html body#app .veloura-category-compact__item[data-category-root="true"] .velour
 <style id="veloura-quick-purchase-square-category-align">
 /* Only the icon beside the cart; the below-cart text button keeps its layout. */
 html body#app .s-product-card-entry .veloura-qp-actions > .veloura-qp-trigger:not(.veloura-qp-trigger--below) {
- width:44px!important;min-width:44px!important;max-width:44px!important;
- height:44px!important;min-height:44px!important;max-height:44px!important;
- flex:0 0 44px!important;aspect-ratio:1!important;padding:0!important;
- border-radius:min(var(--veloura-product-button-radius,12px),12px)!important;
+ width:var(--veloura-product-button-height,44px)!important;min-width:var(--veloura-product-button-height,44px)!important;max-width:var(--veloura-product-button-height,44px)!important;
+ height:var(--veloura-product-button-height,44px)!important;min-height:var(--veloura-product-button-height,44px)!important;max-height:var(--veloura-product-button-height,44px)!important;
+ flex:0 0 var(--veloura-product-button-height,44px)!important;aspect-ratio:1!important;padding:0!important;
+ border-radius:var(--veloura-product-button-radius,16px)!important;
  display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;
 }
 html body#app .s-product-card-entry .veloura-qp-trigger:not(.veloura-qp-trigger--below) > i {margin:0!important;font-size:20px!important;line-height:1!important;}
