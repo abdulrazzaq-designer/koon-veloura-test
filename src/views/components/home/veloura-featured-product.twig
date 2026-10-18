@@ -153,10 +153,12 @@ body .veloura-fp2 > .container {
   height: 100%;
   overflow: hidden;
   border-radius: var(--fp2-radius);
-  background: rgba(15, 23, 42, .04);
+  background: transparent;
 }
 
 .veloura-fp2 .fp2__img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+
+.veloura-fp2 :is(.fp2__media, .fp2__frame, .fp2__img) { background: transparent !important; }
 
 /* "مربعة" crops to an even frame; "كاملة بأبعادها" lets the picture keep its
    own shape — which means the FRAME has to give up its height as well, or the
@@ -344,13 +346,13 @@ body .veloura-fp2 > .container {
 
 @media (min-width: 768px) { .veloura-fp2 .fp2__name { font-size: 28px; } }
 
-/* Two lines by default; the button below unfolds the rest in place. */
-.veloura-fp2 .fp2__desc { width: 100%; max-width: 46ch; }
+/* One-line preview; the link below opens the full product details. */
+.veloura-fp2 .fp2__desc { width: 100%; max-width: 46ch; min-width: 0; }
 
 .veloura-fp2 .fp2__excerpt {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
   margin: 0;
   font-size: 14px;
@@ -667,7 +669,7 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
             <h3 class="fp2__name"><a data-vfp-link data-vfp-name href="#"></a></h3>
 
             {% if component.veloura_fp_show_excerpt %}
-              {# Two lines under the name, and "عرض المزيد" opens the product's
+              {# One line under the name, and "عرض المزيد" opens the product's
                  own page — where the full description sits next to the options
                  the buyer needs anyway. #}
               <div class="fp2__desc" data-vfp-excerpt-wrap hidden>
