@@ -6406,6 +6406,8 @@ html body .veloura-qp__details { color:var(--color-primary); margin-top:4px; pad
       });
     }
     function getCard(button) {
+      const featured=button.closest('.veloura-fp2');
+      if(featured){const link=featured.querySelector('[data-vfp-name]');return {card:featured,id:button.dataset.productId||featured.querySelector('[data-vfp-add]')?.getAttribute('product-id'),url:link?.href||button.dataset.productUrl,image:featured.querySelector('[data-vfp-image]')?.src||'',name:link?.textContent?.trim()||'المنتج'};}
       const card = button.closest('.s-product-card-entry');
       const link = card?.querySelector('.s-product-card-content-title a, .s-product-card-image a, a.s-product-card-image, .s-product-card-image-full a');
       const id = button.dataset.productId || card?.querySelector('salla-add-product-button')?.getAttribute('product-id') || card?.getAttribute('product-id') || card?.id;

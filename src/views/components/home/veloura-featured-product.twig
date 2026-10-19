@@ -300,9 +300,9 @@ body .veloura-fp2 > .container {
     max-width: 100%;
     padding: 8px;
     border: 0;
-    border-radius: var(--fp2-r-pill);
+    border-radius: var(--fp2-radius);
     background: var(--fp2-second);
-    box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
+    box-shadow: none;
   }
 
   .veloura-fp2 .fp2__thumbs {
@@ -545,6 +545,14 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
   .veloura-fp2 .fp2__img, .veloura-fp2 .fp2__nav { transition: none; }
   .veloura-fp2 .fp2__thumbs { scroll-behavior: auto; }
 }
+
+.veloura-fp2 .fp2__gallery,.veloura-fp2 .fp2__strip {border-radius:var(--fp2-radius)!important;box-shadow:none!important;}
+.veloura-fp2 .fp2__strip {background:var(--fp2-second)!important;}
+.veloura-fp2 .fp2__purchase-actions {display:flex;align-items:stretch;gap:10px;width:100%;min-width:0;}
+.veloura-fp2 .fp2__purchase-actions .fp2__add {flex:1 1 0;min-width:0;width:auto;}
+.veloura-fp2 .fp2__quick-purchase {display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1 1 0;min-width:0;padding:10px 12px;border:1px solid var(--fp2-accent);border-radius:var(--fp2-radius);color:var(--fp2-accent);background:var(--fp2-second);font:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+.veloura-fp2 .fp2__quick-view {position:absolute;z-index:3;inset-inline-end:12px;bottom:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:var(--veloura-global-glass-control,rgba(255,255,255,.65));backdrop-filter:blur(12px);color:var(--fp2-title);cursor:pointer;font-size:21px;}
+.veloura-fp2 :is(.fp2__quick-view,.fp2__quick-purchase):disabled {opacity:.5;cursor:not-allowed;}
 </style>
 
   {% set fp_image_fit = component.veloura_fp_image_fit|default('') %}
@@ -651,7 +659,7 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
             </div>
           {% endif %}
 
-          <div class="fp2__media">
+          <div class="fp2__media"><button type="button" class="fp2__quick-view veloura-quick-view-btn" data-vfp-quick-view aria-label="عرض سريع" aria-haspopup="dialog" disabled><i class="sicon-eye" aria-hidden="true"></i></button>
             <a class="fp2__frame" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
               <img class="fp2__img" data-vfp-image src="" alt="" loading="lazy" decoding="async">
               {# The phrase rides the photo as a small pane of glass rather than
@@ -709,14 +717,14 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
               </div>
             {% endif %}
 
-            <salla-add-product-button
+            <div class="fp2__purchase-actions"><salla-add-product-button
               class="fp2__add"
               data-vfp-add
               product-id=""
               product-status="sale"
               product-type="product"
               width="wide"
-            >{{ component.veloura_fp_button_text|default('أضف للسلة') }}</salla-add-product-button>
+            >{{ component.veloura_fp_button_text|default('أضف للسلة') }}</salla-add-product-button><button type="button" class="fp2__quick-purchase" data-veloura-purchase data-vfp-quick-purchase aria-haspopup="dialog" disabled><i class="sicon-shopping-bag" aria-hidden="true"></i><span>الشراء السريع</span></button></div>
 
           </div>
 
@@ -739,4 +747,11 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
     </div>
 
   </section>
+<script>
+(function(){
+const section=document.currentScript.previousElementSibling;if(!section?.matches('.veloura-fp2'))return;
+const sync=()=>{const cart=section.querySelector('[data-vfp-add]'),link=section.querySelector('[data-vfp-name]'),id=cart?.getAttribute('product-id');section.querySelectorAll('[data-vfp-quick-view],[data-vfp-quick-purchase]').forEach(button=>{button.disabled=!id||!link?.href||link.getAttribute('href')==='#';if(button.dataset.productId!==(id||''))button.dataset.productId=id||'';if(button.dataset.productUrl!==(link?.href||''))button.dataset.productUrl=link?.href||'';});};
+let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;sync();});}).observe(section,{childList:true,subtree:true,attributes:true,attributeFilter:['product-id','href']});sync();
+})();
+</script>
 {% endif %}

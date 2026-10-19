@@ -3543,6 +3543,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getCardData(button) {
+    var featured = button.closest('.veloura-fp2');
+    if (featured) return {
+      id: button.dataset.productId || featured.querySelector('[data-vfp-add]')?.getAttribute('product-id'),
+      name: featured.querySelector('[data-vfp-name]')?.textContent?.trim() || 'المنتج',
+      url: featured.querySelector('[data-vfp-name]')?.href || button.dataset.productUrl,
+      image: featured.querySelector('[data-vfp-image]')?.src || '',
+      price: cleanPriceString(featured.querySelector('[data-vfp-price]')?.innerHTML || ''),
+      regularPrice: cleanPriceString(featured.querySelector('[data-vfp-old]')?.innerHTML || ''),
+      description: featured.querySelector('[data-vfp-excerpt]')?.textContent || '',
+      outOfStock: cardStock(featured), sourceCard: featured
+    };
     var card = button.closest('.s-product-card-entry') || button.closest('product-card');
     var cardPrice = getCardPrice(card);
 
