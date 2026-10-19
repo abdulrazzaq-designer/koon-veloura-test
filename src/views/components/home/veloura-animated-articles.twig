@@ -121,6 +121,27 @@ html body.dark .veloura-animated-articles .veloura-animated-articles__heading p 
    البطاقة بالخلفية الثانوية للفاتح (نفس المتغير الذي تقرأه بقية عناصر فيلورا). */
 .veloura-animated-articles .veloura-animated-articles__card {
   background: var(--veloura-site-second-bg, var(--color-secondary, #f4f5f7)) !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.veloura-animated-articles .veloura-animated-articles__image {
+  flex-shrink: 0;
+}
+
+.veloura-animated-articles .veloura-animated-articles__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.veloura-animated-articles .veloura-animated-articles__content:has(.veloura-animated-articles__more) p {
+  margin-bottom: 16px;
+}
+
+.veloura-animated-articles .veloura-animated-articles__more {
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 /* لا خلفية خلف الصورة في الوضعين: الصورة تملأ إطارها مقصوصة (cover)،
