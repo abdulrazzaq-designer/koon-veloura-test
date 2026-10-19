@@ -7273,3 +7273,32 @@ html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-ou
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) salla-add-product-button :is(salla-button,.s-add-product-button-main) {background:transparent!important;border-color:transparent!important;box-shadow:none!important;}
 html body#app .s-product-card-entry:is(.veloura-card-sold-out,.s-product-card-out-of-stock) salla-add-product-button button {opacity:1!important;}
 </style>
+
+<style id="veloura-product-loyalty-gifting-text">
+/* Salla's product widgets ship their own fixed dark text colors. */
+html.dark body#app :is(salla-loyalty-banner,salla-gifting),
+html body#app.dark :is(salla-loyalty-banner,salla-gifting) {
+  --veloura-widget-title:var(--veloura-dark-primary-text,#f1f5f9);
+  --veloura-widget-description:var(--veloura-dark-secondary-text,#a8b3c5);
+}
+html:is(.dark) body#app salla-loyalty-banner .s-loyalty-program-banner-container-banner-title,
+html body#app.dark salla-loyalty-banner .s-loyalty-program-banner-container-banner-title,
+html.dark body#app salla-gifting .s-list-tile-item-title,
+html body#app.dark salla-gifting .s-list-tile-item-title {
+  color:var(--veloura-widget-title)!important;-webkit-text-fill-color:var(--veloura-widget-title)!important;
+}
+html.dark body#app salla-loyalty-banner .s-loyalty-program-banner-container-banner-subtitle,
+html body#app.dark salla-loyalty-banner .s-loyalty-program-banner-container-banner-subtitle,
+html.dark body#app salla-gifting :is(.s-list-tile-item-subtitle,[slot="subtitle"]),
+html body#app.dark salla-gifting :is(.s-list-tile-item-subtitle,[slot="subtitle"]) {
+  color:var(--veloura-widget-description)!important;-webkit-text-fill-color:var(--veloura-widget-description)!important;
+  opacity:1!important;
+}
+html.dark body#app salla-gifting :is(.s-list-tile-item-subtitle,[slot="subtitle"]) *,
+html body#app.dark salla-gifting :is(.s-list-tile-item-subtitle,[slot="subtitle"]) * {
+  color:inherit!important;-webkit-text-fill-color:inherit!important;
+}
+html body#app salla-loyalty-banner:not([hidden]),
+html body#app salla-loyalty-points-banner:not([hidden]) {display:block;}
+html body#app salla-loyalty-banner + salla-loyalty-points-banner:not([hidden]) {margin-block-start:16px!important;}
+</style>
