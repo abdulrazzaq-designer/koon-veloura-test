@@ -2025,6 +2025,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <style id="veloura-product-gallery-surface-controls">
+html body#app .veloura-product-page salla-slider.details-slider.image-slider,
+html body#app .veloura-product-page salla-slider.details-slider.image-slider :is(.swiper,.swiper-wrapper,.swiper-slide,.s-slider-container,.s-slider-block,[slot="items"],.magnify-wrapper) {
+  border:0!important;box-shadow:none!important;
+}
+
 html body#app .veloura-product-page salla-slider.details-slider.image-slider {
   --veloura-gallery-surface:var(--veloura-site-second-bg,#f5f5f5);
   --veloura-product-inner-bg:var(--veloura-gallery-surface);

@@ -7302,3 +7302,35 @@ html body#app salla-loyalty-banner:not([hidden]),
 html body#app salla-loyalty-points-banner:not([hidden]) {display:block;}
 html body#app salla-loyalty-banner + salla-loyalty-points-banner:not([hidden]) {margin-block-start:16px!important;}
 </style>
+
+<style id="veloura-product-widget-surfaces">
+/* Loyalty redemption and gifting use the main site surface in both modes. */
+html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) {
+  --veloura-widget-main-bg:var(--veloura-site-bg,#fff);
+  --veloura-integration-bg:var(--veloura-widget-main-bg);
+}
+html.dark body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting),
+html body#app.dark .veloura-product-page :is(salla-loyalty-banner,salla-gifting) {
+  --veloura-widget-main-bg:var(--veloura-dark-body-bg,#010202);
+}
+html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting):has(> *:not(:empty)),
+html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) .veloura-integration-surface {
+  background:var(--veloura-widget-main-bg)!important;box-shadow:none!important;border:0!important;
+}
+html body#app .veloura-product-page salla-loyalty-banner :is(.s-loyalty-program-banner-container,.s-loyalty-program-banner-container-banner),
+html body#app .veloura-product-page salla-gifting :is(.s-gifting-widget,.s-list-tile-item) {
+  background:var(--veloura-widget-main-bg)!important;box-shadow:none!important;border:0!important;
+}
+/* Provider wrappers use the same existing product-page settings. */
+html body#app .veloura-product-page salla-installment :is(.s-installment-madfu-wrapper,.s-installment-emkan-wrapper,[class*="SnippetDefault__SnippetDefault--"],[class*="SnippetDefault__SnippetDefault_backgroundWhite--"]) {
+  background:var(--veloura-integration-bg,var(--veloura-site-second-bg,#f8fafc))!important;
+  border:0!important;box-shadow:none!important;
+  border-radius:var(--veloura-product-radius-final,16px)!important;
+  color:var(--veloura-primary-text,#111827)!important;
+}
+html.dark body#app .veloura-product-page salla-installment,
+html body#app.dark .veloura-product-page salla-installment {
+  --veloura-integration-bg:var(--veloura-dark-secondary-bg,#19263c);
+  --veloura-primary-text:var(--veloura-dark-primary-text,#f1f5f9);
+}
+</style>
