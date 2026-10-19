@@ -548,8 +548,11 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
 
 .veloura-fp2 .fp2__gallery,.veloura-fp2 .fp2__strip {border-radius:var(--fp2-radius)!important;box-shadow:none!important;}
 .veloura-fp2 .fp2__strip {background:var(--fp2-second)!important;}
-.veloura-fp2 .fp2__purchase-actions {display:flex;align-items:stretch;gap:10px;width:100%;min-width:0;}
-.veloura-fp2 .fp2__purchase-actions .fp2__add {flex:1 1 0;min-width:0;width:auto;}
+.veloura-fp2 .fp2__purchase-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:10px;width:100%;min-width:0;--fp2-action-height:48px;}
+.veloura-fp2 .fp2__purchase-actions :is(.fp2__add,.fp2__quick-purchase) {box-sizing:border-box;width:100%;height:var(--fp2-action-height);min-height:var(--fp2-action-height);margin:0;}
+.veloura-fp2 .fp2__purchase-actions .fp2__add :is(salla-button,button,.s-button-element) {box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;height:var(--fp2-action-height)!important;min-height:var(--fp2-action-height)!important;margin:0;padding-block:0!important;}
+.veloura-fp2 .fp2__purchase-actions .fp2__add {min-width:0;width:100%;}
+.veloura-fp2 .fp2__purchase-actions .fp2__quick-purchase {border-radius:var(--fp2-r-pill);padding-block:0;}
 .veloura-fp2 .fp2__quick-purchase {display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1 1 0;min-width:0;padding:10px 12px;border:1px solid var(--fp2-accent);border-radius:var(--fp2-radius);color:var(--fp2-accent);background:var(--fp2-second);font:inherit;font-size:14px;font-weight:700;cursor:pointer;}
 .veloura-fp2 .fp2__quick-view {position:absolute;z-index:3;inset-inline-end:12px;bottom:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:var(--veloura-global-glass-control,rgba(255,255,255,.65));backdrop-filter:blur(12px);color:var(--fp2-title);cursor:pointer;font-size:21px;}
 .veloura-fp2 :is(.fp2__quick-view,.fp2__quick-purchase):disabled {opacity:.5;cursor:not-allowed;}
@@ -659,7 +662,7 @@ html body.dark .veloura-fp2 :is(.fp2__more, .fp2__sale, .fp2__unit b, .fp2__item
             </div>
           {% endif %}
 
-          <div class="fp2__media"><button type="button" class="fp2__quick-view veloura-quick-view-btn" data-vfp-quick-view aria-label="عرض سريع" aria-haspopup="dialog" disabled><i class="sicon-eye" aria-hidden="true"></i></button>
+          <div class="fp2__media"><button type="button" class="fp2__quick-view" data-veloura-quick-view data-vfp-quick-view aria-label="عرض سريع" aria-haspopup="dialog" disabled><i class="sicon-eye" aria-hidden="true"></i></button>
             <a class="fp2__frame" data-vfp-link href="#" aria-label="{{ component.veloura_fp_title|default('المنتج المميز') }}">
               <img class="fp2__img" data-vfp-image src="" alt="" loading="lazy" decoding="async">
               {# The phrase rides the photo as a small pane of glass rather than
