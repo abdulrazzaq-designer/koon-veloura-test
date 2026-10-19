@@ -1182,6 +1182,7 @@ html body .veloura-product-page salla-mini-checkout-widget {
                 <salla-slider
                         id="details-slider-{{ product.id }}"
                         class="details-slider rounded-md image-slider"
+                        data-veloura-single-media="{{ has_many_images ? 'false' : 'true' }}"
                         type="thumbs"
                         loop="false"
                         {{ vpp_images_height_mode == 'fixed_all' ? '' : 'auto-height' }}
@@ -2022,6 +2023,25 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<style id="veloura-product-gallery-surface-controls">
+html body#app .veloura-product-page salla-slider.details-slider.image-slider {
+  --veloura-gallery-surface:var(--veloura-site-second-bg,#f5f5f5);
+  --veloura-product-inner-bg:var(--veloura-gallery-surface);
+  background:var(--veloura-gallery-surface)!important;
+}
+html.dark body#app .veloura-product-page salla-slider.details-slider.image-slider,
+html body#app.dark .veloura-product-page salla-slider.details-slider.image-slider {
+  --veloura-gallery-surface:var(--veloura-dark-secondary-bg,#19263c);
+}
+html body#app .veloura-product-page salla-slider.details-slider.image-slider :is(.swiper,.swiper-wrapper,.swiper-slide,.s-slider-container,.s-slider-block,[slot="items"],.magnify-wrapper) {
+  background:var(--veloura-gallery-surface)!important;
+}
+html body#app .veloura-product-page salla-slider.details-slider.image-slider img {background:transparent!important;}
+html body#app .veloura-product-page salla-slider.details-slider.image-slider[data-veloura-single-media="true"] :is(.s-slider-next,.s-slider-prev,.swiper-button-next,.swiper-button-prev,[part~="next"],[part~="prev"],.s-slider-thumbs,.s-slider-thumbs-wrapper,[slot="thumbs"]) {
+  display:none!important;visibility:hidden!important;pointer-events:none!important;
+}
+</style>
 
     <script defer src="{{ 'product.js' | asset }}"></script>
     {% if product.has_3d_image %}
