@@ -3306,6 +3306,13 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/\s+/g, ' ')
       .trim();
 
+    // Currency icons may be stripped when converting Salla money markup to text.
+    // Restore the active currency only when the remaining price is numeric.
+    if (/^[\s\d\u0660-\u0669\u06f0-\u06f9.,\u066b\u066c\u200e\u200f\u061c+-]+$/.test(text)) {
+      var currency = window.salla?.config?.get?.('user.currency_code') || window.salla?.config?.get?.('store.currency');
+      if (currency && typeof currency === 'object') currency = currency.code || currency.symbol;
+      if (currency) text += ' ' + (String(currency).toUpperCase() === 'SAR' ? 'ر.س' : String(currency));
+    }
     // Fix duplicated currency words if any.
     text = text.replace(/(ر\.س\s*){2,}/g, 'ر.س ');
 

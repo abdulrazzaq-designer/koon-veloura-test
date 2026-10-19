@@ -7305,24 +7305,24 @@ html body#app salla-loyalty-banner + salla-loyalty-points-banner:not([hidden]) {
 
 <style id="veloura-product-widget-surfaces">
 /* Panels use the secondary surface; only the two actions use the main surface. */
-html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) {
+html body#app :is(.veloura-product-page,.veloura-qp) :is(salla-loyalty-banner,salla-gifting) {
   --veloura-widget-main-bg:var(--veloura-site-bg,#fff);
   --veloura-widget-panel-bg:var(--veloura-site-second-bg,#f8fafc);
   --veloura-integration-bg:var(--veloura-widget-panel-bg);
 }
-html.dark body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting),
-html body#app.dark .veloura-product-page :is(salla-loyalty-banner,salla-gifting) {
+html.dark body#app :is(.veloura-product-page,.veloura-qp) :is(salla-loyalty-banner,salla-gifting),
+html body#app.dark :is(.veloura-product-page,.veloura-qp) :is(salla-loyalty-banner,salla-gifting) {
   --veloura-widget-main-bg:var(--veloura-dark-body-bg,#010202);
   --veloura-widget-panel-bg:var(--veloura-dark-secondary-bg,#19263c);
 }
-html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting):has(> *:not(:empty)),
-html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) .veloura-integration-surface,
-html body#app .veloura-product-page salla-loyalty-banner :is(.s-loyalty-program-banner-container,.s-loyalty-program-banner-container-banner),
-html body#app .veloura-product-page salla-gifting :is(.s-gifting-widget,.s-list-tile-item) {
+html body#app :is(.veloura-product-page,.veloura-qp) :is(salla-loyalty-banner,salla-gifting):has(> *:not(:empty)),
+html body#app :is(.veloura-product-page,.veloura-qp) :is(salla-loyalty-banner,salla-gifting) .veloura-integration-surface,
+html body#app :is(.veloura-product-page,.veloura-qp) salla-loyalty-banner :is(.s-loyalty-program-banner-container,.s-loyalty-program-banner-container-banner),
+html body#app :is(.veloura-product-page,.veloura-qp) salla-gifting :is(.s-gifting-widget,.s-list-tile-item) {
   background:var(--veloura-widget-panel-bg)!important;box-shadow:none!important;border:0!important;
 }
-html body#app .veloura-product-page salla-loyalty-banner .s-loyalty-program-banner-container > button,
-html body#app .veloura-product-page salla-gifting button.s-gifting-widget-action {
+html body#app :is(.veloura-product-page,.veloura-qp) salla-loyalty-banner .s-loyalty-program-banner-container > button,
+html body#app :is(.veloura-product-page,.veloura-qp) salla-gifting button.s-gifting-widget-action {
   background:var(--veloura-widget-main-bg)!important;
   border:0!important;box-shadow:none!important;
   border-radius:var(--veloura-product-radius-final,16px)!important;
@@ -7341,4 +7341,26 @@ html body#app.dark .veloura-product-page salla-installment {
   --veloura-integration-bg:var(--veloura-dark-secondary-bg,#19263c);
   --veloura-primary-text:var(--veloura-dark-primary-text,#f1f5f9);
 }
+</style>
+
+<style id="veloura-modal-readable-text-quantity">
+html:not(.dark) body#app:not(.dark) .veloura-qv-full {--vqc-text:#1f2937!important;}
+html body#app .veloura-qv-full :is(.veloura-qv-full__title,.veloura-qv-full__desc,.veloura-qv-full__label,.veloura-qv-full__read-more) {opacity:1!important;}
+html body#app .veloura-qv-full .veloura-qv-full__qty {background:var(--vqc-surface)!important;}
+html body#app .veloura-qv-full .veloura-qv-full__qty :is(input,button) {
+  background:transparent!important;background-image:none!important;
+  color:var(--vqc-text)!important;-webkit-text-fill-color:var(--vqc-text)!important;opacity:1!important;
+}
+html body#app .veloura-qv-full :is(.veloura-qv-full__price,.veloura-qv-full__mini-current,.veloura-qv-full__regular,.veloura-qv-full__mini-regular) {
+  white-space:nowrap!important;overflow:visible!important;line-height:1.5!important;
+  width:auto!important;max-width:none!important;unicode-bidi:plaintext;
+}
+html body#app .veloura-qp salla-gifting {
+  display:block;margin-block:16px!important;
+  border-radius:var(--veloura-product-radius-final,var(--veloura-global-radius,16px))!important;
+  overflow:hidden; padding:16px;box-sizing:border-box;
+}
+html body#app .veloura-qp salla-gifting :is(.s-gifting-widget,.s-list-tile-item) {border-radius:inherit!important;}
+html body#app .veloura-qp salla-gifting .s-list-tile-item-title {color:var(--qp-text)!important;}
+html body#app .veloura-qp salla-gifting :is(.s-list-tile-item-subtitle,[slot="subtitle"]) {color:var(--qp-text)!important;opacity:.85;}
 </style>
