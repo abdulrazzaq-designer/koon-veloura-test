@@ -7304,22 +7304,30 @@ html body#app salla-loyalty-banner + salla-loyalty-points-banner:not([hidden]) {
 </style>
 
 <style id="veloura-product-widget-surfaces">
-/* Loyalty redemption and gifting use the main site surface in both modes. */
+/* Panels use the secondary surface; only the two actions use the main surface. */
 html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) {
   --veloura-widget-main-bg:var(--veloura-site-bg,#fff);
-  --veloura-integration-bg:var(--veloura-widget-main-bg);
+  --veloura-widget-panel-bg:var(--veloura-site-second-bg,#f8fafc);
+  --veloura-integration-bg:var(--veloura-widget-panel-bg);
 }
 html.dark body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting),
 html body#app.dark .veloura-product-page :is(salla-loyalty-banner,salla-gifting) {
   --veloura-widget-main-bg:var(--veloura-dark-body-bg,#010202);
+  --veloura-widget-panel-bg:var(--veloura-dark-secondary-bg,#19263c);
 }
 html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting):has(> *:not(:empty)),
-html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) .veloura-integration-surface {
-  background:var(--veloura-widget-main-bg)!important;box-shadow:none!important;border:0!important;
-}
+html body#app .veloura-product-page :is(salla-loyalty-banner,salla-gifting) .veloura-integration-surface,
 html body#app .veloura-product-page salla-loyalty-banner :is(.s-loyalty-program-banner-container,.s-loyalty-program-banner-container-banner),
 html body#app .veloura-product-page salla-gifting :is(.s-gifting-widget,.s-list-tile-item) {
-  background:var(--veloura-widget-main-bg)!important;box-shadow:none!important;border:0!important;
+  background:var(--veloura-widget-panel-bg)!important;box-shadow:none!important;border:0!important;
+}
+html body#app .veloura-product-page salla-loyalty-banner .s-loyalty-program-banner-container > button,
+html body#app .veloura-product-page salla-gifting button.s-gifting-widget-action {
+  background:var(--veloura-widget-main-bg)!important;
+  border:0!important;box-shadow:none!important;
+  border-radius:var(--veloura-product-radius-final,16px)!important;
+  padding:10px 16px!important;
+  color:var(--color-primary,#3289ee)!important;
 }
 /* Provider wrappers use the same existing product-page settings. */
 html body#app .veloura-product-page salla-installment :is(.s-installment-madfu-wrapper,.s-installment-emkan-wrapper,[class*="SnippetDefault__SnippetDefault--"],[class*="SnippetDefault__SnippetDefault_backgroundWhite--"]) {
