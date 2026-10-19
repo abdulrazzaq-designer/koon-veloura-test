@@ -1,7 +1,10 @@
 {# VELOURA HOME TAB ASSIGNMENT START #}
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
-{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{% set veloura_tab_primary = component.veloura_home_tab_primary_2026 is defined ? component.veloura_home_tab_primary_2026 : (not veloura_home_tab_key) %}
+{% if veloura_tab_primary.value is defined %}{% set veloura_tab_primary = veloura_tab_primary.value %}{% endif %}
+{% set veloura_tab_all = component.veloura_home_tab_all_2026 is defined ? component.veloura_home_tab_all_2026 : false %}
+{% if veloura_tab_all.value is defined %}{% set veloura_tab_all = veloura_tab_all.value %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
 {% if not component.veloura_brands_hide %}
@@ -11,8 +14,8 @@
     'soft': '8px',
     'medium': '16px',
     'large': '28px',
-    'round': '999px',
-    '40': '999px'
+    'round': '50px',
+    '40': '40px'
   } %}
 
   {% set brand_radius = radius_map[component.veloura_brands_radius|default('medium')]|default((component.veloura_brands_radius|default('medium') ~ '' == '' ? '16' : component.veloura_brands_radius|default('medium')) ~ 'px') %}
@@ -175,7 +178,7 @@ html.dark .vbr.vbr--dark-bg .veloura-brands__item span,
 html body.dark .vbr.vbr--dark-bg .veloura-brands__item span { color: var(--veloura-dark-primary-text, #ffffff) !important; }
 </style>
 
-  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" data-veloura-tab-primary="{{ veloura_tab_primary is same as(true) or veloura_tab_primary in ['true', '1', 1, 'on'] ? 'true' : 'false' }}" data-veloura-tab-all="{{ veloura_tab_all is same as(true) or veloura_tab_all in ['true', '1', 1, 'on'] ? 'true' : 'false' }}"
     id="veloura-brands-{{ position }}"
     class="{{ section_classes }}"
     style="

@@ -1,7 +1,10 @@
 {# VELOURA HOME TAB ASSIGNMENT START #}
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
-{% if not veloura_home_tab_key %}{% set veloura_home_tab_key = 'always' %}{% endif %}
+{% set veloura_tab_primary = component.veloura_home_tab_primary_2026 is defined ? component.veloura_home_tab_primary_2026 : (not veloura_home_tab_key) %}
+{% if veloura_tab_primary.value is defined %}{% set veloura_tab_primary = veloura_tab_primary.value %}{% endif %}
+{% set veloura_tab_all = component.veloura_home_tab_all_2026 is defined ? component.veloura_home_tab_all_2026 : false %}
+{% if veloura_tab_all.value is defined %}{% set veloura_tab_all = veloura_tab_all.value %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
 {#
@@ -16,7 +19,7 @@
 | component.links[].url              | string   |                                                                              |
 | position                           | int      | Sorting number start from zero                                               |
 #}
-<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" class="s-block s-block--categories {{ component.merge_with_top_component and position ?'merge-with-top-component' : '' }} {{ not component.title and component.merge_with_top_component ? 'merged-has-no-title' : '' }}">
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" data-veloura-tab-primary="{{ veloura_tab_primary is same as(true) or veloura_tab_primary in ['true', '1', 1, 'on'] ? 'true' : 'false' }}" data-veloura-tab-all="{{ veloura_tab_all is same as(true) or veloura_tab_all in ['true', '1', 1, 'on'] ? 'true' : 'false' }}" class="s-block s-block--categories {{ component.merge_with_top_component and position ?'merge-with-top-component' : '' }} {{ not component.title and component.merge_with_top_component ? 'merged-has-no-title' : '' }}">
     <div class="container">
       <salla-slider  
         type="carousel"

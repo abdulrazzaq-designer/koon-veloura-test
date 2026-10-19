@@ -4734,8 +4734,11 @@ const initVelouraHomeTabs = (() => {
     });
 
     collectComponents().forEach(component => {
-      const assigned = normalizeTabName(component.dataset.velouraHomeTab);
-      const show = !assigned || assigned === 'always' || !buttonMap.has(assigned) || assigned === activeKey;
+      const assigned = String(component.dataset.velouraHomeTab || '').split(/[,،;؛\n]+/).map(normalizeTabName).filter(Boolean);
+      const configured = component.hasAttribute('data-veloura-tab-primary');
+      const primary = configured ? component.dataset.velouraTabPrimary === 'true' : assigned.length === 0;
+      const all = component.dataset.velouraTabAll === 'true' || assigned.includes('always');
+      const show = all || (primary && activeButton === buttons[0]) || assigned.includes(activeKey);
 
       component.hidden = !show;
       component.classList.toggle('veloura-home-tab-is-hidden', !show);

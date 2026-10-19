@@ -11069,16 +11069,34 @@
       "path": "home.veloura-category-popup",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "popup_key",
@@ -11340,16 +11358,34 @@
       "path": "home.veloura-hero",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "hero_h_layout",
@@ -12696,16 +12732,34 @@
       "path": "home.enhanced-slider",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "type": "static",
@@ -12809,16 +12863,34 @@
       "image": "https://cdn.salla.network/images/themes/raed/main-links-with-bg.jpg?v=1.1",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "type": "static",
@@ -13076,16 +13148,34 @@
       "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "type": "static",
@@ -13230,16 +13320,34 @@
       "path": "home.enhanced-square-banners",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "title",
@@ -13853,16 +13961,34 @@
       "path": "home.ultra-square-images",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "ultra_title_general",
@@ -14587,16 +14713,34 @@
       "path": "home.animated-banners",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "title",
@@ -15314,16 +15458,34 @@
       "path": "home.store-features-veloura",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "title",
@@ -15801,16 +15963,34 @@
       "path": "home.faq-veloura",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_faq_title",
@@ -16138,16 +16318,34 @@
       "path": "home.veloura-title-block",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_title_text",
@@ -16417,16 +16615,34 @@
       "path": "home.veloura-spacer",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_spacer_mobile",
@@ -16543,16 +16759,34 @@
       "path": "home.veloura-products",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_products_options_title",
@@ -17026,16 +17260,34 @@
       "path": "home.veloura-showcase",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "vsc_title_content",
@@ -17863,16 +18115,34 @@
       "path": "home.veloura-packages",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "vpk_title_content",
@@ -18437,16 +18707,34 @@
       "path": "home.veloura-quick-links",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_quick_options_title",
@@ -18837,16 +19125,34 @@
       "path": "home.veloura-animated-articles",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_articles_options_title",
@@ -19143,16 +19449,34 @@
       "path": "home.veloura-branches",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_branches_options_title",
@@ -19329,16 +19653,34 @@
       "path": "home.veloura-brands",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_brands_options_title",
@@ -19585,16 +19927,34 @@
       "path": "home.veloura-before-after",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_before_after_options_title",
@@ -19782,16 +20142,34 @@
       "path": "home.veloura-testimonials",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_testimonials_options_title",
@@ -20127,16 +20505,34 @@
       "path": "home.about-us-veloura",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_about_options_title",
@@ -20608,16 +21004,34 @@
       "path": "home.veloura-popup",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_popup_content_title",
@@ -20984,16 +21398,34 @@
       "path": "home.veloura-purchase-steps",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_steps_options_title",
@@ -21334,16 +21766,34 @@
       "path": "home.veloura-featured-product",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_fp_title_options",
@@ -21858,16 +22308,34 @@
       "path": "home.veloura-ticker",
       "fields": [
         {
+          "id": "veloura_home_tab_primary_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في التبويب الأساسي",
+          "description": "التبويب الأساسي هو أول تبويب في الشريط. أطفئه لنقل العنصر إلى التبويبات الإضافية فقط.",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "veloura_home_tab_name_2026",
           "type": "string",
           "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "label": "أسماء التبويبات الإضافية",
+          "description": "اكتب أسماء التبويبات مفصولة بفاصلة، مثل: العروض، البطاقات. اتركه فارغًا للاكتفاء بالتبويب الأساسي.",
+          "placeholder": "العروض، البطاقات",
           "icon": "sicon-layout-grid",
           "value": "",
           "required": false,
-          "maxLength": 40
+          "maxLength": 200
+        },
+        {
+          "id": "veloura_home_tab_all_2026",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار في جميع التبويبات",
+          "description": "يتجاوز هذا الخيار بقية اختيارات التبويبات، ويشمل التبويبات الجديدة.",
+          "value": false,
+          "required": false
         },
         {
           "id": "veloura_tkr_title_options",
