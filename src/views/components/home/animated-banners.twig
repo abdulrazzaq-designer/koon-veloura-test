@@ -1,10 +1,6 @@
 {# VELOURA HOME TAB ASSIGNMENT START #}
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
-{% set veloura_tab_primary = component.veloura_home_tab_primary_2026 is defined ? component.veloura_home_tab_primary_2026 : (not veloura_home_tab_key) %}
-{% if veloura_tab_primary.value is defined %}{% set veloura_tab_primary = veloura_tab_primary.value %}{% endif %}
-{% set veloura_tab_all = component.veloura_home_tab_all_2026 is defined ? component.veloura_home_tab_all_2026 : false %}
-{% if veloura_tab_all.value is defined %}{% set veloura_tab_all = veloura_tab_all.value %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
 {% set radius_map = {
@@ -426,7 +422,7 @@ html[dir="ltr"] .animated-banners__content.is-pos-left { align-items: flex-start
 {% if ab_mob not in ['slider', 'stack'] %}{% set ab_mob = 'slider' %}{% endif %}
 
 {% if component.animated_banners|length > 0 %}
-<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" data-veloura-tab-primary="{{ veloura_tab_primary is same as(true) or veloura_tab_primary in ['true', '1', 1, 'on'] ? 'true' : 'false' }}" data-veloura-tab-all="{{ veloura_tab_all is same as(true) or veloura_tab_all in ['true', '1', 1, 'on'] ? 'true' : 'false' }}"
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="
     s-block
     animated-banners
