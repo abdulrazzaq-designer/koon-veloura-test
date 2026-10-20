@@ -6642,6 +6642,18 @@ html body .s-add-product-toast__image {background:transparent!important;border-c
 html body .s-add-product-toast__divider {background:color-mix(in srgb,var(--vt-text) 14%,transparent)!important;}
 </style>
 
+<style id="veloura-card-bottom-and-menu-more">
+html body#app .swiper-wrapper:has(> .swiper-slide .s-product-card-entry) {align-items:stretch!important;}
+html body#app .swiper-slide:has(.s-product-card-entry) {height:auto!important;}
+html body#app .s-product-card-entry:not(.s-product-card-horizontal):not(.s-product-card-full-image) {display:flex!important;flex-direction:column!important;height:100%!important;}
+html body#app .s-product-card-entry:not(.s-product-card-horizontal):not(.s-product-card-full-image) .s-product-card-content {display:flex!important;flex-direction:column!important;flex:1 1 auto!important;justify-content:flex-start!important;}
+html body#app .s-product-card-entry .s-product-card-content-main {flex:0 0 auto!important;margin-bottom:0!important;}
+html body#app .s-product-card-entry .veloura-card-bottom {margin-top:auto!important;display:flex!important;flex-direction:column!important;flex:0 0 auto!important;width:100%!important;padding-top:12px!important;}
+html body#app .s-product-card-entry .s-product-card-content > .s-product-card-content-sub {margin-top:auto!important;padding-top:12px!important;}
+html body#app .s-product-card-entry .veloura-card-bottom > .s-product-card-content-sub {margin-top:0!important;margin-bottom:0!important;}
+html body#app .s-product-card-entry .s-product-card-content-footer {margin-top:8px!important;flex:0 0 auto!important;}
+html body#app #more-menu-dropdown > a,html body#app #more-menu-dropdown > a > span {text-decoration:none!important;border-bottom:0!important;box-shadow:none!important;}
+</style>
 <style id="veloura-tabs-layout-fix">
 /* Clip the viewport horizontally without creating another vertical scroll container. */
 @supports (overflow: clip) {
@@ -6665,10 +6677,8 @@ html body#app [data-veloura-home-tab].veloura-home-tab-is-hidden {
     const active=bar?.querySelector('[data-veloura-tab-target][aria-selected="true"]')||bar?.querySelector('[data-veloura-tab-target]');
     const key=normalize(active?.dataset.velouraTabTarget);
     document.querySelectorAll('[data-veloura-home-tab]').forEach(component=>{
-      const assigned=String(component.dataset.velouraHomeTab||'').split(/[,،;؛\n]+/).map(normalize).filter(Boolean);
-      const primary=component.hasAttribute('data-veloura-tab-primary')?component.dataset.velouraTabPrimary==='true':assigned.length===0;
-      const all=component.dataset.velouraTabAll==='true'||assigned.includes('always');
-      const show=!active||all||(primary&&active===bar.querySelector('[data-veloura-tab-target]'))||assigned.includes(key);
+      const assigned=String(component.dataset.velouraHomeTab||'').split(/[,،;؛\n]+/).map(normalize).filter(name=>name&&name!=='always');
+      const show=!active||(assigned.length?assigned.includes(key):active===bar.querySelector('[data-veloura-tab-target]'));
       if(component.hidden!==!show)component.hidden=!show;
       if(component.classList.contains('veloura-home-tab-is-hidden')===show)component.classList.toggle('veloura-home-tab-is-hidden',!show);
       if(component.getAttribute('aria-hidden')!==String(!show))component.setAttribute('aria-hidden',String(!show));
@@ -6681,7 +6691,7 @@ html body#app [data-veloura-home-tab].veloura-home-tab-is-hidden {
       ?record.target.matches('[data-veloura-tab-target],[data-veloura-home-tab]')
       :Array.from(record.addedNodes).concat(Array.from(record.removedNodes)).some(node=>node.nodeType===1&&(node.matches(relevant)||node.querySelector(relevant)))))schedule();
   });
-  observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-selected','data-veloura-home-tab','data-veloura-tab-target','data-veloura-tab-primary','data-veloura-tab-all']});
+  observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-selected','data-veloura-home-tab','data-veloura-tab-target']});
   document.addEventListener('veloura:home-tabs:change',schedule);
   document.addEventListener('theme::ready',schedule);
   document.addEventListener('DOMContentLoaded',schedule,{once:true});

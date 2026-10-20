@@ -281,8 +281,13 @@ class NavigationMenu extends HTMLElement {
         // unscoped now, so there is no reason left to hide anything.
         if (!this.showMenuIcons) return '';
         var src = this.getMappedCategoryImage(menu) || menu.image;
+        if (!src && /تخفيض|خصم|عروض|offer|discount|sale/i.test(String(menu.title || menu.name || '') + ' ' + String(menu.url || ''))) {
+            src = (window.velouraSideCategoriesSettings || {}).discountImage;
+        }
+        if (src && typeof src === 'object') src = src.url || src.src || src.value || '';
         if (!src) return '';
-        return `<img src="${src}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
+        const safeSrc = String(src).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+        return `<img src="${safeSrc}" class="veloura-menu-icon" alt="" aria-hidden="true" loading="lazy" />`;
     }
 
     getDesktopMenu(menu, isRootMenu, additionalClasses = '') {
