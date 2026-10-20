@@ -18615,33 +18615,36 @@
           "maxLength": 20,
           "value": [
             {
-              "title": "منتج جاهز",
-              "icon": "sicon-box",
-              "icon_color": "#004956",
-              "image_url": "",
-              "image": null,
-              "url": "#"
+              "veloura_quick_links.title": "منتج جاهز",
+              "veloura_quick_links.icon": "sicon-box",
+              "veloura_quick_links.icon_color": "#004956",
+              "veloura_quick_links.image_url": "",
+              "veloura_quick_links.image": null,
+              "veloura_quick_links.url": "#",
+              "veloura_quick_links.url__type": "custom"
             },
             {
-              "title": "خدمة حسب الطلب",
-              "icon": "sicon-medal",
-              "icon_color": "#004956",
-              "image_url": "",
-              "image": null,
-              "url": "#"
+              "veloura_quick_links.title": "خدمة حسب الطلب",
+              "veloura_quick_links.icon": "sicon-medal",
+              "veloura_quick_links.icon_color": "#004956",
+              "veloura_quick_links.image_url": "",
+              "veloura_quick_links.image": null,
+              "veloura_quick_links.url": "#",
+              "veloura_quick_links.url__type": "custom"
             },
             {
-              "title": "حجوزات",
-              "icon": "sicon-calendar",
-              "icon_color": "#004956",
-              "image_url": "",
-              "image": null,
-              "url": "#"
+              "veloura_quick_links.title": "حجوزات",
+              "veloura_quick_links.icon": "sicon-calendar",
+              "veloura_quick_links.icon_color": "#004956",
+              "veloura_quick_links.image_url": "",
+              "veloura_quick_links.image": null,
+              "veloura_quick_links.url": "#",
+              "veloura_quick_links.url__type": "custom"
             }
           ],
           "fields": [
             {
-              "id": "title",
+              "id": "veloura_quick_links.title",
               "type": "string",
               "format": "text",
               "label": "عنوان الرابط",
@@ -18650,7 +18653,7 @@
               "required": false
             },
             {
-              "id": "icon",
+              "id": "veloura_quick_links.icon",
               "type": "string",
               "format": "icon",
               "label": "أيقونة الرابط",
@@ -18660,7 +18663,7 @@
               "required": false
             },
             {
-              "id": "icon_color",
+              "id": "veloura_quick_links.icon_color",
               "type": "string",
               "format": "color",
               "inputType": "color",
@@ -18671,7 +18674,7 @@
               "required": false
             },
             {
-              "id": "image_url",
+              "id": "veloura_quick_links.image_url",
               "type": "string",
               "format": "text",
               "label": "أضف رابط الصورة",
@@ -18681,7 +18684,7 @@
               "required": false
             },
             {
-              "id": "image",
+              "id": "veloura_quick_links.image",
               "type": "string",
               "format": "image",
               "label": "الصورة",
@@ -18691,11 +18694,11 @@
               "required": false
             },
             {
-              "id": "url",
+              "id": "veloura_quick_links.url",
               "type": "items",
               "icon": "sicon-link",
               "label": "الرابط",
-              "value": [],
+              "value": null,
               "required": false,
               "format": "variable-list",
               "searchable": true,

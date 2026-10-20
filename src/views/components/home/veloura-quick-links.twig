@@ -22,7 +22,9 @@
 {% set quick_mobile_view = quick_peek ? (quick_mobile_cols + 0.35) : quick_mobile_cols %}
 {% set quick_desktop_view = quick_peek ? (quick_desktop_cols + 0.35) : quick_desktop_cols %}
 
-{% if not component.veloura_quick_hide_section %}
+{% set quick_hidden = component.veloura_quick_hide_section %}
+{% if quick_hidden.value is defined %}{% set quick_hidden = quick_hidden.value %}{% endif %}
+{% if not (quick_hidden is same as(true) or quick_hidden in ['true', '1', 1, 'on']) %}
 <style>
 /* ---------- الروابط السريعة ---------- */
 
@@ -219,12 +221,23 @@ body.dark .veloura-quick-links .veloura-quick-links__card {
 
       <div slot="items">
         {% for link in component.veloura_quick_links %}
+          {% set quick_url = link.url ?? link['veloura_quick_links.url'] ?? '' %}
+          {% if quick_url is iterable and quick_url.value is not defined and quick_url.url is not defined %}{% set quick_url = quick_url|first %}{% endif %}
+          {% set quick_source = quick_url.source ?? link.url__type ?? link['veloura_quick_links.url__type'] ?? '' %}
+          {% set quick_url = quick_url.url ?? quick_url.value ?? quick_url %}
+          {% set quick_routes = {'offers_link':'offers','brands_link':'brands','blog_link':'blog'} %}
+          {% if quick_url in ['offers_link','brands_link','blog_link'] %}
+            {% set quick_url = link(quick_routes[quick_url]) %}
+          {% elseif not quick_url and quick_source in ['offers_link','brands_link','blog_link'] %}
+            {% set quick_url = link(quick_routes[quick_source]) %}
+          {% endif %}
+          {% if quick_url is iterable %}{% set quick_url = '' %}{% endif %}
           {% set image_src = link.image_url ?: link.image.url ?: link.image %}
           {% set icon_class = link.icon.value ?: link.icon ?: 'sicon-box' %}
           {% set icon_color = link.icon_color.value ?? link.icon_color %}
 
           <div class="swiper-slide">
-            <a href="{{ link.url ?: '#' }}" class="veloura-quick-links__card">
+            <a href="{{ (quick_url ?: '#')|e }}" class="veloura-quick-links__card">
               <span class="veloura-quick-links__icon-wrap" aria-hidden="true"{% if icon_color %} style="--quick-icon-color: {{ icon_color|e }};"{% endif %}>
                 {% if image_src %}
                   <img src="{{ image_src }}" alt="{{ link.title ?: 'quick-link' }}" loading="lazy">
