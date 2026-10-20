@@ -341,6 +341,7 @@ class NavigationMenu extends HTMLElement {
         return `
         <li class="!hidden lg:!block root-level lg:!inline-block has-children relative" id="more-menu-dropdown">
             <a href="#" aria-label="${this.moreText}">
+                ${this.showMenuIcons ? '<svg class="veloura-more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>' : ''}
                 <span>${this.moreText}</span>
             </a>
             <div class="sub-menu veloura-submenu-surface w-56">

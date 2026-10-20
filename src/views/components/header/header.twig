@@ -1038,10 +1038,11 @@ html body#app .veloura-header-tabs-stack .store-header[data-veloura-header] #mai
 @media(min-width:1024px){
 html body#app .store-header #more-menu-dropdown > a {
   background:transparent!important;color:var(--color-primary)!important;
-  border:0!important;border-bottom:1px solid currentColor!important;box-shadow:none!important;
+  border:0!important;border-bottom:0!important;box-shadow:none!important;text-decoration:none!important;
   border-radius:0!important;padding:3px 2px!important;min-height:0!important;height:auto!important;line-height:1.5!important;font-size:13px!important;gap:5px;
 }
 html body#app .store-header #more-menu-dropdown > a :is(span,i) {color:inherit!important;-webkit-text-fill-color:currentColor!important;}
+html body#app .store-header #more-menu-dropdown > a > .veloura-more-icon {display:block;width:28px;height:28px;flex:0 0 28px;box-sizing:border-box;padding:5px;border-radius:var(--veloura-side-cats-img-radius,8px);background:color-mix(in srgb,currentColor 12%,transparent);}
 }
 </style>
 <script>
