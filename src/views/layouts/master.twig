@@ -4684,7 +4684,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     function findNativeCartIcon() {
       return Array.from(
         host.querySelectorAll(
-          'i.text-base[class*="sicon-"]:not(.veloura-card-cart-icon)'
+          'i[class*="sicon-"]:not(.veloura-card-cart-icon):not(.veloura-cart-icon-fallback)'
         )
       ).find(function (icon) {
         return !/spinner|loader|loading|check|cancel|close|times/i.test(
@@ -4694,12 +4694,7 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
     }
 
     function syncIcon() {
-      /*
-       * V111:
-       * Keep Salla's native add-product DOM untouched.
-       * Remove stale cloned icons from older builds, then modify only
-       * the glyph class on Salla's existing Light-DOM icon.
-       */
+      // Prefer Salla's icon, and supply one when hydration omits it.
       host
         .querySelectorAll('i.veloura-card-cart-icon')
         .forEach(function (staleIcon) {
@@ -4707,7 +4702,24 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
         });
 
       var nativeIcon = findNativeCartIcon();
+      var available = host.getAttribute('product-status') === 'sale' && !host.closest('.veloura-card-sold-out,.s-product-card-out-of-stock');
+      var fallback = host.querySelector('.veloura-cart-icon-fallback');
+      if (fallback && (nativeIcon || hideIcon || !available)) {
+        fallback.remove();
+        fallback = null;
+      }
+      nativeIcon = nativeIcon || fallback;
 
+      if (!nativeIcon && !hideIcon && available) {
+        var button = host.querySelector('button.s-button-element,button');
+        if (button) {
+          nativeIcon = document.createElement('i');
+          nativeIcon.className = 'text-base veloura-cart-icon-fallback ' + iconClass;
+          nativeIcon.setAttribute('aria-hidden', 'true');
+          nativeIcon.style.setProperty('margin-inline-end', '6px');
+          button.prepend(nativeIcon);
+        }
+      }
       if (!nativeIcon) return;
 
       if (hideIcon) {
@@ -5340,7 +5352,7 @@ function markCard(card) {
             pendingCards.clear();
             window.__velouraProductCardLiveObserver.observe(document.body, {
               childList:true, subtree:true, attributes:true,
-              attributeFilter:['product-id','href']
+              attributeFilter:['product-id','href','product-status']
             });
           }
         });
@@ -5386,7 +5398,7 @@ function markCard(card) {
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ['product-id','href']
+          attributeFilter: ['product-id','href','product-status']
         }
       );
     }
