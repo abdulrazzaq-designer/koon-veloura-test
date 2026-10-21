@@ -328,26 +328,26 @@
       ]
     },
     {
-  "id": "veloura_global_radius_2026",
-  "type": "number",
-  "format": "slider",
-  "inputType": "range",
-  "label": "تدوير العناصر العامة",
-  "description": "تدوير حواف العناصر العامة بالبكسل من 0 إلى 50. صفر لحواف حادة، و50 لاستدارة كبيرة دون تحويل النوافذ إلى شكل دائري.",
-  "icon": "sicon-border-radius",
-  "value": 28,
-  "step": "1",
-  "minimum": "0",
-  "maximum": "50",
-  "required": false,
-  "conditions": [
-    {
-      "id": "veloura_general_panel_open_v4_2026",
-      "operation": "=",
-      "value": true
-    }
-  ]
-},
+      "id": "veloura_global_radius_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "تدوير العناصر العامة",
+      "description": "تدوير حواف العناصر العامة بالبكسل من 0 إلى 50. صفر لحواف حادة، و50 لاستدارة كبيرة دون تحويل النوافذ إلى شكل دائري.",
+      "icon": "sicon-border-radius",
+      "value": 28,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "50",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
     {
       "id": "veloura_theme_motion_2026",
       "type": "items",
@@ -1704,7 +1704,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "description",
@@ -2409,7 +2409,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -2608,7 +2608,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -3542,7 +3542,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -3814,7 +3814,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -4426,7 +4426,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -5149,7 +5149,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -5258,7 +5258,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "description",
@@ -5540,7 +5540,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "description",
@@ -7238,7 +7238,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -9984,7 +9984,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -10721,7 +10721,7 @@
           "value": true
         }
       ]
-},
+    },
     {
       "type": "static",
       "format": "title",
@@ -11176,8 +11176,8 @@
     {
       "key": "4d33b658-57aa-4911-b971-7da8e37cba04",
       "title": {
-        "ar": "أزرار المقاسات والولاء (فيلورا)",
-        "en": "Size Guide and Loyalty Links - Veloura"
+        "ar": "الأزرار الجانبية المخصصة (فيلورا)",
+        "en": "Custom Side Buttons - Veloura"
       },
       "icon": "sicon-link",
       "path": "home.veloura-guide-links",
@@ -11201,12 +11201,12 @@
           "options": [
             {
               "value": "sizes",
-              "label": "زر المقاسات فقط",
+              "label": "الزر الأول فقط",
               "key": "guide-mode-sizes"
             },
             {
               "value": "loyalty",
-              "label": "زر الولاء والمكافآت فقط",
+              "label": "الزر الثاني فقط",
               "key": "guide-mode-loyalty"
             },
             {
@@ -11220,8 +11220,33 @@
           "id": "size_label",
           "type": "string",
           "format": "text",
-          "label": "نص زر المقاسات",
+          "label": "نص الزر الأول",
           "value": "دليل المقاسات",
+          "required": false
+        },
+        {
+          "id": "first_custom_url",
+          "type": "string",
+          "format": "text",
+          "label": "رابط الزر الأول (اختياري)",
+          "value": "",
+          "required": false,
+          "description": "ضع رابط صفحة أو منتج أو تصنيف أو موقع خارجي، مثل /pages/help أو https://example.com. تركه فارغًا يبقي نافذة الدليل الحالية."
+        },
+        {
+          "id": "first_custom_image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة أيقونة الزر الأول (اختياري)",
+          "value": null,
+          "required": false
+        },
+        {
+          "id": "second_custom_image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة أيقونة الزر الثاني (اختياري)",
+          "value": null,
           "required": false
         },
         {
@@ -11281,7 +11306,7 @@
           "id": "loyalty_label",
           "type": "string",
           "format": "text",
-          "label": "نص زر الولاء",
+          "label": "نص الزر الثاني",
           "value": "ولاء العملاء",
           "required": false
         },
@@ -11289,10 +11314,10 @@
           "id": "loyalty_url",
           "type": "string",
           "format": "text",
-          "label": "رابط مخصص للولاء (اختياري)",
+          "label": "رابط الزر الثاني",
           "value": "",
           "required": false,
-          "description": "اتركه فارغًا لفتح صفحة loyalty التابعة لهذا المتجر تلقائيًا."
+          "description": "ضع رابط صفحة أو منتج أو تصنيف أو موقع خارجي. إذا تركته فارغًا يفتح صفحة الولاء الحالية."
         },
         {
           "id": "left_side",
