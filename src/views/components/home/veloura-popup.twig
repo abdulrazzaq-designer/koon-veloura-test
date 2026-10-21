@@ -116,7 +116,8 @@
   </section>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    (function () {
+     function initPopup() {
       const popup = document.getElementById('veloura-popup-{{ position }}');
       if (!popup) return;
 
@@ -129,14 +130,45 @@
         return;
       }
 
-      setTimeout(function () {
-        popup.classList.add('is-active');
-        document.documentElement.classList.add('veloura-popup-open');
-      }, delay);
+      let timer = 0, dismissed = false;
+      const normalize = value => String(value || '').normalize('NFKC').replace(/\s+/g,' ').trim().toLowerCase();
+      function eligible() {
+        const bar = document.querySelector('[data-veloura-home-tabs]');
+        const first = bar?.querySelector('[data-veloura-tab-target]');
+        const active = bar?.querySelector('[aria-selected="true"][data-veloura-tab-target]') || first;
+        const names = String(popup.dataset.velouraHomeTab || '').split(/[,،;؛\n]+/).map(normalize).filter(name => name && name !== 'always');
+        const inTab = !active || (names.length ? names.includes(normalize(active.dataset.velouraTabTarget)) : active === first);
+        return inTab && !popup.hidden && !(popup.classList.contains('veloura-popup--mobile-only') && innerWidth >= 768) && !(popup.classList.contains('veloura-popup--desktop-only') && innerWidth < 768);
+      }
+      function unlock() {
+        if (!document.querySelector('.veloura-popup.is-active:not([hidden])')) document.documentElement.classList.remove('veloura-popup-open');
+      }
+      function syncPopup() {
+        if (dismissed || !popup.isConnected) return;
+        if (!eligible()) {
+          clearTimeout(timer); timer = 0;
+          popup.classList.remove('is-active'); unlock(); return;
+        }
+        if (timer || popup.classList.contains('is-active')) return;
+        timer = setTimeout(() => {
+          timer = 0;
+          if (!eligible() || dismissed) return;
+          popup.classList.add('is-active');
+          document.documentElement.classList.add('veloura-popup-open');
+        }, delay);
+      }
+      const visibility = new MutationObserver(syncPopup);
+      visibility.observe(popup, {attributes:true, attributeFilter:['hidden']});
+      document.addEventListener('veloura:home-tabs:change', syncPopup);
+      window.addEventListener('resize', syncPopup);
+      syncPopup();
 
       function closePopup() {
+        dismissed = true; clearTimeout(timer); visibility.disconnect();
+        document.removeEventListener('veloura:home-tabs:change', syncPopup);
+        window.removeEventListener('resize', syncPopup);
         popup.classList.remove('is-active');
-        document.documentElement.classList.remove('veloura-popup-open');
+        unlock();
 
         if (once) {
           localStorage.setItem(key, 'true');
@@ -150,7 +182,9 @@
       popup.querySelectorAll('[data-popup-close]').forEach(function (el) {
         el.addEventListener('click', closePopup);
       });
-    });
+     }
+     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPopup, {once:true}); else initPopup();
+    })();
   </script>
 
 {% endif %}

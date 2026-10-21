@@ -6821,7 +6821,6 @@ const update=()=>{
 pending=0;
 let bottom=0;
 if(header){const rect=header.getBoundingClientRect();const style=getComputedStyle(header);if(['sticky','fixed'].includes(style.position)&&rect.bottom>0&&rect.top<innerHeight)bottom=rect.bottom;}
-frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,bottom)+10+'px');
 const hide=tabs.dataset.velouraTabsHideScroll==='true'&&window.scrollY>4;
 frame.classList.toggle('is-scroll-hidden',hide);
 if(hide)frame.setAttribute('inert','');else frame.removeAttribute('inert');
@@ -6861,7 +6860,7 @@ border-top-color:rgba(255,255,255,.20)!important;border-bottom-color:rgba(255,25
 </style>
 
 <style id="veloura-tabs-header-material-v74">
-html body#app .veloura-tabs-detached-frame {margin-top:0!important;margin-bottom:0!important;top:var(--veloura-detached-tabs-top,10px)!important}
+html body#app .veloura-tabs-detached-frame {margin-top:10px!important;margin-bottom:0!important;top:var(--veloura-detached-tabs-top,10px)!important}
 </style>
 <script id="veloura-tabs-header-material-runtime-v75">
 (()=>{
@@ -6881,8 +6880,10 @@ tabs.style.setProperty('border-radius',getComputedStyle(tabs).getPropertyValue('
 const dark=document.documentElement.classList.contains('dark')||document.body.classList.contains('dark');
 tabs.style.setProperty('border-top',glass&&!merged?'1px solid '+(dark?'rgba(255,255,255,.18)':'rgba(15,23,42,.18)'):'0px solid transparent','important');
 tabs.style.setProperty('border-bottom',glass&&!merged?'1px solid '+(dark?'rgba(255,255,255,.10)':'rgba(15,23,42,.09)'):'0px solid transparent','important');
-const tail=Math.max(0,stack.getBoundingClientRect().bottom-header.getBoundingClientRect().bottom);
-frame.style.setProperty('margin-top',(10-tail)+'px','important');frame.style.setProperty('--veloura-detached-tabs-top',Math.max(0,header.getBoundingClientRect().bottom)+10+'px');
+const stackStyle=getComputedStyle(stack);
+const bottom=['sticky','fixed'].includes(stackStyle.position)?Math.max(0,stack.getBoundingClientRect().bottom):0;
+const top=(bottom+10)+'px';
+if(frame.style.getPropertyValue('--veloura-detached-tabs-top')!==top)frame.style.setProperty('--veloura-detached-tabs-top',top);
 };
 const schedule=()=>{if(!pending)pending=requestAnimationFrame(update);};
 new ResizeObserver(schedule).observe(stack);new ResizeObserver(schedule).observe(header);
