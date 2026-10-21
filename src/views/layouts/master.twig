@@ -6860,8 +6860,26 @@ border-top-color:rgba(255,255,255,.20)!important;border-bottom-color:rgba(255,25
 </style>
 
 <style id="veloura-tabs-header-material-v74">
-html body#app .veloura-tabs-detached-frame {margin-top:10px!important;margin-bottom:0!important;top:var(--veloura-detached-tabs-top,10px)!important}
+html body#app .veloura-header-tabs-stack:has(+ .veloura-tabs-detached-frame),
+html body#app .veloura-header-tabs-stack:has(+ .veloura-tabs-detached-frame) :is(.veloura-header-tabs-stack__container,.veloura-header-tabs-stack__surface) {margin-bottom:0!important;padding-bottom:0!important;}
+html body#app .veloura-header-tabs-stack:has(+ .veloura-tabs-detached-frame) .store-header {margin-bottom:0!important;}
+html body#app .veloura-tabs-detached-frame {margin-top:10px!important;margin-bottom:0!important;top:var(--veloura-detached-tabs-top,10px)!important;padding-block:0!important;}
+html body#app:has(.veloura-tabs-detached-frame) #main-content {margin-top:0!important;padding-top:15px!important;display:flow-root;}
+html body#app:has(.veloura-tabs-detached-frame) #main-content .veloura-first-tab-block {margin-top:0!important;}
+html body#app:has(.veloura-tabs-detached-frame) #main-content > .s-block:nth-child(1 of .s-block:not([hidden]):not(.veloura-home-tab-is-hidden)) {margin-top:0!important;}
 </style>
+<script id="veloura-first-tab-block-spacing">
+(()=>{
+ const main=document.querySelector('#main-content');if(!main||!document.querySelector('.veloura-tabs-detached-frame'))return;
+ let frame=0;
+ function sync(){frame=0;const first=Array.from(main.querySelectorAll('.s-block')).find(el=>!el.closest('[hidden],.veloura-home-tab-is-hidden')&&getComputedStyle(el).display!=='none');
+ main.querySelectorAll('.veloura-first-tab-block').forEach(el=>{if(el!==first)el.classList.remove('veloura-first-tab-block')});
+ if(first&&!first.classList.contains('veloura-first-tab-block'))first.classList.add('veloura-first-tab-block');}
+ function schedule(){if(!frame)frame=requestAnimationFrame(sync)}
+ document.addEventListener('veloura:home-tabs:change',schedule);document.addEventListener('DOMContentLoaded',schedule,{once:true});window.addEventListener('resize',schedule,{passive:true});
+ new MutationObserver(schedule).observe(main,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});schedule();
+})();
+</script>
 <script id="veloura-tabs-header-material-runtime-v75">
 (()=>{
 const frame=document.querySelector('.veloura-tabs-detached-frame');const tabs=frame?.querySelector('#veloura-home-tabs');const header=document.querySelector('.veloura-header-tabs-stack__surface');const stack=document.querySelector('[data-veloura-header-tabs-stack]');const storeHeader=document.querySelector('.store-header');

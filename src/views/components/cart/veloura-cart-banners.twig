@@ -1,5 +1,10 @@
 {% set vb_enabled = theme.settings.get('veloura_cart_banners_enabled_2026') %}
 {% set vb_items = theme.settings.get('veloura_cart_banners_items_2026') %}
+{% set vb_valid_items = [] %}
+{% for banner in vb_items %}
+  {% if banner.image %}{% set vb_valid_items = vb_valid_items|merge([banner]) %}{% endif %}
+{% endfor %}
+{% set vb_items = vb_valid_items %}
 {% if vb_enabled and vb_items|length %}
   {% set vb_title = theme.settings.get('veloura_cart_banners_title_2026') %}
   {% set vb_position = theme.settings.get('veloura_cart_banners_position_2026')|default('after_products') %}

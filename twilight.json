@@ -5431,10 +5431,10 @@
           "type": "string",
           "format": "image",
           "label": "صورة البنر",
-          "description": "ارفع صورة البنر",
+          "description": "اختياري؛ البنر بدون صورة لن يظهر في صفحة السلة",
           "icon": "sicon-image",
           "value": "",
-          "required": true
+          "required": false
         },
         {
           "id": "url",
