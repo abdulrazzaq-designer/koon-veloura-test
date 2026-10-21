@@ -4716,7 +4716,6 @@ html body#app .veloura-tabs-detached-frame #veloura-home-tabs.veloura-home-tabs-
           nativeIcon = document.createElement('i');
           nativeIcon.className = 'text-base veloura-cart-icon-fallback ' + iconClass;
           nativeIcon.setAttribute('aria-hidden', 'true');
-          nativeIcon.style.setProperty('margin-inline-end', '6px');
           button.prepend(nativeIcon);
         }
       }
@@ -6741,6 +6740,13 @@ html body#app .s-product-card-entry salla-add-product-button :is(button,.s-butto
  border-radius:clamp(0px,var(--veloura-product-button-radius,var(--veloura-global-radius,16px)),50px)!important;
 }
 html body#app .s-product-card-entry salla-add-product-button :is(button,.s-button-element) {overflow:hidden!important;}
+html body#app .s-product-card-entry salla-add-product-button :is(button,.s-button-element,.s-button-text) {
+ display:flex!important;flex-direction:row!important;direction:rtl!important;align-items:center!important;justify-content:center!important;gap:6px!important;
+}
+html body#app .s-product-card-entry salla-add-product-button .s-button-text {flex:0 1 auto!important;width:auto!important;}
+html body#app .s-product-card-entry salla-add-product-button i[data-veloura-cart-icon] {
+ order:-1!important;flex:0 0 auto!important;margin:0!important;position:static!important;
+}
 </style>
 
 
