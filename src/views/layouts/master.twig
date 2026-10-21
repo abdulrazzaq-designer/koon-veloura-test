@@ -6733,6 +6733,37 @@ html body#app [data-veloura-home-tab].veloura-home-tab-is-hidden {
 </script>
 
 
+<style id="veloura-navigation-edge-fade">
+html body#app {--veloura-edge-fade-color:var(--veloura-site-bg,#fff);}
+html.dark body#app,html body#app.dark {--veloura-edge-fade-color:var(--veloura-dark-body-bg,#0b1220);}
+html body#app :is(.veloura-header-tabs-stack,.veloura-bottom-nav) {isolation:isolate;}
+html body#app .veloura-header-tabs-stack::before,
+html body#app .veloura-bottom-nav::before {
+ content:"";position:absolute;left:0;right:0;z-index:-1;pointer-events:none;
+ background:var(--veloura-edge-fade-color);opacity:.9;
+}
+html body#app .veloura-header-tabs-stack::before {
+ top:-32px;bottom:-24px;
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 35%,transparent 100%);
+ mask-image:linear-gradient(to bottom,#000 0%,#000 35%,transparent 100%);
+}
+html body#app .veloura-bottom-nav::before {
+ top:-32px;bottom:calc(-1 * (var(--vbn-bottom,0px) + env(safe-area-inset-bottom,0px) + 16px));
+ -webkit-mask-image:linear-gradient(to top,#000 0%,#000 35%,transparent 100%);
+ mask-image:linear-gradient(to top,#000 0%,#000 35%,transparent 100%);
+}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ html body#app .veloura-header-tabs-stack::before,
+ html body#app .veloura-bottom-nav::before {
+  background:color-mix(in srgb,var(--veloura-edge-fade-color) 68%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+ }
+}
+@media(prefers-reduced-transparency:reduce) {
+ html body#app .veloura-header-tabs-stack::before,
+ html body#app .veloura-bottom-nav::before {backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--veloura-edge-fade-color);}
+}
+</style>
 <style id="veloura-cart-button-corners">
 html body#app .s-product-card-entry salla-add-product-button,
 html body#app .s-product-card-entry salla-add-product-button salla-button,
