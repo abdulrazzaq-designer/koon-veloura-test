@@ -7241,6 +7241,19 @@ html:not(.dark) body#app:not(.dark) :is(salla-loyalty-program,salla-modal.s-loya
  .s-loyalty-program-points-chain-description,.s-loyalty-program-exchange-heading
  ) :is(span,p,h1,h2,h3) {color:inherit!important;-webkit-text-fill-color:inherit!important;opacity:1!important;}
 </style>
+<style id="veloura-loyalty-hero-and-light-card">
+/* Salla marks only image-backed heroes as hero-white. */
+html:not(.dark) body#app:not(.dark) salla-loyalty-program .s-loyalty-program-hero-white :is(.s-loyalty-program-hero-title,.s-loyalty-program-hero-description,h1,p),
+html:not(.dark) body#app:not(.dark) salla-loyalty-program .s-loyalty-program-hero-white :is(.s-loyalty-program-hero-title,.s-loyalty-program-hero-description) span {
+ color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;
+}
+html:not(.dark) body#app:not(.dark) :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-reward-container {
+ background:var(--veloura-site-bg,#fff)!important;box-shadow:none!important;
+}
+html:not(.dark) body#app:not(.dark) :is(salla-loyalty-program,.veloura-loyalty-theme) .s-loyalty-program-reward-container .s-loyalty-program-reward-content {
+ background:transparent!important;box-shadow:none!important;
+}
+</style>
 <style id="veloura-quickview-description-two-lines">
 html body#app .veloura-qv-full .veloura-qv-full__desc:not([hidden]):not(.veloura-qv-full__hidden) {
  display:-webkit-box!important;
