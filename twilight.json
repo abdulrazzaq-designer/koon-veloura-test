@@ -11194,24 +11194,24 @@
           "selected": [
             {
               "value": "both",
-              "label": "الزران تحت بعض",
+              "label": "الزران معًا",
               "key": "guide-mode-both"
             }
           ],
           "options": [
             {
               "value": "sizes",
-              "label": "الزر الأول فقط",
+              "label": "زر النافذة المخصصة",
               "key": "guide-mode-sizes"
             },
             {
               "value": "loyalty",
-              "label": "الزر الثاني فقط",
+              "label": "زر ولاء العملاء",
               "key": "guide-mode-loyalty"
             },
             {
               "value": "both",
-              "label": "الزران تحت بعض",
+              "label": "الزران معًا",
               "key": "guide-mode-both"
             }
           ]
@@ -11220,57 +11220,83 @@
           "id": "size_label",
           "type": "string",
           "format": "text",
-          "label": "نص الزر الأول",
-          "value": "دليل المقاسات",
-          "required": false
+          "label": "نص زر النافذة",
+          "value": "معلومات تهمك",
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "loyalty"
+            }
+          ]
         },
         {
-          "id": "first_custom_url",
+          "id": "popup_icon",
           "type": "string",
-          "format": "text",
-          "label": "رابط الزر الأول (اختياري)",
-          "value": "",
+          "format": "icon",
+          "label": "أيقونة زر النافذة",
+          "value": "sicon-info",
           "required": false,
-          "description": "ضع رابط صفحة أو منتج أو تصنيف أو موقع خارجي، مثل /pages/help أو https://example.com. تركه فارغًا يبقي نافذة الدليل الحالية."
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "loyalty"
+            }
+          ]
         },
         {
           "id": "first_custom_image",
           "type": "string",
           "format": "image",
-          "label": "صورة أيقونة الزر الأول (اختياري)",
+          "label": "صورة بدل أيقونة النافذة (اختياري)",
           "value": null,
-          "required": false
-        },
-        {
-          "id": "second_custom_image",
-          "type": "string",
-          "format": "image",
-          "label": "صورة أيقونة الزر الثاني (اختياري)",
-          "value": null,
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "loyalty"
+            }
+          ]
         },
         {
           "id": "size_title",
           "type": "string",
           "format": "text",
-          "label": "عنوان دليل المقاسات",
-          "value": "دليل المقاسات وطريقة القياس",
-          "required": false
+          "label": "عنوان النافذة",
+          "value": "معلومات تهمك",
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "loyalty"
+            }
+          ]
         },
         {
           "id": "size_intro",
           "type": "string",
           "format": "textarea",
-          "label": "مقدمة الدليل",
+          "label": "مقدمة النافذة",
           "value": "",
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "loyalty"
+            }
+          ]
         },
         {
           "id": "size_sections",
           "type": "collection",
           "format": "collection",
-          "label": "صور وتفاصيل دليل المقاسات",
-          "item_label": "قسم في الدليل",
+          "label": "محتوى النافذة: صور ونصوص",
+          "item_label": "قسم في النافذة",
           "icon": "sicon-list-add",
           "value": [],
           "minLength": 0,
@@ -11296,9 +11322,16 @@
               "id": "size_sections.image",
               "type": "string",
               "format": "image",
-              "label": "صورة جدول المقاسات أو طريقة القياس",
+              "label": "صورة القسم",
               "value": null,
               "required": false
+            }
+          ],
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "loyalty"
             }
           ]
         },
@@ -11306,18 +11339,62 @@
           "id": "loyalty_label",
           "type": "string",
           "format": "text",
-          "label": "نص الزر الثاني",
+          "label": "نص زر الولاء",
           "value": "ولاء العملاء",
-          "required": false
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "sizes"
+            }
+          ]
+        },
+        {
+          "id": "loyalty_icon",
+          "type": "string",
+          "format": "icon",
+          "label": "أيقونة زر الولاء",
+          "value": "sicon-star",
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "sizes"
+            }
+          ]
+        },
+        {
+          "id": "second_custom_image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة بدل أيقونة الولاء (اختياري)",
+          "value": null,
+          "required": false,
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "sizes"
+            }
+          ]
         },
         {
           "id": "loyalty_url",
           "type": "string",
           "format": "text",
-          "label": "رابط الزر الثاني",
+          "label": "رابط الولاء (اختياري)",
           "value": "",
           "required": false,
-          "description": "ضع رابط صفحة أو منتج أو تصنيف أو موقع خارجي. إذا تركته فارغًا يفتح صفحة الولاء الحالية."
+          "description": "ضع رابط صفحة أو منتج أو تصنيف أو موقع خارجي. إذا تركته فارغًا يفتح صفحة الولاء الحالية.",
+          "conditions": [
+            {
+              "id": "button_mode",
+              "operation": "!=",
+              "value": "sizes"
+            }
+          ]
         },
         {
           "id": "left_side",
