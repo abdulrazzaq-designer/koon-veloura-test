@@ -355,11 +355,13 @@
                                     "preventClicksPropagation": true,
                                     "threshold": 5,
                                     "grabCursor": true,
-                                    "freeMode": { "enabled": true, "sticky": false },
+                                    "freeMode": { "enabled": true, "sticky": false, "momentum": true, "momentumBounce": false },
                                     "touchStartPreventDefault": false,
                                     "spaceBetween": 12,
-                                    "observer": true,
-                                    "observeParents": true,
+                                    "observer": false,
+                                    "observeParents": false,
+                                    "resizeObserver": true,
+                                    "updateOnWindowResize": true,
                                     "breakpoints": {
                                         "768": {
                                             "slidesPerView": {{ vcat_desktop_cols }},
