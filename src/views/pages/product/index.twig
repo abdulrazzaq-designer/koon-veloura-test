@@ -349,6 +349,10 @@
                                 slider-config='{
                                     "slidesPerView": {{ vcat_mobile_cols }},
                                     "simulateTouch": true,
+                                    "allowTouchMove": true,
+                                    "touchAngle": 45,
+                                    "preventClicks": true,
+                                    "preventClicksPropagation": true,
                                     "threshold": 5,
                                     "grabCursor": true,
                                     "freeMode": { "enabled": true, "sticky": false },
@@ -913,17 +917,26 @@ html body#app .veloura-category-page .veloura-category-children .veloura-categor
 html body#app .veloura-category-page .veloura-category-children [data-category-root="true"] :is(.veloura-category-child__media,.veloura-category-compact__media) {background:var(--color-primary,#3289dc)!important;color:var(--color-primary-reverse,#fff)!important;border-radius:var(--vcat-image-radius,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;aspect-ratio:1!important;}
 html body#app .veloura-category-page .veloura-category-children--position-top .veloura-category-child[data-category-root="true"] {flex-direction:column!important;gap:8px!important;}
 html body#app .veloura-category-page .veloura-category-children--position-top [data-category-root="true"] .veloura-category-child__media {width:min(100%,var(--vcat-top-size))!important;height:var(--vcat-top-size)!important;min-width:0!important;flex:0 0 auto!important;}
-html body#app .veloura-category-page .veloura-category-children--position-right [data-category-root="true"] .veloura-category-child__media {width:48px!important;min-width:48px!important;height:48px!important;flex:0 0 48px!important;}
-html body#app .veloura-category-page .veloura-category-children [data-category-root="true"] .veloura-category-compact__media {width:30px!important;min-width:30px!important;height:30px!important;flex:0 0 30px!important;}
+html body#app .veloura-category-page .veloura-category-children--position-right [data-category-root="true"] .veloura-category-child__media {width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;min-height:0!important;max-height:48px!important;flex:0 0 48px!important;box-sizing:border-box!important;}
+html body#app .veloura-category-page .veloura-category-children [data-category-root="true"] .veloura-category-compact__media {width:30px!important;min-width:30px!important;height:30px!important;min-height:0!important;max-height:30px!important;flex:0 0 30px!important;}
 html body#app .veloura-category-page .veloura-category-children--position-top .veloura-category-child[data-category-root="true"] i,
 html body#app .veloura-category-page .veloura-category-children--position-top .veloura-category-child[data-category-root="true"] i::before {font-size:calc(var(--vcat-top-size) * .42)!important;line-height:1!important;}
 html body#app .veloura-category-page .veloura-category-children :is(.veloura-category-compact__track,.veloura-category-descendants__track) {scroll-snap-type:none!important;cursor:grab;}
 html body#app .veloura-category-page .veloura-category-children img {-webkit-user-drag:none;user-select:none;}
 html body#app .veloura-category-page .veloura-category-children .vcat-dragging {cursor:grabbing!important;user-select:none!important;scroll-behavior:auto!important;}
 </style>
+<style id="veloura-category-touch-gesture">
+html body#app .veloura-category-children__slider :is(.swiper,.swiper-container) {touch-action:pan-y pinch-zoom!important;}
+html body#app .veloura-category-children :is(.veloura-category-compact__track,.veloura-category-descendants__track) {touch-action:pan-x pan-y pinch-zoom!important;-webkit-overflow-scrolling:touch;}
+</style>
 <script id="veloura-category-mouse-drag">
 (()=>{const page=document.querySelector('.veloura-category-page');if(!page)return;
-let drag=null,blocked=null;
+let drag=null,blocked=null,touch=null,suppressUntil=0;
+page.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||!e.target.closest('.veloura-category-children'))return;touch={id:e.pointerId,x:e.clientX,y:e.clientY};suppressUntil=0;},{passive:true});
+window.addEventListener('pointermove',e=>{if(touch&&touch.id===e.pointerId&&Math.hypot(e.clientX-touch.x,e.clientY-touch.y)>8)suppressUntil=Date.now()+500;},{passive:true});
+window.addEventListener('pointerup',()=>{touch=null;},{passive:true});
+window.addEventListener('pointercancel',()=>{if(touch)suppressUntil=Date.now()+500;touch=null;},{passive:true});
+page.addEventListener('click',e=>{const rail=e.target.closest('.veloura-category-children');if(!rail)return;const swiper=e.target.closest('.swiper,.swiper-container')?.swiper;if(Date.now()<suppressUntil||swiper?.allowClick===false){e.preventDefault();e.stopImmediatePropagation();}},true);
 page.addEventListener('dragstart',e=>{if(e.target.closest('.veloura-category-children'))e.preventDefault();});
 page.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0)return;const track=e.target.closest('.veloura-category-compact__track,.veloura-category-descendants__track');if(!track||track.scrollWidth<=track.clientWidth||getComputedStyle(track).overflowX==='visible')return;blocked=null;drag={track,x:e.clientX,left:track.scrollLeft,moved:false,id:e.pointerId};});
 window.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;const dx=e.clientX-drag.x;if(!drag.moved&&Math.abs(dx)<5)return;drag.moved=true;drag.track.classList.add('vcat-dragging');drag.track.scrollLeft=drag.left-dx;e.preventDefault();},{passive:false});
