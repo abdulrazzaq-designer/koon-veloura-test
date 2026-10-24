@@ -420,7 +420,8 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
         style="
           --band-from: {{ component.veloura_tkr_color_from|default('#7c3aed') }};
           --band-to: {{ component.veloura_tkr_color_to|default('#ec4899') }};
-          --band-text: {{ component.veloura_tkr_text_color|default('#ffffff') }};
+          --band-text-light: {{ component.veloura_tkr_text_color|default('#ffffff') }};
+          --band-text-dark: {{ component.veloura_tkr_text_color_dark|default('#ffffff') }};
           --band-tint: {{ component.veloura_tkr_glass_tint|default(70) }}%;
           --tkr-shift: -{{ tkr_shift }}%;
           --tkr-shift-rtl: {{ tkr_shift }}%;
@@ -469,7 +470,8 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
           style="
             --band-from: {{ tkr2_from }};
             --band-to: {{ tkr2_to }};
-            --band-text: {{ tkr2_text }};
+            --band-text-light: {{ tkr2_text }};
+            --band-text-dark: {{ component.veloura_tkr2_text_color_dark|default(component.veloura_tkr_text_color_dark|default('#ffffff')) }};
             --band-tint: {{ component.veloura_tkr2_glass_tint|default(70) }}%;
             --band-speed: {{ tkr2_speed }}s;
             --tkr-shift: -{{ tkr_shift_b }}%;
@@ -494,3 +496,7 @@ body[dir="rtl"] .veloura-tkr .tkr__track {
     </div>
   </section>
 {% endif %}
+<style>
+.veloura-tkr .tkr__band { --band-text: var(--band-text-light); }
+html.dark .veloura-tkr .tkr__band, body.dark .veloura-tkr .tkr__band { --band-text: var(--band-text-dark); }
+</style>

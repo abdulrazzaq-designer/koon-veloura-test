@@ -11693,12 +11693,12 @@
           "id": "hero_full_width",
           "type": "boolean",
           "format": "switch",
-          "label": "الهيرو بعرض الشاشة كاملاً",
+          "label": "تمديد خلفية الهيرو إلى حواف الشاشة",
           "icon": "sicon-toggle-off",
           "value": true,
           "selected": true,
           "required": false,
-          "description": "يمدّ خلفية البانر بعرض الشاشة مع إبقاء المحتوى داخل حاوية المتجر."
+          "description": "يتحكم بعرض الخلفية فقط، وليس ارتفاع الهيرو. عند الإيقاف تظهر داخل حاوية المتجر، وعند التفعيل تمتد للحواف."
         },
         {
           "id": "hero_radius",
@@ -22362,10 +22362,21 @@
           "id": "veloura_tkr_text_color",
           "type": "string",
           "format": "color",
-          "label": "لون النص",
+          "label": "لون نص الشريط الأول — الوضع الفاتح",
           "icon": "sicon-brush",
           "value": "#ffffff",
-          "required": false
+          "required": false,
+          "description": "اختر لونًا واضحًا على خلفية الشريط في الوضع الفاتح."
+        },
+        {
+          "id": "veloura_tkr_text_color_dark",
+          "type": "string",
+          "format": "color",
+          "label": "لون نص الشريط الأول — الوضع الداكن",
+          "icon": "sicon-brush",
+          "value": "#ffffff",
+          "required": false,
+          "description": "لون مستقل للنص والأيقونات في الوضع الداكن."
         },
         {
           "id": "veloura_tkr_shine_color",
@@ -22537,7 +22548,7 @@
           "id": "veloura_tkr2_text_color",
           "type": "string",
           "format": "color",
-          "label": "لون نص الشريط الثاني",
+          "label": "لون نص الشريط الثاني — الوضع الفاتح",
           "icon": "sicon-brush",
           "value": "#ffffff",
           "required": false,
@@ -22547,7 +22558,25 @@
               "operation": "=",
               "value": "cross"
             }
-          ]
+          ],
+          "description": "اختر لونًا واضحًا على خلفية الشريط في الوضع الفاتح."
+        },
+        {
+          "id": "veloura_tkr2_text_color_dark",
+          "type": "string",
+          "format": "color",
+          "label": "لون نص الشريط الثاني — الوضع الداكن",
+          "icon": "sicon-brush",
+          "value": "#ffffff",
+          "required": false,
+          "conditions": [
+            {
+              "id": "veloura_tkr_layout",
+              "operation": "=",
+              "value": "cross"
+            }
+          ],
+          "description": "لون مستقل للنص والأيقونات في الوضع الداكن."
         },
         {
           "id": "veloura_tkr2_glass",
