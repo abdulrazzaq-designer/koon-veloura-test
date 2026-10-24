@@ -452,6 +452,18 @@
 }
 .vsc:not(.vsc--dots) .vsc__products .swiper-pagination { display: none !important; }
 
+
+/* Keep the product surfaces distinct from this section's secondary panel. */
+html body#app .vsc .vsc__products {--vsc-card-surface:var(--veloura-site-bg,#fff);}
+html.dark body#app .vsc .vsc__products,
+html body#app.dark .vsc .vsc__products {--vsc-card-surface:var(--veloura-dark-body-bg,#0b1220);}
+html body#app .vsc .vsc__products .s-product-card-entry,
+html:not(.dark) body#app:not(.dark) .vsc .vsc__products .s-product-card-entry {--veloura-product-card-bg:var(--vsc-card-surface)!important;}
+html body#app:not(.veloura-product-card-image-outside) .vsc .vsc__products .s-product-card-entry,
+html:not(.dark) body#app:not(.dark):not(.veloura-product-card-image-outside) .vsc .vsc__products .s-product-card-entry {background:var(--vsc-card-surface)!important;}
+html body#app .vsc .vsc__products .s-product-card-entry::before,
+html:not(.dark) body#app:not(.dark) .vsc .vsc__products .s-product-card-entry::before {background:var(--vsc-card-surface)!important;}
+
 /* ---------- الوضع الداكن ---------- */
 html.dark .vsc:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel,
 html body.dark .vsc:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel {
