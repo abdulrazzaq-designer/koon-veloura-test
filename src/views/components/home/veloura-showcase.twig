@@ -1,10 +1,6 @@
 {# VELOURA HOME TAB ASSIGNMENT START #}
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
-{% set veloura_tab_primary = component.veloura_home_tab_primary_2026 is defined ? component.veloura_home_tab_primary_2026 : (not veloura_home_tab_key) %}
-{% if veloura_tab_primary.value is defined %}{% set veloura_tab_primary = veloura_tab_primary.value %}{% endif %}
-{% set veloura_tab_all = component.veloura_home_tab_all_2026 is defined ? component.veloura_home_tab_all_2026 : false %}
-{% if veloura_tab_all.value is defined %}{% set veloura_tab_all = veloura_tab_all.value %}{% endif %}
 {# VELOURA HOME TAB ASSIGNMENT END #}
 
 {# ==========================================================================
@@ -116,7 +112,6 @@
     component.vsc_media_left ? 'vsc--media-left' : '',
     component.vsc_center_titles ? 'is-centered' : '',
     'vsc--mh-' ~ vsc_mh,
-    component.vsc_dark_bg ? 'vsc--dark-bg' : '',
     vsc_dots ? 'vsc--dots' : '',
     component.vsc_custom_spacing ? 'has-spacing' : '',
     component.vsc_mobile_only ? 'veloura-mobile-only' : '',
@@ -458,16 +453,16 @@
 .vsc:not(.vsc--dots) .vsc__products .swiper-pagination { display: none !important; }
 
 /* ---------- الوضع الداكن ---------- */
-html.dark .vsc.vsc--dark-bg:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel,
-html body.dark .vsc.vsc--dark-bg:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel {
+html.dark .vsc:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel,
+html body.dark .vsc:is(.vsc--bg-soft, .vsc--bg-solid, .vsc--bg-gradient) .vsc__panel {
   background: var(--veloura-dark-secondary-bg, #010612) !important;
 }
-html.dark .vsc.vsc--dark-bg :is(.vsc__title, .vsc__eyebrow, .vsc__products-head h3),
-html body.dark .vsc.vsc--dark-bg :is(.vsc__title, .vsc__eyebrow, .vsc__products-head h3) {
+html.dark .vsc :is(.vsc__title, .vsc__eyebrow, .vsc__products-head h3),
+html body.dark .vsc :is(.vsc__title, .vsc__eyebrow, .vsc__products-head h3) {
   color: var(--veloura-dark-primary-text, #ffffff) !important;
 }
-html.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point),
-html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
+html.dark .vsc :is(.vsc__text, .vsc__point),
+html body.dark .vsc :is(.vsc__text, .vsc__point) {
   color: var(--veloura-dark-secondary-text, #ededed) !important;
 }
 
@@ -476,7 +471,7 @@ html body.dark .vsc.vsc--dark-bg :is(.vsc__text, .vsc__point) {
 }
 </style>
 
-  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}" data-veloura-tab-primary="{{ veloura_tab_primary is same as(true) or veloura_tab_primary in ['true', '1', 1, 'on'] ? 'true' : 'false' }}" data-veloura-tab-all="{{ veloura_tab_all is same as(true) or veloura_tab_all in ['true', '1', 1, 'on'] ? 'true' : 'false' }}"
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-showcase-{{ position }}"
     class="{{ vsc_classes }} {{ vsc_ratio == 'auto' ? 'vsc--ratio-auto' : '' }}"
     style="

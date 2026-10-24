@@ -17781,7 +17781,8 @@
           "source": "Manual",
           "multichoice": false,
           "searchable": false,
-          "required": true
+          "required": true,
+          "description": "الألوان المختارة للوضع الفاتح. في الوضع الداكن تتبع الخلفية اللون الثانوي للداكن تلقائيًا. بدون خلفية يبقى شفافًا في الوضعين."
         },
         {
           "id": "vsc_bg_from",
@@ -17862,17 +17863,6 @@
           "step": "1",
           "minimum": "0",
           "maximum": "50",
-          "required": false
-        },
-        {
-          "id": "vsc_dark_bg",
-          "type": "boolean",
-          "format": "switch",
-          "label": "خلفية الوضع الداكن",
-          "description": "في الوضع الداكن (وبدون صورة) تأخذ اللوحة اللون الثانوي للداكن.",
-          "icon": "sicon-toggle-off",
-          "value": false,
-          "selected": false,
           "required": false
         },
         {
