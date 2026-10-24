@@ -884,12 +884,24 @@ margin:0!important;
 <style id="veloura-category-top-size-v45">
 .veloura-category-page {--vcat-top-size:{{ vcat_top_mobile < 32 ? 32 : (vcat_top_mobile > 200 ? 200 : vcat_top_mobile) }}px}
 @media(min-width:1024px){.veloura-category-page {--vcat-top-size:{{ vcat_top_desktop < 32 ? 32 : (vcat_top_desktop > 200 ? 200 : vcat_top_desktop) }}px}}
-html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child,.veloura-category-compact__item,.veloura-category-descendant) {flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important}
-html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child__media,.veloura-category-compact__media,.veloura-category-descendant__media) {
+html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child,.veloura-category-descendant) {flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child__media,.veloura-category-descendant__media) {
 width:min(100%,var(--vcat-top-size))!important;max-width:100%!important;min-width:0!important;height:auto!important;min-height:0!important;aspect-ratio:1!important;flex:0 0 auto!important;margin-inline:auto!important;
 }
-html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child__media,.veloura-category-compact__media,.veloura-category-descendant__media) img {width:100%!important;height:100%!important;min-height:0!important;object-fit:var(--vcat-image-fit,cover)}
+html body#app .veloura-category-page .veloura-category-children--position-top :is(.veloura-category-child__media,.veloura-category-descendant__media) img {width:100%!important;height:100%!important;min-height:0!important;object-fit:var(--vcat-image-fit,cover)}
 html body#app .veloura-category-page .veloura-category-children--position-top [data-category-root="true"] i {font-size:calc(var(--vcat-top-size) * .55)!important;max-width:100%}
+</style>
+
+<style id="veloura-category-balanced-layout">
+html body#app .veloura-category-page .veloura-category-children--position-top .veloura-category-child {height:auto!important;min-height:calc(var(--vcat-top-size) + 52px)!important;padding:10px!important;gap:8px!important;box-sizing:border-box;}
+html body#app .veloura-category-page .veloura-category-children--position-top .veloura-category-child__title {display:block!important;flex:0 0 auto!important;line-height:1.4!important;white-space:normal!important;margin:0!important;}
+html body#app .veloura-category-page .veloura-category-children--position-right .veloura-category-child {height:auto!important;min-height:72px!important;padding:10px 14px!important;gap:10px!important;box-sizing:border-box;}
+html body#app .veloura-category-page .veloura-category-children--position-right .veloura-category-child__media:not(.veloura-category-child__media--all) {width:48px!important;min-width:48px!important;height:48px!important;min-height:0!important;flex:0 0 48px!important;}
+html body#app .veloura-category-page .veloura-category-children--position-right .veloura-category-child__media img {height:100%!important;min-height:0!important;object-fit:contain!important;}
+html body#app .veloura-category-page .veloura-category-children--position-right .veloura-category-child__title {font-size:15px!important;line-height:1.4!important;white-space:normal!important;}
+html body#app .veloura-category-page .veloura-category-children .veloura-category-compact__item {display:flex!important;flex-direction:row!important;direction:rtl;align-items:center!important;justify-content:center!important;height:46px!important;min-height:46px!important;width:auto!important;flex:0 0 auto!important;gap:7px!important;padding:6px 10px!important;}
+html body#app .veloura-category-page .veloura-category-children .veloura-category-compact__media {width:30px!important;min-width:30px!important;height:30px!important;min-height:0!important;flex:0 0 30px!important;margin:0!important;}
+html body#app .veloura-category-page .veloura-category-children .veloura-category-compact__title {display:block!important;flex:0 1 auto!important;width:auto!important;white-space:nowrap!important;font-size:13px!important;line-height:20px!important;margin:0!important;}
 </style>
     <script defer src="{{ 'product.js' | asset }}"></script>
 {% endblock %}
