@@ -11815,8 +11815,8 @@
           "value": "",
           "required": false,
           "maxLength": 2048,
-          "placeholder": "https://…/hero.mp4",
-          "description": "يُشغَّل صامتًا ومكررًا، ولا يُحمَّل على الجوال ولا لمن يفضّل تقليل الحركة.",
+          "placeholder": "",
+          "description": "يعمل دون صوت مع التكرار. يمكنك تخصيص عرضه على الجوال من الخيارات التالية.",
           "conditions": [
             {
               "id": "hero_bg_type",
@@ -11826,11 +11826,74 @@
           ]
         },
         {
+          "id": "hero_video_mobile_mode",
+          "type": "items",
+          "format": "dropdown-list",
+          "source": "Manual",
+          "label": "خلفية الهيرو على الجوال",
+          "required": true,
+          "value": "same",
+          "default": "same",
+          "selected": [
+            {
+              "label": "نفس فيديو الكمبيوتر",
+              "value": "same",
+              "key": "hero_video_mobile_mode-same"
+            }
+          ],
+          "options": [
+            {
+              "label": "نفس فيديو الكمبيوتر",
+              "value": "same",
+              "key": "hero_video_mobile_mode-same"
+            },
+            {
+              "label": "فيديو مخصص للجوال",
+              "value": "custom",
+              "key": "hero_video_mobile_mode-custom"
+            },
+            {
+              "label": "صورة ثابتة",
+              "value": "image",
+              "key": "hero_video_mobile_mode-image"
+            }
+          ],
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "video"
+            }
+          ]
+        },
+        {
+          "id": "hero_bg_video_mobile",
+          "type": "string",
+          "format": "text",
+          "label": "رابط فيديو الجوال (MP4)",
+          "value": "",
+          "required": false,
+          "maxLength": 2048,
+          "description": "استخدم فيديو خفيفًا بأبعاد مناسبة للجوال. عند تركه فارغًا يُستخدم فيديو الكمبيوتر.",
+          "conditions": [
+            {
+              "id": "hero_bg_type",
+              "operation": "=",
+              "value": "video"
+            },
+            {
+              "id": "hero_video_mobile_mode",
+              "operation": "=",
+              "value": "custom"
+            }
+          ]
+        },
+        {
           "id": "hero_bg_video_poster",
           "type": "string",
           "format": "image",
           "label": "صورة بديلة للفيديو",
-          "description": "تظهر مكان الفيديو على الجوال وريثما يبدأ التشغيل. ارفعها دائمًا مع الفيديو.",
+          "description": "تظهر أثناء تحميل الفيديو أو تعذّر تشغيله، وعند اختيار صورة ثابتة للجوال أو تفعيل تقليل الحركة.",
           "icon": "sicon-image",
           "value": null,
           "required": false,
@@ -15664,16 +15727,38 @@
           "maximum": "80"
         },
         {
-          "id": "veloura_center_features",
-          "type": "boolean",
-          "format": "switch",
-          "label": "توسيط المميزات والعناوين",
-          "description": null,
-          "labelHTML": null,
-          "icon": "sicon-toggle-off",
-          "value": true,
-          "selected": false,
-          "required": false
+          "id": "veloura_features_alignment",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "محاذاة محتوى المميزات",
+          "description": "محاذاة الأيقونة والنص داخل كل بطاقة، مستقلة عن عنوان القسم.",
+          "source": "Manual",
+          "required": true,
+          "value": "center",
+          "selected": [
+            {
+              "label": "منتصف",
+              "value": "center",
+              "key": "veloura_features_alignment-center"
+            }
+          ],
+          "options": [
+            {
+              "label": "يمين",
+              "value": "right",
+              "key": "veloura_features_alignment-right"
+            },
+            {
+              "label": "منتصف",
+              "value": "center",
+              "key": "veloura_features_alignment-center"
+            },
+            {
+              "label": "يسار",
+              "value": "left",
+              "key": "veloura_features_alignment-left"
+            }
+          ]
         },
         {
           "id": "veloura_features_horizontal",

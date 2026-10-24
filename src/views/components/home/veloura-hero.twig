@@ -47,6 +47,9 @@
   {% set hero_bg %}{{ _self.pick(component.hero_bg_type, 'image') }}{% endset %}
   {% set hero_bg = hero_bg|trim %}
   {% if hero_bg not in ['image', 'gradient', 'video'] %}{% set hero_bg = 'image' %}{% endif %}
+  {% set hero_video_mobile %}{{ _self.pick(component.hero_video_mobile_mode, 'same') }}{% endset %}
+  {% set hero_video_mobile = hero_video_mobile|trim %}
+  {% if hero_video_mobile not in ['same', 'custom', 'image'] %}{% set hero_video_mobile = 'same' %}{% endif %}
 
   {# الحواف: رقم بالبيكسل، والمفاتيح القديمة تبقى مفهومة، و«40» = دائري. #}
   {% set hero_radius_key %}{{ _self.pick(component.hero_radius, 28) }}{% endset %}
@@ -806,13 +809,13 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
   "
 >
   <div class="hero__bg">
-    {% if hero_bg == 'video' and component.hero_bg_video %}
-      {# الصورة البديلة تحت الفيديو لا بدلاً منه: على الجوال لا يُحمَّل الفيديو
-         أصلاً فتبقى هي الظاهرة، وعلى اللابتوب يغطيها الفيديو حين يبدأ. #}
+    {% if hero_bg == 'video' %}
       {% if component.hero_bg_video_poster %}
         <img src="{{ component.hero_bg_video_poster }}" alt="" fetchpriority="high" decoding="async">
       {% endif %}
-      <video data-hero-video data-src="{{ component.hero_bg_video }}" muted loop playsinline preload="none"
+      <video data-hero-video data-src="{{ component.hero_bg_video }}"
+        data-mobile-mode="{{ hero_video_mobile }}" data-mobile-src="{{ component.hero_bg_video_mobile }}"
+        muted loop playsinline preload="none" style="visibility:hidden"
         {% if component.hero_bg_video_poster %}poster="{{ component.hero_bg_video_poster }}"{% endif %}></video>
     {% elseif hero_bg == 'image' and hero_bg_image %}
       <picture>
@@ -1334,11 +1337,59 @@ html[dir="rtl"] .veloura-hero.hero--logos-move .hero__logos-track { animation-na
     }, { passive: true });
   }
 
-  /* الفيديو: لا يُحمَّل على الجوال ولا لمن يفضّل تقليل الحركة */
+  /* Load only the source appropriate to the viewport, while the hero is visible. */
   var vid = root.querySelector('[data-hero-video]');
-  if (vid && !reduced && window.innerWidth >= 768) {
-    vid.src = vid.getAttribute('data-src');
-    vid.play().catch(function () {});
+  if (vid) {
+    var mobileQuery = window.matchMedia('(max-width: 767px)');
+    var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var videoVisible = !('IntersectionObserver' in window);
+    var loadedSource = '';
+    var videoGeneration = 0;
+    function showVideoPoster() { vid.style.visibility = 'hidden'; }
+    function updateHeroVideo() {
+      var mode = vid.getAttribute('data-mobile-mode');
+      var source = vid.getAttribute('data-src') || '';
+      if (mobileQuery.matches) {
+        if (mode === 'image') source = '';
+        else if (mode === 'custom') source = vid.getAttribute('data-mobile-src') || source;
+      }
+      if (motionQuery.matches) source = '';
+      if (source !== loadedSource) {
+        videoGeneration++;
+        vid.pause();
+        showVideoPoster();
+        vid.removeAttribute('src');
+        vid.load();
+        loadedSource = '';
+      }
+      if (!source || !videoVisible || document.hidden) {
+        vid.pause();
+        return;
+      }
+      if (!loadedSource) {
+        loadedSource = source;
+        vid.muted = true;
+        vid.src = source;
+      }
+      var generation = videoGeneration;
+      var attempt = vid.play();
+      if (attempt && attempt.catch) attempt.catch(function () {
+        if (generation === videoGeneration && vid.paused) showVideoPoster();
+      });
+    }
+    vid.addEventListener('playing', function () { vid.style.visibility = 'visible'; });
+    vid.addEventListener('error', showVideoPoster);
+    if ('IntersectionObserver' in window) {
+      var videoObserver = new IntersectionObserver(function (entries) {
+        videoVisible = entries[0].isIntersecting;
+        updateHeroVideo();
+      }, { threshold: 0 });
+      videoObserver.observe(root);
+    }
+    mobileQuery.addEventListener('change', updateHeroVideo);
+    motionQuery.addEventListener('change', updateHeroVideo);
+    document.addEventListener('visibilitychange', updateHeroVideo);
+    updateHeroVideo();
   }
 })();
 </script>

@@ -18,13 +18,24 @@
 {% if sf_horizontal.value is defined %}{% set sf_horizontal = sf_horizontal.value %}{% endif %}
 {% set sf_horizontal = sf_horizontal is same as(true) or sf_horizontal in ['true', '1', 1, 'on'] %}
 {% set sf_floating = component.veloura_floating_icon and not sf_horizontal %}
+{% set sf_align = component.veloura_features_alignment|default(component.veloura_center_features ? 'center' : 'right') %}
+{% if sf_align.selected is defined %}{% set sf_align = sf_align.selected %}{% endif %}
+{% if sf_align is iterable and sf_align.value is not defined %}{% set sf_align = sf_align|first %}{% endif %}
+{% if sf_align.value is defined %}{% set sf_align = sf_align.value %}{% endif %}
+{% if sf_align not in ['right','center','left'] %}{% set sf_align = 'center' %}{% endif %}
+{% set sf_heading_align = component.veloura_alignment_desktop|default('center') %}
+{% if sf_heading_align.selected is defined %}{% set sf_heading_align = sf_heading_align.selected %}{% endif %}
+{% if sf_heading_align is iterable and sf_heading_align.value is not defined %}{% set sf_heading_align = sf_heading_align|first %}{% endif %}
+{% if sf_heading_align.value is defined %}{% set sf_heading_align = sf_heading_align.value %}{% endif %}
+{% if sf_heading_align not in ['right','center','left'] %}{% set sf_heading_align = 'center' %}{% endif %}
 
 {% set section_classes = [
   's-block',
   'veloura-store-features',
+  'features-align-' ~ sf_align,
   component.veloura_enable_custom_spacing ? 'has-spacing' : '',
   sf_horizontal ? 'is-horizontal' : '',
-  component.veloura_center_features ? 'is-centered-layout' : '',
+  sf_align == 'center' ? 'is-centered-layout' : '',
   component.veloura_custom_classes ?: ''
 ] %}
 
@@ -98,6 +109,23 @@
 </style>
 {% endif %}
 
+
+<style>
+.veloura-store-features[class*="features-align-"] .veloura-store-features__item,
+.veloura-store-features[class*="features-align-"] .veloura-store-features__content { text-align: var(--features-align) !important; }
+.veloura-store-features.features-align-right { --features-align: right; --features-justify: right; }
+.veloura-store-features.features-align-center { --features-align: center; --features-justify: center; }
+.veloura-store-features.features-align-left { --features-align: left; --features-justify: left; }
+.veloura-store-features.is-horizontal[class*="features-align-"] .veloura-store-features__item { direction: ltr; flex-direction: row-reverse !important; justify-content: var(--features-justify) !important; }
+.veloura-store-features.is-horizontal[class*="features-align-"] .veloura-store-features__content { flex: 0 1 auto; direction: inherit; }
+html[dir="rtl"] .veloura-store-features.is-horizontal[class*="features-align-"] .veloura-store-features__content { direction: rtl; }
+.veloura-store-features:not(.is-horizontal).features-align-right .veloura-store-features__icon { margin-left: auto !important; margin-right: 0 !important; }
+.veloura-store-features:not(.is-horizontal).features-align-left .veloura-store-features__icon { margin-left: 0 !important; margin-right: auto !important; }
+.veloura-store-features:not(.is-horizontal).features-align-center .veloura-store-features__icon { margin-left: auto !important; margin-right: auto !important; }
+.veloura-store-features.features-align-right .veloura-store-features__item.has-floating-icon .veloura-store-features__icon { right: 20px; left: auto; transform: none; }
+.veloura-store-features.features-align-left .veloura-store-features__item.has-floating-icon .veloura-store-features__icon { left: 20px; right: auto; transform: none; }
+</style>
+
 <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="{{ section_classes|join(' ') }}"
   style="
@@ -105,7 +133,7 @@
     --veloura-mobile-cols: {{ component.veloura_mobile_columns|default(2) }};
     --veloura-desktop-cols: {{ component.veloura_desktop_columns|default(3) }};
     --veloura-title-color: {{ component.veloura_title_color|default('#111111') }};
-    --veloura-heading-align: {{ component.veloura_alignment_desktop|default('center') }};
+    --veloura-heading-align: {{ sf_heading_align }};
     --veloura-icon-width: {{ component.veloura_feature_image_width|default(70) }}px;
     --veloura-icon-height: {{ component.veloura_feature_image_height and component.veloura_feature_image_height > 0 ? component.veloura_feature_image_height : 70 }}px;
     --veloura-custom-spacing: {{ component.veloura_enable_custom_spacing ? component.veloura_custom_spacing|default(0) : 0 }}px;
@@ -137,7 +165,7 @@
       {% for item in component.veloura_features_collection %}
 
         <div
-          class="veloura-store-features__item {{ sf_floating ? 'has-floating-icon' : '' }} {{ component.veloura_center_features ? 'is-centered' : '' }}"
+          class="veloura-store-features__item {{ sf_floating ? 'has-floating-icon' : '' }} {{ sf_align == 'center' ? 'is-centered' : '' }}"
           style="
             background: {{ item.veloura_feature_background_transparent ? 'transparent' : item.veloura_feature_background|default('#004956') }};
             color: {{ item.veloura_feature_text_color|default('#ffffff') }};
