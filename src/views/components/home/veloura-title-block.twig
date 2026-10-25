@@ -1,3 +1,24 @@
+
+
+{% set vt_badge = component.vt_badge_enabled|default(false) %}
+{% if vt_badge.value is defined %}{% set vt_badge = vt_badge.value %}{% endif %}
+{% set vt_button = component.vt_button_enabled|default(false) %}
+{% if vt_button.value is defined %}{% set vt_button = vt_button.value %}{% endif %}
+{% set vt_count = component.vt_countdown_enabled|default(false) %}
+{% if vt_count.value is defined %}{% set vt_count = vt_count.value %}{% endif %}
+{% set vt_end = component.vt_countdown_end|default('hide') %}
+{% if vt_end.selected is defined %}{% set vt_end = vt_end.selected %}{% endif %}
+{% if vt_end is iterable and vt_end.value is not defined %}{% set vt_end = vt_end|first %}{% endif %}
+{% if vt_end.value is defined %}{% set vt_end = vt_end.value %}{% endif %}
+{% set vt_badge = vt_badge is same as(true) or vt_badge in ['true','1',1,'on'] %}
+{% set vt_button = vt_button is same as(true) or vt_button in ['true','1',1,'on'] %}
+{% set vt_count = vt_count is same as(true) or vt_count in ['true','1',1,'on'] %}
+{% set vt_button_icon = component.vt_button_icon|default('') %}
+{% if vt_button_icon.selected is defined %}{% set vt_button_icon = vt_button_icon.selected %}{% endif %}
+{% if vt_button_icon is iterable and vt_button_icon.value is not defined %}{% set vt_button_icon = vt_button_icon|first %}{% endif %}
+{% if vt_button_icon.value is defined %}{% set vt_button_icon = vt_button_icon.value %}{% endif %}
+{% set vt_url = component.vt_button_url|default('')|trim %}
+{% set vt_valid_url = vt_url starts with 'https://' or vt_url starts with 'http://' or (vt_url starts with '/' and not (vt_url starts with '//')) %}
 {# VELOURA HOME TAB ASSIGNMENT START #}
 {% set veloura_home_tab_key = component.veloura_home_tab_name_2026|default('') %}
 {% if veloura_home_tab_key.value is defined %}{% set veloura_home_tab_key = veloura_home_tab_key.value %}{% endif %}
@@ -103,7 +124,7 @@
   {% set title_classes = title_classes|merge(['veloura-title-desktop-only']) %}
 {% endif %}
 
-{% if component.veloura_title_text or component.veloura_title_subtitle or show_icon %}
+{% if component.veloura_title_text or component.veloura_title_subtitle or show_icon or vt_badge or vt_button or vt_count %}
 <style>
 /* العنوان المميز — تُكتب هنا لا في ملف الستايل، فالمبني على المتجر قد يكون
    نسخة أقدم من القالب. */
@@ -131,6 +152,7 @@
   {% if component.veloura_title_for_next_section %}data-veloura-title-next="true"{% endif %}
 >
   <div class="veloura-title__inner">
+    {% if vt_badge and component.vt_badge_text %}<span class="vt-badge">{{ component.vt_badge_text|e }}</span>{% endif %}
 
     {% if component.veloura_title_text or show_icon %}
       <h2 class="veloura-title__heading" data-veloura-title-heading>
@@ -158,6 +180,20 @@
       <p class="veloura-title__subtitle">
         {{ component.veloura_title_subtitle }}
       </p>
+    {% endif %}
+
+
+    {% if vt_count or (vt_button and vt_valid_url and component.vt_button_text) %}
+    <div class="vt-extras">
+      {% if vt_count and component.vt_countdown_date %}
+      <div class="vt-countdown" hidden data-vt-countdown data-date="{{ component.vt_countdown_date|e('html_attr') }}" data-time="{{ component.vt_countdown_time|default('23:59')|e('html_attr') }}" data-end="{{ vt_end|trim|e('html_attr') }}" data-message="{{ component.vt_countdown_message|default('انتهى العرض')|e('html_attr') }}">
+        <div class="vt-clock" role="timer" aria-label="الوقت المتبقي للعرض" dir="ltr">
+          <span><b data-unit="days">00</b><small>يوم</small></span><span><b data-unit="hours">00</b><small>ساعة</small></span><span><b data-unit="minutes">00</b><small>دقيقة</small></span><span><b data-unit="seconds">00</b><small>ثانية</small></span>
+        </div><span class="vt-expired" hidden role="status"></span>
+      </div>
+      {% endif %}
+      {% if vt_button and vt_valid_url and component.vt_button_text %}<a class="vt-button" href="{{ vt_url|e('html_attr') }}">{% if vt_button_icon|trim %}<i class="{{ vt_button_icon|trim|e('html_attr') }}" aria-hidden="true"></i>{% endif %}<span>{{ component.vt_button_text|e }}</span></a>{% endif %}
+    </div>
     {% endif %}
 
   </div>
@@ -225,3 +261,46 @@
   })();
 </script>
 {% endif %}
+<style>
+.veloura-title { --vt-surface:var(--veloura-site-second-bg,#eef0f4);--vt-ink:#111827;--vt-justify:center; }
+html.dark .veloura-title,body.dark .veloura-title { --vt-surface:var(--veloura-dark-secondary-bg,#162238);--vt-ink:var(--veloura-dark-primary-text,#f1f5fc); }
+.veloura-title--align-right { --vt-justify:flex-end; }
+.veloura-title--align-left { --vt-justify:flex-start; }
+.veloura-title .vt-badge { display:inline-block;margin-bottom:10px;padding:6px 12px;background:var(--vt-surface);color:var(--vt-ink)!important;font-size:12px;font-weight:600;border-radius:var(--veloura-global-radius,18px); }
+.veloura-title .vt-extras { display:flex;direction:ltr;justify-content:var(--vt-justify);align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px; }
+.veloura-title .vt-extras:not(:has(.vt-button)):has(.vt-countdown[hidden]),.veloura-title .vt-extras:empty { display:none; }
+.veloura-title .vt-countdown[hidden],.veloura-title .vt-clock[hidden],.veloura-title .vt-expired[hidden] { display:none!important; }
+.veloura-title .vt-clock { display:flex;gap:6px;color:var(--vt-ink)!important; }
+.veloura-title .vt-clock>span { display:flex;flex-direction:column;align-items:center;min-width:52px;padding:8px;background:var(--vt-surface);border-radius:min(var(--veloura-global-radius,18px),18px); }
+.veloura-title .vt-clock b { font-size:22px;font-variant-numeric:tabular-nums;line-height:1.2;color:inherit!important; }
+.veloura-title .vt-clock small { font-size:11px;color:inherit!important;opacity:.75; }
+.veloura-title .vt-expired { color:var(--vt-ink)!important; }
+.veloura-title a.vt-button { display:inline-flex;direction:rtl;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;border-radius:var(--veloura-global-radius,18px);background:var(--color-primary,#3389f2);color:var(--color-primary-reverse,#fff)!important;text-decoration:none;font-weight:600; }
+.veloura-title .vt-button:focus-visible { outline:2px solid var(--vt-ink);outline-offset:3px; }
+@media(max-width:480px){.veloura-title .vt-extras{gap:12px}.veloura-title .vt-clock>span{min-width:44px;padding:7px}.veloura-title .vt-clock b{font-size:19px}}
+</style>
+<script>
+(function(){
+  function init(){document.querySelectorAll('[data-vt-countdown]:not([data-vt-ready])').forEach(function(el){
+    el.dataset.vtReady='1';
+    var date=el.dataset.date||'',time=el.dataset.time||'23:59';
+    var nums=date.match(/\d+/g),t=/^(\d{1,2}):(\d{2})$/.exec(time);
+    if(!nums||nums.length<3||!t)return;
+    var y=nums[0].length===4?+nums[0]:+nums[2],m=+nums[1],d=nums[0].length===4?+nums[2]:+nums[0],h=+t[1],min=+t[2];
+    var check=new Date(Date.UTC(y,m-1,d));
+    if(y<2000||m<1||m>12||check.getUTCDate()!==d||h>23||min>59)return;
+    var end=Date.UTC(y,m-1,d,h-3,min),timer;
+    function tick(){
+      if(!el.isConnected){clearInterval(timer);return;}
+      var left=Math.max(0,Math.ceil((end-Date.now())/1000));
+      if(!left){clearInterval(timer);if(el.dataset.end==='message'){
+        el.querySelector('.vt-clock').hidden=true;var message=el.querySelector('.vt-expired');message.textContent=el.dataset.message;message.hidden=false;el.hidden=false;
+      }else el.hidden=true;return;}
+      var values={days:Math.floor(left/86400),hours:Math.floor(left/3600)%24,minutes:Math.floor(left/60)%60,seconds:left%60};
+      Object.keys(values).forEach(function(unit){el.querySelector('[data-unit="'+unit+'"]').textContent=String(values[unit]).padStart(2,'0');});el.hidden=false;
+    }
+    tick();if(end>Date.now())timer=setInterval(tick,1000);
+  });}
+  init();document.addEventListener('DOMContentLoaded',init);document.addEventListener('theme::ready',init);
+})();
+</script>
