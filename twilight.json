@@ -132,25 +132,6 @@
         }
       ]
     },
-    
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
-      "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
-      "id": "enable_more_menu",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
     {
       "id": "veloura_menu_visible_limit",
       "type": "number",
@@ -170,6 +151,24 @@
         }
       ],
       "description": "حد أقصى للتصنيفات الظاهرة؛ إذا ضاقت المساحة تظهر تصنيفات أقل تلقائيًا."
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
+      "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
+      "id": "enable_more_menu",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "type": "static",
@@ -13586,7 +13585,7 @@
           "required": false
         }
       ],
-      "image": "https://raw.githubusercontent.com/velorawox-prog/media/main/%D8%B5%D9%88%D8%B1%20%D9%85%D8%B1%D8%A8%D8%B9%D8%A9.jpg"
+      "image": "https://raw.githubusercontent.com/velorawox-prog/media/main/%D8%B5%D9%88%D8%B1%20%D9%85%D8%B1%D8%A8%D8%B9%D8%A9%20%D8%AD%D8%AF%D9%8A%D8%AB%D8%A9.jpg"
     },
     {
       "key": "7fa21e61-303d-49c6-95b0-38a5f08c1445",
@@ -15613,7 +15612,8 @@
           "icon": "sicon-code",
           "value": ""
         }
-      ]
+      ],
+      "image": "https://raw.githubusercontent.com/velorawox-prog/media/main/%D8%B9%D9%86%D9%88%D8%A7%D9%86%20%D9%85%D9%85%D9%8A%D8%B2.jpg"
     },
     {
       "key": "e72c5a4b-36d1-4b41-91f3-1c3e9f5d8a22",
@@ -15739,7 +15739,8 @@
           "minLength": 0,
           "maxLength": 300
         }
-      ]
+      ],
+      "image": "https://raw.githubusercontent.com/velorawox-prog/media/main/%D9%81%D8%A7%D8%B5%D9%84.jpg"
     },
     {
       "key": "f84b4d92-6e4d-4a4f-92f3-37b9a3d1c601",
@@ -20183,7 +20184,8 @@
           "value": "",
           "required": false
         }
-      ]
+      ],
+      "image": "https://raw.githubusercontent.com/velorawox-prog/media/main/%D8%A8%D9%88%D8%A8%20%D8%A7%D8%A8.jpg"
     },
     {
       "key": "3e7a9f42-9b16-4c8e-a52d-6f4b1c9d8a73",
@@ -21715,7 +21717,8 @@
           "value": "",
           "required": false
         }
-      ]
+      ],
+      "image": "https://raw.githubusercontent.com/velorawox-prog/media/main/%D8%B4%D8%B1%D9%8A%D8%B7%20%D8%A7%D8%B9%D9%84%D8%A7%D9%86%D9%8A.jpg"
     },
     {
       "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
