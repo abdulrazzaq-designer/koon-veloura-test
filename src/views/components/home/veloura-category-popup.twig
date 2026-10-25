@@ -10,7 +10,7 @@
       {% for item in component.items %}
         {% set item_image = item.image.url ?: item.image %}
         <a class="vcp__card" data-link="{{ item.url|json_encode|e('html_attr') }}">
-          {% if item_image %}<img src="{{ item_image|e('html_attr') }}" alt="" width="160" height="160" loading="lazy" decoding="async">
+          {% if item_image %}<img src="{{ item_image|e('html_attr') }}" alt="" loading="lazy" decoding="async">
           {% else %}<i class="{{ item.icon.value ?: item.icon ?: 'sicon-grid' }}" aria-hidden="true"></i>{% endif %}
           <span data-category-name>عرض التصنيف</span>
         </a>
@@ -29,9 +29,10 @@ body.veloura-general-enabled.veloura-glass-effect:not(.veloura-no-glass) .vcp__d
 .vcp__header button { width:40px; height:40px; flex-shrink:0; border:1px solid color-mix(in srgb,var(--vcp-text) 20%,transparent); border-radius:var(--veloura-global-radius,16px); background:transparent; color:inherit; font-size:28px; cursor:pointer; }
 .vcp__grid { display:grid; grid-template-columns:repeat(var(--vcp-cols,4),minmax(0,1fr)); gap:14px; }
 .vcp__card { display:flex; flex-direction:column; align-items:center; gap:10px; min-width:0; padding:0; color:var(--vcp-text); text-decoration:none; text-align:center; overflow-wrap:anywhere; border:0!important; background:transparent; }
-.vcp__card img { width:100%; height:auto; aspect-ratio:1; object-fit:contain; border-radius:var(--veloura-global-radius,16px); }
+html body .vcp__dialog .vcp__card img { display:block; width:100%; height:auto; aspect-ratio:auto; flex:none; border-radius:var(--veloura-global-radius,16px); }
 .vcp__card i { display:grid; place-items:center; min-height:72px; font-size:36px; color:var(--color-primary); }
 .vcp :focus-visible { outline:2px solid var(--color-primary); outline-offset:3px; }
+@media(min-width:768px){html body .vcp__dialog{width:min(1100px,calc(100% - 48px));max-height:calc(100dvh - 32px);padding:24px}.vcp__header{margin-bottom:16px}.vcp__grid{align-items:start}}
 @media(max-width:767px){.vcp__grid{grid-template-columns:repeat(var(--vcp-mobile-cols,2),minmax(0,1fr))}.vcp__dialog{padding:18px}}
 </style>
 <script>
