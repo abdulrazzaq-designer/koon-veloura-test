@@ -90,5 +90,19 @@
       .veloura-size-guide header{background:var(--guide-surface);}
       @media(max-width:600px){.veloura-size-guide{width:calc(100% - 24px);height:auto;max-height:calc(100dvh - 32px);border-radius:var(--guide-radius);}}
     </style>
+
+    <style id="veloura-guide-scroll-and-text">
+      html:has(dialog.veloura-size-guide[open]),body:has(dialog.veloura-size-guide[open]){overflow:hidden!important;}
+      html body dialog.veloura-size-guide{box-sizing:border-box;overflow:hidden!important;max-height:calc(100dvh - 32px);height:auto;}
+      html body dialog.veloura-size-guide[open]{display:flex;flex-direction:column;}
+      html body dialog.veloura-size-guide>header{position:relative;top:auto;flex:0 0 auto;min-width:0;}
+      html body dialog.veloura-size-guide>header h2{min-width:0;overflow-wrap:anywhere;}
+      html body dialog.veloura-size-guide>.veloura-size-guide__content{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,currentColor 30%,transparent) transparent;}
+      html:not(.dark) body:not(.dark) dialog.veloura-size-guide{color:#111827!important;}
+      html:not(.dark) body:not(.dark) dialog.veloura-size-guide :is(h2,h3,p,span,a,button){color:#111827!important;-webkit-text-fill-color:#111827!important;opacity:1!important;}
+      html.dark body dialog.veloura-size-guide,html body.dark dialog.veloura-size-guide{color:var(--veloura-dark-primary-text,#f1f5fc)!important;}
+      html.dark body dialog.veloura-size-guide :is(h2,h3,p,span,a,button),html body.dark dialog.veloura-size-guide :is(h2,h3,p,span,a,button){color:var(--veloura-dark-primary-text,#f1f5fc)!important;-webkit-text-fill-color:var(--veloura-dark-primary-text,#f1f5fc)!important;opacity:1!important;}
+      @media(max-width:600px){html body dialog.veloura-size-guide{width:calc(100% - 24px);max-height:calc(100dvh - 32px);}}
+    </style>
   {% endif %}
 {% endif %}

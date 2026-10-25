@@ -132,6 +132,25 @@
         }
       ]
     },
+    
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
+      "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
+      "id": "enable_more_menu",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
     {
       "id": "veloura_menu_visible_limit",
       "type": "number",
@@ -151,24 +170,6 @@
         }
       ],
       "description": "حد أقصى للتصنيفات الظاهرة؛ إذا ضاقت المساحة تظهر تصنيفات أقل تلقائيًا."
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل قائمة المزيد في القائمة الرئيسية",
-      "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
-      "id": "enable_more_menu",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_general_panel_open_v4_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
     },
     {
       "type": "static",
