@@ -2059,6 +2059,23 @@
       ]
     },
     {
+      "id": "veloura_header_brand_icons_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "استخدام أيقونات فيلورا في الهيدر",
+      "description": "يعرض رسومات فيلورا بالألوان والأحجام المحددة للهيدر. عطّله لاستخدام أيقونات سلة.",
+      "icon": "sicon-grid",
+      "value": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_top_login_icon_2026",
       "type": "items",
       "format": "dropdown-list",
