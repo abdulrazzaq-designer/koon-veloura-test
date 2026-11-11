@@ -2059,6 +2059,16 @@
       ]
     },
     {
+      "id": "veloura_store_icons_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "أيقونات فيلورا للقائمة السفلية والمنتجات",
+      "description": "يوحّد شكل أيقونات التنقل والشراء والمفضلة والعرض السريع.",
+      "icon": "sicon-grid",
+      "value": true,
+      "required": false
+    },
+    {
       "id": "veloura_header_brand_icons_2026",
       "type": "boolean",
       "format": "switch",
