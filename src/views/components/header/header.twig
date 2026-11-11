@@ -379,7 +379,7 @@
 
 {% set localization_available = store.settings.is_multilingual or store.settings.currencies_enabled %}
 
-{% set vh_icons = theme.settings.get('veloura_header_brand_icons_2026', true) %}
+{% set vh_icons = theme.settings.get('veloura_store_icons_2026', true) %}
 {% if vh_icons is same as(true) or (vh_icons ~ '')|lower in ['true', '1', 'on'] %}
 <style id="veloura-header-glyphs">
 :is(.veloura-header-glyph:is(.sicon-user-circle, .sicon-user, .sicon-wallet, .sicon-shopping-bag, .sicon-luggage-cart, .sicon-box, .sicon-packed-box, .sicon-gift, .sicon-menu, .sicon-list, .sicon-grid, .sicon-apps, .sicon-layout-grid, .sicon-search, .sicon-moon, .sicon-sun, .sicon-earth, .sicon-heart, .sicon-link, .sicon-keyboard_arrow_left, .sicon-chat-conversation-alt, .sicon-cancel), .close-mobile-menu.sicon-cancel)::before {

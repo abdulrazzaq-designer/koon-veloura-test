@@ -51,6 +51,24 @@
       "selected": false
     },
     {
+      "id": "veloura_store_icons_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "تفعيل أيقونات فيلورا",
+      "description": "يعرض أيقونات فيلورا في الهيدر والقائمة السفلية وأزرار المنتجات المدعومة.",
+      "icon": "sicon-grid",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_general_panel_open_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "type": "static",
       "format": "title",
       "id": "veloura_general_subtitle_classes_2026",
@@ -2050,33 +2068,6 @@
       "format": "color",
       "label": "لون خلفية سلة المنتجات في القسم العلوي",
       "value": "#f87171",
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_store_icons_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "أيقونات فيلورا للقائمة السفلية والمنتجات",
-      "description": "يوحّد شكل أيقونات التنقل والشراء والمفضلة والعرض السريع.",
-      "icon": "sicon-grid",
-      "value": true,
-      "required": false
-    },
-    {
-      "id": "veloura_header_brand_icons_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "استخدام أيقونات فيلورا في الهيدر",
-      "description": "يعرض رسومات فيلورا بالألوان والأحجام المحددة للهيدر. عطّله لاستخدام أيقونات سلة.",
-      "icon": "sicon-grid",
-      "value": true,
-      "required": false,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
