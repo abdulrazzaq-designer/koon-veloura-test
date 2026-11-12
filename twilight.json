@@ -9798,20 +9798,16 @@
       "id": "veloura_mobile_floating_menu_title_2026",
       "type": "static",
       "format": "description",
-      "value": "<a href=\"/themes/editor/page-options/veloura-bottom-nav\" dir=\"rtl\" style=\"display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid rgba(90,142,220,.32);border-radius:14px;text-decoration:none;color:inherit;background:rgba(90,142,220,.08)\"><i aria-hidden=\"true\" class=\"sicon-layout-grid\" style=\"font-size:22px;color:#518fe3\"></i><span style=\"flex:1\"><strong style=\"display:block\">القائمة السفلية</strong><small>الأزرار، الأيقونات، الألوان وتسميات الروابط</small></span><span aria-hidden=\"true\">←</span></a>"
+      "value": "<a href=\"/themes/editor/page-options/veloura-bottom-nav\" dir=\"rtl\" style=\"box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:24px;text-decoration:none;background:linear-gradient(270deg,#03465a,#006b76 58%,#007a7c);color:#fff\"><span aria-hidden=\"true\" style=\"display:grid;place-items:center;width:42px;height:42px;flex:none;background:white;color:#005369;border-radius:50%;font-size:22px\"><i class=\"sicon-layout-grid\"></i></span><span style=\"flex:1;text-align:right;color:white\"><strong style=\"display:block;font-size:17px;color:white\">القائمة السفلية</strong><small style=\"display:block;margin-top:3px;color:#e2f6f5\">الأزرار والألوان وتسميات الروابط</small></span><span aria-hidden=\"true\" style=\"color:white;font-size:19px\">←</span></a>"
     },
     {
-      "type": "boolean",
-      "format": "switch",
-      "id": "veloura_mobile_floating_menu_enabled_2026",
-      "label": "تفعيل إعدادات القائمة السفلية",
-      "wide": true,
-      "required": false,
-      "value": false,
-      "selected": false,
+      "id": "veloura_bottom_nav_page_heading_2026",
+      "type": "static",
+      "format": "description",
       "groups": [
         "veloura-bottom-nav"
-      ]
+      ],
+      "value": "<span id=\"veloura-bottom-nav-editor-heading\"><strong style=\"font-size:18px;color:inherit\">إعدادات القائمة السفلية</strong></span><style>.main-sidebar:has(#veloura-bottom-nav-editor-heading) .page-header:has(h2.font-bold.text-base){display:none}</style>"
     },
     {
       "id": "veloura_mobile_floating_menu_subtitle_general_2026",
@@ -9820,13 +9816,6 @@
       "label": "الإعدادات العامة",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الإعدادات العامة للقائمة العائمة</span></div>",
       "icon": "sicon-sliders",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -9861,13 +9850,6 @@
           "key": "veloura-mobile-floating-menu-position-pill-2026"
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -9885,13 +9867,6 @@
       "step": "1",
       "minimum": "0",
       "maximum": "24",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -9903,13 +9878,6 @@
       "label": "الشكل الاحترافي",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل الاحترافي والعنصر النشط</span></div>",
       "icon": "sicon-magic-wand",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -9923,13 +9891,6 @@
       "icon": "sicon-font",
       "value": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -9975,13 +9936,6 @@
           "label": "كبير جدًا - 28px",
           "value": "28",
           "key": "vmfm-icon-size-28-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ],
       "groups": [
@@ -10033,11 +9987,6 @@
       ],
       "conditions": [
         {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_mobile_floating_menu_show_labels_2026",
           "operation": "=",
           "value": true
@@ -10080,13 +10029,6 @@
           "key": "vmfm-active-scale-108-v15-2026"
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "value": "1.06",
       "groups": [
         "veloura-bottom-nav"
@@ -10099,13 +10041,6 @@
       "label": "الألوان والحواف",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الألوان والحواف</span></div>",
       "icon": "sicon-paint-brush",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10119,13 +10054,6 @@
       "icon": "sicon-magic-wand",
       "value": false,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10139,13 +10067,6 @@
       "icon": "sicon-paint-bucket",
       "value": "#ffffff",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10159,13 +10080,6 @@
       "icon": "sicon-font",
       "value": "#111827",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10179,13 +10093,6 @@
       "icon": "sicon-star",
       "value": "#004d65",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10203,13 +10110,6 @@
       "minimum": "0",
       "maximum": "50",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10221,13 +10121,6 @@
       "label": "عناصر القائمة",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العناصر الافتراضية والإضافية</span></div>",
       "icon": "sicon-grid",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10240,13 +10133,6 @@
       "icon": "sicon-home",
       "value": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10259,13 +10145,6 @@
       "icon": "sicon-apps",
       "value": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10278,13 +10157,6 @@
       "icon": "sicon-search",
       "value": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10297,13 +10169,6 @@
       "icon": "sicon-shopping-bag",
       "value": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10316,13 +10181,6 @@
       "icon": "sicon-user",
       "value": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10334,13 +10192,6 @@
       "label": "عناصر مخصصة",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>إضافة عناصر مخصصة للقائمة</span></div>",
       "icon": "sicon-plus",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10456,13 +10307,6 @@
           "required": false
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10474,13 +10318,6 @@
       "label": "تسميات الأزرار",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>تسميات الأزرار</span></div>",
       "icon": "sicon-font",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
@@ -10494,11 +10331,6 @@
       "value": "الرئيسية",
       "required": false,
       "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
         {
           "id": "veloura_mobile_floating_menu_show_home_2026",
           "operation": "=",
@@ -10519,11 +10351,6 @@
       "required": false,
       "conditions": [
         {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_mobile_floating_menu_show_categories_2026",
           "operation": "=",
           "value": true
@@ -10542,11 +10369,6 @@
       "value": "البحث",
       "required": false,
       "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
         {
           "id": "veloura_mobile_floating_menu_show_search_2026",
           "operation": "=",
@@ -10567,11 +10389,6 @@
       "required": false,
       "conditions": [
         {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_mobile_floating_menu_show_cart_2026",
           "operation": "=",
           "value": true
@@ -10591,11 +10408,6 @@
       "required": false,
       "conditions": [
         {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_mobile_floating_menu_show_account_2026",
           "operation": "=",
           "value": true
@@ -10609,13 +10421,6 @@
       "type": "static",
       "id": "static-line1",
       "format": "line",
-      "conditions": [
-        {
-          "id": "veloura_mobile_floating_menu_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
       "groups": [
         "veloura-bottom-nav"
       ]
