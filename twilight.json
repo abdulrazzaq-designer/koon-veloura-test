@@ -9795,21 +9795,23 @@
       ]
     },
     {
-      "type": "static",
-      "format": "title",
       "id": "veloura_mobile_floating_menu_title_2026",
-      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-airplay-screen\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">قائمة الجوال</strong></div></div>",
-      "icon": "sicon-airplay-screen"
+      "type": "static",
+      "format": "description",
+      "value": "<a href=\"/themes/editor/page-options/veloura-bottom-nav\" dir=\"rtl\" style=\"display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid rgba(90,142,220,.32);border-radius:14px;text-decoration:none;color:inherit;background:rgba(90,142,220,.08)\"><i aria-hidden=\"true\" class=\"sicon-layout-grid\" style=\"font-size:22px;color:#518fe3\"></i><span style=\"flex:1\"><strong style=\"display:block\">القائمة السفلية</strong><small>الأزرار، الأيقونات، الألوان وتسميات الروابط</small></span><span aria-hidden=\"true\">←</span></a>"
     },
     {
       "type": "boolean",
       "format": "switch",
       "id": "veloura_mobile_floating_menu_enabled_2026",
-      "label": " ",
+      "label": "تفعيل إعدادات القائمة السفلية",
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false
+      "selected": false,
+      "groups": [
+        "veloura-bottom-nav"
+      ]
     },
     {
       "id": "veloura_mobile_floating_menu_subtitle_general_2026",
@@ -9824,6 +9826,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -9862,6 +9867,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -9883,6 +9891,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -9898,6 +9909,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -9915,6 +9929,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -9966,6 +9983,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10022,6 +10042,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10064,7 +10087,10 @@
           "value": true
         }
       ],
-      "value": "1.06"
+      "value": "1.06",
+      "groups": [
+        "veloura-bottom-nav"
+      ]
     },
     {
       "id": "veloura_mobile_floating_menu_subtitle_style_2026",
@@ -10079,6 +10105,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10096,6 +10125,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10113,6 +10145,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10130,6 +10165,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10147,6 +10185,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10168,6 +10209,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10183,6 +10227,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10199,6 +10246,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10215,6 +10265,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10231,6 +10284,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10247,6 +10303,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10263,6 +10322,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10278,6 +10340,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10397,6 +10462,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10412,6 +10480,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10433,6 +10504,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10454,6 +10528,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10475,6 +10552,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10496,6 +10576,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10517,6 +10600,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -10529,6 +10615,9 @@
           "operation": "=",
           "value": true
         }
+      ],
+      "groups": [
+        "veloura-bottom-nav"
       ]
     },
     {
@@ -22698,6 +22787,12 @@
       "icon": "sicon-add_row_after",
       "type": "footer",
       "label": "إعدادات الفوتر"
+    },
+    {
+      "id": "veloura-bottom-nav",
+      "type": "custom",
+      "label": "القائمة السفلية",
+      "icon": "sicon-layout-grid"
     }
   ]
 }
