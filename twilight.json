@@ -2629,20 +2629,9 @@
     },
     {
       "type": "static",
-      "format": "title",
+      "format": "description",
       "id": "veloura_footer_settings_title_2026",
-      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-archive-download\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">خيارات القسم السفلي</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-archive-download"
-    },
-    {
-      "type": "boolean",
-      "id": "veloura_footer_enabled_2026",
-      "format": "switch",
-      "label": " ",
-      "required": false,
-      "value": false,
-      "selected": false
+      "value": "<a href=\"/themes/editor/page-options/footer\" style=\"display:block;padding:14px 16px;border:1px solid currentColor;border-radius:12px;text-decoration:none;color:inherit\">إعدادات الفوتر ←</a>"
     },
     {
       "id": "veloura_footer_credentials_merge",
@@ -2652,12 +2641,8 @@
       "value": false,
       "selected": false,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2668,12 +2653,8 @@
       "value": true,
       "selected": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2684,12 +2665,8 @@
       "value": true,
       "selected": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2700,12 +2677,8 @@
       "value": true,
       "selected": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2716,12 +2689,8 @@
       "value": true,
       "selected": true,
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2731,12 +2700,8 @@
       "label": "عنوان الرقم الضريبي",
       "value": "الرقم الضريبي",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2746,12 +2711,8 @@
       "label": "عنوان السجل التجاري",
       "value": "السجل التجاري",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2761,12 +2722,8 @@
       "label": "عنوان توثيق منصة الأعمال",
       "value": "موثّق في منصة الأعمال",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2775,12 +2732,8 @@
       "id": "veloura_footer_subtitle_logo_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(51,65,85,.20),rgba(51,65,85,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(51,65,85,.40);border-right:4px solid #334155;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(51,65,85,.20),rgba(51,65,85,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشعار والخلفية</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2789,12 +2742,8 @@
       "format": "image",
       "label": "شعار القسم السفلي",
       "description": "اتركه فارغاً لاستخدام شعار المتجر",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2803,12 +2752,8 @@
       "format": "url",
       "label": "أو رابط شعار متحرك",
       "description": "يدعم gif / webm / mp4 / svg / png / webp",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2820,12 +2765,8 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2843,15 +2784,13 @@
       "maximum": "60",
       "conditions": [
         {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_footer_hide_logo_2026",
           "operation": "=",
           "value": false
         }
+      ],
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2859,12 +2798,8 @@
       "type": "string",
       "format": "image",
       "label": "صورة خلفية القسم السفلي",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2897,12 +2832,8 @@
           "key": "veloura-footer-bg-fit-contain-2026"
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2911,12 +2842,8 @@
       "id": "veloura_footer_subtitle_texts_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العناوين والنصوص</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2926,12 +2853,8 @@
       "label": "عنوان معلومات المتجر",
       "value": "",
       "description": "اتركه فارغاً لاستخدام اسم المتجر",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2941,12 +2864,8 @@
       "label": "وصف معلومات المتجر",
       "value": "",
       "description": "اتركه فارغاً لاستخدام وصف المتجر",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2955,12 +2874,8 @@
       "format": "text",
       "label": "عنوان الروابط",
       "value": "روابط مهمة",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2969,12 +2884,8 @@
       "format": "text",
       "label": "عنوان التواصل",
       "value": "تواصل معنا",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2983,12 +2894,8 @@
       "format": "text",
       "label": "عنوان تطبيق الجوال",
       "value": "تحميل تطبيق الجوال",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -2997,12 +2904,8 @@
       "id": "veloura_footer_subtitle_colors_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الألوان</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3012,12 +2915,8 @@
       "inputType": "color",
       "label": "لون خلفية الفوتر",
       "value": "#f8fafc",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3027,12 +2926,8 @@
       "inputType": "color",
       "label": "لون النصوص",
       "value": "#0f172a",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3042,12 +2937,8 @@
       "inputType": "color",
       "label": "لون العناوين",
       "value": "#0f172a",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3057,14 +2948,10 @@
       "inputType": "color",
       "label": "لون خلفية أزرار التواصل والسوشيال",
       "value": "#ffffff",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة."
+      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة.",
+      "groups": [
+        "footer"
+      ]
     },
     {
       "id": "veloura_footer_icon_color_2026",
@@ -3073,14 +2960,10 @@
       "inputType": "color",
       "label": "لون الأيقونات والنصوص",
       "value": "#26265c",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "لون الأيقونة والنص معاً في وسائل الاتصال والسوشيال، في وضعي الأيقونات فقط أو الأيقونة مع النص."
+      "description": "لون الأيقونة والنص معاً في وسائل الاتصال والسوشيال، في وضعي الأيقونات فقط أو الأيقونة مع النص.",
+      "groups": [
+        "footer"
+      ]
     },
     {
       "id": "veloura_footer_contact_border_color_2026",
@@ -3089,14 +2972,10 @@
       "inputType": "color",
       "label": "لون إطار أزرار التواصل والسوشيال",
       "value": "#26265c",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة."
+      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة.",
+      "groups": [
+        "footer"
+      ]
     },
     {
       "type": "static",
@@ -3104,12 +2983,8 @@
       "id": "veloura_footer_subtitle_shape_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل العام</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3122,12 +2997,8 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3140,12 +3011,8 @@
       "required": false,
       "value": true,
       "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3158,12 +3025,8 @@
       "value": true,
       "selected": true,
       "description": "إظهار خطوط ثابتة بجانب عناوين أقسام الفوتر.",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3175,17 +3038,15 @@
       "required": false,
       "conditions": [
         {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_footer_title_badge_2026",
           "operation": "=",
           "value": true,
           "label": "إظهار خطوط بجانب العناوين",
           "description": "إظهار خطوط ثابتة بجانب عناوين أقسام الفوتر."
         }
+      ],
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3201,12 +3062,8 @@
       "minimum": "0",
       "maximum": "50",
       "required": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3219,12 +3076,8 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3266,12 +3119,8 @@
           "key": "veloura-footer-title-xlarge-2026"
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3308,12 +3157,8 @@
           "key": "veloura-footer-text-large-2026"
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3322,12 +3167,8 @@
       "id": "veloura_footer_subtitle_contact_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>وسائل الاتصال والسوشيال</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3359,14 +3200,10 @@
           "key": "veloura-footer-contact-icon-text-2026"
         }
       ],
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "طريقة عرض وسائل الاتصال والتواصل الاجتماعي."
+      "description": "طريقة عرض وسائل الاتصال والتواصل الاجتماعي.",
+      "groups": [
+        "footer"
+      ]
     },
     {
       "type": "boolean",
@@ -3378,12 +3215,8 @@
       "required": false,
       "value": true,
       "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3396,12 +3229,8 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3410,12 +3239,8 @@
       "id": "veloura_footer_subtitle_apps_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>تطبيق الجوال والروابط</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3427,12 +3252,8 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3446,15 +3267,13 @@
       "selected": false,
       "conditions": [
         {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
           "id": "veloura_footer_hide_apps_2026",
           "operation": "=",
           "value": false
         }
+      ],
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3466,12 +3285,8 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3480,12 +3295,8 @@
       "id": "veloura_footer_subtitle_bottom_2026",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشريط السفلي وحقوق المتجر</span></div>",
       "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3494,12 +3305,8 @@
       "format": "text",
       "label": "نص الحقوق أسفل الفوتر",
       "value": "صنع بإتقان على منصة سلة",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3509,12 +3316,8 @@
       "inputType": "color",
       "label": "لون خلفية الشريط السفلي",
       "value": "#ffffff",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3524,12 +3327,8 @@
       "inputType": "color",
       "label": "لون نص الشريط السفلي",
       "value": "#334155",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -3541,24 +3340,16 @@
       "required": false,
       "value": false,
       "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
       "type": "static",
       "id": "static-line1",
       "format": "line",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
+      "groups": [
+        "footer"
       ]
     },
     {
@@ -22900,5 +22691,13 @@
   "description": {
     "ar": "",
     "en": ""
-  }
+  },
+  "groups": [
+    {
+      "id": "footer",
+      "icon": "sicon-add_row_after",
+      "type": "footer",
+      "label": "إعدادات الفوتر"
+    }
+  ]
 }
